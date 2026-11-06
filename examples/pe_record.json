@@ -1,0 +1,9 @@
+{
+  "schema_version": "0.1",
+  "material_id": "PE_RECORD_EXAMPLE",
+  "chemical_family": "polyolefin",
+  "repeat_units": [{"label": "ethylene", "smiles": "[*:1]CC[*:2]", "mole_fraction": 1.0}],
+  "microstructure": {"architecture": "linear", "sequence_type": "homopolymer", "tacticity": "unspecified", "degree_of_polymerization": 20},
+  "state": {"phase": "amorphous", "temperature_k": 300.0, "pressure_bar": 1.0, "preparation_history": "Specification example only; no cell has been built or equilibrated."},
+  "source_reference": "User-defined development example; not experimental data."
+}

@@ -1,0 +1,7 @@
+{
+  "convention": "sum_k_1_plus_cos_nphi_minus_phase",
+  "terms": [
+    {"k_kj_mol": 1.0, "periodicity": 1, "phase_rad": 0.0},
+    {"k_kj_mol": 2.0, "periodicity": 3, "phase_rad": 0.5}
+  ]
+}

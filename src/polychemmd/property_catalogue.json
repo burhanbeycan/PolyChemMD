@@ -1,0 +1,245 @@
+{
+  "catalogue_schema_version": "0.1",
+  "scope": "Planned material-property families; no physical-property pipeline is implemented in this starter.",
+  "counting_rule": "Tensor components, uncertainty columns and algebraically derived outputs are not independent validated capabilities.",
+  "families": [
+    {
+      "id": "thermodynamics",
+      "label": "Thermodynamics",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "density",
+        "Cp",
+        "Cv",
+        "thermal expansion",
+        "compressibility",
+        "bulk modulus"
+      ],
+      "acceptance_gate": "Equilibrated ensemble and observable-specific fluctuation gates"
+    },
+    {
+      "id": "thermal_transport",
+      "label": "Thermal transport",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "thermal conductivity tensor",
+        "thermal diffusivity",
+        "interfacial thermal conductance"
+      ],
+      "acceptance_gate": "Heat flux or thermal-gradient protocol; finite-size checks"
+    },
+    {
+      "id": "chain_statistics",
+      "label": "Chain statistics",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "Rg",
+        "end-to-end distribution",
+        "persistence length",
+        "Kuhn length",
+        "asphericity"
+      ],
+      "acceptance_gate": "Unwrapped chemically ordered chains; contour and chain-length checks"
+    },
+    {
+      "id": "chemical_association",
+      "label": "Chemical association",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "group-resolved hydrogen bonds",
+        "lifetimes",
+        "interchain network connectivity"
+      ],
+      "acceptance_gate": "Document geometric definitions and intermittent/continuous lifetime conventions"
+    },
+    {
+      "id": "free_volume",
+      "label": "Free volume",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "probe-accessible volume",
+        "cavity distribution",
+        "void connectivity"
+      ],
+      "acceptance_gate": "Define probe radius, geometric algorithm, and snapshot sampling"
+    },
+    {
+      "id": "structure_scattering",
+      "label": "Structure and scattering",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "RDF",
+        "partial structure factors",
+        "calculated WAXS"
+      ],
+      "acceptance_gate": "Scattering weights, periodic boundaries and finite q-resolution"
+    },
+    {
+      "id": "elasticity",
+      "label": "Elasticity",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "stiffness tensor",
+        "compliance",
+        "Young modulus",
+        "shear modulus",
+        "Poisson ratio"
+      ],
+      "acceptance_gate": "Finite-T stress averaging; small-strain and isotropy/symmetry checks"
+    },
+    {
+      "id": "nonlinear_mechanics",
+      "label": "Nonlinear mechanics",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "stress-strain curves",
+        "rate-dependent yielding",
+        "cyclic hysteresis"
+      ],
+      "acceptance_gate": "Strain rate, stress convention, thermostat and lateral boundary conditions"
+    },
+    {
+      "id": "viscoelasticity",
+      "label": "Viscoelasticity",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "relaxation modulus",
+        "creep compliance",
+        "storage/loss spectra"
+      ],
+      "acceptance_gate": "Linear-response range and accessible relaxation/frequency window"
+    },
+    {
+      "id": "rheology",
+      "label": "Rheology",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "shear viscosity",
+        "shear thinning",
+        "extensional viscosity"
+      ],
+      "acceptance_gate": "Flow protocol and terminal relaxation; no zero-shear extrapolation without evidence"
+    },
+    {
+      "id": "mixture_thermodynamics",
+      "label": "Mixture thermodynamics",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "mixing enthalpy",
+        "excess volume",
+        "chemical potential",
+        "model-defined Flory-Huggins chi"
+      ],
+      "acceptance_gate": "Matched pure-component references; thermodynamic/phase-equilibrium model"
+    },
+    {
+      "id": "sorption_swelling",
+      "label": "Sorption and swelling",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "Henry coefficient",
+        "sorption isotherm",
+        "water uptake",
+        "swelling"
+      ],
+      "acceptance_gate": "Chemical-potential or activity controlled equilibrium; glass hysteresis assessment"
+    },
+    {
+      "id": "molecular_transport",
+      "label": "Molecular and membrane transport",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "species diffusion tensor",
+        "permeability",
+        "selectivity"
+      ],
+      "acceptance_gate": "Diffusive regime, loading and solution-diffusion applicability"
+    },
+    {
+      "id": "ionic_transport",
+      "label": "Ionic transport",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "ionic conductivity",
+        "Onsager coefficients",
+        "transference numbers"
+      ],
+      "acceptance_gate": "Collective correlations, reference frame and finite-size tests"
+    },
+    {
+      "id": "interfaces",
+      "label": "Surfaces and interfaces",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "interfacial tension",
+        "adsorption PMF",
+        "adsorption free energy",
+        "interfacial orientation"
+      ],
+      "acceptance_gate": "Defined reference states and converged enhanced sampling"
+    },
+    {
+      "id": "electrical_optical",
+      "label": "Electrical and optical response",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "dielectric tensor",
+        "dynamic permittivity",
+        "polarizability",
+        "birefringence"
+      ],
+      "acceptance_gate": "Validated polarization/optical model; avoid double-counted electronic response"
+    },
+    {
+      "id": "spectroscopy",
+      "label": "Spectroscopy",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "IR",
+        "Raman",
+        "UV-vis"
+      ],
+      "acceptance_gate": "Property-specific dipole/polarizability or QM electronic response model"
+    },
+    {
+      "id": "electromechanics",
+      "label": "Electromechanics",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "piezoelectric response",
+        "electrostriction"
+      ],
+      "acceptance_gate": "Appropriate symmetry, polar state, boundary and polarization model"
+    },
+    {
+      "id": "transitions_aging",
+      "label": "Transitions and aging",
+      "status": "planned",
+      "implemented": false,
+      "outputs": [
+        "glass transition",
+        "physical aging",
+        "crystal melting behavior"
+      ],
+      "acceptance_gate": "Preparation history, cooling/heating rates and timescale checks"
+    }
+  ]
+}
