@@ -11,9 +11,9 @@ These are repository task specifications, not claims that GitHub issues have alr
 | 003 | Implemented | Analytic energy checks for LAMMPS Fourier/OPLS conversions, not material parameter validation |
 | 004 | Implemented contract | Assigned-type coverage only; no chemical atom typing or production parameter set |
 | 005 | Implemented process adapter | Real reduced-unit LJ smoke, plus independent failure/parser tests |
-| 006 | Analysis preparation implemented; production workflow open | No validated polymer-density result exists |
+| 006 | Analysis and TASK-006A geometry preparation implemented; production workflow open | No validated polymer-density result exists |
 | 007 | Planned | No representation advantage or chemical-family benchmark claimed |
-| 008 | Development evidence audit implemented for v0.2 | Machine-readable local checks and engine smoke records; a complete scientific release/manuscript benchmark remains open |
+| 008 | Development evidence audit implemented for v0.2/v0.3 | Machine-readable checks, geometry records and engine smoke; a complete scientific release/manuscript benchmark remains open |
 
 ## TASK-001 — Chemical contract and atom-lineage schema
 
@@ -65,11 +65,17 @@ These are repository task specifications, not claims that GitHub issues have alr
 
 **Acceptance:** actual input and trajectory artifacts, physical units, thermodynamic state, convergence status, uncertainty and a suitable external comparison. Dataset count must distinguish independently prepared cells from correlated frames.
 
-The analysis kernel is implemented. The following preparation subtasks remain
-necessary before this milestone can be closed:
+The analysis kernel and the bounded TASK-006A preparation layer are implemented.
+The full milestone remains open:
 
 - **TASK-006A:** independent conformer/coordinate generation and cell packing,
   with topology/lineage preservation, overlap checks and deterministic seeds.
+  **Implemented in v0.3:** optional RDKit ETKDGv3 conformers with coordinate-derived
+  specified-stereo checks; independent rigid placement in orthorhombic cells;
+  minimum-image intermolecular checks, conservative self-image exclusion and
+  wrapped/unwrapped coordinates with image flags. Molecules must fit the
+  conservative extent bound. No melt packing, relaxation, equilibrium sampling,
+  conformational search or physical density prediction is implied.
 - **TASK-006B:** chemically assigned production parameters and charges from
   attributed sources or independently fitted references; demonstrate convention,
   energy/force and coverage checks. The analytic parameter-contract demo is not
@@ -80,6 +86,18 @@ necessary before this milestone can be closed:
 A reduced-unit LJ smoke test establishes engine execution, not any of these
 polymer-specific prerequisites. Density diagnostics accept only explicitly
 converted g/cm^3 and do not certify equilibrium.
+
+### Next bounded task — TASK-006B
+
+Start with one precisely defined chemistry and an attributed parameter source.
+Implement chemical typing and charge assignment as separate explicit rules;
+retain per-atom/per-interaction source identity. Build complete bonded and
+nonbonded topology including exclusions and 1–4 treatment. Compare independent
+analytical energies/forces with actual LAMMPS single-point results before adding
+relaxation or production density. Missing or unsupported environments must stop
+preparation. Do not substitute the analytic parameter-contract demo for a
+physical force field. A successful small chemistry fixture does not establish
+transferability to polyurethane, ionized polymers or other chemical families.
 
 ## TASK-007 — Chemically conditioned torsion descriptors
 

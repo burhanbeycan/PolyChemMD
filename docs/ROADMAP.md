@@ -1,6 +1,6 @@
 # Development roadmap
 
-This is a staged research-software plan, not a statement that the complete platform exists. Version 0.2 implements a narrow mapped linear graph builder, convention/parameter contracts, an engine process adapter and analysis kernels. Polymer coordinate/cell building, production atom typing and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
+This is a staged research-software plan, not a statement that the complete platform exists. Version 0.3 adds seeded coordinates, immutable geometry contracts, bounded orthorhombic rigid cell packing and viewing exports to the graph/convention/parameter/execution/analysis core. Production atom typing, force-field relaxation and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
 
 ## P0 — Freeze the chemical and scientific contracts
 
@@ -45,6 +45,11 @@ Acceptance:
 ## P3 — First validated polymer workflow
 
 Complete one supported chemistry/state/protocol from specification to actual MD artifacts and one basic observable, then expand to independent chemical families. Density is an appropriate early target only after chemical and parameter checks pass.
+
+TASK-006A supplies the starting geometry layer. It deliberately does not assign
+a thermodynamic phase or optimize the requested cell density. TASK-006B must
+supply sourced chemical typing/charges and energy/force checks before these
+coordinates can be treated as a production polymer model.
 
 Acceptance:
 

@@ -4,6 +4,7 @@ import argparse
 import importlib.resources
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -39,6 +40,10 @@ def _check_output_path(input_path, output_path):
 
 def _emit(data, output=None):
     text = json.dumps(data, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+    _emit_text(text, output)
+
+
+def _emit_text(text, output=None):
     if output:
         target = Path(output)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -56,6 +61,77 @@ def _emit(data, output=None):
                 temporary.unlink(missing_ok=True)
     else:
         print(text, end="")
+
+
+def _chain_from_mapping(data):
+    from .chemistry import RepeatUnitSpec
+    from .builders import build_linear
+    expected = {"repeat_unit", "degree_of_polymerization", "head_cap", "tail_cap"}
+    if not isinstance(data, dict) or set(data) != expected:
+        raise ValueError(f"linear build requires exactly {sorted(expected)}")
+    return build_linear(RepeatUnitSpec.from_mapping(data["repeat_unit"]),
+                        data["degree_of_polymerization"],
+                        head_cap=data["head_cap"], tail_cap=data["tail_cap"])
+
+
+def _seed(value, name):
+    if type(value) is not int or not 0 <= value <= 2**31-1:
+        raise ValueError(f"{name} must be an integer in [0, 2147483647]")
+    return value
+
+
+def _positive_recipe_number(value, name):
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{name} must be positive and finite")
+    try:
+        value = float(value)
+    except (ValueError, OverflowError) as exc:
+        raise ValueError(f"{name} must be positive and finite") from exc
+    if not math.isfinite(value) or value <= 0:
+        raise ValueError(f"{name} must be positive and finite")
+    return value
+
+
+def _prepare_cell(data):
+    from .builders.conformers import generate_conformer
+    from .builders.packing import pack_cell
+    expected = {"chain", "conformer_seeds", "packing_seed", "box_lengths_angstrom",
+                "min_distance_angstrom", "max_attempts_per_molecule", "max_distance_checks"}
+    if not isinstance(data, dict) or set(data) != expected:
+        raise ValueError(f"pack-cell input requires exactly {sorted(expected)}")
+    seeds = data["conformer_seeds"]
+    if not isinstance(seeds, list) or not 1 <= len(seeds) <= 128:
+        raise ValueError("conformer_seeds must contain 1 to 128 explicit seeds")
+    for seed in seeds:
+        _seed(seed, "conformer seed")
+    if len(set(seeds)) != len(seeds):
+        raise ValueError("conformer_seeds must be distinct; these are starting conformers, not equilibrated cell replicates")
+    _seed(data["packing_seed"], "packing_seed")
+    box = data["box_lengths_angstrom"]
+    if not isinstance(box, list) or len(box) != 3:
+        raise ValueError("box_lengths_angstrom must have three positive lengths")
+    box = [_positive_recipe_number(v, "box length") for v in box]
+    cutoff = _positive_recipe_number(data["min_distance_angstrom"], "min_distance_angstrom")
+    if any(length < cutoff for length in box):
+        raise ValueError("box length must be at least the geometric cutoff")
+    if not math.isfinite(math.prod(box)) or math.prod(box) <= 0:
+        raise ValueError("box volume must be positive and representable")
+    for name in ("max_attempts_per_molecule", "max_distance_checks"):
+        if type(data[name]) is not int or data[name] <= 0:
+            raise ValueError(f"{name} must be a positive integer")
+    chain = _chain_from_mapping(data["chain"])
+    if len(chain.lineage)*len(seeds) > 10000:
+        raise ValueError("total atom count exceeds the pack-cell CLI limit of 10000")
+    geometries = [generate_conformer(chain, seed=seed) for seed in seeds]
+    payload = pack_cell(geometries, box_lengths_angstrom=box, seed=data["packing_seed"],
+                        min_distance_angstrom=cutoff,
+                        max_attempts_per_molecule=data["max_attempts_per_molecule"],
+                        max_distance_checks=data["max_distance_checks"]).to_dict()
+    payload["preparation"] = {
+        "chain_input": data["chain"], "conformer_seeds": seeds,
+        "interpretation": "separately seeded starting conformers, not independent equilibrated cells",
+    }
+    return payload
 
 
 def doctor():
@@ -96,6 +172,16 @@ def main(argv=None):
     build = commands.add_parser("build-linear", help="Assemble a supported finite molecular graph; no coordinates or MD")
     build.add_argument("input")
     build.add_argument("--output")
+    conformer = commands.add_parser("build-conformer", help="Generate one seeded, checked 3D realization; no MD or energy ranking")
+    conformer.add_argument("input")
+    conformer.add_argument("--output")
+    pack = commands.add_parser("pack-cell", help="Prepare rigid molecules in an orthorhombic periodic cell; no equilibration")
+    pack.add_argument("input")
+    pack.add_argument("--output")
+    xyz = commands.add_parser("export-xyz", help="Export coordinates for viewing; topology and provenance remain in companion JSON")
+    xyz.add_argument("input")
+    xyz.add_argument("--wrapped", action="store_true", help="Use wrapped positions for packed cells")
+    xyz.add_argument("--output")
     convert = commands.add_parser("torsion-import", help="Explicitly convert a supported LAMMPS torsion convention")
     convert.add_argument("input")
     convert.add_argument("--source", choices=("lammps-fourier", "lammps-opls"), required=True)
@@ -147,19 +233,46 @@ def main(argv=None):
             _emit(envelope({"repeat_unit": spec.to_dict(), "graph_validation": "passed", "simulation_performed": False},
                            raw, "repeat_unit_validation"), args.output)
         elif args.command == "build-linear":
-            from .chemistry import RepeatUnitSpec
-            from .builders import build_linear
             _check_output_path(args.input, args.output)
             raw, data = _read(args.input)
-            expected = {"repeat_unit", "degree_of_polymerization", "head_cap", "tail_cap"}
-            if not isinstance(data, dict) or set(data) != expected:
-                raise ValueError(f"linear build requires exactly {sorted(expected)}")
-            result = build_linear(RepeatUnitSpec.from_mapping(data["repeat_unit"]),
-                                  data["degree_of_polymerization"],
-                                  head_cap=data["head_cap"], tail_cap=data["tail_cap"])
+            result = _chain_from_mapping(data)
             payload = result.to_dict()
             payload["simulation_performed"] = False
             _emit(envelope(payload, raw, "linear_molecular_graph"), args.output)
+        elif args.command == "build-conformer":
+            from .builders.conformers import generate_conformer
+            _check_output_path(args.input, args.output)
+            raw, data = _read(args.input)
+            if not isinstance(data, dict) or set(data) != {"chain", "seed", "max_iterations"}:
+                raise ValueError("build-conformer input requires exactly chain, seed and max_iterations")
+            _seed(data["seed"], "seed")
+            if type(data["max_iterations"]) is not int or not 0 < data["max_iterations"] <= 2**31-1:
+                raise ValueError("max_iterations must be a positive signed 32-bit integer")
+            geometry = generate_conformer(_chain_from_mapping(data["chain"]),
+                                          seed=data["seed"], max_iterations=data["max_iterations"])
+            _emit(envelope(geometry.to_dict(), raw, "molecular_conformer"), args.output)
+        elif args.command == "pack-cell":
+            _check_output_path(args.input, args.output)
+            raw, data = _read(args.input)
+            _emit(envelope(_prepare_cell(data), raw, "periodic_cell_preparation"), args.output)
+        elif args.command == "export-xyz":
+            from .geometry import MolecularGeometry
+            from .io.xyz import molecular_xyz, cell_xyz
+            _check_output_path(args.input, args.output)
+            _, data = _read(args.input)
+            if isinstance(data, dict) and "payload" in data and "record_kind" in data:
+                data = data["payload"]
+            if not isinstance(data, dict):
+                raise ValueError("export-xyz requires a molecular geometry or packed-cell JSON record")
+            if data.get("kind") == "molecular_geometry":
+                if args.wrapped:
+                    raise ValueError("--wrapped applies only to periodic cells")
+                text = molecular_xyz(MolecularGeometry.from_mapping(data))
+            elif data.get("kind") == "orthorhombic_rigid_packed_cell":
+                text = cell_xyz(data, wrapped=args.wrapped)
+            else:
+                raise ValueError("unsupported structure kind for XYZ export")
+            _emit_text(text, args.output)
         elif args.command == "torsion-import":
             from .descriptors.conventions import import_lammps_fourier, import_lammps_opls
             _check_output_path(args.input, args.output)

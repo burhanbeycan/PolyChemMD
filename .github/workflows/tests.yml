@@ -31,6 +31,7 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - run: polychemmd build-linear examples/linear_pe.json --output artifacts/linear-pe.json
       - run: polychemmd parameter-check examples/parameter_contract_demo.json --require-complete
+      - run: python scripts/verify_geometry_v03.py --output-dir artifacts/geometry-ci --skip-pilots
   engine-smoke:
     runs-on: ubuntu-latest
     env:

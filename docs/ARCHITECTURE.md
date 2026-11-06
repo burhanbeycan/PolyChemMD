@@ -6,7 +6,14 @@ PolyChemMD is intended to become a general polymer chemistry and molecular-simul
 
 ## Implemented boundary
 
-The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, full Fourier-torsion analysis/conversion, assigned-parameter coverage, a bounded LAMMPS adapter and density diagnostics. A real reduced-unit LJ engine smoke was executed. It does not yet build polymer coordinates/cells, assign a production polymer force field, run end-to-end polymer MD/QM, or provide experimentally validated polymer-property predictions. Graph and process verification are separate from material validation.
+The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, immutable geometry records, seeded RDKit ETKDGv3 coordinates, independent orthorhombic rigid cell packing, structure visualization exports, full Fourier-torsion analysis/conversion, assigned-parameter coverage, a bounded LAMMPS adapter and density diagnostics. A real reduced-unit LJ engine smoke was executed. It does not yet assign a production polymer force field, relax/equilibrate prepared polymer cells, run end-to-end polymer MD/QM, or provide experimentally validated polymer-property predictions. Geometry construction and process verification are separate from material validation.
+
+`geometry.py` owns the dependency-free molecular coordinate contract.
+`builders/conformers.py` consumes validated linear graphs and invokes optional
+RDKit only when requested; its own graph/lineage and 3D stereo checks surround
+that backend. `builders/packing.py` consumes immutable geometries without RDKit,
+using bounded rigid placements and a periodic all-pair audit. `io/xyz.py` exports
+viewing coordinates without converting supplied provenance into verified claims.
 
 The names below describe architectural responsibilities; they do not assert that all listed Python classes or modules already exist.
 

@@ -2,7 +2,7 @@
 
 Independent polymer chemistry simulation and property-analysis research project.
 
-**Release state: 0.2.0.dev0 — chemical graph and execution core, not a validated polymer-property platform.**
+**Release state: 0.3.0.dev0 — chemical graphs, coordinates and cell preparation; production polymer-property validation remains open.**
 
 The long-term scope is a general-purpose connection from polymer chemistry and
 microstructure to quantum-informed parameterization, molecular dynamics,
@@ -21,6 +21,10 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 | Provenance envelopes | Implemented: software/Python versions, UTC time and exact input-file SHA-256 |
 | Repeat-unit chemical contract | Implemented for explicitly mapped, already transformed units; attachment and source-atom lineage checks |
 | Finite linear-chain graph builder | Single-bond head-to-tail assembly with H/methyl caps; unsupported stereo cases fail explicitly; no coordinates/cell preparation |
+| Molecular coordinate contract | Immutable atom/topology/coordinate records, explicit angstrom units, lineage and strict JSON round trips |
+| Seeded 3D conformer generation | Optional RDKit ETKDGv3 backend, finite budgets, atom/graph preservation and coordinate-derived specified-stereo checks; no conformational search or energy ranking |
+| Periodic cell preparation | Independent rigid-molecule rejection packing in orthorhombic cells, proper rotations, periodic contacts, conservative self-image bounds and image flags |
+| Structure visualization export | Extended XYZ with atom order, lattice and periodicity; topology, isotopes and provenance remain in companion JSON |
 | Complete Fourier torsion kernels | Implemented and analytically tested: all coefficients, phases and multiplicities retained |
 | Torsion descriptors | Grid extrema/barrier/minima and isolated-model Boltzmann bin probabilities; illustrative coefficients only |
 | LAMMPS torsion imports | Explicit real-unit Fourier and OPLS conversions with independent equation tests |
@@ -29,7 +33,7 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 | Density analysis | Physical-unit conversion and conditional block diagnostics; no polymer equilibrium or external validation claim |
 | Dependency inspection and CLI | Implemented; presence inspection does not execute or validate engines |
 | Property catalogue | 19 planned material-property families; the catalogue is not an executable property engine |
-| Polymer coordinates, cell packing and production atom typing | Planned |
+| Production atom typing, charge assignment and force-field relaxation | Planned |
 | End-to-end polymer MD and QM protocols | Planned |
 | Experimental validation and publication benchmarks | Planned; no performance or material-property result is claimed |
 
@@ -58,7 +62,30 @@ python -m pip install -e '.[chemistry]'
 polychemmd build-linear examples/linear_pe.json --output artifacts/linear-pe.json
 polychemmd torsion-import examples/torsion_lammps_fourier.json --source lammps-fourier
 polychemmd parameter-check examples/parameter_contract_demo.json --require-complete
+polychemmd build-conformer examples/conformer_pe.json --output artifacts/pe-conformer.json
+polychemmd pack-cell examples/packed_pe.json --output artifacts/pe-cell.json
+polychemmd export-xyz artifacts/pe-cell.json --output artifacts/pe-cell.xyz
 ```
+
+The geometry examples prepare four C10H22 molecules in a 24 angstrom cube,
+using explicit conformer and packing seeds and a 1.5 angstrom all-atom geometric
+cutoff. The cutoff is not a van der Waals model. The reported construction
+density is mass divided by the requested volume, not a density prediction.
+Random rigid placement does not establish an equilibrated amorphous phase.
+See [coordinate generation](docs/COORDINATE_GENERATION.md) and
+[cell packing](docs/CELL_PACKING.md) for supported geometry and numerical limits.
+XYZ is a viewing format; preserve the JSON for identity, isotope and topology
+information. Default cell XYZ coordinates are unwrapped; `--wrapped` is available.
+
+Execute the bounded examples and an independent lattice-image/rigidity audit:
+
+```bash
+python scripts/verify_geometry_v03.py --output-dir artifacts/geometry-v03
+```
+
+The output directory must be new. The script also generates finite PE, PVDF and
+PS repeat-graph conformers; their tacticity/phase is not inferred. Actual example
+records and their limitations are in [geometry evidence](evidence/geometry_v03/README.md).
 
 For the separately installed Linux/x86-64 engine smoke environment:
 
@@ -102,8 +129,9 @@ are kJ/mol; imported force-field conventions require explicit conversion.
 
 Each step needs executed evidence. Graph verification and a real process smoke
 test do not establish a polymer production MD protocol or experimental
-predictivity. TASK-006 remains open until coordinates/cell preparation,
-production parameterization, sampling and external comparison are complete.
+predictivity. TASK-006A now supplies bounded coordinate/cell preparation.
+TASK-006 remains open until production parameterization, sampling and external
+comparison are complete; TASK-006B is the next bounded milestone.
 
 ## Reproducibility and dependencies
 

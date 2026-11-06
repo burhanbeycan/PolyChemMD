@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0.dev0 — 2026-11-07
+
+- Added immutable, dependency-free geometry/lineage serialization contracts.
+- Added seeded RDKit ETKDGv3 conformers with independent geometric stereo checks.
+- Added independent bounded orthorhombic rigid-molecule packing with periodic
+  contacts, self-image bounds and wrapped/unwrapped image records.
+- Added Extended XYZ viewing exports and CLI preparation recipes.
+- Completed bounded TASK-006A; production parameterization and validated polymer
+  density remain open.
+
 ## 0.2.0.dev0 — 2026-11-07
 
 - Added independent mapped repeat-unit and supported finite linear graph assembly.

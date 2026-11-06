@@ -79,3 +79,54 @@ were checked against analytical/numerical cases only. TASK-006 remains open.
 Hosted CI is recorded by GitHub checks, separately from this local report.
 Python 3.11 and platform compatibility must be judged from the actual hosted
 jobs, not inferred from the Python 3.12 local run.
+
+## Coordinates and cell preparation v0.3 — executed milestone
+
+Executed 7 November 2026 in Türkiye (6 November UTC), Linux, Python 3.12.14.
+
+- Offline editable installation of `0.3.0.dev0` succeeded.
+- **188 unit/contract tests passed, zero skipped**, including actual RDKit
+  geometry generation, isotope/charge/lineage preservation, reconstruction of
+  specified stereochemistry from coordinates, mirrored/inverted negative cases,
+  periodic contacts, self-image bounds, image flags and XYZ views.
+  [evidence/tests_v03.json](evidence/tests_v03.json) records the actual run.
+- Full dependency-absent discovery under `python -S`: 188 discovered,
+  **142 passed and 46 intentionally skipped**; neither RDKit nor NumPy was
+  imported. These are the same tests in a different dependency environment,
+  not additional independent validation cases. See
+  [evidence/core_only_v03.json](evidence/core_only_v03.json).
+- A new wheel was built offline, then imported from a separate temporary
+  directory under `python -S`. New builder/geometry/IO modules and all 19
+  catalogue families loaded from the wheel itself; no editable/source path or
+  optional scientific package was used. See
+  [evidence/wheel_v03.json](evidence/wheel_v03.json).
+- CLI conformer generation, four-molecule periodic preparation and XYZ export
+  executed successfully with the checked-in recipes. The demonstration contains
+  128 explicit atoms in a user-selected 24 angstrom cube, with separate
+  conformer seeds and a 1.5 angstrom geometric intermolecular cutoff.
+- Independent review of an actual two-molecule PE DP3 preparation checked
+  explicit neighbouring lattice images, wrapped/unwrapped identity, every
+  intramolecular distance and signed-volume preservation. This was an algorithm
+  check on 40 atoms, not a simulation or an additional material benchmark.
+- The reusable `scripts/verify_geometry_v03.py` executed successfully. Its
+  [actual report](evidence/geometry_v03/report.json) retains source/recipe/payload
+  hashes and declared tolerances. The four-molecule cell passed 165888 explicit
+  intermolecular image-distance evaluations, 106496 self-image distances and
+  1984 intramolecular pair-distance checks. These are geometric checks, not
+  independent statistical samples.
+- Additional real finite-graph conformers succeeded: PE DP20 (C40H82, 122 atoms),
+  PVDF DP8 (C16H18F16, 50 atoms) and PS DP4 (C32H34, 66 atoms). Their source
+  recipes, seeds, coordinates and checks are in
+  [evidence/geometry_v03](evidence/geometry_v03/README.md). Tacticity was not
+  specified or inferred; no material-property comparison was performed.
+
+The initial structures are finite capped oligomer graphs. Random rigid packing
+does not establish an amorphous polymer phase. Construction density is
+mass/selected volume arithmetic; no equilibrium density, parameter accuracy or
+production MD/QM property was validated. The geometry tests use optional RDKit
+ETKDGv3 as an established backend, not a newly invented conformer method.
+
+TASK-006A is complete within its documented bounded geometry scope. TASK-006B
+(production parameterization) and TASK-006C (actual polymer density validation)
+remain open. Hosted Python 3.11/3.12 and real-engine regression status is reported
+by GitHub checks separately from these executed local records.

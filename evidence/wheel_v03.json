@@ -1,0 +1,16 @@
+{
+  "evidence_kind": "executed_wheel_import_check",
+  "release": "0.3.0.dev0",
+  "wheel": "polychemmd-0.3.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "468b616ee28d02fa10e2d130f897774cef9e26a3d42e18b69fa33042aa297573",
+  "build_command": "PIP_NO_INDEX=1 python -m pip wheel --no-deps --no-build-isolation --wheel-dir artifacts/wheels-v03 .",
+  "isolation": "new temporary cwd; python -S; wheel on sys.path; asserted module imports from wheel, with no site-packages",
+  "result": {
+    "version": "0.3.0.dev0",
+    "catalogue_families": 19,
+    "new_geometry_modules_imported": true,
+    "rdkit_imported": false,
+    "numpy_imported": false
+  },
+  "limits": "Package/import verification, not engine or material validation."
+}
