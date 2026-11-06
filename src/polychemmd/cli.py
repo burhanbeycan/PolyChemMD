@@ -3,6 +3,7 @@
 import argparse
 import importlib.resources
 import importlib.util
+import hashlib
 import json
 import math
 import os
@@ -99,6 +100,15 @@ def _geometry_from_record(data):
     return MolecularGeometry.from_mapping(data)
 
 
+def _periodic_assignment_from_record(data):
+    from .forcefields import AssignedPeriodicAlkaneCell, assign_periodic_alkanes
+    if isinstance(data, dict) and "record_kind" in data and "payload" in data:
+        data = data["payload"]
+    if isinstance(data, dict) and data.get("kind") == "assigned_periodic_opls_aa_n_alkane_cell":
+        return AssignedPeriodicAlkaneCell(json.dumps(data, allow_nan=False))
+    return assign_periodic_alkanes(data)
+
+
 def _prepare_cell(data):
     from .builders.conformers import generate_conformer
     from .builders.packing import pack_cell
@@ -154,7 +164,8 @@ def doctor():
         "optional_executables": {name: shutil.which(name) for name in ("lmp", "lmp_serial", "gmx", "xtb", "cp2k.psmp")},
         "scope": "Presence check only; this does not verify a working engine or an implemented adapter.",
         "md_adapter_status": "implemented_process_adapter",
-        "polymer_md_protocol_status": "not_implemented",
+        "polymer_md_protocol_status": "bounded_periodic_preparation_only",
+        "polymer_equilibrium_validation": "not_implemented",
         "qm_adapter_status": "planned",
     }
 
@@ -204,6 +215,32 @@ def main(argv=None):
     parity.add_argument("--cutoff-angstrom", type=float, default=12.0)
     parity.add_argument("--plan", action="store_true", help="Return generated inputs without running or writing an engine directory")
     parity.add_argument("--output")
+    cell_assignment = commands.add_parser("parameterize-cell", help="Assemble supported n-alkane assignments with periodic atom/molecule/image identity")
+    cell_assignment.add_argument("input")
+    cell_assignment.add_argument("--output")
+    periodic_energy = commands.add_parser("periodic-energy", help="Evaluate the explicit neutral periodic Ewald verification model")
+    periodic_energy.add_argument("input")
+    periodic_energy.add_argument("--cutoff-angstrom", type=float, default=10.0)
+    periodic_energy.add_argument("--ewald-alpha", type=float, default=.30)
+    periodic_energy.add_argument("--reciprocal-nmax", type=int, default=16)
+    periodic_energy.add_argument("--output")
+    periodic_engine = commands.add_parser("periodic-lammps", help="Compare actual periodic Ewald energies/forces or review generated inputs")
+    periodic_engine.add_argument("input")
+    periodic_engine.add_argument("--run-dir", required=True)
+    periodic_engine.add_argument("--executable")
+    periodic_engine.add_argument("--timeout", type=float, default=60.)
+    periodic_engine.add_argument("--cutoff-angstrom", type=float, default=10.)
+    periodic_engine.add_argument("--ewald-alpha", type=float, default=.30)
+    periodic_engine.add_argument("--reciprocal-nmax", type=int, default=16)
+    periodic_engine.add_argument("--plan", action="store_true")
+    periodic_engine.add_argument("--output")
+    preparation = commands.add_parser("periodic-prepare", help="Plan/run bounded minimization and NVT/NPT preparation; no equilibrium certification")
+    preparation.add_argument("input")
+    preparation.add_argument("--protocol", required=True, help="Explicit preparation-spec JSON")
+    preparation.add_argument("--run-dir", required=True)
+    preparation.add_argument("--executable")
+    preparation.add_argument("--plan", action="store_true")
+    preparation.add_argument("--output")
     convert = commands.add_parser("torsion-import", help="Explicitly convert a supported LAMMPS torsion convention")
     convert.add_argument("input")
     convert.add_argument("--source", choices=("lammps-fourier", "lammps-opls"), required=True)
@@ -325,6 +362,50 @@ def main(argv=None):
                                                        cutoff_angstrom=args.cutoff_angstrom)
                     kind = "alkane_engine_energy_force_parity"
                 _emit(envelope(payload, raw, kind), args.output)
+        elif args.command in ("parameterize-cell", "periodic-energy", "periodic-lammps", "periodic-prepare"):
+            _check_output_path(args.input, args.output)
+            if args.command in ("periodic-lammps", "periodic-prepare"):
+                if args.output is not None and Path(args.output).resolve().is_relative_to(Path(args.run_dir).resolve()):
+                    raise ValueError("summary output must be outside the engine run directory to preserve its artifacts")
+            protocol_raw = protocol_data = None
+            if args.command == "periodic-prepare":
+                _check_output_path(args.protocol, args.output)
+                protocol_raw, protocol_data = _read(args.protocol)
+            raw, data = _read(args.input)
+            assigned = _periodic_assignment_from_record(data)
+            if args.command == "parameterize-cell":
+                payload, kind = assigned.to_dict(), "periodic_alkane_parameter_assignment"
+            elif args.command == "periodic-energy":
+                from .forcefields import evaluate_periodic_alkanes
+                payload = evaluate_periodic_alkanes(assigned, cutoff_angstrom=args.cutoff_angstrom,
+                                                   ewald_alpha_per_angstrom=args.ewald_alpha,
+                                                   reciprocal_nmax=args.reciprocal_nmax)
+                kind = "periodic_ewald_energy_force_evaluation"
+            elif args.command == "periodic-lammps":
+                from .engines import (plan_lammps, prepare_periodic_alkane_singlepoint,
+                                      verify_periodic_alkane_singlepoint)
+                options = {"run_directory": args.run_dir, "executable": args.executable,
+                           "timeout_seconds": args.timeout, "cutoff_angstrom": args.cutoff_angstrom,
+                           "ewald_alpha_per_angstrom": args.ewald_alpha,
+                           "reciprocal_nmax": args.reciprocal_nmax}
+                if args.plan:
+                    spec = prepare_periodic_alkane_singlepoint(assigned, **options)
+                    payload = {"engine_plan": plan_lammps(spec), "input_script": spec.input_script,
+                               "staged_inputs": dict(spec.input_files), "md_integration_steps": 0,
+                               "bulk_production_model_validated": False}
+                    kind = "periodic_ewald_singlepoint_plan"
+                else:
+                    payload = verify_periodic_alkane_singlepoint(assigned, **options)
+                    kind = "periodic_ewald_engine_parity"
+            else:
+                from .protocols.alkane import (PeriodicAlkaneProtocolSpec,
+                                              plan_periodic_alkane_protocol, run_periodic_alkane_protocol)
+                spec = PeriodicAlkaneProtocolSpec.from_mapping(protocol_data)
+                function = plan_periodic_alkane_protocol if args.plan else run_periodic_alkane_protocol
+                payload = function(assigned, spec, run_directory=args.run_dir, executable=args.executable)
+                payload["protocol_input_sha256"] = hashlib.sha256(protocol_raw).hexdigest()
+                kind = "periodic_preparation_plan" if args.plan else "bounded_periodic_preparation"
+            _emit(envelope(payload, raw, kind), args.output)
         elif args.command == "torsion-import":
             from .descriptors.conventions import import_lammps_fourier, import_lammps_opls
             _check_output_path(args.input, args.output)

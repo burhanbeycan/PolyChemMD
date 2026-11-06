@@ -11,9 +11,9 @@ These are repository task specifications, not claims that GitHub issues have alr
 | 003 | Implemented | Analytic energy checks for LAMMPS Fourier/OPLS conversions, not material parameter validation |
 | 004 | Implemented contract | Assigned-type coverage only; no chemical atom typing or production parameter set |
 | 005 | Implemented process adapter | Real reduced-unit LJ smoke, plus independent failure/parser tests |
-| 006 | Analysis, TASK-006A geometry and restricted TASK-006B parameter/parity layers implemented | No validated polymer-density result exists; periodic production workflow remains open |
+| 006 | Geometry, restricted parameters, TASK-006C1 periodic assembly/Ewald/preparation implemented | No validated polymer-density result exists; sampling and external comparison remain open |
 | 007 | Planned | No representation advantage or chemical-family benchmark claimed |
-| 008 | Development evidence audit implemented for v0.2–v0.4 | Machine-readable geometry/parameter/engine checks; a complete scientific release/manuscript benchmark remains open |
+| 008 | Development evidence audit implemented for v0.2–v0.5 | Machine-readable geometry/parameter/periodic/engine checks; complete scientific benchmarks remain open |
 
 ## TASK-001 — Chemical contract and atom-lineage schema
 
@@ -93,7 +93,7 @@ A reduced-unit LJ smoke test establishes engine execution, not any of these
 polymer-specific prerequisites. Density diagnostics accept only explicitly
 converted g/cm^3 and do not certify equilibrium.
 
-### Next bounded task — TASK-006C1
+### TASK-006C1 — implemented within the restricted periodic model
 
 Assemble the supported per-molecule assignments into an actual periodic cell
 without losing global/source identities, images or pair conventions. Define and
@@ -105,6 +105,26 @@ protocol with finite resources and honest failure/inconclusive states. A long
 density campaign needs a declared hardware/time budget and sampling gates;
 short energy/parity checks cannot close TASK-006C. Transferability beyond the
 supported n-alkane domain remains separate work.
+
+**Implemented in v0.5:** strict global/source identity and image-preserving cell
+assembly; complete intermolecular pairs; explicit 3D Ewald model and independent
+analytical force reference; actual periodic engine parity including a translated
+boundary-crossing representation; finite minimization/NVT/NPT protocol with
+resource/box guards and final-state/unit audits. Both a source-invariant geometry
+record and a subsequent deformed engine state have separate roles. Native and
+canonical density values remain explicit. Short preparation does not close the
+full density milestone.
+
+### Next bounded task — TASK-006C2
+
+Qualify the preparation and sampling protocol for a precisely declared state and
+chemistry before reporting a density prediction. Define target phase, chain/cell
+sizes, initial-density strategy, long-range/cutoff sensitivity, replicate seeds,
+physical duration and measured hardware/time budget. Add restartable production
+states and observable-specific diagnostics; distinguish independent cells from
+correlated frames. Retain failed/inconclusive cases and perform a state-matched
+external comparison only after the sampling gates pass. The dilute four-oligomer
+pilot and its 200 steps do not establish these conditions.
 
 ## TASK-007 — Chemically conditioned torsion descriptors
 

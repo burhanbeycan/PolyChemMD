@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0.dev0 — 2026-11-07
+
+- Added source/global identity-preserving periodic n-alkane assignment.
+- Added finite 3D Ewald energy/analytical-force reference, periodic LAMMPS
+  export/parity, and explicit backend numerical context.
+- Added bounded minimization/NVT/NPT preparation, resource/box guards and
+  final-state/native/canonical unit audits without equilibrium certification.
+- Added periodic CLI commands, translated-boundary verification and replayable
+  actual-engine evidence recipes; restricted TASK-006C1 is implemented.
+
 ## 0.4.0.dev0 — 2026-11-07
 
 - Added an attributed frozen OPLS-AA CT/HC numerical subset and independent

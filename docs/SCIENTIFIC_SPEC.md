@@ -5,10 +5,18 @@
 Develop an independently implemented, general polymer platform linking chemical connectivity and microstructure to molecular interactions, dynamics and observables. No property is supported merely because its name appears in a registry or a roadmap.
 
 The development core implements graph/geometry preparation, restricted sourced
-n-alkane parameter assignment and independent numerical engine parity. Bulk
+n-alkane parameter assignment, finite periodic Ewald references, bounded
+preparation pilots and independent numerical engine parity. Bulk
 polymer-property validation remains open. The original illustrative Fourier
 profiles remain analytical examples and must be kept distinct from the later
 attributed OPLS-AA numerical subset; neither is a new force-field fit.
+
+Periodic preparation must distinguish real/reciprocal/self electrostatics,
+exclusions and selected numerical truncations. A requested engine accuracy is
+not an independently established total-error bound. Likewise, native engine
+unit constants and canonical exact-SI conversions must remain explicit when
+they differ. A finite preparation trajectory is an execution record, not a
+certificate that phase, chain relaxation or any property has converged.
 
 ## Units and chemical identity
 
