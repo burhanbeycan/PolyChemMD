@@ -1,0 +1,289 @@
+{
+  "schema_version": "1",
+  "evidence_kind": "executed_geometry_construction_and_independent_audit",
+  "status": "passed",
+  "started_utc": "2026-11-06T22:13:56.661139+00:00",
+  "finished_utc": "2026-11-06T22:13:59.029898+00:00",
+  "elapsed_seconds": 2.368761297999299,
+  "software": {
+    "polychemmd": "0.3.0.dev0",
+    "python": "3.12.14",
+    "python_implementation": "CPython",
+    "rdkit": "2026.09.1"
+  },
+  "auditor_source_sha256": "f15f581ce9695b8c9979489876545fe60c4bbb513b4cc6758fbb753626cb765c",
+  "commands_actually_executed": [
+    {
+      "command": "build-conformer",
+      "returncode": 0,
+      "timeout_seconds": 45,
+      "elapsed_seconds": 0.5223625250000623,
+      "output_file": "conformer.json"
+    },
+    {
+      "command": "pack-cell",
+      "returncode": 0,
+      "timeout_seconds": 180,
+      "elapsed_seconds": 0.6993879099973128,
+      "output_file": "cell.json"
+    },
+    {
+      "command": "export-xyz",
+      "returncode": 0,
+      "timeout_seconds": 15,
+      "elapsed_seconds": 0.12059614700410748,
+      "output_file": "cell.xyz"
+    }
+  ],
+  "input_recipes": {
+    "conformer_pe.json": {
+      "path": "examples/conformer_pe.json",
+      "sha256": "09fcb22c646dfc617b7d774ce0f48c29c54e4362f48a88fb62e2e543d310428d",
+      "hash_basis": "exact checked-in recipe file bytes",
+      "actual_graph_sha256": "fae199196dde03103e7a578da4fdf1b94a56ab72b8f9dddc6fd57911ca90b6ec"
+    },
+    "packed_pe.json": {
+      "path": "examples/packed_pe.json",
+      "sha256": "aa5336eea5db98df8d78d156f4508c0d17565cc650a3ad55aabf3ad4b54ddbec",
+      "hash_basis": "exact checked-in recipe file bytes",
+      "actual_graph_sha256": "fae199196dde03103e7a578da4fdf1b94a56ab72b8f9dddc6fd57911ca90b6ec"
+    }
+  },
+  "conformer": {
+    "atom_count": 32,
+    "bond_count": 31,
+    "source_graph_sha256": "fae199196dde03103e7a578da4fdf1b94a56ab72b8f9dddc6fd57911ca90b6ec",
+    "canonical_payload_sha256": "db711064dd3c34a77efec95920b288e190d69ce439c931da69f936a6fc283757",
+    "validation": {
+      "all_atom_separation_floor_angstrom": 0.35,
+      "bond_distance_check": "0.55_to_1.65_times_sum_of_RDKit_covalent_radii",
+      "coordinates_finite": true,
+      "maximum_bond_length_angstrom": 1.5301711860120146,
+      "minimum_atom_separation_angstrom": 1.090074093867031,
+      "minimum_bond_length_angstrom": 1.090074093867031,
+      "stereochemistry": {
+        "method": "clear_atom_maps_and_stereo_on_probe_then_assign_from_3d",
+        "specified_double_bonds_checked": 0,
+        "specified_tetrahedral_centers_checked": 0,
+        "unspecified_stereochemistry": "not_assigned_to_source_graph"
+      }
+    }
+  },
+  "cell_canonical_payload_sha256": "49aac60ba7723303f2222e002753d80a18aa8e51839a9640ccc13a4bd6e4ec73",
+  "canonical_payload_hash_basis": "sorted-key compact finite JSON encoded as UTF-8",
+  "cell_independent_audit": {
+    "status": "passed",
+    "molecule_count": 4,
+    "atom_count": 128,
+    "bond_count": 124,
+    "source_graph_sha256": [
+      "fae199196dde03103e7a578da4fdf1b94a56ab72b8f9dddc6fd57911ca90b6ec",
+      "fae199196dde03103e7a578da4fdf1b94a56ab72b8f9dddc6fd57911ca90b6ec",
+      "fae199196dde03103e7a578da4fdf1b94a56ab72b8f9dddc6fd57911ca90b6ec",
+      "fae199196dde03103e7a578da4fdf1b94a56ab72b8f9dddc6fd57911ca90b6ec"
+    ],
+    "audit_methods": [
+      "independent 27-image intermolecular enumeration",
+      "all-atom pairs across 26 nonzero adjacent self images plus span bound",
+      "all intramolecular pair distances",
+      "proper orthonormal rotation matrices",
+      "source/global identity, lineage and bonds",
+      "image reconstruction and rigid-transform parity"
+    ],
+    "intermolecular_atom_pairs": 6144,
+    "intermolecular_image_distances_evaluated": 165888,
+    "self_image_distances_evaluated": 106496,
+    "intramolecular_pairs_checked": 1984,
+    "minimum_inter_molecular_distance_angstrom": 2.8037865758378584,
+    "minimum_nonzero_neighbour_self_image_distance_angstrom": 15.021275522115248,
+    "maximum_intramolecular_distance_error_angstrom": 5.329070518200751e-15,
+    "maximum_image_reconstruction_error_angstrom": 1.7763568394002505e-15,
+    "maximum_rigid_transform_error_angstrom": 0.0,
+    "maximum_rotation_orthogonality_error": 6.661338147750939e-16,
+    "construction_density_g_cm3": 0.0683655849860816,
+    "density_interpretation": "supplied atomic mass divided by prescribed cell volume; not predicted",
+    "tolerances_declared_before_audit": {
+      "distance_absolute_angstrom": 1e-09,
+      "relative": 1e-10,
+      "matrix_absolute_and_relative": 1e-12
+    }
+  },
+  "additional_finite_graph_coordinate_pilots": [
+    {
+      "name": "pe-dp20",
+      "recipe": {
+        "chain": {
+          "repeat_unit": {
+            "label": "pe-dp20 finite repeat graph",
+            "smiles": "[*:1]CC[*:2]",
+            "head_map": 1,
+            "tail_map": 2
+          },
+          "degree_of_polymerization": 20,
+          "head_cap": "H",
+          "tail_cap": "H"
+        },
+        "seed": 11001,
+        "max_iterations": 1000
+      },
+      "input_recipe_sha256": "41997f41f7df1047375189bcd2dcaac9ecd3eb64ad35c298282c234762e4c270",
+      "input_hash_basis": "canonical JSON of the expert-defined finite repeat-graph recipe",
+      "elapsed_seconds": 0.5518551039931481,
+      "molecular_formula": "C40H82",
+      "atom_count": 122,
+      "bond_count": 121,
+      "formal_charge": 0,
+      "source_graph_sha256": "87a57441a74106a98640d6fd88cfbf4f60108ab4ef8daf7e3c6b7c0e5082e59d",
+      "conformer_payload_sha256": "9f1bb1c6d1858beba88a645986bdb88bfa944bba38998a7dea8f5a5780214531",
+      "coordinate_validation": {
+        "all_atom_separation_floor_angstrom": 0.35,
+        "bond_distance_check": "0.55_to_1.65_times_sum_of_RDKit_covalent_radii",
+        "coordinates_finite": true,
+        "maximum_bond_length_angstrom": 1.5682735123971276,
+        "minimum_atom_separation_angstrom": 1.0776997770477652,
+        "minimum_bond_length_angstrom": 1.0776997770477652,
+        "stereochemistry": {
+          "method": "clear_atom_maps_and_stereo_on_probe_then_assign_from_3d",
+          "specified_double_bonds_checked": 0,
+          "specified_tetrahedral_centers_checked": 0,
+          "unspecified_stereochemistry": "not_assigned_to_source_graph"
+        }
+      },
+      "artifact_file": "pilot-pe-dp20.json",
+      "evidence_level": "generated_finite_molecular_geometry",
+      "tacticity": "not_specified_or_inferred",
+      "simulation_performed": false,
+      "material_validation": "not_performed"
+    },
+    {
+      "name": "pvdf-dp8",
+      "recipe": {
+        "chain": {
+          "repeat_unit": {
+            "label": "pvdf-dp8 finite repeat graph",
+            "smiles": "[*:1]CC(F)(F)[*:2]",
+            "head_map": 1,
+            "tail_map": 2
+          },
+          "degree_of_polymerization": 8,
+          "head_cap": "H",
+          "tail_cap": "H"
+        },
+        "seed": 11002,
+        "max_iterations": 1000
+      },
+      "input_recipe_sha256": "2cce5c9d53b960c64652e0538a683fb09c54c8accd3e5efca5719e90a60f7443",
+      "input_hash_basis": "canonical JSON of the expert-defined finite repeat-graph recipe",
+      "elapsed_seconds": 0.04387088200019207,
+      "molecular_formula": "C16H18F16",
+      "atom_count": 50,
+      "bond_count": 49,
+      "formal_charge": 0,
+      "source_graph_sha256": "06aedde0d0562ab9673d349af9c375e36cdfb051c7dcb7f7c316497974088ccf",
+      "conformer_payload_sha256": "0867026ed08d2df3efd517e31cee2196ed362b524277f5b85fa221a873e59eac",
+      "coordinate_validation": {
+        "all_atom_separation_floor_angstrom": 0.35,
+        "bond_distance_check": "0.55_to_1.65_times_sum_of_RDKit_covalent_radii",
+        "coordinates_finite": true,
+        "maximum_bond_length_angstrom": 1.5568519641294833,
+        "minimum_atom_separation_angstrom": 1.0856325480832563,
+        "minimum_bond_length_angstrom": 1.0856325480832563,
+        "stereochemistry": {
+          "method": "clear_atom_maps_and_stereo_on_probe_then_assign_from_3d",
+          "specified_double_bonds_checked": 0,
+          "specified_tetrahedral_centers_checked": 0,
+          "unspecified_stereochemistry": "not_assigned_to_source_graph"
+        }
+      },
+      "artifact_file": "pilot-pvdf-dp8.json",
+      "evidence_level": "generated_finite_molecular_geometry",
+      "tacticity": "not_specified_or_inferred",
+      "simulation_performed": false,
+      "material_validation": "not_performed"
+    },
+    {
+      "name": "ps-dp4",
+      "recipe": {
+        "chain": {
+          "repeat_unit": {
+            "label": "ps-dp4 finite repeat graph",
+            "smiles": "[*:1]CC(c1ccccc1)[*:2]",
+            "head_map": 1,
+            "tail_map": 2
+          },
+          "degree_of_polymerization": 4,
+          "head_cap": "H",
+          "tail_cap": "H"
+        },
+        "seed": 11003,
+        "max_iterations": 1000
+      },
+      "input_recipe_sha256": "df186de5dfa1108997cf43190687b8e141c8050e3388148b9a9656ea1f02ab9c",
+      "input_hash_basis": "canonical JSON of the expert-defined finite repeat-graph recipe",
+      "elapsed_seconds": 0.07766385700233513,
+      "molecular_formula": "C32H34",
+      "atom_count": 66,
+      "bond_count": 69,
+      "formal_charge": 0,
+      "source_graph_sha256": "2f9f4b244fd7623d5f86c1f61519cef8822b60ddf1fb250f275f0a242c6fde7b",
+      "conformer_payload_sha256": "4b1a6f107f3db5302b2960ae09aaf9d623dfdfd8728294d4d8c4e44727beee23",
+      "coordinate_validation": {
+        "all_atom_separation_floor_angstrom": 0.35,
+        "bond_distance_check": "0.55_to_1.65_times_sum_of_RDKit_covalent_radii",
+        "coordinates_finite": true,
+        "maximum_bond_length_angstrom": 1.5147770960576719,
+        "minimum_atom_separation_angstrom": 1.0593360414117352,
+        "minimum_bond_length_angstrom": 1.0593360414117352,
+        "stereochemistry": {
+          "method": "clear_atom_maps_and_stereo_on_probe_then_assign_from_3d",
+          "specified_double_bonds_checked": 0,
+          "specified_tetrahedral_centers_checked": 0,
+          "unspecified_stereochemistry": "not_assigned_to_source_graph"
+        }
+      },
+      "artifact_file": "pilot-ps-dp4.json",
+      "evidence_level": "generated_finite_molecular_geometry",
+      "tacticity": "not_specified_or_inferred",
+      "simulation_performed": false,
+      "material_validation": "not_performed"
+    }
+  ],
+  "artifact_files": {
+    "cell.json": {
+      "sha256": "b48400d7181a436c7e858d02f74491c45b71f3ca0aa2465351bc3add3c19dd41",
+      "bytes": 356150
+    },
+    "cell.xyz": {
+      "sha256": "f705ca16d44472c6bee0813d7c72f1c74303caabf1bd8b168e7906465b71464a",
+      "bytes": 7776
+    },
+    "conformer.json": {
+      "sha256": "f63fae3a907b6b49b6417e7c57ecd4c625fdba084a9bc8248a3ca0d66f8968cd",
+      "bytes": 33631
+    },
+    "pilot-pe-dp20.json": {
+      "sha256": "2c6aea3a0a4476ed943db66a5de32bb79851f265bc50a9973626bfae03da6516",
+      "bytes": 122242
+    },
+    "pilot-ps-dp4.json": {
+      "sha256": "675759c8b2a0e3326801a9c6acf2a53e47f038bb45a9f5ceb49a5e3c4f1302a6",
+      "bytes": 67325
+    },
+    "pilot-pvdf-dp8.json": {
+      "sha256": "1eb74e9590286258854b2054de9e3bdae3092852d6d34d2c2cd1902ee3a8b2c7",
+      "bytes": 50771
+    }
+  },
+  "simulation_performed": false,
+  "qm_calculation_performed": false,
+  "production_force_field_assigned": false,
+  "equilibrium_status": "not_assessed",
+  "material_property_validation": "not_performed",
+  "scientific_limits": [
+    "Actual finite molecular coordinates and a geometric starting cell were constructed; no MD/QM ran.",
+    "All reported density is prescribed-volume construction arithmetic, not a physical-property prediction.",
+    "Conformer generation is not an energy-ranked search or a validated polymer conformational ensemble.",
+    "PE, PVDF and PS pilots are H-capped finite repeat graphs; tacticity is not specified or inferred.",
+    "XYZ is a viewer export; topology, images and provenance remain in the JSON companions."
+  ]
+}

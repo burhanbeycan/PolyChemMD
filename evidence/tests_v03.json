@@ -1,0 +1,27 @@
+{
+  "schema_version": "0.1",
+  "release": "0.3.0.dev0",
+  "evidence_kind": "executed_local_unit_and_contract_tests",
+  "started_utc": "2026-11-06T22:11:06.532181+00:00",
+  "completed_utc": "2026-11-06T22:11:09.488151+00:00",
+  "command_equivalent": "python -m unittest discover -s tests -v",
+  "invocation_detail": "standard unittest discovery and TextTestRunner API; full log saved locally",
+  "python": "3.12.14",
+  "platform": "Linux",
+  "optional_packages": {
+    "rdkit": "2026.9.1",
+    "lammps": "2025.7.22.4.0",
+    "mpich": "5.0.2"
+  },
+  "tests_run": 188,
+  "tests_skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "elapsed_seconds": 2.960202,
+  "log_sha256": "18aa92228cab6fca3ac6d8808506e73b5ac7eed60f786dc61ec929d0fd489b97",
+  "scientific_limits": [
+    "Geometry, analytical and process tests do not validate a production force field or polymer material property.",
+    "No new production MD or QM campaign was performed for this milestone."
+  ]
+}

@@ -1,6 +1,6 @@
 # PolyChemMD: Codex'te geliştirmeye başlama
 
-Bu depo, bağımsız bir genel polimer hesaplama platformunun geliştirme çekirdeğidir. Sürüm 0.2; kayıt ve tekrar birimi doğrulama, desteklenen lineer moleküler grafik oluşturma, torsiyon dönüşümleri, parametre kapsam denetimi, LAMMPS süreç bağlantısı ve yoğunluk tanı analizlerini içerir. Koordinat/hücre hazırlama, üretim parametrelemesi ve doğrulanmış polimer MD/QM özellikleri henüz tamamlanmış değildir.
+Bu depo, bağımsız bir genel polimer hesaplama platformunun geliştirme çekirdeğidir. Sürüm 0.3; kayıt ve tekrar birimi doğrulama, lineer grafik oluşturma, tohum kontrollü üç boyutlu koordinatlar, periyodik rijit hücre paketleme, XYZ görüntüleme çıktıları, torsiyon dönüşümleri, parametre kapsam denetimi, LAMMPS süreç bağlantısı ve yoğunluk tanı analizlerini içerir. Üretim parametrelemesi, gevşetme/dengeleme ve doğrulanmış polimer MD/QM özellikleri henüz tamamlanmış değildir.
 
 ## 1. Mevcut depoyla çalışın
 
@@ -66,6 +66,17 @@ ile isteğe bağlı RDKit bağımlılığını kurun; ardından
 `polychemmd build-linear examples/linear_pe.json` çalıştırın. Bu komut bir
 moleküler grafik üretir; üç boyutlu bir polimer veya simülasyon hücresi üretmez.
 
+Koordinat ve hücre hazırlama komutları ayrıdır:
+
+```bash
+polychemmd build-conformer examples/conformer_pe.json --output artifacts/pe-conformer.json
+polychemmd pack-cell examples/packed_pe.json --output artifacts/pe-cell.json
+polychemmd export-xyz artifacts/pe-cell.json --output artifacts/pe-cell.xyz
+```
+
+Bu yapılar başlangıç geometrileridir; üretim kuvvet alanı atanmış veya
+dengelenmiş bir polimer fazı değildir. Hücre yoğunluğu seçilen hacimden hesaplanır.
+
 Kurulum ortamı ağ erişimine ihtiyaç duyuyorsa kurulum adımında uygun bağımlılıklar sağlanmalıdır. Derleme bağımlılıkları zaten kurulu olan ağsız bir geliştirme ortamında şu kurulum kullanılabilir:
 
 ```bash
@@ -78,7 +89,7 @@ Ağsız test koşusunda yeni paket indirmeye bağımlı olmayın. README'deki ko
 
 ## 5. İşleri küçük ve ölçülebilir görevlere bölün
 
-`docs/TASKS.md` güncel durumun kaynağıdır. TASK-001–005 dar ve açıkça belirtilmiş kapsamlarıyla uygulanmıştır. Sonraki sıra TASK-006A koordinat/hücre hazırlama, TASK-006B gerçek üretim parametrelemesi ve TASK-006C uçtan uca polimer yoğunluğu doğrulamasıdır. Bütün özellik kataloğunu tek görevde istemeyin.
+`docs/TASKS.md` güncel durumun kaynağıdır. TASK-001–005 ve TASK-006A dar ve açıkça belirtilmiş kapsamlarıyla uygulanmıştır. Sonraki sıra TASK-006B gerçek üretim parametrelemesi ve TASK-006C uçtan uca polimer yoğunluğu doğrulamasıdır. Bütün özellik kataloğunu tek görevde istemeyin.
 
 Her görevde şunlar açık olsun:
 
@@ -97,10 +108,10 @@ PolyChemMD deposunda AGENTS.md, README.md, docs/ARCHITECTURE.md,
 docs/SCIENTIFIC_SPEC.md ve docs/TASKS.md belgelerini oku.
 
 Önce mevcut şema ve çalışan çekirdeği incele; uygulanmış özelliklerle
-planlananları ayır. TASK-006A kapsamında desteklenen lineer grafikler için
-koordinat oluşturma ve hücre paketleme katmanını bağımsız geliştir.
-Atom kimliklerini, bağ yapısını, yükü ve stereokimyayı koru; çakışma ve
-periyodik hücre kontrollerini ekle. Rastgele tohumları kaydet.
+planlananları ayır. TASK-006B kapsamında tek ve açıkça tanımlı bir kimya
+için kaynakları doğrulanmış üretim parametrelemesini geliştir. Kimyasal
+atom tipleme, kısmi yük ataması, bağ/açı/torsiyonlar, dışlamalar ve 1–4
+işlemlerini açıkça kaydet. Atom kimliklerini ve bağ yapısını koru.
 
 RadonPy veya başka bir polimer paketinin kaynak kodunu kopyalama,
 vendor etme veya çalışma zamanı bağımlılığı yapma. Genel kütüphaneler
@@ -110,15 +121,16 @@ Serbest monomerden polimer bağını oluşturan reaksiyon dönüşümü ile zate
 tanımlanmış tekrar birimlerini bağlamayı ayrı tut. Atom kimlikleri,
 bağ derecesi, formal yük, uç gruplar ve stereokimya korunmalı.
 
-Mevcut tek/iki/çok birimli bağlantı ve atom sayısı testlerini koru.
-Bağımsız geometri kontrolleri, yeniden üretilebilirlik ve olumsuz
-durum testleri ekle. Opsiyonel RDKit desteği hafif çekirdeğin içe
-aktarılmasını bozmamalı. Analitik parametre demosunu üretim kuvvet
-alanı olarak kullanma; gerçek parametreleme TASK-006B'nin konusudur.
+Mevcut grafik, geometri ve paketleme testlerini koru. Parametrelerin
+birimlerini ve fonksiyonel biçimlerini birincil kaynaklardan doğrula;
+atanamayan kimyayı açık hatayla durdur. Analitik parametre demosunu
+üretim kuvvet alanı olarak kullanma. Enerji ve kuvvetleri bağımsız
+analitik örneklerle ve gerçek LAMMPS tek-nokta hesaplarıyla karşılaştır.
+Kısa kontrolleri üretim polimer yoğunluğu doğrulaması sayma.
 
 İlgili testleri gerçekten çalıştır ve komutları/sonuçları bildir.
-Bu görevde MD/QM çalıştırılmış gibi davranma; koordinat oluşturma veya
-fiziksel özellik doğruluğunu kanıtlanmış sayma. Değişiklikleri,
+Yalnız gerçekten çalıştırılan motor hesaplarını bildir; üretim MD/QM
+ve fiziksel özellik doğruluğunu kanıtlanmış sayma. Değişiklikleri,
 doğrulamayı, sınırlamaları ve sonraki tek görevi raporla.
 ```
 
