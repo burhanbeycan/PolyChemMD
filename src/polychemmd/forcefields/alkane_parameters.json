@@ -1,0 +1,307 @@
+{
+  "schema_version": "1",
+  "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+  "scope": "Neutral, all-explicit, isotope-unlabelled linear alkanes with at least two carbons; no branches, rings, unsaturation, heteroatoms or ions.",
+  "source_snapshot": {
+    "repository": "https://github.com/gromacs/gromacs",
+    "tag": "v2025.3",
+    "commit": "820db9e499e4edc7f0dc734e6baeb0e9c3f87859",
+    "files": {
+      "ffbonded.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp",
+        "sha256": "145e6924f52fae7e93108fa3d674f31a53aea10c80b13dd89abf0b011adfd4fa",
+        "git_blob_sha": "944e9c82913333def13ab6b17a7bb5d8248016fc",
+        "bytes": 209608
+      },
+      "forcefield.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp",
+        "sha256": "6eb8f0d08684e1ac6f525bb323eae75ed197b2980ddfde975a24ca1a8c931d06",
+        "git_blob_sha": "e69c4728d7117662a32fa392409e751ea6caf03d",
+        "bytes": 862
+      },
+      "ffnonbonded.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp",
+        "sha256": "fdf072dac9900c039b58e21323ce621b2112dc86c46a4b5e49e1398ae5d3b9f0",
+        "git_blob_sha": "20e5b31d9562f4c368c3b9ece318ed5892712e5b",
+        "bytes": 62929
+      }
+    },
+    "interpretation": "Selected numerical CT/HC facts transcribed and converted independently; no upstream workflow source is vendored.",
+    "parameter_family": "GROMACS v2025.3 distributed OPLS-AA alkane subset, including November 1999 HC-CT-CT-HC update",
+    "paper": "https://doi.org/10.1021/ja9621760",
+    "license_context": "The upstream repository provides LGPL-2.1 text. These selected numerical facts have attribution; this is not a license statement covering every OPLS variant."
+  },
+  "charge_assignments": {
+    "opls_135": -0.18,
+    "opls_136": -0.12,
+    "opls_140": 0.06
+  },
+  "parameter_set": {
+    "schema_version": "0.1",
+    "name": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "units": {
+      "energy": "kJ/mol",
+      "length": "angstrom",
+      "angle": "radian",
+      "mass": "g/mol",
+      "charge": "e"
+    },
+    "source": {
+      "kind": "literature",
+      "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp ; selected bonded/nonbonded numerical records in this frozen upstream snapshot."
+    },
+    "nonbonded": {
+      "mixing_rule": "geometric",
+      "excluded_bonded_distances": [
+        1,
+        2
+      ],
+      "one_four": {
+        "lj_scale": 0.5,
+        "coulomb_scale": 0.5,
+        "handling": "scaled_pair_once"
+      }
+    },
+    "parameters": {
+      "atoms": [
+        {
+          "type_id": "opls_135",
+          "form": "lj12_6",
+          "values": {
+            "mass_g_mol": 12.011,
+            "epsilon_kj_mol": 0.276144,
+            "sigma_angstrom": 3.5
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp#L145"
+          }
+        },
+        {
+          "type_id": "opls_136",
+          "form": "lj12_6",
+          "values": {
+            "mass_g_mol": 12.011,
+            "epsilon_kj_mol": 0.276144,
+            "sigma_angstrom": 3.5
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp#L146"
+          }
+        },
+        {
+          "type_id": "opls_140",
+          "form": "lj12_6",
+          "values": {
+            "mass_g_mol": 1.008,
+            "epsilon_kj_mol": 0.12552,
+            "sigma_angstrom": 2.5
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp#L150"
+          }
+        }
+      ],
+      "bonds": [
+        {
+          "type_id": "bond_CC",
+          "form": "harmonic_k_delta_r_squared",
+          "values": {
+            "k_kj_mol_angstrom2": 1121.312,
+            "r0_angstrom": 1.5290000000000001
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L192"
+          }
+        },
+        {
+          "type_id": "bond_CH",
+          "form": "harmonic_k_delta_r_squared",
+          "values": {
+            "k_kj_mol_angstrom2": 1422.56,
+            "r0_angstrom": 1.09
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L196"
+          }
+        }
+      ],
+      "angles": [
+        {
+          "type_id": "angle_CCC",
+          "form": "harmonic_k_delta_theta_squared",
+          "values": {
+            "k_kj_mol_rad2": 244.1365,
+            "theta0_rad": 1.9669860669976094
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L873"
+          }
+        },
+        {
+          "type_id": "angle_CCH",
+          "form": "harmonic_k_delta_theta_squared",
+          "values": {
+            "k_kj_mol_rad2": 156.9,
+            "theta0_rad": 1.932079481957723
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L881"
+          }
+        },
+        {
+          "type_id": "angle_HCH",
+          "form": "harmonic_k_delta_theta_squared",
+          "values": {
+            "k_kj_mol_rad2": 138.072,
+            "theta0_rad": 1.8814649336498872
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L929"
+          }
+        }
+      ],
+      "dihedrals": [
+        {
+          "type_id": "torsion_CCCC",
+          "form": "fourier_sum_k_1_plus_cos",
+          "values": {
+            "terms": [
+              {
+                "k_kj_mol": 2.7196000000000002,
+                "periodicity": 1,
+                "phase_rad": 0.0
+              },
+              {
+                "k_kj_mol": -0.10460000000000001,
+                "periodicity": 2,
+                "phase_rad": 3.141592653589793
+              },
+              {
+                "k_kj_mol": 0.41840000000000005,
+                "periodicity": 3,
+                "phase_rad": 0.0
+              },
+              {
+                "k_kj_mol": 0.0,
+                "periodicity": 4,
+                "phase_rad": 3.141592653589793
+              }
+            ]
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L1596"
+          }
+        },
+        {
+          "type_id": "torsion_CCCH",
+          "form": "fourier_sum_k_1_plus_cos",
+          "values": {
+            "terms": [
+              {
+                "k_kj_mol": 0.0,
+                "periodicity": 1,
+                "phase_rad": 0.0
+              },
+              {
+                "k_kj_mol": 0.0,
+                "periodicity": 2,
+                "phase_rad": 3.141592653589793
+              },
+              {
+                "k_kj_mol": 0.6276,
+                "periodicity": 3,
+                "phase_rad": 0.0
+              },
+              {
+                "k_kj_mol": 0.0,
+                "periodicity": 4,
+                "phase_rad": 3.141592653589793
+              }
+            ]
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L1599"
+          }
+        },
+        {
+          "type_id": "torsion_HCCH",
+          "form": "fourier_sum_k_1_plus_cos",
+          "values": {
+            "terms": [
+              {
+                "k_kj_mol": 0.0,
+                "periodicity": 1,
+                "phase_rad": 0.0
+              },
+              {
+                "k_kj_mol": 0.0,
+                "periodicity": 2,
+                "phase_rad": 3.141592653589793
+              },
+              {
+                "k_kj_mol": 0.6276,
+                "periodicity": 3,
+                "phase_rad": 0.0
+              },
+              {
+                "k_kj_mol": 0.0,
+                "periodicity": 4,
+                "phase_rad": 3.141592653589793
+              }
+            ]
+          },
+          "source": {
+            "kind": "literature",
+            "reference": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp#L1824"
+          }
+        }
+      ],
+      "impropers": []
+    }
+  },
+  "source_conventions": {
+    "bond": "GROMACS k/2*(r_nm-r0_nm)^2; canonical no-half K=k/(2*100), r0_A=10*r0_nm",
+    "angle": "GROMACS k/2*(theta_rad-theta0_rad)^2; preserve exact rounded upstream k, canonical K=k/2",
+    "torsion": "Upstream Ryckaert-Bellemans uses psi=phi-pi; retained OPLS V values map K_n=4.184*V_n/2, phase 0 for odd n and pi for even n. Includes every four-atom path.",
+    "torsion_source_rb_kj_mol": {
+      "torsion_CCCC": [
+        2.9288,
+        -1.4644,
+        0.2092,
+        -1.6736,
+        0,
+        0
+      ],
+      "torsion_CCCH": [
+        0.6276,
+        1.8828,
+        0,
+        -2.5104,
+        0,
+        0
+      ],
+      "torsion_HCCH": [
+        0.6276,
+        1.8828,
+        0,
+        -2.5104,
+        0,
+        0
+      ]
+    },
+    "nonbonded": "Geometric sigma and epsilon; topological distances 1/2 excluded, distance3 LJ and Coulomb scaled by 0.5 once. OPLS RB terms retain their scaled 1-4 pairs.",
+    "impropers": "None for supported saturated acyclic alkane environments; upstream planarity/chiral conventions at ffbonded.itp lines2547-2549.",
+    "charge_model": "Empirical fixed OPLS-AA type charges, not RESP/ESP/DFT-fitted charges calculated here."
+  },
+  "physical_validation": "Not established by parameter transcription, typing or engine parity; no polymer bulk density/transport prediction claimed."
+}
