@@ -1,0 +1,674 @@
+{
+  "schema_version": "1",
+  "evidence_kind": "executed_periodic_ewald_parity_and_bounded_preparation_audit",
+  "status": "passed",
+  "started_utc": "2026-11-06T23:21:41.652608+00:00",
+  "finished_utc": "2026-11-06T23:22:06.838293+00:00",
+  "elapsed_seconds": 25.185704013005306,
+  "command_template": "python scripts/verify_periodic_v05.py --output-dir NEW_DIRECTORY [--executable LAMMPS] [--skip-protocol]",
+  "software": {
+    "polychemmd": "0.5.0.dev0",
+    "python": "3.12.14",
+    "python_implementation": "CPython"
+  },
+  "runtime_environment": {
+    "OMP_NUM_THREADS": "1",
+    "UCX_TLS": "self"
+  },
+  "input_recipe": {
+    "path": "examples/periodic_validation.json",
+    "sha256": "040478fbd097717f9f38595daf9024ea44d2048bca719dcaaa27654b2d67287d",
+    "record": {
+      "schema_version": "1",
+      "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+      "source_cell_path": "evidence/geometry_v03/cell.json",
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16,
+      "energy_abs_tol_kj_mol": 0.0001,
+      "force_abs_tol_kj_mol_angstrom": 0.0001,
+      "timeout_seconds_per_engine": 60.0,
+      "boundary_translation_angstrom": [
+        17.0,
+        13.0,
+        11.0
+      ],
+      "protocol": {
+        "temperature_k": 300.0,
+        "pressure_bar": 1.0,
+        "timestep_fs": 0.25,
+        "minimize_max_iterations": 200,
+        "minimize_max_evaluations": 1000,
+        "nvt_steps": 100,
+        "npt_steps": 100,
+        "velocity_seed": 49217,
+        "timeout_seconds": 60.0,
+        "cutoff_angstrom": 10.0,
+        "ewald_alpha_per_angstrom": 0.3,
+        "reciprocal_nmax": 16
+      },
+      "evidence_scope": "Periodic parameter and Ewald numerical parity plus a bounded 200-step preparation pilot. Translated cells are two representations of one state, not independent replicates. No polymer equilibrium or density prediction validation."
+    }
+  },
+  "original_cell_input": {
+    "path": "evidence/geometry_v03/cell.json",
+    "sha256": "b48400d7181a436c7e858d02f74491c45b71f3ca0aa2465351bc3add3c19dd41"
+  },
+  "source_module_hashes": {
+    "src/polychemmd/__init__.py": {
+      "sha256": "9d24a9b949a0272b492f9d1b8be10fc03d5a7ef851b1705d7ade80065dbca6d7"
+    },
+    "src/polychemmd/geometry.py": {
+      "sha256": "83623358a5f29fd453625adec2416d053a6ed4d5768a896a1c738ad5d12df4e8"
+    },
+    "src/polychemmd/provenance.py": {
+      "sha256": "2b27ea3cb03cbd4f5f0845bac262a2720293c3a58758d4e8ce6401427cb44d45"
+    },
+    "src/polychemmd/forcefields/alkane_data.py": {
+      "sha256": "79b32ed54a41f58cc6a61d9faa0448e87f9bbb6df00af34d2de30e647b951550"
+    },
+    "src/polychemmd/forcefields/alkanes.py": {
+      "sha256": "d77177b8a7565f713d4b55afb2cb25eb81f5b030ebc51f8ea05847dbae0f9b3a"
+    },
+    "src/polychemmd/forcefields/contracts.py": {
+      "sha256": "79504f525f95cf2a7277ae9dde63bf2bff3643fbe90ea854296c5ea61fd38bef"
+    },
+    "src/polychemmd/forcefields/reference.py": {
+      "sha256": "7ce9e2c1912907f1854aadae23a52eac8f4d166df5ffe78af20e37dc1898d1dc"
+    },
+    "src/polychemmd/forcefields/periodic.py": {
+      "sha256": "95cdf8459fe33ab23f7234f632dd60fa5ae68c24bc88d5e59e1aa1c8f33ff3e2"
+    },
+    "src/polychemmd/forcefields/periodic_reference.py": {
+      "sha256": "7380c10a06290f6eef924f0d07076fbbd79cbff52e7cf13a95d00202fde640e8"
+    },
+    "src/polychemmd/descriptors/torsion.py": {
+      "sha256": "6651e247d16ef8879b25ae3f010eea9204ea3adfb3070bab97edfabf8be7c956"
+    },
+    "src/polychemmd/engines/lammps.py": {
+      "sha256": "13b06cb0f6252a338a24497381b7c974184e82f39589b3c5dd926266fbb092b3"
+    },
+    "src/polychemmd/engines/alkane.py": {
+      "sha256": "9595c8e6ac6f1a38d369b8850ebe80a146d7a44413b3236e0f4f79a3cfa16f47"
+    },
+    "src/polychemmd/engines/periodic_alkane.py": {
+      "sha256": "18adc1e90ee7c6a4b784f1c8106cd2fa7d475a9e74a52bff6c91a4a73ea075b4"
+    },
+    "src/polychemmd/protocols/alkane.py": {
+      "sha256": "bd604a85bc6d4e21adcca2555c48438d5afb5784d4fa30f37010beca3bb46ebb"
+    },
+    "scripts/verify_periodic_v05.py": {
+      "sha256": "eb9b2bd3b436fd1aba49226b2c001e207c09f943cadeba71e2f5a26d72453b07"
+    }
+  },
+  "parameter_json_sha256": "3c4cb7a13d4bf88165bda3004eebb4adf0cf570239584c687f42b6f3a6b014ec",
+  "source_snapshot": {
+    "repository": "https://github.com/gromacs/gromacs",
+    "tag": "v2025.3",
+    "commit": "820db9e499e4edc7f0dc734e6baeb0e9c3f87859",
+    "files": {
+      "ffbonded.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp",
+        "sha256": "145e6924f52fae7e93108fa3d674f31a53aea10c80b13dd89abf0b011adfd4fa",
+        "git_blob_sha": "944e9c82913333def13ab6b17a7bb5d8248016fc",
+        "bytes": 209608
+      },
+      "forcefield.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp",
+        "sha256": "6eb8f0d08684e1ac6f525bb323eae75ed197b2980ddfde975a24ca1a8c931d06",
+        "git_blob_sha": "e69c4728d7117662a32fa392409e751ea6caf03d",
+        "bytes": 862
+      },
+      "ffnonbonded.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp",
+        "sha256": "fdf072dac9900c039b58e21323ce621b2112dc86c46a4b5e49e1398ae5d3b9f0",
+        "git_blob_sha": "20e5b31d9562f4c368c3b9ece318ed5892712e5b",
+        "bytes": 62929
+      }
+    },
+    "interpretation": "Selected numerical CT/HC facts transcribed and converted independently; no upstream workflow source is vendored.",
+    "parameter_family": "GROMACS v2025.3 distributed OPLS-AA alkane subset, including November 1999 HC-CT-CT-HC update",
+    "paper": "https://doi.org/10.1021/ja9621760",
+    "license_context": "The upstream repository provides LGPL-2.1 text. These selected numerical facts have attribution; this is not a license statement covering every OPLS variant."
+  },
+  "translation_case": {
+    "method": "global translation with whole-molecule modulo-centroid image selection",
+    "source_cell_canonical_sha256": "49aac60ba7723303f2222e002753d80a18aa8e51839a9640ccc13a4bd6e4ec73",
+    "global_translation_angstrom": [
+      17.0,
+      13.0,
+      11.0
+    ],
+    "whole_molecule_translations_angstrom": {
+      "0": [
+        -7.0,
+        -11.000000000000004,
+        11.0
+      ],
+      "1": [
+        17.0,
+        13.0,
+        -13.0
+      ],
+      "2": [
+        -7.0,
+        -11.0,
+        -12.999999999999996
+      ],
+      "3": [
+        -7.0,
+        13.0,
+        11.0
+      ]
+    },
+    "physical_interpretation": "same periodic configuration; not an independent sampling replicate",
+    "bonds_crossing_cell_faces": 10,
+    "software": {
+      "polychemmd": "0.5.0.dev0",
+      "python": "3.12.14"
+    }
+  },
+  "translation_invariance": {
+    "status": "passed",
+    "interpretation": "two representations of the same physical cell, not independent samples",
+    "predeclared_energy_abs_tolerance_kj_mol": 1e-07,
+    "predeclared_force_abs_tolerance_kj_mol_angstrom": 1e-07,
+    "checks": {
+      "reference": {
+        "energy_component_abs_errors_kj_mol": {
+          "bond": 9.521272659185342e-13,
+          "angle": 3.979039320256561e-13,
+          "dihedral": 2.842170943040401e-14,
+          "lj": 6.821210263296962e-13,
+          "coulomb_realspace": 5.684341886080802e-14,
+          "coulomb_kspace": 0.0,
+          "total": 2.1600499167107046e-12
+        },
+        "max_force_component_abs_error_kj_mol_angstrom": 1.2143175354140112e-11
+      },
+      "engine": {
+        "energy_component_abs_errors_kj_mol": {
+          "bond": 9.663381206337363e-13,
+          "angle": 4.547473508864641e-13,
+          "dihedral": 2.842170943040401e-14,
+          "lj": 5.684341886080802e-14,
+          "coulomb_realspace": 5.684341886080802e-14,
+          "coulomb_kspace": 0.0,
+          "total": 1.3642420526593924e-12
+        },
+        "max_force_component_abs_error_kj_mol_angstrom": 1.666045079673495e-11
+      }
+    }
+  },
+  "predeclared_independent_tolerances": {
+    "component_sum_kj_mol": 1e-08,
+    "net_force_norm_kj_mol_angstrom": 1e-07,
+    "translation_energy_abs_kj_mol": 1e-07,
+    "translation_force_component_abs_kj_mol_angstrom": 1e-07
+  },
+  "cases": [
+    {
+      "case_name": "original",
+      "status": "passed",
+      "topology_audit": {
+        "status": "passed",
+        "atom_count": 128,
+        "molecule_count": 4,
+        "interaction_counts": {
+          "angles": 240,
+          "bonds": 124,
+          "dihedrals": 324,
+          "impropers": 0
+        },
+        "atom_type_counts": {
+          "opls_135": 8,
+          "opls_136": 32,
+          "opls_140": 88
+        },
+        "pair_counts": {
+          "excluded": 364,
+          "scaled_14": 324,
+          "intramolecular_unscaled": 1296,
+          "intermolecular": 6144
+        },
+        "total_partial_charge_e": 0.0,
+        "maximum_image_reconstruction_error_angstrom": 1.7763568394002505e-15,
+        "independent_pair_distance_method": "breadth-first search of global covalent graph"
+      },
+      "cell_canonical_sha256": "49aac60ba7723303f2222e002753d80a18aa8e51839a9640ccc13a4bd6e4ec73",
+      "assignment_canonical_sha256": "07cf4aff9366ad00b4da1972ded417c7cd283a5a8037e9cfd129218a0bfaa307",
+      "energy_component_abs_errors_kj_mol": {
+        "bond": 4.121147867408581e-13,
+        "angle": 2.5579538487363607e-13,
+        "dihedral": 2.842170943040401e-14,
+        "lj": 4.831690603168681e-13,
+        "coulomb_realspace": 6.968188733935676e-05,
+        "coulomb_kspace": 3.979039320256561e-13,
+        "total": 6.96818865435489e-05
+      },
+      "maximum_energy_component_abs_error_kj_mol": 6.968188733935676e-05,
+      "max_force_component_abs_error_kj_mol_angstrom": 2.590144881153833e-05,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "independent_balance_checks": {
+        "reference": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            1.4252488078625447e-13,
+            -1.284528039491306e-13,
+            3.6887159993170826e-13
+          ],
+          "net_force_norm_kj_mol_angstrom": 4.157880730873699e-13,
+          "net_torque_test": "not_applied; a fixed periodic lattice does not have continuous rotation invariance"
+        },
+        "engine": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            -1.2907036550657836e-13,
+            -2.1305179842556754e-13,
+            -2.6567636979279996e-13
+          ],
+          "net_force_norm_kj_mol_angstrom": 3.641897328737467e-13,
+          "net_torque_test": "not_applied; a fixed periodic lattice does not have continuous rotation invariance"
+        }
+      },
+      "artifact_files": {
+        "assignment_summary.json": {
+          "sha256": "0fe65d510f550f78e45da21c697cbc18c6f1b81499b773eb175accf9eb083f02",
+          "bytes": 38629
+        },
+        "cell.json": {
+          "sha256": "611839b45bfd95585e253f5b6c6c2f1c586f482ef133fed099f65770d2a15f96",
+          "bytes": 356156
+        },
+        "forces.dump": {
+          "sha256": "353dbef23d7152098f19584267b6ed9bb854e3e04511d9ac8fc29248ef37c903",
+          "bytes": 16489
+        },
+        "input.lammps": {
+          "sha256": "a8352cb69c5f1dc3b641d84fd279841999d8762b4c01fe691897033bb38683a1",
+          "bytes": 732
+        },
+        "log.lammps": {
+          "sha256": "ceaa2061420af5af366c3ad6693462188f80d7f5d0326a86cb57f35356359020",
+          "bytes": 4163
+        },
+        "parity.json": {
+          "sha256": "ce8de19cb96e5add4ff48b664aeb9da7d6e3d086ce6d0a6dd11aa8a387215793",
+          "bytes": 84852
+        },
+        "system.data": {
+          "sha256": "977b46d38455bb11197dbd2b8c876fb95724e5d0c877711e7c8c94be70fae876",
+          "bytes": 22853
+        }
+      }
+    },
+    {
+      "case_name": "boundary_translated",
+      "status": "passed",
+      "topology_audit": {
+        "status": "passed",
+        "atom_count": 128,
+        "molecule_count": 4,
+        "interaction_counts": {
+          "angles": 240,
+          "bonds": 124,
+          "dihedrals": 324,
+          "impropers": 0
+        },
+        "atom_type_counts": {
+          "opls_135": 8,
+          "opls_136": 32,
+          "opls_140": 88
+        },
+        "pair_counts": {
+          "excluded": 364,
+          "scaled_14": 324,
+          "intramolecular_unscaled": 1296,
+          "intermolecular": 6144
+        },
+        "total_partial_charge_e": 0.0,
+        "maximum_image_reconstruction_error_angstrom": 1.7763568394002505e-15,
+        "independent_pair_distance_method": "breadth-first search of global covalent graph"
+      },
+      "cell_canonical_sha256": "0d72b67d8b2524757cd98d5ed5f8798d239190d954f441600407f9c7fe0d4d05",
+      "assignment_canonical_sha256": "2c984d6c57834d2134cd8b87f8f9ee4e1bb3b709c534971d9597bc96cb1bdb38",
+      "energy_component_abs_errors_kj_mol": {
+        "bond": 4.263256414560601e-13,
+        "angle": 3.126388037344441e-13,
+        "dihedral": 2.842170943040401e-14,
+        "lj": 2.5579538487363607e-13,
+        "coulomb_realspace": 6.96818874530436e-05,
+        "coulomb_kspace": 3.979039320256561e-13,
+        "total": 6.968188733935676e-05
+      },
+      "maximum_energy_component_abs_error_kj_mol": 6.96818874530436e-05,
+      "max_force_component_abs_error_kj_mol_angstrom": 2.5901448821308293e-05,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "independent_balance_checks": {
+        "reference": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            7.99638133486269e-14,
+            -4.440892098500626e-14,
+            3.33510996597397e-13
+          ],
+          "net_force_norm_kj_mol_angstrom": 3.4582647174514495e-13,
+          "net_torque_test": "not_applied; a fixed periodic lattice does not have continuous rotation invariance"
+        },
+        "engine": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            1.4641066137244252e-14,
+            1.120215031846783e-13,
+            6.55586696041155e-14
+          ],
+          "net_force_norm_kj_mol_angstrom": 1.3061821141652348e-13,
+          "net_torque_test": "not_applied; a fixed periodic lattice does not have continuous rotation invariance"
+        }
+      },
+      "artifact_files": {
+        "assignment_summary.json": {
+          "sha256": "8f6cc5841533a96d1ea8ccb28325337c7587f3beb2afb45016aa31cc534d0a0b",
+          "bytes": 38629
+        },
+        "cell.json": {
+          "sha256": "7fd167efe0c6d3633630a38a8ff831d922b7b618108b624e37a6b718b65c64a3",
+          "bytes": 357123
+        },
+        "forces.dump": {
+          "sha256": "7b377ad9a17501e2b940692fe44ba0dd18926ca1294aa869bd5a2dabca9b3d0f",
+          "bytes": 16455
+        },
+        "input.lammps": {
+          "sha256": "a8352cb69c5f1dc3b641d84fd279841999d8762b4c01fe691897033bb38683a1",
+          "bytes": 732
+        },
+        "log.lammps": {
+          "sha256": "d1cfbf91eda303f60115e9b9982d6e6845c5476d25875bf7fb9c4a79f29e4b5a",
+          "bytes": 4165
+        },
+        "parity.json": {
+          "sha256": "bb88823086d18eda017ab3a22548885bf71df571b3b10fdf91d78f8b2768d7ab",
+          "bytes": 84800
+        },
+        "system.data": {
+          "sha256": "3f5317ab37b463c3c16dfe85bd9dabfb895e578e0e2f51f99f7b409ab066f73b",
+          "bytes": 22824
+        }
+      }
+    }
+  ],
+  "bounded_protocol": {
+    "status": "completed_preparation_pilot",
+    "specification": {
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "minimize_max_iterations": 200,
+      "minimize_max_evaluations": 1000,
+      "nvt_steps": 100,
+      "npt_steps": 100,
+      "velocity_seed": 49217,
+      "timeout_seconds": 60.0,
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "stages": {
+      "minimization": {
+        "status": "budget_exhausted",
+        "stopping_criterion": "max iterations",
+        "iterations": 200,
+        "force_evaluations": 400,
+        "force_tolerance_met": false
+      },
+      "nvt": {
+        "status": "executed",
+        "steps": 100,
+        "elapsed_time_fs": 25.0,
+        "thermo_rows": [
+          {
+            "step": 0,
+            "temperature_k": 299.99999999999994,
+            "pressure_bar": 360.98225736663494,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 10,
+            "temperature_k": 185.26383900341838,
+            "pressure_bar": 87.8412926627137,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 20,
+            "temperature_k": 164.59559553596108,
+            "pressure_bar": 79.75373874605795,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 30,
+            "temperature_k": 90.99456297545095,
+            "pressure_bar": 204.136053690439,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 40,
+            "temperature_k": 151.98068989339512,
+            "pressure_bar": 623.0257939738698,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 50,
+            "temperature_k": 195.3542087851309,
+            "pressure_bar": 533.3587807897711,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 60,
+            "temperature_k": 163.79445117265988,
+            "pressure_bar": 49.22922231806528,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 70,
+            "temperature_k": 180.2647045597002,
+            "pressure_bar": 79.68384905651449,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 80,
+            "temperature_k": 117.66551293408322,
+            "pressure_bar": 216.0142294288943,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 90,
+            "temperature_k": 203.07052859855278,
+            "pressure_bar": 316.63623740340154,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 100,
+            "temperature_k": 140.9246217057621,
+            "pressure_bar": -515.0799795516386,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          }
+        ]
+      },
+      "npt": {
+        "status": "executed",
+        "steps": 100,
+        "elapsed_time_fs": 25.0,
+        "thermo_rows": [
+          {
+            "step": 100,
+            "temperature_k": 140.9246217057621,
+            "pressure_bar": -515.0799795516386,
+            "density_g_cm3": 0.06836558498608158,
+            "engine_density_g_cm3": 0.06836557896932474,
+            "volume_angstrom3": 13824.0
+          },
+          {
+            "step": 110,
+            "temperature_k": 166.92869938152722,
+            "pressure_bar": -885.3596912555781,
+            "density_g_cm3": 0.06836677310508142,
+            "engine_density_g_cm3": 0.06836676708822002,
+            "volume_angstrom3": 13823.759758193815
+          },
+          {
+            "step": 120,
+            "temperature_k": 111.92127596244218,
+            "pressure_bar": -675.962391044031,
+            "density_g_cm3": 0.06837075267644412,
+            "engine_density_g_cm3": 0.06837074665923248,
+            "volume_angstrom3": 13822.95513580332
+          },
+          {
+            "step": 130,
+            "temperature_k": 149.29344002837792,
+            "pressure_bar": -54.279918900082556,
+            "density_g_cm3": 0.068376831920054,
+            "engine_density_g_cm3": 0.06837682590230736,
+            "volume_angstrom3": 13821.726165268718
+          },
+          {
+            "step": 140,
+            "temperature_k": 182.5611440383883,
+            "pressure_bar": -103.72008726545793,
+            "density_g_cm3": 0.0683833001565,
+            "engine_density_g_cm3": 0.06838329413818407,
+            "volume_angstrom3": 13820.418796470722
+          },
+          {
+            "step": 150,
+            "temperature_k": 166.3234846831884,
+            "pressure_bar": -644.0035989764448,
+            "density_g_cm3": 0.06839026805583576,
+            "engine_density_g_cm3": 0.06839026203690661,
+            "volume_angstrom3": 13819.010711816436
+          },
+          {
+            "step": 160,
+            "temperature_k": 189.62198920967035,
+            "pressure_bar": -476.1237897158129,
+            "density_g_cm3": 0.06839913758506914,
+            "engine_density_g_cm3": 0.0683991315653594,
+            "volume_angstrom3": 13817.218757651333
+          },
+          {
+            "step": 170,
+            "temperature_k": 121.85119799388613,
+            "pressure_bar": 119.59010511177564,
+            "density_g_cm3": 0.06840948459564249,
+            "engine_density_g_cm3": 0.06840947857502211,
+            "volume_angstrom3": 13815.128887958197
+          },
+          {
+            "step": 180,
+            "temperature_k": 184.8391986737543,
+            "pressure_bar": 666.8639058368946,
+            "density_g_cm3": 0.06841941399864195,
+            "engine_density_g_cm3": 0.0684194079771477,
+            "volume_angstrom3": 13813.12396020157
+          },
+          {
+            "step": 190,
+            "temperature_k": 143.69130024169223,
+            "pressure_bar": 46.91155213303425,
+            "density_g_cm3": 0.0684275178410152,
+            "engine_density_g_cm3": 0.06842751181880773,
+            "volume_angstrom3": 13811.488077697173
+          },
+          {
+            "step": 200,
+            "temperature_k": 190.8469707120551,
+            "pressure_bar": -397.0057980669986,
+            "density_g_cm3": 0.0684353798999353,
+            "engine_density_g_cm3": 0.06843537387703591,
+            "volume_angstrom3": 13809.901373083272
+          }
+        ]
+      }
+    },
+    "independent_final_state_audit": {
+      "status": "passed",
+      "atom_identity_preserved": true,
+      "requested_md_steps": 200,
+      "final_volume_angstrom3": 13809.901373083272,
+      "final_density_mass_volume_g_cm3": 0.0684353798999353,
+      "raw_engine_density_g_cm3": 0.06843537387703591,
+      "density_conventions": "Canonical exact-SI mass/volume and actual engine-native thermo density are distinct recorded fields",
+      "density_interpretation": "actual short-pilot state arithmetic; not an equilibrated prediction",
+      "equilibrium_status": "insufficient_sampling",
+      "minimization_status": "budget_exhausted"
+    },
+    "equilibrium_status": "insufficient_sampling",
+    "density_prediction_validation": "not_performed",
+    "artifact_files": {
+      "final.dump": {
+        "sha256": "72cdef80883a71a85a02a36ac7d1c97df6ad8a4c06277f8a56c5c20ceaa3a82d",
+        "bytes": 18715
+      },
+      "input.lammps": {
+        "sha256": "7124de489d84d8fa3295bc7d63d42d361c3110d76c5d99e137845139967eb0e8",
+        "bytes": 1921
+      },
+      "log.lammps": {
+        "sha256": "9d0c6c5780974ff23965bbbd475d6e17b0269d64cc01ffc728a8a7452203d811",
+        "bytes": 20546
+      },
+      "prepared.data": {
+        "sha256": "93cf3a1df4d32af2aeafb7c3374b7e35e0f59698e2f1f015598a7a7e78d85796",
+        "bytes": 29663
+      },
+      "protocol.json": {
+        "sha256": "206bfa833046c5738c2ab84491ef819ba5fb197b2d61a5af7f8a026887daf43a",
+        "bytes": 144402
+      },
+      "system.data": {
+        "sha256": "977b46d38455bb11197dbd2b8c876fb95724e5d0c877711e7c8c94be70fae876",
+        "bytes": 22853
+      }
+    }
+  },
+  "maximum_energy_component_abs_error_kj_mol": 6.96818874530436e-05,
+  "max_force_component_abs_error_kj_mol_angstrom": 2.5901448821308293e-05,
+  "protocol_execution_skipped": false,
+  "md_integration_steps": 200,
+  "equilibrium_status": "insufficient_sampling",
+  "production_ready": false,
+  "material_property_validation": "not_performed",
+  "public_record_policy": "Publish only case directories, preparation_pilot if present and report.json. private_engine_runs and private_validation_inputs are excluded; full assignments can be regenerated from public cells and frozen model. Scientific engine artifacts are byte-preserved; public reports replace host paths/incidental help diagnostics only.",
+  "scientific_limits": [
+    "The two parity cases are lattice-equivalent representations of the same periodic cell, not independent samples.",
+    "Periodic Ewald numerical parity and bounded process execution do not establish physical force-field accuracy.",
+    "The selected finite real-space cutoff and reciprocal representation are explicit numerical model settings, not an independently converged bulk property claim.",
+    "The short minimization/NVT/NPT pilot, if executed, is preparation evidence with insufficient sampling; its density is state arithmetic, not a validated equilibrium prediction.",
+    "No new force-field fit, quantum calculation, production trajectory or experimental evaluation was performed."
+  ]
+}
