@@ -2,6 +2,19 @@
 
 These are repository task specifications, not claims that GitHub issues have already been opened. Keep one task per reviewed change where feasible. Read AGENTS.md and the scientific contracts before implementation.
 
+## Milestone status — 7 November 2026
+
+| Task | Current state | Evidence boundary |
+| --- | --- | --- |
+| 001 | Implemented for mapped linear repeat units | Explicit graph/attachment contract and atomic lineage; broad reaction chemistry remains future work |
+| 002 | Implemented for supported single-bond head-to-tail graphs | H/methyl caps, graph tests, explicit unsupported stereochemical cases; no coordinates/cells |
+| 003 | Implemented | Analytic energy checks for LAMMPS Fourier/OPLS conversions, not material parameter validation |
+| 004 | Implemented contract | Assigned-type coverage only; no chemical atom typing or production parameter set |
+| 005 | Implemented process adapter | Real reduced-unit LJ smoke, plus independent failure/parser tests |
+| 006 | Analysis preparation implemented; production workflow open | No validated polymer-density result exists |
+| 007 | Planned | No representation advantage or chemical-family benchmark claimed |
+| 008 | Development evidence audit implemented for v0.2 | Machine-readable local checks and engine smoke records; a complete scientific release/manuscript benchmark remains open |
+
 ## TASK-001 — Chemical contract and atom-lineage schema
 
 **Objective:** specify and implement attachment roles, atom mapping, repeat-unit identity and termini without changing existing validated behavior.
@@ -51,6 +64,22 @@ These are repository task specifications, not claims that GitHub issues have alr
 **Objective:** run and analyze a documented amorphous-polymer density example, with independently prepared repeats and sampling diagnostics.
 
 **Acceptance:** actual input and trajectory artifacts, physical units, thermodynamic state, convergence status, uncertainty and a suitable external comparison. Dataset count must distinguish independently prepared cells from correlated frames.
+
+The analysis kernel is implemented. The following preparation subtasks remain
+necessary before this milestone can be closed:
+
+- **TASK-006A:** independent conformer/coordinate generation and cell packing,
+  with topology/lineage preservation, overlap checks and deterministic seeds.
+- **TASK-006B:** chemically assigned production parameters and charges from
+  attributed sources or independently fitted references; demonstrate convention,
+  energy/force and coverage checks. The analytic parameter-contract demo is not
+  a production force field and must not be used as one.
+- **TASK-006C:** actual polymer equilibration/production campaign, independent
+  cells, observable-specific diagnostics and phase/state-matched comparison.
+
+A reduced-unit LJ smoke test establishes engine execution, not any of these
+polymer-specific prerequisites. Density diagnostics accept only explicitly
+converted g/cm^3 and do not certify equilibrium.
 
 ## TASK-007 — Chemically conditioned torsion descriptors
 

@@ -1,0 +1,96 @@
+{
+  "status": "completed",
+  "simulation_performed": true,
+  "evidence_level": "engine_execution",
+  "started_utc": "2026-11-06T21:32:39.894492+00:00",
+  "finished_utc": "2026-11-06T21:32:40.304809+00:00",
+  "elapsed_seconds": 0.4103134679971845,
+  "input_sha256": "5ee611b2f270b1ff1031cb6b54f41c91d96d02df256548214fceac37dfec8f70",
+  "timeout_seconds": 30.0,
+  "expected_artifacts": [
+    "log.lammps",
+    "smoke.data"
+  ],
+  "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+  "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+  "engine_help_sha256": "03b8b2ab42d1c1e08b5438753e246755eedbbffc3d315e3885c79185f75ea60f",
+  "returncode": 0,
+  "artifact_sha256": {
+    "log.lammps": "11a3c58627661711b9939c5f5da39e47e88844ceb6dcf58c0b7745101f485fd2",
+    "smoke.data": "4aa71377d07315ea86b50042a918a21133ba13f0dd1cca984906cbf4800b97c0"
+  },
+  "runtime_environment": {
+    "OMP_NUM_THREADS": "1",
+    "UCX_TLS": "self"
+  },
+  "input_units_style": "lj",
+  "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+  "units_style_confidence": "recipe_literal_not_engine_verified",
+  "recipe_run_units_styles": [
+    "lj"
+  ],
+  "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+  "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+  "thermo_blocks": [
+    {
+      "columns": [
+        "Step",
+        "Temp",
+        "PotEng",
+        "TotEng",
+        "Press",
+        "Density"
+      ],
+      "rows": [
+        [
+          0.0,
+          1.0,
+          -6.7733681,
+          -5.2872569,
+          -5.3989339,
+          0.8442
+        ],
+        [
+          10.0,
+          0.99382991,
+          -6.7641998,
+          -5.2872582,
+          -5.3412736,
+          0.8442
+        ],
+        [
+          20.0,
+          0.97435588,
+          -6.7352631,
+          -5.287262,
+          -5.1645279,
+          0.8442
+        ]
+      ],
+      "loop_complete": true
+    }
+  ],
+  "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+  "equilibration_validation": "not_performed",
+  "material_validation": "not_performed",
+  "schema_version": "0.1",
+  "release": "0.2.0.dev0",
+  "recipe_path": "examples/lammps_smoke.in",
+  "system": {
+    "kind": "Lennard-Jones FCC smoke",
+    "particles": 108,
+    "steps": 20,
+    "velocity_seed": 17921
+  },
+  "independent_output_check": {
+    "basis": "Actual LAMMPS write_data header inspected after execution",
+    "header": "LAMMPS data file via write_data, version 22 Jul 2025, timestep = 20, units = lj",
+    "confirmed_units_style": "lj"
+  },
+  "scientific_limits": [
+    "This is a dimensionless LJ engine integration run, not a polymer simulation.",
+    "Density 0.8442 is a reduced-unit value, not g/cm^3.",
+    "No equilibration, production force field or physical-property prediction is validated."
+  ],
+  "public_record_note": "Host-specific absolute paths and incidental host diagnostics omitted; raw artifact hashes are retained."
+}

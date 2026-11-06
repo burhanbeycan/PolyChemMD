@@ -1,12 +1,12 @@
 # PolyChemMD architecture
 
-Status: independent starter architecture, 6 November 2026.
+Status: independent development core, 7 November 2026.
 
 PolyChemMD is intended to become a general polymer chemistry and molecular-simulation library. Its domain objects, construction algorithms, orchestration, descriptors and analysis code are developed independently. RadonPy is a comparison target and literature source, not a runtime dependency. General numerical, cheminformatics and simulation software can be external dependencies with explicit versions and attribution.
 
 ## Implemented boundary
 
-The starter contains input-record validation, calculation provenance and generic Fourier-torsion analysis. It does not yet build polymer coordinates, assign a production force field, run QM/MD, or provide experimentally validated polymer-property predictions. A successful analytical demonstration is not a successful material simulation.
+The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, full Fourier-torsion analysis/conversion, assigned-parameter coverage, a bounded LAMMPS adapter and density diagnostics. A real reduced-unit LJ engine smoke was executed. It does not yet build polymer coordinates/cells, assign a production polymer force field, run end-to-end polymer MD/QM, or provide experimentally validated polymer-property predictions. Graph and process verification are separate from material validation.
 
 The names below describe architectural responsibilities; they do not assert that all listed Python classes or modules already exist.
 

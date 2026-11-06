@@ -1,13 +1,16 @@
 # PolyChemMD: Codex'te geliştirmeye başlama
 
-Bu paket, bağımsız bir genel polimer hesaplama platformu için başlangıç deposudur. Mevcut hafif çekirdek; kayıt doğrulama, hesaplama kökeni ve açık konvansiyonlu genel Fourier torsiyon analizini kapsar. Polimer oluşturucu, üretim kuvvet alanı, QM/MD motorları ve doğrulanmış malzeme özellikleri henüz tamamlanmış değildir.
+Bu depo, bağımsız bir genel polimer hesaplama platformunun geliştirme çekirdeğidir. Sürüm 0.2; kayıt ve tekrar birimi doğrulama, desteklenen lineer moleküler grafik oluşturma, torsiyon dönüşümleri, parametre kapsam denetimi, LAMMPS süreç bağlantısı ve yoğunluk tanı analizlerini içerir. Koordinat/hücre hazırlama, üretim parametrelemesi ve doğrulanmış polimer MD/QM özellikleri henüz tamamlanmış değildir.
 
-## 1. Depoyu GitHub'a yerleştirin
+## 1. Mevcut depoyla çalışın
 
-1. GitHub hesabınızda boş bir `PolyChemMD` deposu oluşturun. Çalışma adı daha sonra değiştirilebilir. İlk geliştirme için özel depo kullanılabilir.
-2. Paketi açın; `README.md`, `AGENTS.md`, `pyproject.toml`, `src`, `tests` ve `docs` aynı depo kökünde olsun. İç içe ikinci bir proje klasörü oluşturmayın.
-3. Dosyaları bu depoya aktarın ve ilk commit'i oluşturun. Paketin paylaşılması, GitHub deposunun oluşturulduğu veya Codex'e bağlandığı anlamına gelmez.
-4. Büyük yörüngeleri, motor kurulumlarını ve kişisel erişim bilgilerini Git'e koymayın. Yeniden üretim reçetelerini ve küçük doğrulama örneklerini saklayın.
+Kaynak depo: https://github.com/burhanbeycan/PolyChemMD . Başlangıç paketi bu
+depoya aktarılmıştır. Yeni geliştirmeleri mevcut dosyalardan ve güncel ana daldan
+başlatın; ikinci bir proje kökü oluşturmayın. Değişiklikleri görev dallarında
+inceleyip testleri geçtikten sonra ana dala birleştirin.
+
+Büyük yörüngeleri, motor kurulumlarını ve kişisel erişim bilgilerini Git'e
+koymayın. Yeniden üretim reçetelerini ve küçük doğrulama kayıtlarını saklayın.
 
 ## 2. Codex'e aynı projeyi açtırın
 
@@ -54,7 +57,14 @@ polychemmd doctor
 polychemmd validate examples/pe_record.json
 polychemmd catalogue
 polychemmd torsion-describe examples/torsion_demo.json --n-grid 720 --temperature-k 300 --output artifacts/torsion_demo.json
+polychemmd parameter-check examples/parameter_contract_demo.json --require-complete
+polychemmd torsion-import examples/torsion_lammps_fourier.json --source lammps-fourier
 ```
+
+Kimyasal grafik oluşturmayı denemek için `python -m pip install -e '.[chemistry]'`
+ile isteğe bağlı RDKit bağımlılığını kurun; ardından
+`polychemmd build-linear examples/linear_pe.json` çalıştırın. Bu komut bir
+moleküler grafik üretir; üç boyutlu bir polimer veya simülasyon hücresi üretmez.
 
 Kurulum ortamı ağ erişimine ihtiyaç duyuyorsa kurulum adımında uygun bağımlılıklar sağlanmalıdır. Derleme bağımlılıkları zaten kurulu olan ağsız bir geliştirme ortamında şu kurulum kullanılabilir:
 
@@ -68,7 +78,7 @@ Ağsız test koşusunda yeni paket indirmeye bağımlı olmayın. README'deki ko
 
 ## 5. İşleri küçük ve ölçülebilir görevlere bölün
 
-Önce `docs/TASKS.md` içindeki kimyasal sözleşme ve atom eşleme görevi, ardından doğrulanmış lineer zincir oluşturucu gelir. Sonraki sıra parametre sözleşmesi, gerçek motor bağlantısı ve tek bir uçtan uca doğrulanmış özelliktir. Bütün özellik kataloğunu tek görevde istemeyin.
+`docs/TASKS.md` güncel durumun kaynağıdır. TASK-001–005 dar ve açıkça belirtilmiş kapsamlarıyla uygulanmıştır. Sonraki sıra TASK-006A koordinat/hücre hazırlama, TASK-006B gerçek üretim parametrelemesi ve TASK-006C uçtan uca polimer yoğunluğu doğrulamasıdır. Bütün özellik kataloğunu tek görevde istemeyin.
 
 Her görevde şunlar açık olsun:
 
@@ -87,10 +97,10 @@ PolyChemMD deposunda AGENTS.md, README.md, docs/ARCHITECTURE.md,
 docs/SCIENTIFIC_SPEC.md ve docs/TASKS.md belgelerini oku.
 
 Önce mevcut şema ve çalışan çekirdeği incele; uygulanmış özelliklerle
-planlananları ayır. TASK-001 için tekrar birimi bağlanma noktaları, atom
-eşleme/soy takibi ve uç grup sözleşmesini tamamla. Bu sözleşme hazırsa
-TASK-002 kapsamında bağımsız bir lineer tekrar-birimi zincir oluşturucu
-uygula. Mevcut koddan farklı bir yaklaşım gerekiyorsa gerekçesini kaydet.
+planlananları ayır. TASK-006A kapsamında desteklenen lineer grafikler için
+koordinat oluşturma ve hücre paketleme katmanını bağımsız geliştir.
+Atom kimliklerini, bağ yapısını, yükü ve stereokimyayı koru; çakışma ve
+periyodik hücre kontrollerini ekle. Rastgele tohumları kaydet.
 
 RadonPy veya başka bir polimer paketinin kaynak kodunu kopyalama,
 vendor etme veya çalışma zamanı bağımlılığı yapma. Genel kütüphaneler
@@ -100,10 +110,11 @@ Serbest monomerden polimer bağını oluşturan reaksiyon dönüşümü ile zate
 tanımlanmış tekrar birimlerini bağlamayı ayrı tut. Atom kimlikleri,
 bağ derecesi, formal yük, uç gruplar ve stereokimya korunmalı.
 
-Tek, iki ve birkaç tekrar birimi için elle kontrol edilmiş bağlantı ve
-atom sayısı örnekleri kullan. Geçersiz valans, tekrar eden atom eşlemesi
-ve uyumsuz bağlanma noktaları için anlamlı hatalar ve bağımsız testler yaz.
-Opsiyonel RDKit desteği hafif çekirdeğin içe aktarılmasını bozmamalı.
+Mevcut tek/iki/çok birimli bağlantı ve atom sayısı testlerini koru.
+Bağımsız geometri kontrolleri, yeniden üretilebilirlik ve olumsuz
+durum testleri ekle. Opsiyonel RDKit desteği hafif çekirdeğin içe
+aktarılmasını bozmamalı. Analitik parametre demosunu üretim kuvvet
+alanı olarak kullanma; gerçek parametreleme TASK-006B'nin konusudur.
 
 İlgili testleri gerçekten çalıştır ve komutları/sonuçları bildir.
 Bu görevde MD/QM çalıştırılmış gibi davranma; koordinat oluşturma veya

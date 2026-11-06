@@ -1,0 +1,23 @@
+{
+  "parameter_set": {
+    "schema_version": "0.1",
+    "name": "ANALYTIC_CONTRACT_DEMO_NOT_A_FORCE_FIELD",
+    "units": {"energy": "kJ/mol", "length": "angstrom", "angle": "radian", "mass": "g/mol", "charge": "e"},
+    "source": {"kind": "analytic_demo", "reference": "Synthetic schema demonstration only; no real material parameterization or scientific prediction."},
+    "nonbonded": {"mixing_rule": "lorentz_berthelot", "excluded_bonded_distances": [1, 2], "one_four": {"lj_scale": 0.5, "coulomb_scale": 0.8333333333333334, "handling": "scaled_pair_once"}},
+    "parameters": {
+      "atoms": [{"type_id": "X", "form": "lj12_6", "values": {"mass_g_mol": 1.0, "epsilon_kj_mol": 1.0, "sigma_angstrom": 1.0}, "source": {"kind": "analytic_demo", "reference": "Unit-valued synthetic contract input; not a physical atom type."}}],
+      "bonds": [{"type_id": "X-X", "form": "harmonic_k_delta_r_squared", "values": {"k_kj_mol_angstrom2": 1.0, "r0_angstrom": 1.0}, "source": {"kind": "analytic_demo", "reference": "Synthetic contract input only."}}],
+      "angles": [{"type_id": "X-X-X", "form": "harmonic_k_delta_theta_squared", "values": {"k_kj_mol_rad2": 1.0, "theta0_rad": 1.5}, "source": {"kind": "analytic_demo", "reference": "Synthetic contract input only."}}],
+      "dihedrals": [{"type_id": "X-X-X-X", "form": "fourier_sum_k_1_plus_cos", "values": {"terms": [{"k_kj_mol": 1.0, "periodicity": 3, "phase_rad": 0.0}]}, "source": {"kind": "analytic_demo", "reference": "Synthetic contract input only."}}],
+      "impropers": [{"type_id": "X-improper", "form": "harmonic_k_delta_chi_squared", "values": {"k_kj_mol_rad2": 1.0, "chi0_rad": 0.0}, "source": {"kind": "analytic_demo", "reference": "Synthetic contract input only."}}]
+    }
+  },
+  "topology": {
+    "atoms": [{"id": "1", "type_id": "X"}, {"id": "2", "type_id": "X"}, {"id": "3", "type_id": "X"}, {"id": "4", "type_id": "X"}],
+    "bonds": [{"id": "b1", "type_id": "X-X"}],
+    "angles": [{"id": "a1", "type_id": "X-X-X"}],
+    "dihedrals": [{"id": "d1", "type_id": "X-X-X-X"}],
+    "impropers": [{"id": "i1", "type_id": "X-improper"}]
+  }
+}
