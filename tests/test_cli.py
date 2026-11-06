@@ -102,5 +102,6 @@ class CliTests(unittest.TestCase):
         status, out, err = self.invoke(['doctor'])
         self.assertEqual(status, 0, err)
         data = json.loads(out)
-        self.assertEqual(data['md_adapter_status'], 'planned')
+        self.assertEqual(data['md_adapter_status'], 'implemented_process_adapter')
+        self.assertEqual(data['polymer_md_protocol_status'], 'not_implemented')
         self.assertIn('Presence check only', data['scope'])

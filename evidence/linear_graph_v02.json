@@ -1,0 +1,859 @@
+{
+  "result_schema_version": "0.1",
+  "record_kind": "linear_molecular_graph",
+  "software": {
+    "name": "PolyChemMD",
+    "version": "0.2.0.dev0",
+    "python": "3.12.14"
+  },
+  "created_utc": "2026-11-06T21:33:02.768817+00:00",
+  "input_sha256": "326ec681f7bea57876d2a4f6fdfb02046a962d8b949df2fa6306b491c2d567dd",
+  "input_hash_basis": "exact input-file bytes",
+  "payload": {
+    "schema_version": "1",
+    "kind": "finite_linear_chain_graph",
+    "operation": "repeat_unit_assembly",
+    "evidence_level": "graph_validated",
+    "repeat_unit": {
+      "label": "polyethylene repeat graph",
+      "smiles": "[*:1]CC[*:2]",
+      "head_map": 1,
+      "tail_map": 2
+    },
+    "degree_of_polymerization": 5,
+    "caps": {
+      "head": "H",
+      "tail": "H"
+    },
+    "linkage": {
+      "direction": "tail_to_head",
+      "bond_order": 1
+    },
+    "canonical_smiles": "CCCCCCCCCC",
+    "mapped_smiles": "[C:1]([C:2]([C:3]([C:4]([C:5]([C:6]([C:7]([C:8]([C:9]([C:10]([H:12])([H:31])[H:32])([H:29])[H:30])([H:27])[H:28])([H:25])[H:26])([H:23])[H:24])([H:21])[H:22])([H:19])[H:20])([H:17])[H:18])([H:15])[H:16])([H:11])([H:13])[H:14]",
+    "molecular_formula": "C10H22",
+    "formal_charge": 0,
+    "atom_count": 32,
+    "heavy_atom_count": 10,
+    "element_counts": {
+      "C": 10,
+      "H": 22
+    },
+    "hydrogen_representation": "all_explicit",
+    "backbone_assignment": {
+      "method": "unique_acyclic_attachment_path",
+      "source_atom_indices": [
+        1,
+        2
+      ]
+    },
+    "atoms": [
+      {
+        "atom_id": "repeat:0:atom:1",
+        "atom_index": 0,
+        "atom_map": 1,
+        "origin": "repeat",
+        "repeat_index": 0,
+        "source_atom_index": 1,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:0:atom:2",
+        "atom_index": 1,
+        "atom_map": 2,
+        "origin": "repeat",
+        "repeat_index": 0,
+        "source_atom_index": 2,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:1:atom:1",
+        "atom_index": 2,
+        "atom_map": 3,
+        "origin": "repeat",
+        "repeat_index": 1,
+        "source_atom_index": 1,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:1:atom:2",
+        "atom_index": 3,
+        "atom_map": 4,
+        "origin": "repeat",
+        "repeat_index": 1,
+        "source_atom_index": 2,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:2:atom:1",
+        "atom_index": 4,
+        "atom_map": 5,
+        "origin": "repeat",
+        "repeat_index": 2,
+        "source_atom_index": 1,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:2:atom:2",
+        "atom_index": 5,
+        "atom_map": 6,
+        "origin": "repeat",
+        "repeat_index": 2,
+        "source_atom_index": 2,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:3:atom:1",
+        "atom_index": 6,
+        "atom_map": 7,
+        "origin": "repeat",
+        "repeat_index": 3,
+        "source_atom_index": 1,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:3:atom:2",
+        "atom_index": 7,
+        "atom_map": 8,
+        "origin": "repeat",
+        "repeat_index": 3,
+        "source_atom_index": 2,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:4:atom:1",
+        "atom_index": 8,
+        "atom_map": 9,
+        "origin": "repeat",
+        "repeat_index": 4,
+        "source_atom_index": 1,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:4:atom:2",
+        "atom_index": 9,
+        "atom_map": 10,
+        "origin": "repeat",
+        "repeat_index": 4,
+        "source_atom_index": 2,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "C",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "cap:head:H",
+        "atom_index": 10,
+        "atom_map": 11,
+        "origin": "cap",
+        "repeat_index": null,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": "head",
+        "structural_role": "terminus",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "cap:tail:H",
+        "atom_index": 11,
+        "atom_map": 12,
+        "origin": "cap",
+        "repeat_index": null,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": null,
+        "terminus": "tail",
+        "structural_role": "terminus",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:0:atom:1:H:0",
+        "atom_index": 12,
+        "atom_map": 13,
+        "origin": "added_hydrogen",
+        "repeat_index": 0,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:0:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:0:atom:1:H:1",
+        "atom_index": 13,
+        "atom_map": 14,
+        "origin": "added_hydrogen",
+        "repeat_index": 0,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:0:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:0:atom:2:H:0",
+        "atom_index": 14,
+        "atom_map": 15,
+        "origin": "added_hydrogen",
+        "repeat_index": 0,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:0:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:0:atom:2:H:1",
+        "atom_index": 15,
+        "atom_map": 16,
+        "origin": "added_hydrogen",
+        "repeat_index": 0,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:0:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:1:atom:1:H:0",
+        "atom_index": 16,
+        "atom_map": 17,
+        "origin": "added_hydrogen",
+        "repeat_index": 1,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:1:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:1:atom:1:H:1",
+        "atom_index": 17,
+        "atom_map": 18,
+        "origin": "added_hydrogen",
+        "repeat_index": 1,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:1:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:1:atom:2:H:0",
+        "atom_index": 18,
+        "atom_map": 19,
+        "origin": "added_hydrogen",
+        "repeat_index": 1,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:1:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:1:atom:2:H:1",
+        "atom_index": 19,
+        "atom_map": 20,
+        "origin": "added_hydrogen",
+        "repeat_index": 1,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:1:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:2:atom:1:H:0",
+        "atom_index": 20,
+        "atom_map": 21,
+        "origin": "added_hydrogen",
+        "repeat_index": 2,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:2:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:2:atom:1:H:1",
+        "atom_index": 21,
+        "atom_map": 22,
+        "origin": "added_hydrogen",
+        "repeat_index": 2,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:2:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:2:atom:2:H:0",
+        "atom_index": 22,
+        "atom_map": 23,
+        "origin": "added_hydrogen",
+        "repeat_index": 2,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:2:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:2:atom:2:H:1",
+        "atom_index": 23,
+        "atom_map": 24,
+        "origin": "added_hydrogen",
+        "repeat_index": 2,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:2:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:3:atom:1:H:0",
+        "atom_index": 24,
+        "atom_map": 25,
+        "origin": "added_hydrogen",
+        "repeat_index": 3,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:3:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:3:atom:1:H:1",
+        "atom_index": 25,
+        "atom_map": 26,
+        "origin": "added_hydrogen",
+        "repeat_index": 3,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:3:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:3:atom:2:H:0",
+        "atom_index": 26,
+        "atom_map": 27,
+        "origin": "added_hydrogen",
+        "repeat_index": 3,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:3:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:3:atom:2:H:1",
+        "atom_index": 27,
+        "atom_map": 28,
+        "origin": "added_hydrogen",
+        "repeat_index": 3,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:3:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:4:atom:1:H:0",
+        "atom_index": 28,
+        "atom_map": 29,
+        "origin": "added_hydrogen",
+        "repeat_index": 4,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:4:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:4:atom:1:H:1",
+        "atom_index": 29,
+        "atom_map": 30,
+        "origin": "added_hydrogen",
+        "repeat_index": 4,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:4:atom:1",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:4:atom:2:H:0",
+        "atom_index": 30,
+        "atom_map": 31,
+        "origin": "added_hydrogen",
+        "repeat_index": 4,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:4:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      },
+      {
+        "atom_id": "repeat:4:atom:2:H:1",
+        "atom_index": 31,
+        "atom_map": 32,
+        "origin": "added_hydrogen",
+        "repeat_index": 4,
+        "source_atom_index": null,
+        "source_atom_map": null,
+        "parent_atom_id": "repeat:4:atom:2",
+        "terminus": null,
+        "structural_role": "backbone",
+        "element": "H",
+        "isotope": 0,
+        "formal_charge": 0,
+        "chiral_tag": "CHI_UNSPECIFIED"
+      }
+    ],
+    "bonds": [
+      {
+        "atom_maps": [
+          1,
+          2
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          3,
+          4
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          5,
+          6
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          7,
+          8
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          9,
+          10
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          2,
+          3
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          4,
+          5
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          6,
+          7
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          8,
+          9
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          1,
+          11
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          10,
+          12
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          1,
+          13
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          1,
+          14
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          2,
+          15
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          2,
+          16
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          3,
+          17
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          3,
+          18
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          4,
+          19
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          4,
+          20
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          5,
+          21
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          5,
+          22
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          6,
+          23
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          6,
+          24
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          7,
+          25
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          7,
+          26
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          8,
+          27
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          8,
+          28
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          9,
+          29
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          9,
+          30
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          10,
+          31
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      },
+      {
+        "atom_maps": [
+          10,
+          32
+        ],
+        "order": 1.0,
+        "aromatic": false,
+        "stereo": "STEREONONE"
+      }
+    ],
+    "validation": {
+      "connected": true,
+      "no_dummy_atoms": true,
+      "atom_and_isotope_balance": true,
+      "formal_charge_balance": true,
+      "rdkit_sanitization": true,
+      "geometry_generated": false,
+      "force_field_assigned": false
+    },
+    "software": {
+      "rdkit": "2026.09.1"
+    },
+    "simulation_performed": false
+  }
+}

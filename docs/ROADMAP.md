@@ -1,6 +1,6 @@
 # Development roadmap
 
-This is a staged research-software plan, not a statement that the complete platform exists. The starter supports lightweight record validation, provenance and generic multi-Fourier torsion analysis. Builder, engine and material-property validation milestones remain open.
+This is a staged research-software plan, not a statement that the complete platform exists. Version 0.2 implements a narrow mapped linear graph builder, convention/parameter contracts, an engine process adapter and analysis kernels. Polymer coordinate/cell building, production atom typing and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
 
 ## P0 — Freeze the chemical and scientific contracts
 

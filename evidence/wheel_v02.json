@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "executed_wheel_import_check",
+  "release": "0.2.0.dev0",
+  "wheel": "polychemmd-0.2.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "06256315d652c3f7d8700b1e29ca923379ace1b9ea8336fcedc8545e80224401",
+  "build_command": "PIP_NO_INDEX=1 python -m pip wheel --no-deps --no-build-isolation --wheel-dir artifacts/wheels-v02 .",
+  "isolation": "new temporary cwd; python -S; wheel on sys.path; no editable/source path or site-packages",
+  "result": {
+    "version": "0.2.0.dev0",
+    "catalogue_kind": "dict",
+    "optional_chemistry_imported_without_rdkit": true
+  },
+  "limits": "Package/import verification, not engine or property validation."
+}
