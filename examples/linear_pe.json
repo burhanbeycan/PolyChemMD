@@ -1,0 +1,11 @@
+{
+  "repeat_unit": {
+    "label": "polyethylene repeat graph",
+    "smiles": "[*:1]CC[*:2]",
+    "head_map": 1,
+    "tail_map": 2
+  },
+  "degree_of_polymerization": 5,
+  "head_cap": "H",
+  "tail_cap": "H"
+}
