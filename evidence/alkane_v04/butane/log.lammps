@@ -1,0 +1,99 @@
+LAMMPS (22 Jul 2025 - Update 4)
+  using 1 OpenMP thread(s) per MPI task
+# Isolated assigned-force-field energy/force check; no MD integration.
+clear
+  using 1 OpenMP thread(s) per MPI task
+units real
+atom_style full
+boundary f f f
+bond_style harmonic
+angle_style harmonic
+dihedral_style opls
+pair_style lj/cut/coul/cut 12
+pair_modify mix geometric shift no tail no
+dielectric 1.0
+special_bonds lj/coul 0.0 0.0 0.5
+read_data system.data
+Reading data file ...
+  orthogonal box = (-19.554251 -18.39952 -18.412169) to (19.472372 18.398698 18.43473)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  14 atoms
+  scanning bonds ...
+  4 = max bonds/atom
+  scanning angles ...
+  6 = max angles/atom
+  scanning dihedrals ...
+  9 = max dihedrals/atom
+  orthogonal box = (-19.554251 -18.39952 -18.412169) to (19.472372 18.398698 18.43473)
+  1 by 1 by 1 MPI processor grid
+  reading bonds ...
+  13 bonds
+  reading angles ...
+  24 angles
+  reading dihedrals ...
+  27 dihedrals
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        0.5     
+  special bond factors coul:  0        0        0.5     
+     4 = max # of 1-2 neighbors
+     6 = max # of 1-3 neighbors
+     9 = max # of 1-4 neighbors
+    13 = max # of special neighbors
+  special bonds CPU = 0.000 seconds
+  read_data CPU = 0.003 seconds
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check yes
+thermo 1
+thermo_style custom step temp ebond eangle edihed evdwl ecoul pe
+thermo_modify norm no format float %.17g
+run 0
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (src/src/verlet.cpp:60)
+Generated 3 of 3 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 7, bins = 6 6 6
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/coul/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 11.54 | 11.54 | 11.54 Mbytes
+   Step          Temp          E_bond        E_angle        E_dihed         E_vdwl         E_coul         PotEng    
+         0  0 1.9973897987690457 2.6635236505453572 4.3854520980088942 1.2020396301848999 1.9259120675081605 12.174317245016358
+Loop time of 1.176e-06 on 1 procs for 0 steps with 14 atoms
+
+0.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Bond    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.176e-06  |            |       |100.00
+
+Nlocal:             14 ave          14 max          14 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             54 ave          54 max          54 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 54
+Ave neighs/atom = 3.8571429
+Ave special neighs/atom = 9.1428571
+Neighbor list builds = 0
+Dangerous builds = 0
+write_dump all custom forces.dump id x y z fx fy fz modify sort id format float %.17g
+print "POLYCHEMMD_RUN_COMPLETE"
+POLYCHEMMD_RUN_COMPLETE
+Total wall time: 0:00:00

@@ -1,0 +1,575 @@
+{
+  "schema_version": "1",
+  "status": "passed",
+  "evidence_level": "engine_energy_force_parity",
+  "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+  "boundary": "isolated_nonperiodic",
+  "cutoff_angstrom": 12.0,
+  "nonbonded_policy": "unshifted finite-cutoff LJ and Coulomb; geometric mixing; scaled 1-4 pairs",
+  "tolerances": {
+    "energy_abs_kj_mol": 1e-06,
+    "force_component_abs_kj_mol_angstrom": 1e-05
+  },
+  "reference": {
+    "schema_version": "1",
+    "kind": "isolated_alkane_energy_force_reference",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "atom_ids": [
+      "repeat:0:atom:1",
+      "repeat:0:atom:2",
+      "repeat:1:atom:1",
+      "repeat:1:atom:2",
+      "cap:head:H",
+      "cap:tail:H",
+      "repeat:0:atom:1:H:0",
+      "repeat:0:atom:1:H:1",
+      "repeat:0:atom:2:H:0",
+      "repeat:0:atom:2:H:1",
+      "repeat:1:atom:1:H:0",
+      "repeat:1:atom:1:H:1",
+      "repeat:1:atom:2:H:0",
+      "repeat:1:atom:2:H:1"
+    ],
+    "evaluated_coordinates_angstrom": [
+      [
+        1.8760892188068592,
+        -0.356667550096219,
+        0.019737847389111406
+      ],
+      [
+        0.555960322114586,
+        0.36157844045115467,
+        0.3168408701782684
+      ],
+      [
+        -0.6029388374063398,
+        -0.36725210071762654,
+        -0.3192861595808166
+      ],
+      [
+        -1.9205073946731808,
+        0.3243168209701628,
+        -0.039421383309223575
+      ],
+      [
+        2.4723716284047668,
+        -0.33861702622821066,
+        0.9540534470803763
+      ],
+      [
+        -1.7074562558757767,
+        1.3626205146788064,
+        0.25207106902793947
+      ],
+      [
+        2.4448075107383462,
+        0.280059530846216,
+        -0.7165216974500731
+      ],
+      [
+        1.7289918027468918,
+        -1.3624187231327907,
+        -0.38590113989575764
+      ],
+      [
+        0.4667758080722924,
+        0.32134082955706145,
+        1.4347296965804703
+      ],
+      [
+        0.689071138374631,
+        1.3986976036505783,
+        -0.03704259286114346
+      ],
+      [
+        -0.40037094652532645,
+        -0.4056003397210255,
+        -1.4121692835485737
+      ],
+      [
+        -0.5847166974244373,
+        -1.3995204928485088,
+        0.12369255378915817
+      ],
+      [
+        -2.5542505171791894,
+        0.37577516447684395,
+        -0.9550867389436734
+      ],
+      [
+        -2.4638267801741387,
+        -0.19431267188643073,
+        0.7643035115439372
+      ]
+    ],
+    "coordinates_override_used": false,
+    "energy_components_kj_mol": {
+      "bond": 8.357078918049687,
+      "angle": 11.144182953881776,
+      "dihedral": 18.348731578069213,
+      "lj": 5.0293338126936185,
+      "coulomb": 8.058016090454146,
+      "total": 50.93734335314844
+    },
+    "forces_kj_mol_angstrom": [
+      [
+        60.94817234734727,
+        132.97223312456785,
+        -23.316049017450787
+      ],
+      [
+        102.64085319701687,
+        -18.85817561455736,
+        96.0588070353331
+      ],
+      [
+        34.03619905469687,
+        -83.8310910258981,
+        -31.63068495610603
+      ],
+      [
+        -50.06056208115136,
+        35.04658153129311,
+        -39.757537034802866
+      ],
+      [
+        -10.628027488310618,
+        -38.46301153850239,
+        -52.227498727192575
+      ],
+      [
+        -34.32338435294049,
+        -19.70570895642147,
+        3.953098011200552
+      ],
+      [
+        -43.712095354714144,
+        -85.08310240982459,
+        52.16489413079972
+      ],
+      [
+        22.552282804175483,
+        0.32476466526999065,
+        18.79267444868121
+      ],
+      [
+        -22.179072134039366,
+        36.761364232931825,
+        -87.98496694870359
+      ],
+      [
+        -39.99672588702976,
+        -22.7957560740973,
+        28.92759268474749
+      ],
+      [
+        -27.458297383375477,
+        -15.619884337096307,
+        56.06535646353347
+      ],
+      [
+        -28.954955734217894,
+        70.48574346575253,
+        -66.01798065379415
+      ],
+      [
+        31.423430142488645,
+        -17.39510661071124,
+        61.79888350210148
+      ],
+      [
+        5.712182870054067,
+        26.161149547293558,
+        -16.826588938347008
+      ]
+    ],
+    "energy_units": "kJ/mol",
+    "force_units": "kJ/(mol angstrom)",
+    "boundary_conditions": "isolated_nonperiodic",
+    "nonbonded_model": "unshifted_lj12_6_plus_truncated_coulomb",
+    "cutoff_angstrom": 12.0,
+    "dielectric_relative": 1.0,
+    "coulomb_constant_kj_mol_angstrom_e2": 1389.35456264,
+    "coulomb_constant_basis": "332.06371 kcal angstrom/(mol e^2), matching LAMMPS real-unit numerical convention",
+    "lj_mixing_rule": "geometric_sigma_and_epsilon",
+    "tail_correction": false,
+    "long_range_electrostatics": "not_used; finite isolated verification model",
+    "pair_counts": {
+      "included": 54,
+      "excluded": 37,
+      "beyond_cutoff": 0
+    },
+    "force_derivation": "original local forward-mode differentiation of explicit energy equations",
+    "finite_difference_forces": false,
+    "trajectory_integration_performed": false,
+    "equilibrium_status": "not_assessed",
+    "material_validation": "not_performed"
+  },
+  "engine_run": {
+    "status": "completed",
+    "simulation_performed": true,
+    "run_directory": "private_engine_run_not_in_public_records",
+    "input_sha256": "2e63c49cfe04dacf8445a01cca317ee7980a608a450885837d45fec376fe67a1",
+    "timeout_seconds": 30.0,
+    "expected_artifacts": [
+      "log.lammps",
+      "forces.dump"
+    ],
+    "required_thermo_columns": [
+      "Step",
+      "Temp",
+      "E_bond",
+      "E_angle",
+      "E_dihed",
+      "E_vdwl",
+      "E_coul",
+      "PotEng"
+    ],
+    "material_validation": "not_performed",
+    "declared_units_style": "real",
+    "input_units_style": "real",
+    "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+    "units_style_confidence": "recipe_literal_not_engine_verified",
+    "recipe_run_units_styles": [
+      "real"
+    ],
+    "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+    "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+    "evidence_level": "engine_execution",
+    "executable": "lmp",
+    "started_utc": "2026-11-06T22:49:54.948512+00:00",
+    "staged_input_sha256": {
+      "system.data": "f37c08f76bbcc5515731a25a6adb243a2657a96f52426f3c48d1e9037bf040a5"
+    },
+    "runtime_environment": {
+      "OMP_NUM_THREADS": "1",
+      "UCX_TLS": "self"
+    },
+    "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+    "engine_help_sha256": "71a2ff0cc56577285398575e9d41d03b57a3219c24f0e34531bb466b1c824964",
+    "engine_help_first_line": "Incidental host diagnostic omitted; see engine_version_banner",
+    "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+    "command": [
+      "lmp",
+      "-in",
+      "input.lammps",
+      "-log",
+      "log.lammps",
+      "-screen",
+      "screen.lammps"
+    ],
+    "returncode": 0,
+    "artifact_sha256": {
+      "log.lammps": "cd8815a47754b01b8efaa98f02c561a2a6d197c7ab63c5ac32e4c48db7fc11a7",
+      "forces.dump": "b788fce3f722f91aab656b532ebefd26e3577d497c9a18a265ee4648c50aabc8"
+    },
+    "thermo_blocks": [
+      {
+        "columns": [
+          "Step",
+          "Temp",
+          "E_bond",
+          "E_angle",
+          "E_dihed",
+          "E_vdwl",
+          "E_coul",
+          "PotEng"
+        ],
+        "rows": [
+          [
+            0.0,
+            0.0,
+            1.9973897987690457,
+            2.6635236505453572,
+            4.385452098008894,
+            1.2020396301849,
+            1.9259120675081605,
+            12.174317245016358
+          ]
+        ],
+        "loop_complete": true
+      }
+    ],
+    "warning_lines": [
+      "WARNING: No fixes with time integration, atoms won't move"
+    ],
+    "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+    "equilibration_validation": "not_performed",
+    "finished_utc": "2026-11-06T22:49:55.482944+00:00",
+    "elapsed_seconds": 0.5344274140006746
+  },
+  "backend_numerical_diagnostics": {
+    "kind": "near_planar_opls_backend_numerical_screen",
+    "screen_method": "absolute cross product of unit adjacent-plane normals",
+    "pinned_source_engine": "LAMMPS 22 Jul 2025 Update 4, dihedral_style opls",
+    "pinned_source_url": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/MOLECULE/dihedral_opls.cpp#L171-L180",
+    "observed_source_sine_threshold": 1e-05,
+    "threshold_scope": "observed in the cited pinned source; not guaranteed for other engine versions or builds",
+    "actual_engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+    "near_planar_dihedrals": [],
+    "interpretation": "The pinned OPLS implementation floors the sine used in derivative ratios near planar torsions; force differences can exceed roundoff while energies agree. This screen does not establish that another build uses the same numerical treatment.",
+    "reference_or_potential_modified": false,
+    "parity_tolerances_modified": false
+  },
+  "atom_ids": [
+    "repeat:0:atom:1",
+    "repeat:0:atom:2",
+    "repeat:1:atom:1",
+    "repeat:1:atom:2",
+    "cap:head:H",
+    "cap:tail:H",
+    "repeat:0:atom:1:H:0",
+    "repeat:0:atom:1:H:1",
+    "repeat:0:atom:2:H:0",
+    "repeat:0:atom:2:H:1",
+    "repeat:1:atom:1:H:0",
+    "repeat:1:atom:1:H:1",
+    "repeat:1:atom:2:H:0",
+    "repeat:1:atom:2:H:1"
+  ],
+  "engine_atom_identity": [
+    {
+      "engine_atom_id": 1,
+      "source_atom_id": "repeat:0:atom:1",
+      "source_atom_map": 1
+    },
+    {
+      "engine_atom_id": 2,
+      "source_atom_id": "repeat:0:atom:2",
+      "source_atom_map": 2
+    },
+    {
+      "engine_atom_id": 3,
+      "source_atom_id": "repeat:1:atom:1",
+      "source_atom_map": 3
+    },
+    {
+      "engine_atom_id": 4,
+      "source_atom_id": "repeat:1:atom:2",
+      "source_atom_map": 4
+    },
+    {
+      "engine_atom_id": 5,
+      "source_atom_id": "cap:head:H",
+      "source_atom_map": 5
+    },
+    {
+      "engine_atom_id": 6,
+      "source_atom_id": "cap:tail:H",
+      "source_atom_map": 6
+    },
+    {
+      "engine_atom_id": 7,
+      "source_atom_id": "repeat:0:atom:1:H:0",
+      "source_atom_map": 7
+    },
+    {
+      "engine_atom_id": 8,
+      "source_atom_id": "repeat:0:atom:1:H:1",
+      "source_atom_map": 8
+    },
+    {
+      "engine_atom_id": 9,
+      "source_atom_id": "repeat:0:atom:2:H:0",
+      "source_atom_map": 9
+    },
+    {
+      "engine_atom_id": 10,
+      "source_atom_id": "repeat:0:atom:2:H:1",
+      "source_atom_map": 10
+    },
+    {
+      "engine_atom_id": 11,
+      "source_atom_id": "repeat:1:atom:1:H:0",
+      "source_atom_map": 11
+    },
+    {
+      "engine_atom_id": 12,
+      "source_atom_id": "repeat:1:atom:1:H:1",
+      "source_atom_map": 12
+    },
+    {
+      "engine_atom_id": 13,
+      "source_atom_id": "repeat:1:atom:2:H:0",
+      "source_atom_map": 13
+    },
+    {
+      "engine_atom_id": 14,
+      "source_atom_id": "repeat:1:atom:2:H:1",
+      "source_atom_map": 14
+    }
+  ],
+  "source_graph_sha256": "db360039fdb564553e2fe18261cc2672ecdb78b92aebcbb47fcb4632b7d8f754",
+  "assignment_canonical_sha256": "3c12ac2c9d9b5199af3eb1e43c0cbfeec992d4b29925dcec77f217e386bee432",
+  "source_snapshot": {
+    "commit": "820db9e499e4edc7f0dc734e6baeb0e9c3f87859",
+    "files": {
+      "ffbonded.itp": {
+        "bytes": 209608,
+        "git_blob_sha": "944e9c82913333def13ab6b17a7bb5d8248016fc",
+        "sha256": "145e6924f52fae7e93108fa3d674f31a53aea10c80b13dd89abf0b011adfd4fa",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp"
+      },
+      "ffnonbonded.itp": {
+        "bytes": 62929,
+        "git_blob_sha": "20e5b31d9562f4c368c3b9ece318ed5892712e5b",
+        "sha256": "fdf072dac9900c039b58e21323ce621b2112dc86c46a4b5e49e1398ae5d3b9f0",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp"
+      },
+      "forcefield.itp": {
+        "bytes": 862,
+        "git_blob_sha": "e69c4728d7117662a32fa392409e751ea6caf03d",
+        "sha256": "6eb8f0d08684e1ac6f525bb323eae75ed197b2980ddfde975a24ca1a8c931d06",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp"
+      }
+    },
+    "interpretation": "Selected numerical CT/HC facts transcribed and converted independently; no upstream workflow source is vendored.",
+    "license_context": "The upstream repository provides LGPL-2.1 text. These selected numerical facts have attribution; this is not a license statement covering every OPLS variant.",
+    "paper": "https://doi.org/10.1021/ja9621760",
+    "parameter_family": "GROMACS v2025.3 distributed OPLS-AA alkane subset, including November 1999 HC-CT-CT-HC update",
+    "repository": "https://github.com/gromacs/gromacs",
+    "tag": "v2025.3"
+  },
+  "input_files": {
+    "input.lammps_sha256": "2e63c49cfe04dacf8445a01cca317ee7980a608a450885837d45fec376fe67a1",
+    "system.data_sha256": "f37c08f76bbcc5515731a25a6adb243a2657a96f52426f3c48d1e9037bf040a5"
+  },
+  "md_integration_steps": 0,
+  "trajectory_production_performed": false,
+  "equilibrium_status": "not_assessed",
+  "force_field_physical_accuracy": "not_assessed",
+  "material_property_validation": "not_performed",
+  "engine_energy_components_kj_mol": {
+    "bond": 8.357078918049687,
+    "angle": 11.144182953881774,
+    "dihedral": 18.348731578069213,
+    "lj": 5.029333812693621,
+    "coulomb": 8.058016090454144,
+    "total": 50.93734335314844
+  },
+  "engine_forces_kj_mol_angstrom": [
+    [
+      60.948172347347324,
+      132.97223312456777,
+      -23.316049017450766
+    ],
+    [
+      102.64085319701682,
+      -18.858175614557425,
+      96.0588070353331
+    ],
+    [
+      34.03619905469686,
+      -83.83109102589796,
+      -31.630684956106006
+    ],
+    [
+      -50.06056208115136,
+      35.046581531292944,
+      -39.75753703480295
+    ],
+    [
+      -10.628027488310604,
+      -38.46301153850238,
+      -52.22749872719258
+    ],
+    [
+      -34.32338435294055,
+      -19.705708956421468,
+      3.953098011200562
+    ],
+    [
+      -43.71209535471419,
+      -85.08310240982458,
+      52.16489413079972
+    ],
+    [
+      22.55228280417548,
+      0.3247646652699845,
+      18.79267444868121
+    ],
+    [
+      -22.179072134039334,
+      36.76136423293185,
+      -87.98496694870359
+    ],
+    [
+      -39.99672588702978,
+      -22.795756074097287,
+      28.927592684747488
+    ],
+    [
+      -27.458297383375474,
+      -15.619884337096313,
+      56.065356463533455
+    ],
+    [
+      -28.954955734217904,
+      70.48574346575248,
+      -66.01798065379413
+    ],
+    [
+      31.423430142488662,
+      -17.395106610711196,
+      61.79888350210149
+    ],
+    [
+      5.712182870054067,
+      26.161149547293608,
+      -16.826588938346976
+    ]
+  ],
+  "energy_component_abs_errors_kj_mol": {
+    "bond": 0.0,
+    "angle": 1.7763568394002505e-15,
+    "dihedral": 0.0,
+    "lj": 2.6645352591003757e-15,
+    "coulomb": 1.7763568394002505e-15,
+    "total": 0.0
+  },
+  "max_force_component_abs_error_kj_mol_angstrom": 1.6342482922482304e-13,
+  "rms_force_component_error_kj_mol_angstrom": 4.657896515550281e-14,
+  "atom_and_coordinate_identity": "passed",
+  "public_record_sanitization": {
+    "changes": [
+      "engine_run.run_directory replaced with a non-host label",
+      "engine_run.executable reduced to basename; executable hash retained",
+      "engine_run.command executable reduced to basename",
+      "incidental engine-help host diagnostic omitted"
+    ],
+    "scope": "Only host-specific paths and incidental help diagnostics are replaced. Scientific inputs, actual engine identity/version/hash and raw artifact hashes are retained.",
+    "raw_record_location": "separate private_engine_runs case directory; not part of public case records"
+  },
+  "independent_balance_checks": {
+    "reference": {
+      "energy_component_sum_error_kj_mol": 0.0,
+      "net_force_kj_mol_angstrom": [
+        9.50350909079134e-14,
+        9.631184738623233e-14,
+        2.4424906541753444e-14
+      ],
+      "net_force_norm_kj_mol_angstrom": 1.3749260529351266e-13,
+      "net_torque_about_centroid_kj_mol": [
+        3.2862601528904634e-14,
+        -2.3092638912203256e-14,
+        -1.1546319456101628e-14
+      ],
+      "net_torque_norm_kj_mol": 4.1791602555529266e-14
+    },
+    "engine": {
+      "energy_component_sum_error_kj_mol": 0.0,
+      "net_force_kj_mol_angstrom": [
+        2.042810365310288e-14,
+        2.0872192862952943e-14,
+        3.8191672047105385e-14
+      ],
+      "net_force_norm_kj_mol_angstrom": 4.807868204853238e-14,
+      "net_torque_about_centroid_kj_mol": [
+        -1.3322676295501878e-14,
+        -4.440892098500626e-15,
+        5.417888360170764e-14
+      ],
+      "net_torque_norm_kj_mol": 5.5969336735686246e-14
+    }
+  }
+}

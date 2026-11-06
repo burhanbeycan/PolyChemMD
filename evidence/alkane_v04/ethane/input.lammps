@@ -1,0 +1,21 @@
+# Isolated assigned-force-field energy/force check; no MD integration.
+clear
+units real
+atom_style full
+boundary f f f
+bond_style harmonic
+angle_style harmonic
+dihedral_style opls
+pair_style lj/cut/coul/cut 12
+pair_modify mix geometric shift no tail no
+dielectric 1.0
+special_bonds lj/coul 0.0 0.0 0.5
+read_data system.data
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check yes
+thermo 1
+thermo_style custom step temp ebond eangle edihed evdwl ecoul pe
+thermo_modify norm no format float %.17g
+run 0
+write_dump all custom forces.dump id x y z fx fy fz modify sort id format float %.17g
+print "POLYCHEMMD_RUN_COMPLETE"
