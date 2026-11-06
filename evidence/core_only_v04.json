@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "executed_dependency_absent_test_discovery",
+  "release": "0.4.0.dev0",
+  "invocation": "python -S; explicit source path; unittest discovery tests",
+  "tests_run": 243,
+  "tests_skipped": 46,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "rdkit_imported": false,
+  "numpy_imported": false,
+  "log_sha256": "e6f372a08408148aa19c4bf42df084b7f2038748cacf77d0421dc266c309d377",
+  "interpretation": "Same suite in dependency-absent mode, not additional independent material evidence."
+}

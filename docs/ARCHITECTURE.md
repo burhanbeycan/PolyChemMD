@@ -6,7 +6,7 @@ PolyChemMD is intended to become a general polymer chemistry and molecular-simul
 
 ## Implemented boundary
 
-The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, immutable geometry records, seeded RDKit ETKDGv3 coordinates, independent orthorhombic rigid cell packing, structure visualization exports, full Fourier-torsion analysis/conversion, assigned-parameter coverage, a bounded LAMMPS adapter and density diagnostics. A real reduced-unit LJ engine smoke was executed. It does not yet assign a production polymer force field, relax/equilibrate prepared polymer cells, run end-to-end polymer MD/QM, or provide experimentally validated polymer-property predictions. Geometry construction and process verification are separate from material validation.
+The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, immutable geometry records, seeded RDKit ETKDGv3 coordinates, independent orthorhombic rigid cell packing, structure visualization exports, full Fourier-torsion analysis/conversion, assigned-parameter coverage, sourced neutral n-alkane OPLS-AA assignment, an independent analytic energy/force reference, bounded LAMMPS smoke/single-point checks and density diagnostics. It does not yet assemble/relax/equilibrate fully assigned periodic polymer cells, run end-to-end polymer MD/QM, or provide experimentally validated polymer-property predictions. Graph, geometry, parameter identity and engine numerical parity are separate from material validation.
 
 `geometry.py` owns the dependency-free molecular coordinate contract.
 `builders/conformers.py` consumes validated linear graphs and invokes optional
@@ -14,6 +14,17 @@ RDKit only when requested; its own graph/lineage and 3D stereo checks surround
 that backend. `builders/packing.py` consumes immutable geometries without RDKit,
 using bounded rigid placements and a periodic all-pair audit. `io/xyz.py` exports
 viewing coordinates without converting supplied provenance into verified claims.
+
+`forcefields/alkane_parameters.json` contains only a selected, independently
+structured numerical subset with exact upstream source identity; no upstream
+workflow is imported. `alkanes.py` validates a neutral explicit n-alkane graph,
+assigns its fixed charges and enumerates the complete bonded/pair topology.
+Its serialized constructor rejects changes that would mislabel a modified
+assignment as the frozen model. `reference.py` evaluates explicit energy
+equations and their local analytic derivatives without a simulation engine.
+`engines/alkane.py` exports the same model and compares actual LAMMPS run-zero
+components and forces. Shared parameter values are intentional; independent
+numerical implementations test conventions/derivatives, not fitted accuracy.
 
 The names below describe architectural responsibilities; they do not assert that all listed Python classes or modules already exist.
 

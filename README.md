@@ -2,7 +2,7 @@
 
 Independent polymer chemistry simulation and property-analysis research project.
 
-**Release state: 0.3.0.dev0 — chemical graphs, coordinates and cell preparation; production polymer-property validation remains open.**
+**Release state: 0.4.0.dev0 — sourced n-alkane parameter assignment and isolated energy/force parity; bulk polymer-property validation remains open.**
 
 The long-term scope is a general-purpose connection from polymer chemistry and
 microstructure to quantum-informed parameterization, molecular dynamics,
@@ -29,11 +29,15 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 | Torsion descriptors | Grid extrema/barrier/minima and isolated-model Boltzmann bin probabilities; illustrative coefficients only |
 | LAMMPS torsion imports | Explicit real-unit Fourier and OPLS conversions with independent equation tests |
 | Parameter contracts and coverage | Units, forms, provenance, exclusions and 1-4 scaling; assigned-type completeness, not chemical atom typing or force-field accuracy |
+| Restricted chemical atom typing | Neutral explicit n-alkanes: CH3/CH2/HC types, complete bonds/angles/all proper four-atom paths and shortest-path pair scaling; unsupported chemistry fails |
+| Sourced fixed-charge parameter assignment | Frozen GROMACS v2025.3 OPLS-AA CT/HC numerical subset with per-type source lines and hashes; empirical charges, no new QM charge fitting |
+| Independent energy/force reference | Original local analytic differentiation of harmonic, Fourier, LJ and Coulomb equations; isolated, unshifted finite-cutoff model |
+| LAMMPS energy/force verification | Generated full-atom input, run-zero single points, strict identity/parser checks and component/force comparison; no relaxation or property validation |
 | LAMMPS subprocess adapter | Bounded execution, exclusive run directory, output hashes and thermo checks; real reduced-unit LJ smoke executed |
 | Density analysis | Physical-unit conversion and conditional block diagnostics; no polymer equilibrium or external validation claim |
 | Dependency inspection and CLI | Implemented; presence inspection does not execute or validate engines |
 | Property catalogue | 19 planned material-property families; the catalogue is not an executable property engine |
-| Production atom typing, charge assignment and force-field relaxation | Planned |
+| Broader chemical typing, periodic bulk parameter assembly and force-field relaxation | Planned |
 | End-to-end polymer MD and QM protocols | Planned |
 | Experimental validation and publication benchmarks | Planned; no performance or material-property result is claimed |
 
@@ -87,6 +91,31 @@ The output directory must be new. The script also generates finite PE, PVDF and
 PS repeat-graph conformers; their tacticity/phase is not inferred. Actual example
 records and their limitations are in [geometry evidence](evidence/geometry_v03/README.md).
 
+Assign the supported force field and inspect an isolated single point:
+
+```bash
+polychemmd parameterize-alkane artifacts/pe-conformer.json --output artifacts/assigned-pe.json
+polychemmd alkane-energy artifacts/pe-conformer.json --output artifacts/pe-energy.json
+polychemmd alkane-lammps artifacts/pe-conformer.json --run-dir artifacts/pe-singlepoint-plan --plan --output artifacts/pe-plan.json
+```
+
+The plan writes no engine directory and runs nothing. Omit `--plan` to execute
+the bounded run-zero comparison with an installed LAMMPS. The actual three-case
+verification recipe (ethane, butane, decane) is:
+
+```bash
+python -m pip install -e '.[chemistry,md-smoke]'
+OMP_NUM_THREADS=1 UCX_TLS=self python scripts/verify_alkane_v04.py --output-dir artifacts/alkane-v04
+```
+
+Use a new output directory. See [assignment](docs/ALKANE_ASSIGNMENT.md),
+[reference equations](docs/ENERGY_FORCE_REFERENCE.md) and
+[LAMMPS parity](docs/ALKANE_LAMMPS.md). This subset excludes branches, rings,
+ions, heteroatoms and labelled isotopes. Its model is tied to an exact upstream
+parameter snapshot; it is not an assertion that every OPLS-AA release is identical.
+The finite-cutoff, nonperiodic verification model is separate from a bulk MD
+protocol with independently chosen long-range treatment and sampling.
+
 For the separately installed Linux/x86-64 engine smoke environment:
 
 ```bash
@@ -130,8 +159,10 @@ are kJ/mol; imported force-field conventions require explicit conversion.
 Each step needs executed evidence. Graph verification and a real process smoke
 test do not establish a polymer production MD protocol or experimental
 predictivity. TASK-006A now supplies bounded coordinate/cell preparation.
-TASK-006 remains open until production parameterization, sampling and external
-comparison are complete; TASK-006B is the next bounded milestone.
+TASK-006B adds attributed parameter assignment and engine energy/force parity for
+the restricted n-alkane graph. TASK-006 remains open until periodic model
+assembly, production treatment, sampling and external comparison are complete.
+The next bounded step is TASK-006C1 periodic parameter assembly and protocol preparation.
 
 ## Reproducibility and dependencies
 

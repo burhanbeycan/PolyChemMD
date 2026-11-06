@@ -130,3 +130,57 @@ TASK-006A is complete within its documented bounded geometry scope. TASK-006B
 (production parameterization) and TASK-006C (actual polymer density validation)
 remain open. Hosted Python 3.11/3.12 and real-engine regression status is reported
 by GitHub checks separately from these executed local records.
+
+## Sourced n-alkane assignment and parity v0.4 — executed milestone
+
+Executed 7 November 2026 in Türkiye (6 November UTC), Linux, Python 3.12.14.
+
+- Offline editable installation of `0.4.0.dev0` succeeded.
+- **243 unit/contract tests passed, zero skipped**. New checks cover source-unit
+  and RB/Fourier conversions, complete n-alkane graph typing, charges and pair
+  scaling, analytical derivatives against independent formulas/finite differences,
+  strict engine data/force parsing, malformed/tampered assignments, failed
+  comparisons and the pinned backend's near-planar numerical screen. See
+  [evidence/tests_v04.json](evidence/tests_v04.json).
+- Dependency-absent `python -S` discovery: **197 passed, 46 intended skips**;
+  RDKit and NumPy were not imported. The same suite is recorded in
+  [evidence/core_only_v04.json](evidence/core_only_v04.json), not counted as a
+  second set of independent physical-validation cases.
+- A regular wheel was built offline and imported from a separate temporary
+  directory under `python -S`. The wheel's packaged alkane JSON loaded and its
+  own code assigned/evaluated 32 explicit atoms without source-module paths,
+  RDKit or NumPy. See [evidence/wheel_v04.json](evidence/wheel_v04.json).
+- The exact GROMACS v2025.3 CT/HC source snapshot was verified against actual
+  upstream Git blobs. Source SHA-256 hashes, pinned rows, units and conversion
+  rules accompany the parameter definitions. See
+  [the numerical source audit](docs/PARAMETER_SOURCE_AUDIT.md).
+- `scripts/verify_alkane_v04.py` executed actual LAMMPS run-zero single points
+  for ethane, butane and decane using the checked-in recipe. All separate
+  energy components and every force component passed the **predeclared**
+  absolute tolerances of 1e-6 kJ/mol and 1e-5 kJ/(mol angstrom).
+  [Actual inputs, raw scientific outputs and reports](evidence/alkane_v04/README.md)
+  retain sources, identities, coordinates and artifact/code hashes.
+- Maximum energy-component difference was 2.842170943040401e-14 kJ/mol.
+  Force differences were about 1.49e-13/1.63e-13 for ethane/butane and
+  **5.104751160445176e-6 kJ/(mol angstrom) for decane**. The latter is not
+  roundoff agreement: its nearly trans CCCC torsion activates the pinned
+  LAMMPS OPLS sine derivative safeguard. Independent selected-coordinate energy
+  finite differences supported the analytical reference; source inspection and
+  interaction localization identified the engine treatment. The fixture,
+  reference equations and tolerances were retained. Each parity record now
+  includes an informational, source/version-scoped geometric diagnostic.
+- Independent review found and fixed a frozen-model integrity issue: modified
+  serialized charges/parameters/topology/pair scales are rejected. Large finite
+  engine-force mismatches also persist a finite failed record rather than
+  overflowing the RMS diagnostic.
+
+These results establish parameter identity, conversion/derivative behavior and
+actual **isolated finite-cutoff** engine parity for supported neutral explicit
+n-alkanes. They do not establish a periodic production polymer model, relaxed
+geometry, equilibrium, bulk density, transport, QM charge fitting or experimental
+predictivity. Zero MD integration steps were performed in the parity recipe.
+TASK-006B is complete in its documented restricted scope; TASK-006C1 periodic
+assembly/protocol preparation and the complete density milestone remain open.
+
+Hosted Python 3.11/3.12 and actual-engine CI checks are separate from this local
+execution record; workflow configuration alone is not a successful check.

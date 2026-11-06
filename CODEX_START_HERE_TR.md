@@ -1,6 +1,6 @@
 # PolyChemMD: Codex'te geliştirmeye başlama
 
-Bu depo, bağımsız bir genel polimer hesaplama platformunun geliştirme çekirdeğidir. Sürüm 0.3; kayıt ve tekrar birimi doğrulama, lineer grafik oluşturma, tohum kontrollü üç boyutlu koordinatlar, periyodik rijit hücre paketleme, XYZ görüntüleme çıktıları, torsiyon dönüşümleri, parametre kapsam denetimi, LAMMPS süreç bağlantısı ve yoğunluk tanı analizlerini içerir. Üretim parametrelemesi, gevşetme/dengeleme ve doğrulanmış polimer MD/QM özellikleri henüz tamamlanmış değildir.
+Bu depo, bağımsız bir genel polimer hesaplama platformunun geliştirme çekirdeğidir. Sürüm 0.4; grafik/koordinat/hücre hazırlama katmanlarına ek olarak nötr lineer alkanlar için kaynaklandırılmış OPLS-AA tür/yük ataması, tam etkileşim topolojisi, analitik enerji/kuvvet hesabı ve gerçek LAMMPS tek-nokta karşılaştırması içerir. Genel kimyasal kapsam, periyodik üretim modeli, gevşetme/dengeleme ve doğrulanmış polimer MD/QM özellikleri henüz tamamlanmış değildir.
 
 ## 1. Mevcut depoyla çalışın
 
@@ -77,6 +77,19 @@ polychemmd export-xyz artifacts/pe-cell.json --output artifacts/pe-cell.xyz
 Bu yapılar başlangıç geometrileridir; üretim kuvvet alanı atanmış veya
 dengelenmiş bir polimer fazı değildir. Hücre yoğunluğu seçilen hacimden hesaplanır.
 
+Desteklenen lineer alkan geometrisi için parametre atama ve motor karşılaştırması:
+
+```bash
+polychemmd parameterize-alkane artifacts/pe-conformer.json --output artifacts/assigned-pe.json
+polychemmd alkane-energy artifacts/pe-conformer.json --output artifacts/pe-energy.json
+polychemmd alkane-lammps artifacts/pe-conformer.json --run-dir artifacts/pe-check-plan --plan
+```
+
+Son komuttaki `--plan` motoru çalıştırmaz. Gerçek karşılaştırma için LAMMPS
+kurulmuş olmalı; `--plan` kaldırıldığında yeni bir koşu dizininde sıfır entegrasyon
+adımlı tek-nokta hesabı yürütülür. Bu kontrol yalıtılmış ve sonlu kesimlidir;
+periyodik üretim protokolü veya deneysel doğruluk kanıtı değildir.
+
 Kurulum ortamı ağ erişimine ihtiyaç duyuyorsa kurulum adımında uygun bağımlılıklar sağlanmalıdır. Derleme bağımlılıkları zaten kurulu olan ağsız bir geliştirme ortamında şu kurulum kullanılabilir:
 
 ```bash
@@ -89,7 +102,7 @@ Ağsız test koşusunda yeni paket indirmeye bağımlı olmayın. README'deki ko
 
 ## 5. İşleri küçük ve ölçülebilir görevlere bölün
 
-`docs/TASKS.md` güncel durumun kaynağıdır. TASK-001–005 ve TASK-006A dar ve açıkça belirtilmiş kapsamlarıyla uygulanmıştır. Sonraki sıra TASK-006B gerçek üretim parametrelemesi ve TASK-006C uçtan uca polimer yoğunluğu doğrulamasıdır. Bütün özellik kataloğunu tek görevde istemeyin.
+`docs/TASKS.md` güncel durumun kaynağıdır. TASK-001–005, TASK-006A ve sınırlı n-alkan kapsamındaki TASK-006B uygulanmıştır. Sonraki adım TASK-006C1 periyodik parametreli hücre ve protokol hazırlığıdır; ardından gerçek örnekleme ve dış kaynaklarla yoğunluk doğrulaması gelir. Bütün özellik kataloğunu tek görevde istemeyin.
 
 Her görevde şunlar açık olsun:
 
@@ -108,10 +121,11 @@ PolyChemMD deposunda AGENTS.md, README.md, docs/ARCHITECTURE.md,
 docs/SCIENTIFIC_SPEC.md ve docs/TASKS.md belgelerini oku.
 
 Önce mevcut şema ve çalışan çekirdeği incele; uygulanmış özelliklerle
-planlananları ayır. TASK-006B kapsamında tek ve açıkça tanımlı bir kimya
-için kaynakları doğrulanmış üretim parametrelemesini geliştir. Kimyasal
-atom tipleme, kısmi yük ataması, bağ/açı/torsiyonlar, dışlamalar ve 1–4
-işlemlerini açıkça kaydet. Atom kimliklerini ve bağ yapısını koru.
+planlananları ayır. TASK-006C1 kapsamında desteklenen molekül atamalarını
+periyodik hücreye birleştir. Küresel/kaynak atom kimliklerini, bağları,
+görüntü bayraklarını ve 1–4 işlemlerini koru. Moleküller arası terimleri,
+kesim ve uzun menzilli elektrostatik seçimini açıkça tanımla; yalıtılmış
+tek-nokta modelini sessizce periyodik üretim modeli olarak kullanma.
 
 RadonPy veya başka bir polimer paketinin kaynak kodunu kopyalama,
 vendor etme veya çalışma zamanı bağımlılığı yapma. Genel kütüphaneler
@@ -121,12 +135,12 @@ Serbest monomerden polimer bağını oluşturan reaksiyon dönüşümü ile zate
 tanımlanmış tekrar birimlerini bağlamayı ayrı tut. Atom kimlikleri,
 bağ derecesi, formal yük, uç gruplar ve stereokimya korunmalı.
 
-Mevcut grafik, geometri ve paketleme testlerini koru. Parametrelerin
-birimlerini ve fonksiyonel biçimlerini birincil kaynaklardan doğrula;
-atanamayan kimyayı açık hatayla durdur. Analitik parametre demosunu
-üretim kuvvet alanı olarak kullanma. Enerji ve kuvvetleri bağımsız
-analitik örneklerle ve gerçek LAMMPS tek-nokta hesaplarıyla karşılaştır.
-Kısa kontrolleri üretim polimer yoğunluğu doğrulaması sayma.
+Mevcut grafik, geometri, atama ve enerji/kuvvet testlerini koru.
+Periyodik görüntüleri ve moleküller arası etkileşimleri bağımsız örneklerle
+ve gerçek motor hesaplarıyla denetle. Kaynaklandırılmış parametreleri
+ve seçilen toplu-faz modelini kaydet. Gevşetme/dengeleme protokolüne
+açık kaynak sınırı ve başarısız/yetersiz örnekleme durumları ekle.
+Uzun kampanyadan önce donanım/zaman bütçesini ve yakınsama ölçütlerini belirle.
 
 İlgili testleri gerçekten çalıştır ve komutları/sonuçları bildir.
 Yalnız gerçekten çalıştırılan motor hesaplarını bildir; üretim MD/QM

@@ -42,5 +42,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install -e '.[md-smoke]'
+      - run: python -m pip install -e '.[chemistry,md-smoke]'
       - run: polychemmd lammps-run examples/lammps_smoke.in --run-dir artifacts/lammps-ci --expect smoke.data --output artifacts/engine-result.json
+      - run: python scripts/verify_alkane_v04.py --output-dir artifacts/alkane-ci

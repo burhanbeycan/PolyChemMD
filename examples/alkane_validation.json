@@ -1,0 +1,17 @@
+{
+  "schema_version": "1",
+  "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+  "repeat_unit": {"label": "PE repeat graph for isolated alkane verification", "smiles": "[*:1]CC[*:2]", "head_map": 1, "tail_map": 2},
+  "head_cap": "H",
+  "tail_cap": "H",
+  "cases": [
+    {"name": "ethane", "degree_of_polymerization": 1, "seed": 12101},
+    {"name": "butane", "degree_of_polymerization": 2, "seed": 12102},
+    {"name": "decane", "degree_of_polymerization": 5, "seed": 12105}
+  ],
+  "cutoff_angstrom": 12.0,
+  "timeout_seconds_per_engine": 30.0,
+  "energy_abs_tol_kj_mol": 0.000001,
+  "force_abs_tol_kj_mol_angstrom": 0.00001,
+  "evidence_scope": "Isolated single-point numerical parity; zero MD integration steps; no bulk-density or experimental validation."
+}

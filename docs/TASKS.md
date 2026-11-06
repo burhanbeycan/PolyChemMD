@@ -11,9 +11,9 @@ These are repository task specifications, not claims that GitHub issues have alr
 | 003 | Implemented | Analytic energy checks for LAMMPS Fourier/OPLS conversions, not material parameter validation |
 | 004 | Implemented contract | Assigned-type coverage only; no chemical atom typing or production parameter set |
 | 005 | Implemented process adapter | Real reduced-unit LJ smoke, plus independent failure/parser tests |
-| 006 | Analysis and TASK-006A geometry preparation implemented; production workflow open | No validated polymer-density result exists |
+| 006 | Analysis, TASK-006A geometry and restricted TASK-006B parameter/parity layers implemented | No validated polymer-density result exists; periodic production workflow remains open |
 | 007 | Planned | No representation advantage or chemical-family benchmark claimed |
-| 008 | Development evidence audit implemented for v0.2/v0.3 | Machine-readable checks, geometry records and engine smoke; a complete scientific release/manuscript benchmark remains open |
+| 008 | Development evidence audit implemented for v0.2–v0.4 | Machine-readable geometry/parameter/engine checks; a complete scientific release/manuscript benchmark remains open |
 
 ## TASK-001 — Chemical contract and atom-lineage schema
 
@@ -80,6 +80,12 @@ The full milestone remains open:
   attributed sources or independently fitted references; demonstrate convention,
   energy/force and coverage checks. The analytic parameter-contract demo is not
   a production force field and must not be used as one.
+  **Implemented in v0.4 for neutral explicit n-alkanes:** exact sourced OPLS-AA
+  CT/HC numerical subset, CH3/CH2/H typing, fixed charges, all proper torsions,
+  exclusions/1–4 pairs, strict frozen-assignment identity, analytic energy/force
+  reference and actual isolated LAMMPS single-point parity. This is parameter
+  assignment and convention/implementation verification, not physical accuracy
+  validation or a complete periodic production protocol.
 - **TASK-006C:** actual polymer equilibration/production campaign, independent
   cells, observable-specific diagnostics and phase/state-matched comparison.
 
@@ -87,17 +93,18 @@ A reduced-unit LJ smoke test establishes engine execution, not any of these
 polymer-specific prerequisites. Density diagnostics accept only explicitly
 converted g/cm^3 and do not certify equilibrium.
 
-### Next bounded task — TASK-006B
+### Next bounded task — TASK-006C1
 
-Start with one precisely defined chemistry and an attributed parameter source.
-Implement chemical typing and charge assignment as separate explicit rules;
-retain per-atom/per-interaction source identity. Build complete bonded and
-nonbonded topology including exclusions and 1–4 treatment. Compare independent
-analytical energies/forces with actual LAMMPS single-point results before adding
-relaxation or production density. Missing or unsupported environments must stop
-preparation. Do not substitute the analytic parameter-contract demo for a
-physical force field. A successful small chemistry fixture does not establish
-transferability to polyurethane, ionized polymers or other chemical families.
+Assemble the supported per-molecule assignments into an actual periodic cell
+without losing global/source identities, images or pair conventions. Define and
+test periodic bonded images, nonbonded cutoff/long-range treatment, charge
+neutrality and inter-molecular terms against an independent reference or engine
+parity case. Record the selected bulk model rather than silently reusing the
+isolated truncated verification setup. Add an explicit relaxation/equilibration
+protocol with finite resources and honest failure/inconclusive states. A long
+density campaign needs a declared hardware/time budget and sampling gates;
+short energy/parity checks cannot close TASK-006C. Transferability beyond the
+supported n-alkane domain remains separate work.
 
 ## TASK-007 — Chemically conditioned torsion descriptors
 
