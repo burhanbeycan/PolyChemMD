@@ -1,0 +1,10 @@
+{
+  "style": "fourier",
+  "units": "real",
+  "m": 3,
+  "terms": [
+    {"k_kcal_mol": -0.4, "periodicity": 3, "phase_deg": -120.0},
+    {"k_kcal_mol": 1.7, "periodicity": 1, "phase_deg": 47.0},
+    {"k_kcal_mol": 0.0, "periodicity": 5, "phase_deg": 725.0}
+  ]
+}
