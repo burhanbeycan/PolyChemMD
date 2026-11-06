@@ -1,6 +1,6 @@
 # PolyChemMD: Codex'te geliştirmeye başlama
 
-Bu depo, bağımsız bir genel polimer hesaplama platformunun geliştirme çekirdeğidir. Sürüm 0.4; grafik/koordinat/hücre hazırlama katmanlarına ek olarak nötr lineer alkanlar için kaynaklandırılmış OPLS-AA tür/yük ataması, tam etkileşim topolojisi, analitik enerji/kuvvet hesabı ve gerçek LAMMPS tek-nokta karşılaştırması içerir. Genel kimyasal kapsam, periyodik üretim modeli, gevşetme/dengeleme ve doğrulanmış polimer MD/QM özellikleri henüz tamamlanmış değildir.
+Bu depo, bağımsız bir genel polimer hesaplama platformunun geliştirme çekirdeğidir. Sürüm 0.5; nötr lineer alkanlar için periyodik parametre birleştirme, açık Ewald modeli, bağımsız enerji/kuvvet karşılaştırması ve sınırlı gevşetme–NVT–NPT hazırlığı içerir. Genel kimyasal kapsam, yeterli üretim örneklemesi ve doğrulanmış polimer MD/QM özellikleri henüz tamamlanmış değildir. Kısa hazırlık koşuları denge veya yoğunluk doğrulaması sayılmaz.
 
 ## 1. Mevcut depoyla çalışın
 
@@ -90,6 +90,19 @@ kurulmuş olmalı; `--plan` kaldırıldığında yeni bir koşu dizininde sıfı
 adımlı tek-nokta hesabı yürütülür. Bu kontrol yalıtılmış ve sonlu kesimlidir;
 periyodik üretim protokolü veya deneysel doğruluk kanıtı değildir.
 
+Periyodik model ve sınırlı hazırlık için ayrı komutlar:
+
+```bash
+polychemmd parameterize-cell artifacts/pe-cell.json --output artifacts/assigned-cell.json
+polychemmd periodic-lammps artifacts/assigned-cell.json --run-dir artifacts/periodic-plan --plan
+polychemmd periodic-prepare artifacts/assigned-cell.json --protocol examples/periodic_protocol.json --run-dir artifacts/preparation-plan --plan
+```
+
+Planlar çalıştırma yapmaz. Gerçek motor koşusu için yeni bir dizinde `--plan`
+kaldırılır. Hazırlık çıktısı; minimizasyonun durma sebebini, gerçekleşen adımları,
+son hücre/kimlik kontrollerini ve örnekleme durumunu ayrı kaydeder. Sıcaklık veya
+basınç hedefinin verilmesi, kısa sürede bu hedeflere ulaşıldığını kanıtlamaz.
+
 Kurulum ortamı ağ erişimine ihtiyaç duyuyorsa kurulum adımında uygun bağımlılıklar sağlanmalıdır. Derleme bağımlılıkları zaten kurulu olan ağsız bir geliştirme ortamında şu kurulum kullanılabilir:
 
 ```bash
@@ -102,7 +115,7 @@ Ağsız test koşusunda yeni paket indirmeye bağımlı olmayın. README'deki ko
 
 ## 5. İşleri küçük ve ölçülebilir görevlere bölün
 
-`docs/TASKS.md` güncel durumun kaynağıdır. TASK-001–005, TASK-006A ve sınırlı n-alkan kapsamındaki TASK-006B uygulanmıştır. Sonraki adım TASK-006C1 periyodik parametreli hücre ve protokol hazırlığıdır; ardından gerçek örnekleme ve dış kaynaklarla yoğunluk doğrulaması gelir. Bütün özellik kataloğunu tek görevde istemeyin.
+`docs/TASKS.md` güncel durumun kaynağıdır. TASK-001–005, TASK-006A ve sınırlı n-alkan kapsamındaki TASK-006B/C1 uygulanmıştır. Sonraki adım TASK-006C2 durum/hazırlık/örnekleme protokolünün ölçülebilir kaynak bütçesiyle sınanmasıdır. Bağımsız hücreler ve uygun dış kaynaklarla karşılaştırma tam yoğunluk doğrulamasının parçasıdır. Bütün özellik kataloğunu tek görevde istemeyin.
 
 Her görevde şunlar açık olsun:
 
@@ -121,11 +134,11 @@ PolyChemMD deposunda AGENTS.md, README.md, docs/ARCHITECTURE.md,
 docs/SCIENTIFIC_SPEC.md ve docs/TASKS.md belgelerini oku.
 
 Önce mevcut şema ve çalışan çekirdeği incele; uygulanmış özelliklerle
-planlananları ayır. TASK-006C1 kapsamında desteklenen molekül atamalarını
-periyodik hücreye birleştir. Küresel/kaynak atom kimliklerini, bağları,
-görüntü bayraklarını ve 1–4 işlemlerini koru. Moleküller arası terimleri,
-kesim ve uzun menzilli elektrostatik seçimini açıkça tanımla; yalıtılmış
-tek-nokta modelini sessizce periyodik üretim modeli olarak kullanma.
+planlananları ayır. TASK-006C2 kapsamında tek ve açıkça tanımlı kimyasal
+sistem/faz/durum için hazırlık ve örnekleme protokolünü nitele. İlk pilotun
+düşük yoğunluklu dört oligomer ve 200 adımla sınırlı olduğunu dikkate al.
+Hücre/zincir büyüklüğü, başlangıç yoğunluğu, uzun menzilli işlemler,
+fiziksel süre, bağımsız tohumlar ve ölçülmüş donanım/zaman bütçesini belirle.
 
 RadonPy veya başka bir polimer paketinin kaynak kodunu kopyalama,
 vendor etme veya çalışma zamanı bağımlılığı yapma. Genel kütüphaneler
@@ -135,12 +148,12 @@ Serbest monomerden polimer bağını oluşturan reaksiyon dönüşümü ile zate
 tanımlanmış tekrar birimlerini bağlamayı ayrı tut. Atom kimlikleri,
 bağ derecesi, formal yük, uç gruplar ve stereokimya korunmalı.
 
-Mevcut grafik, geometri, atama ve enerji/kuvvet testlerini koru.
-Periyodik görüntüleri ve moleküller arası etkileşimleri bağımsız örneklerle
-ve gerçek motor hesaplarıyla denetle. Kaynaklandırılmış parametreleri
-ve seçilen toplu-faz modelini kaydet. Gevşetme/dengeleme protokolüne
-açık kaynak sınırı ve başarısız/yetersiz örnekleme durumları ekle.
-Uzun kampanyadan önce donanım/zaman bütçesini ve yakınsama ölçütlerini belirle.
+Mevcut grafik, geometri, atama, periyodik enerji/kuvvet ve protokol testlerini
+koru. Kaynak bütçesine uygun yeniden başlatılabilir durumlar ve özellik-bazlı
+tanılar ekle. Bağımsız hücreleri korelasyonlu karelerden ayır. Başarısız ve
+yetersiz örneklenmiş koşuları görünür tut. Parametre, kesim, süre ve hücre
+büyüklüğü duyarlılığını sınamadan; durum/fazı eşleşen dış karşılaştırma
+olmadan yoğunluğu doğrulanmış polimer tahmini olarak sunma.
 
 İlgili testleri gerçekten çalıştır ve komutları/sonuçları bildir.
 Yalnız gerçekten çalıştırılan motor hesaplarını bildir; üretim MD/QM

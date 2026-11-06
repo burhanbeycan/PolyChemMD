@@ -1,0 +1,1399 @@
+{
+  "kind": "periodic_assignment_summary",
+  "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+  "full_assignment_canonical_sha256": "2c984d6c57834d2134cd8b87f8f9ee4e1bb3b709c534971d9597bc96cb1bdb38",
+  "full_assignment_location": "private_validation_inputs; regenerate from public cell and frozen source model",
+  "parameter_set_canonical_sha256": "412b0edbedbd065a3afcd19f8da4c03af41c548a472072ddfa837a936cd81fb1",
+  "source_cell_canonical_sha256": "0d72b67d8b2524757cd98d5ed5f8798d239190d954f441600407f9c7fe0d4d05",
+  "source_snapshot": {
+    "commit": "820db9e499e4edc7f0dc734e6baeb0e9c3f87859",
+    "files": {
+      "ffbonded.itp": {
+        "bytes": 209608,
+        "git_blob_sha": "944e9c82913333def13ab6b17a7bb5d8248016fc",
+        "sha256": "145e6924f52fae7e93108fa3d674f31a53aea10c80b13dd89abf0b011adfd4fa",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp"
+      },
+      "ffnonbonded.itp": {
+        "bytes": 62929,
+        "git_blob_sha": "20e5b31d9562f4c368c3b9ece318ed5892712e5b",
+        "sha256": "fdf072dac9900c039b58e21323ce621b2112dc86c46a4b5e49e1398ae5d3b9f0",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp"
+      },
+      "forcefield.itp": {
+        "bytes": 862,
+        "git_blob_sha": "e69c4728d7117662a32fa392409e751ea6caf03d",
+        "sha256": "6eb8f0d08684e1ac6f525bb323eae75ed197b2980ddfde975a24ca1a8c931d06",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp"
+      }
+    },
+    "interpretation": "Selected numerical CT/HC facts transcribed and converted independently; no upstream workflow source is vendored.",
+    "license_context": "The upstream repository provides LGPL-2.1 text. These selected numerical facts have attribution; this is not a license statement covering every OPLS variant.",
+    "paper": "https://doi.org/10.1021/ja9621760",
+    "parameter_family": "GROMACS v2025.3 distributed OPLS-AA alkane subset, including November 1999 HC-CT-CT-HC update",
+    "repository": "https://github.com/gromacs/gromacs",
+    "tag": "v2025.3"
+  },
+  "box": {
+    "lengths_angstrom": [
+      24.0,
+      24.0,
+      24.0
+    ],
+    "origin_angstrom": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "periodic": [
+      true,
+      true,
+      true
+    ],
+    "volume_angstrom3": 13824.0
+  },
+  "independent_topology_audit": {
+    "status": "passed",
+    "atom_count": 128,
+    "molecule_count": 4,
+    "interaction_counts": {
+      "angles": 240,
+      "bonds": 124,
+      "dihedrals": 324,
+      "impropers": 0
+    },
+    "atom_type_counts": {
+      "opls_135": 8,
+      "opls_136": 32,
+      "opls_140": 88
+    },
+    "pair_counts": {
+      "excluded": 364,
+      "scaled_14": 324,
+      "intramolecular_unscaled": 1296,
+      "intermolecular": 6144
+    },
+    "total_partial_charge_e": 0.0,
+    "maximum_image_reconstruction_error_angstrom": 1.7763568394002505e-15,
+    "independent_pair_distance_method": "breadth-first search of global covalent graph"
+  },
+  "atom_identity_map": [
+    {
+      "engine_id": 1,
+      "cell_atom_id": "molecule:0/repeat:0:atom:1",
+      "atom_map": 1,
+      "source_atom_id": "repeat:0:atom:1",
+      "source_atom_map": 1,
+      "molecule_index": 0,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 2,
+      "cell_atom_id": "molecule:0/repeat:0:atom:2",
+      "atom_map": 2,
+      "source_atom_id": "repeat:0:atom:2",
+      "source_atom_map": 2,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 3,
+      "cell_atom_id": "molecule:0/repeat:1:atom:1",
+      "atom_map": 3,
+      "source_atom_id": "repeat:1:atom:1",
+      "source_atom_map": 3,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 4,
+      "cell_atom_id": "molecule:0/repeat:1:atom:2",
+      "atom_map": 4,
+      "source_atom_id": "repeat:1:atom:2",
+      "source_atom_map": 4,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 5,
+      "cell_atom_id": "molecule:0/repeat:2:atom:1",
+      "atom_map": 5,
+      "source_atom_id": "repeat:2:atom:1",
+      "source_atom_map": 5,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 6,
+      "cell_atom_id": "molecule:0/repeat:2:atom:2",
+      "atom_map": 6,
+      "source_atom_id": "repeat:2:atom:2",
+      "source_atom_map": 6,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 7,
+      "cell_atom_id": "molecule:0/repeat:3:atom:1",
+      "atom_map": 7,
+      "source_atom_id": "repeat:3:atom:1",
+      "source_atom_map": 7,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 8,
+      "cell_atom_id": "molecule:0/repeat:3:atom:2",
+      "atom_map": 8,
+      "source_atom_id": "repeat:3:atom:2",
+      "source_atom_map": 8,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 9,
+      "cell_atom_id": "molecule:0/repeat:4:atom:1",
+      "atom_map": 9,
+      "source_atom_id": "repeat:4:atom:1",
+      "source_atom_map": 9,
+      "molecule_index": 0,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 10,
+      "cell_atom_id": "molecule:0/repeat:4:atom:2",
+      "atom_map": 10,
+      "source_atom_id": "repeat:4:atom:2",
+      "source_atom_map": 10,
+      "molecule_index": 0,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 11,
+      "cell_atom_id": "molecule:0/cap:head:H",
+      "atom_map": 11,
+      "source_atom_id": "cap:head:H",
+      "source_atom_map": 11,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 12,
+      "cell_atom_id": "molecule:0/cap:tail:H",
+      "atom_map": 12,
+      "source_atom_id": "cap:tail:H",
+      "source_atom_map": 12,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 13,
+      "cell_atom_id": "molecule:0/repeat:0:atom:1:H:0",
+      "atom_map": 13,
+      "source_atom_id": "repeat:0:atom:1:H:0",
+      "source_atom_map": 13,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 14,
+      "cell_atom_id": "molecule:0/repeat:0:atom:1:H:1",
+      "atom_map": 14,
+      "source_atom_id": "repeat:0:atom:1:H:1",
+      "source_atom_map": 14,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 15,
+      "cell_atom_id": "molecule:0/repeat:0:atom:2:H:0",
+      "atom_map": 15,
+      "source_atom_id": "repeat:0:atom:2:H:0",
+      "source_atom_map": 15,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 16,
+      "cell_atom_id": "molecule:0/repeat:0:atom:2:H:1",
+      "atom_map": 16,
+      "source_atom_id": "repeat:0:atom:2:H:1",
+      "source_atom_map": 16,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 17,
+      "cell_atom_id": "molecule:0/repeat:1:atom:1:H:0",
+      "atom_map": 17,
+      "source_atom_id": "repeat:1:atom:1:H:0",
+      "source_atom_map": 17,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 18,
+      "cell_atom_id": "molecule:0/repeat:1:atom:1:H:1",
+      "atom_map": 18,
+      "source_atom_id": "repeat:1:atom:1:H:1",
+      "source_atom_map": 18,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 19,
+      "cell_atom_id": "molecule:0/repeat:1:atom:2:H:0",
+      "atom_map": 19,
+      "source_atom_id": "repeat:1:atom:2:H:0",
+      "source_atom_map": 19,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 20,
+      "cell_atom_id": "molecule:0/repeat:1:atom:2:H:1",
+      "atom_map": 20,
+      "source_atom_id": "repeat:1:atom:2:H:1",
+      "source_atom_map": 20,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 21,
+      "cell_atom_id": "molecule:0/repeat:2:atom:1:H:0",
+      "atom_map": 21,
+      "source_atom_id": "repeat:2:atom:1:H:0",
+      "source_atom_map": 21,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 22,
+      "cell_atom_id": "molecule:0/repeat:2:atom:1:H:1",
+      "atom_map": 22,
+      "source_atom_id": "repeat:2:atom:1:H:1",
+      "source_atom_map": 22,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 23,
+      "cell_atom_id": "molecule:0/repeat:2:atom:2:H:0",
+      "atom_map": 23,
+      "source_atom_id": "repeat:2:atom:2:H:0",
+      "source_atom_map": 23,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 24,
+      "cell_atom_id": "molecule:0/repeat:2:atom:2:H:1",
+      "atom_map": 24,
+      "source_atom_id": "repeat:2:atom:2:H:1",
+      "source_atom_map": 24,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 25,
+      "cell_atom_id": "molecule:0/repeat:3:atom:1:H:0",
+      "atom_map": 25,
+      "source_atom_id": "repeat:3:atom:1:H:0",
+      "source_atom_map": 25,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 26,
+      "cell_atom_id": "molecule:0/repeat:3:atom:1:H:1",
+      "atom_map": 26,
+      "source_atom_id": "repeat:3:atom:1:H:1",
+      "source_atom_map": 26,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 27,
+      "cell_atom_id": "molecule:0/repeat:3:atom:2:H:0",
+      "atom_map": 27,
+      "source_atom_id": "repeat:3:atom:2:H:0",
+      "source_atom_map": 27,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 28,
+      "cell_atom_id": "molecule:0/repeat:3:atom:2:H:1",
+      "atom_map": 28,
+      "source_atom_id": "repeat:3:atom:2:H:1",
+      "source_atom_map": 28,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 29,
+      "cell_atom_id": "molecule:0/repeat:4:atom:1:H:0",
+      "atom_map": 29,
+      "source_atom_id": "repeat:4:atom:1:H:0",
+      "source_atom_map": 29,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 30,
+      "cell_atom_id": "molecule:0/repeat:4:atom:1:H:1",
+      "atom_map": 30,
+      "source_atom_id": "repeat:4:atom:1:H:1",
+      "source_atom_map": 30,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 31,
+      "cell_atom_id": "molecule:0/repeat:4:atom:2:H:0",
+      "atom_map": 31,
+      "source_atom_id": "repeat:4:atom:2:H:0",
+      "source_atom_map": 31,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 32,
+      "cell_atom_id": "molecule:0/repeat:4:atom:2:H:1",
+      "atom_map": 32,
+      "source_atom_id": "repeat:4:atom:2:H:1",
+      "source_atom_map": 32,
+      "molecule_index": 0,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 33,
+      "cell_atom_id": "molecule:1/repeat:0:atom:1",
+      "atom_map": 33,
+      "source_atom_id": "repeat:0:atom:1",
+      "source_atom_map": 1,
+      "molecule_index": 1,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 34,
+      "cell_atom_id": "molecule:1/repeat:0:atom:2",
+      "atom_map": 34,
+      "source_atom_id": "repeat:0:atom:2",
+      "source_atom_map": 2,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 35,
+      "cell_atom_id": "molecule:1/repeat:1:atom:1",
+      "atom_map": 35,
+      "source_atom_id": "repeat:1:atom:1",
+      "source_atom_map": 3,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 36,
+      "cell_atom_id": "molecule:1/repeat:1:atom:2",
+      "atom_map": 36,
+      "source_atom_id": "repeat:1:atom:2",
+      "source_atom_map": 4,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 37,
+      "cell_atom_id": "molecule:1/repeat:2:atom:1",
+      "atom_map": 37,
+      "source_atom_id": "repeat:2:atom:1",
+      "source_atom_map": 5,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 38,
+      "cell_atom_id": "molecule:1/repeat:2:atom:2",
+      "atom_map": 38,
+      "source_atom_id": "repeat:2:atom:2",
+      "source_atom_map": 6,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 39,
+      "cell_atom_id": "molecule:1/repeat:3:atom:1",
+      "atom_map": 39,
+      "source_atom_id": "repeat:3:atom:1",
+      "source_atom_map": 7,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 40,
+      "cell_atom_id": "molecule:1/repeat:3:atom:2",
+      "atom_map": 40,
+      "source_atom_id": "repeat:3:atom:2",
+      "source_atom_map": 8,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 41,
+      "cell_atom_id": "molecule:1/repeat:4:atom:1",
+      "atom_map": 41,
+      "source_atom_id": "repeat:4:atom:1",
+      "source_atom_map": 9,
+      "molecule_index": 1,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 42,
+      "cell_atom_id": "molecule:1/repeat:4:atom:2",
+      "atom_map": 42,
+      "source_atom_id": "repeat:4:atom:2",
+      "source_atom_map": 10,
+      "molecule_index": 1,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 43,
+      "cell_atom_id": "molecule:1/cap:head:H",
+      "atom_map": 43,
+      "source_atom_id": "cap:head:H",
+      "source_atom_map": 11,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 44,
+      "cell_atom_id": "molecule:1/cap:tail:H",
+      "atom_map": 44,
+      "source_atom_id": "cap:tail:H",
+      "source_atom_map": 12,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 45,
+      "cell_atom_id": "molecule:1/repeat:0:atom:1:H:0",
+      "atom_map": 45,
+      "source_atom_id": "repeat:0:atom:1:H:0",
+      "source_atom_map": 13,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 46,
+      "cell_atom_id": "molecule:1/repeat:0:atom:1:H:1",
+      "atom_map": 46,
+      "source_atom_id": "repeat:0:atom:1:H:1",
+      "source_atom_map": 14,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 47,
+      "cell_atom_id": "molecule:1/repeat:0:atom:2:H:0",
+      "atom_map": 47,
+      "source_atom_id": "repeat:0:atom:2:H:0",
+      "source_atom_map": 15,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 48,
+      "cell_atom_id": "molecule:1/repeat:0:atom:2:H:1",
+      "atom_map": 48,
+      "source_atom_id": "repeat:0:atom:2:H:1",
+      "source_atom_map": 16,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 49,
+      "cell_atom_id": "molecule:1/repeat:1:atom:1:H:0",
+      "atom_map": 49,
+      "source_atom_id": "repeat:1:atom:1:H:0",
+      "source_atom_map": 17,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 50,
+      "cell_atom_id": "molecule:1/repeat:1:atom:1:H:1",
+      "atom_map": 50,
+      "source_atom_id": "repeat:1:atom:1:H:1",
+      "source_atom_map": 18,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 51,
+      "cell_atom_id": "molecule:1/repeat:1:atom:2:H:0",
+      "atom_map": 51,
+      "source_atom_id": "repeat:1:atom:2:H:0",
+      "source_atom_map": 19,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 52,
+      "cell_atom_id": "molecule:1/repeat:1:atom:2:H:1",
+      "atom_map": 52,
+      "source_atom_id": "repeat:1:atom:2:H:1",
+      "source_atom_map": 20,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 53,
+      "cell_atom_id": "molecule:1/repeat:2:atom:1:H:0",
+      "atom_map": 53,
+      "source_atom_id": "repeat:2:atom:1:H:0",
+      "source_atom_map": 21,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 54,
+      "cell_atom_id": "molecule:1/repeat:2:atom:1:H:1",
+      "atom_map": 54,
+      "source_atom_id": "repeat:2:atom:1:H:1",
+      "source_atom_map": 22,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 55,
+      "cell_atom_id": "molecule:1/repeat:2:atom:2:H:0",
+      "atom_map": 55,
+      "source_atom_id": "repeat:2:atom:2:H:0",
+      "source_atom_map": 23,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 56,
+      "cell_atom_id": "molecule:1/repeat:2:atom:2:H:1",
+      "atom_map": 56,
+      "source_atom_id": "repeat:2:atom:2:H:1",
+      "source_atom_map": 24,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 57,
+      "cell_atom_id": "molecule:1/repeat:3:atom:1:H:0",
+      "atom_map": 57,
+      "source_atom_id": "repeat:3:atom:1:H:0",
+      "source_atom_map": 25,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 58,
+      "cell_atom_id": "molecule:1/repeat:3:atom:1:H:1",
+      "atom_map": 58,
+      "source_atom_id": "repeat:3:atom:1:H:1",
+      "source_atom_map": 26,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 59,
+      "cell_atom_id": "molecule:1/repeat:3:atom:2:H:0",
+      "atom_map": 59,
+      "source_atom_id": "repeat:3:atom:2:H:0",
+      "source_atom_map": 27,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 60,
+      "cell_atom_id": "molecule:1/repeat:3:atom:2:H:1",
+      "atom_map": 60,
+      "source_atom_id": "repeat:3:atom:2:H:1",
+      "source_atom_map": 28,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 61,
+      "cell_atom_id": "molecule:1/repeat:4:atom:1:H:0",
+      "atom_map": 61,
+      "source_atom_id": "repeat:4:atom:1:H:0",
+      "source_atom_map": 29,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 62,
+      "cell_atom_id": "molecule:1/repeat:4:atom:1:H:1",
+      "atom_map": 62,
+      "source_atom_id": "repeat:4:atom:1:H:1",
+      "source_atom_map": 30,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 63,
+      "cell_atom_id": "molecule:1/repeat:4:atom:2:H:0",
+      "atom_map": 63,
+      "source_atom_id": "repeat:4:atom:2:H:0",
+      "source_atom_map": 31,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 64,
+      "cell_atom_id": "molecule:1/repeat:4:atom:2:H:1",
+      "atom_map": 64,
+      "source_atom_id": "repeat:4:atom:2:H:1",
+      "source_atom_map": 32,
+      "molecule_index": 1,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 65,
+      "cell_atom_id": "molecule:2/repeat:0:atom:1",
+      "atom_map": 65,
+      "source_atom_id": "repeat:0:atom:1",
+      "source_atom_map": 1,
+      "molecule_index": 2,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 66,
+      "cell_atom_id": "molecule:2/repeat:0:atom:2",
+      "atom_map": 66,
+      "source_atom_id": "repeat:0:atom:2",
+      "source_atom_map": 2,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 67,
+      "cell_atom_id": "molecule:2/repeat:1:atom:1",
+      "atom_map": 67,
+      "source_atom_id": "repeat:1:atom:1",
+      "source_atom_map": 3,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 68,
+      "cell_atom_id": "molecule:2/repeat:1:atom:2",
+      "atom_map": 68,
+      "source_atom_id": "repeat:1:atom:2",
+      "source_atom_map": 4,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 69,
+      "cell_atom_id": "molecule:2/repeat:2:atom:1",
+      "atom_map": 69,
+      "source_atom_id": "repeat:2:atom:1",
+      "source_atom_map": 5,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 70,
+      "cell_atom_id": "molecule:2/repeat:2:atom:2",
+      "atom_map": 70,
+      "source_atom_id": "repeat:2:atom:2",
+      "source_atom_map": 6,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 71,
+      "cell_atom_id": "molecule:2/repeat:3:atom:1",
+      "atom_map": 71,
+      "source_atom_id": "repeat:3:atom:1",
+      "source_atom_map": 7,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 72,
+      "cell_atom_id": "molecule:2/repeat:3:atom:2",
+      "atom_map": 72,
+      "source_atom_id": "repeat:3:atom:2",
+      "source_atom_map": 8,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 73,
+      "cell_atom_id": "molecule:2/repeat:4:atom:1",
+      "atom_map": 73,
+      "source_atom_id": "repeat:4:atom:1",
+      "source_atom_map": 9,
+      "molecule_index": 2,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 74,
+      "cell_atom_id": "molecule:2/repeat:4:atom:2",
+      "atom_map": 74,
+      "source_atom_id": "repeat:4:atom:2",
+      "source_atom_map": 10,
+      "molecule_index": 2,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 75,
+      "cell_atom_id": "molecule:2/cap:head:H",
+      "atom_map": 75,
+      "source_atom_id": "cap:head:H",
+      "source_atom_map": 11,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 76,
+      "cell_atom_id": "molecule:2/cap:tail:H",
+      "atom_map": 76,
+      "source_atom_id": "cap:tail:H",
+      "source_atom_map": 12,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 77,
+      "cell_atom_id": "molecule:2/repeat:0:atom:1:H:0",
+      "atom_map": 77,
+      "source_atom_id": "repeat:0:atom:1:H:0",
+      "source_atom_map": 13,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 78,
+      "cell_atom_id": "molecule:2/repeat:0:atom:1:H:1",
+      "atom_map": 78,
+      "source_atom_id": "repeat:0:atom:1:H:1",
+      "source_atom_map": 14,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 79,
+      "cell_atom_id": "molecule:2/repeat:0:atom:2:H:0",
+      "atom_map": 79,
+      "source_atom_id": "repeat:0:atom:2:H:0",
+      "source_atom_map": 15,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 80,
+      "cell_atom_id": "molecule:2/repeat:0:atom:2:H:1",
+      "atom_map": 80,
+      "source_atom_id": "repeat:0:atom:2:H:1",
+      "source_atom_map": 16,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 81,
+      "cell_atom_id": "molecule:2/repeat:1:atom:1:H:0",
+      "atom_map": 81,
+      "source_atom_id": "repeat:1:atom:1:H:0",
+      "source_atom_map": 17,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 82,
+      "cell_atom_id": "molecule:2/repeat:1:atom:1:H:1",
+      "atom_map": 82,
+      "source_atom_id": "repeat:1:atom:1:H:1",
+      "source_atom_map": 18,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 83,
+      "cell_atom_id": "molecule:2/repeat:1:atom:2:H:0",
+      "atom_map": 83,
+      "source_atom_id": "repeat:1:atom:2:H:0",
+      "source_atom_map": 19,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 84,
+      "cell_atom_id": "molecule:2/repeat:1:atom:2:H:1",
+      "atom_map": 84,
+      "source_atom_id": "repeat:1:atom:2:H:1",
+      "source_atom_map": 20,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 85,
+      "cell_atom_id": "molecule:2/repeat:2:atom:1:H:0",
+      "atom_map": 85,
+      "source_atom_id": "repeat:2:atom:1:H:0",
+      "source_atom_map": 21,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 86,
+      "cell_atom_id": "molecule:2/repeat:2:atom:1:H:1",
+      "atom_map": 86,
+      "source_atom_id": "repeat:2:atom:1:H:1",
+      "source_atom_map": 22,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 87,
+      "cell_atom_id": "molecule:2/repeat:2:atom:2:H:0",
+      "atom_map": 87,
+      "source_atom_id": "repeat:2:atom:2:H:0",
+      "source_atom_map": 23,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 88,
+      "cell_atom_id": "molecule:2/repeat:2:atom:2:H:1",
+      "atom_map": 88,
+      "source_atom_id": "repeat:2:atom:2:H:1",
+      "source_atom_map": 24,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 89,
+      "cell_atom_id": "molecule:2/repeat:3:atom:1:H:0",
+      "atom_map": 89,
+      "source_atom_id": "repeat:3:atom:1:H:0",
+      "source_atom_map": 25,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 90,
+      "cell_atom_id": "molecule:2/repeat:3:atom:1:H:1",
+      "atom_map": 90,
+      "source_atom_id": "repeat:3:atom:1:H:1",
+      "source_atom_map": 26,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 91,
+      "cell_atom_id": "molecule:2/repeat:3:atom:2:H:0",
+      "atom_map": 91,
+      "source_atom_id": "repeat:3:atom:2:H:0",
+      "source_atom_map": 27,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 92,
+      "cell_atom_id": "molecule:2/repeat:3:atom:2:H:1",
+      "atom_map": 92,
+      "source_atom_id": "repeat:3:atom:2:H:1",
+      "source_atom_map": 28,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 93,
+      "cell_atom_id": "molecule:2/repeat:4:atom:1:H:0",
+      "atom_map": 93,
+      "source_atom_id": "repeat:4:atom:1:H:0",
+      "source_atom_map": 29,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 94,
+      "cell_atom_id": "molecule:2/repeat:4:atom:1:H:1",
+      "atom_map": 94,
+      "source_atom_id": "repeat:4:atom:1:H:1",
+      "source_atom_map": 30,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 95,
+      "cell_atom_id": "molecule:2/repeat:4:atom:2:H:0",
+      "atom_map": 95,
+      "source_atom_id": "repeat:4:atom:2:H:0",
+      "source_atom_map": 31,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 96,
+      "cell_atom_id": "molecule:2/repeat:4:atom:2:H:1",
+      "atom_map": 96,
+      "source_atom_id": "repeat:4:atom:2:H:1",
+      "source_atom_map": 32,
+      "molecule_index": 2,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 97,
+      "cell_atom_id": "molecule:3/repeat:0:atom:1",
+      "atom_map": 97,
+      "source_atom_id": "repeat:0:atom:1",
+      "source_atom_map": 1,
+      "molecule_index": 3,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 98,
+      "cell_atom_id": "molecule:3/repeat:0:atom:2",
+      "atom_map": 98,
+      "source_atom_id": "repeat:0:atom:2",
+      "source_atom_map": 2,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 99,
+      "cell_atom_id": "molecule:3/repeat:1:atom:1",
+      "atom_map": 99,
+      "source_atom_id": "repeat:1:atom:1",
+      "source_atom_map": 3,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 100,
+      "cell_atom_id": "molecule:3/repeat:1:atom:2",
+      "atom_map": 100,
+      "source_atom_id": "repeat:1:atom:2",
+      "source_atom_map": 4,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 101,
+      "cell_atom_id": "molecule:3/repeat:2:atom:1",
+      "atom_map": 101,
+      "source_atom_id": "repeat:2:atom:1",
+      "source_atom_map": 5,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 102,
+      "cell_atom_id": "molecule:3/repeat:2:atom:2",
+      "atom_map": 102,
+      "source_atom_id": "repeat:2:atom:2",
+      "source_atom_map": 6,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 103,
+      "cell_atom_id": "molecule:3/repeat:3:atom:1",
+      "atom_map": 103,
+      "source_atom_id": "repeat:3:atom:1",
+      "source_atom_map": 7,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 104,
+      "cell_atom_id": "molecule:3/repeat:3:atom:2",
+      "atom_map": 104,
+      "source_atom_id": "repeat:3:atom:2",
+      "source_atom_map": 8,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 105,
+      "cell_atom_id": "molecule:3/repeat:4:atom:1",
+      "atom_map": 105,
+      "source_atom_id": "repeat:4:atom:1",
+      "source_atom_map": 9,
+      "molecule_index": 3,
+      "type_id": "opls_136",
+      "charge_e": -0.12
+    },
+    {
+      "engine_id": 106,
+      "cell_atom_id": "molecule:3/repeat:4:atom:2",
+      "atom_map": 106,
+      "source_atom_id": "repeat:4:atom:2",
+      "source_atom_map": 10,
+      "molecule_index": 3,
+      "type_id": "opls_135",
+      "charge_e": -0.18
+    },
+    {
+      "engine_id": 107,
+      "cell_atom_id": "molecule:3/cap:head:H",
+      "atom_map": 107,
+      "source_atom_id": "cap:head:H",
+      "source_atom_map": 11,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 108,
+      "cell_atom_id": "molecule:3/cap:tail:H",
+      "atom_map": 108,
+      "source_atom_id": "cap:tail:H",
+      "source_atom_map": 12,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 109,
+      "cell_atom_id": "molecule:3/repeat:0:atom:1:H:0",
+      "atom_map": 109,
+      "source_atom_id": "repeat:0:atom:1:H:0",
+      "source_atom_map": 13,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 110,
+      "cell_atom_id": "molecule:3/repeat:0:atom:1:H:1",
+      "atom_map": 110,
+      "source_atom_id": "repeat:0:atom:1:H:1",
+      "source_atom_map": 14,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 111,
+      "cell_atom_id": "molecule:3/repeat:0:atom:2:H:0",
+      "atom_map": 111,
+      "source_atom_id": "repeat:0:atom:2:H:0",
+      "source_atom_map": 15,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 112,
+      "cell_atom_id": "molecule:3/repeat:0:atom:2:H:1",
+      "atom_map": 112,
+      "source_atom_id": "repeat:0:atom:2:H:1",
+      "source_atom_map": 16,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 113,
+      "cell_atom_id": "molecule:3/repeat:1:atom:1:H:0",
+      "atom_map": 113,
+      "source_atom_id": "repeat:1:atom:1:H:0",
+      "source_atom_map": 17,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 114,
+      "cell_atom_id": "molecule:3/repeat:1:atom:1:H:1",
+      "atom_map": 114,
+      "source_atom_id": "repeat:1:atom:1:H:1",
+      "source_atom_map": 18,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 115,
+      "cell_atom_id": "molecule:3/repeat:1:atom:2:H:0",
+      "atom_map": 115,
+      "source_atom_id": "repeat:1:atom:2:H:0",
+      "source_atom_map": 19,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 116,
+      "cell_atom_id": "molecule:3/repeat:1:atom:2:H:1",
+      "atom_map": 116,
+      "source_atom_id": "repeat:1:atom:2:H:1",
+      "source_atom_map": 20,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 117,
+      "cell_atom_id": "molecule:3/repeat:2:atom:1:H:0",
+      "atom_map": 117,
+      "source_atom_id": "repeat:2:atom:1:H:0",
+      "source_atom_map": 21,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 118,
+      "cell_atom_id": "molecule:3/repeat:2:atom:1:H:1",
+      "atom_map": 118,
+      "source_atom_id": "repeat:2:atom:1:H:1",
+      "source_atom_map": 22,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 119,
+      "cell_atom_id": "molecule:3/repeat:2:atom:2:H:0",
+      "atom_map": 119,
+      "source_atom_id": "repeat:2:atom:2:H:0",
+      "source_atom_map": 23,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 120,
+      "cell_atom_id": "molecule:3/repeat:2:atom:2:H:1",
+      "atom_map": 120,
+      "source_atom_id": "repeat:2:atom:2:H:1",
+      "source_atom_map": 24,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 121,
+      "cell_atom_id": "molecule:3/repeat:3:atom:1:H:0",
+      "atom_map": 121,
+      "source_atom_id": "repeat:3:atom:1:H:0",
+      "source_atom_map": 25,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 122,
+      "cell_atom_id": "molecule:3/repeat:3:atom:1:H:1",
+      "atom_map": 122,
+      "source_atom_id": "repeat:3:atom:1:H:1",
+      "source_atom_map": 26,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 123,
+      "cell_atom_id": "molecule:3/repeat:3:atom:2:H:0",
+      "atom_map": 123,
+      "source_atom_id": "repeat:3:atom:2:H:0",
+      "source_atom_map": 27,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 124,
+      "cell_atom_id": "molecule:3/repeat:3:atom:2:H:1",
+      "atom_map": 124,
+      "source_atom_id": "repeat:3:atom:2:H:1",
+      "source_atom_map": 28,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 125,
+      "cell_atom_id": "molecule:3/repeat:4:atom:1:H:0",
+      "atom_map": 125,
+      "source_atom_id": "repeat:4:atom:1:H:0",
+      "source_atom_map": 29,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 126,
+      "cell_atom_id": "molecule:3/repeat:4:atom:1:H:1",
+      "atom_map": 126,
+      "source_atom_id": "repeat:4:atom:1:H:1",
+      "source_atom_map": 30,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 127,
+      "cell_atom_id": "molecule:3/repeat:4:atom:2:H:0",
+      "atom_map": 127,
+      "source_atom_id": "repeat:4:atom:2:H:0",
+      "source_atom_map": 31,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    },
+    {
+      "engine_id": 128,
+      "cell_atom_id": "molecule:3/repeat:4:atom:2:H:1",
+      "atom_map": 128,
+      "source_atom_id": "repeat:4:atom:2:H:1",
+      "source_atom_map": 32,
+      "molecule_index": 3,
+      "type_id": "opls_140",
+      "charge_e": 0.06
+    }
+  ],
+  "validation": {
+    "actual_intramolecular_pair_distances_preserved": true,
+    "all_unordered_pairs_once": true,
+    "atom_count": 128,
+    "chemical_typing": "performed_per_supported_neutral_explicit_n_alkane_molecule",
+    "construction_density_g_cm3": 0.06836558498608158,
+    "coordinate_absolute_tolerance_angstrom": 1e-08,
+    "cutoff_and_long_range_model": "not_selected_by_assignment",
+    "density_interpretation": "mass divided by prescribed box volume, not predicted density",
+    "equilibrium_status": "not_assessed",
+    "force_field_assigned": true,
+    "formal_charge_e": 0,
+    "material_property_validation": "not_performed",
+    "molecule_count": 4,
+    "pair_scaling_counts": {
+      "excluded": 364,
+      "intermolecular": 6144,
+      "scaled_14": 324,
+      "unscaled_intramolecular": 1296
+    },
+    "production_ready": false,
+    "proper_source_rigid_transforms": true,
+    "rotation_absolute_tolerance": 1e-10,
+    "simulation_performed": false,
+    "source_coordinate_and_image_identity": true,
+    "source_graph_bonds_and_lineage_preserved": true,
+    "source_nonbonded_contacts": "not re-certified by parameter assignment",
+    "source_validation_flags": "untrusted supplied metadata; no reliance on their values",
+    "topology_counts": {
+      "angles": 240,
+      "bonds": 124,
+      "dihedrals": 324,
+      "impropers": 0
+    },
+    "total_molar_mass_g_mol": 569.144,
+    "total_partial_charge_e": 0.0
+  }
+}

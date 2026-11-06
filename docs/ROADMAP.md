@@ -1,6 +1,6 @@
 # Development roadmap
 
-This is a staged research-software plan, not a statement that the complete platform exists. Version 0.4 adds a sourced n-alkane parameter/charge assignment and independent analytic-versus-LAMMPS single-point parity to the graph/geometry/packing/analysis core. Broader chemical coverage, periodic parameter assembly, bulk protocol and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
+This is a staged research-software plan, not a statement that the complete platform exists. Version 0.5 adds periodic assignment, finite Ewald/engine parity and bounded minimization/NVT/NPT preparation to the sourced graph/geometry/parameter/analysis core. Broader chemistry, qualified production sampling and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
 
 ## P0 — Freeze the chemical and scientific contracts
 
@@ -50,8 +50,10 @@ TASK-006A supplies the starting geometry layer. It deliberately does not assign
 a thermodynamic phase or optimize the requested cell density. TASK-006B now
 supplies sourced typing/charges and energy/force parity for restricted neutral
 n-alkanes. That static finite-cutoff check is not a periodic production polymer
-model; TASK-006C1 must assemble the periodic parameterized system and define its
-bulk treatment before relaxation, sampling and an external density comparison.
+model. TASK-006C1 now assembles the periodic parameterized system, defines its
+Ewald model and executes bounded preparation pilots. TASK-006C2 must establish
+the target state, preparation strategy, actual sampling regime and independent
+replicates before an external density comparison can support a prediction claim.
 
 Acceptance:
 

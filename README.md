@@ -2,7 +2,7 @@
 
 Independent polymer chemistry simulation and property-analysis research project.
 
-**Release state: 0.4.0.dev0 — sourced n-alkane parameter assignment and isolated energy/force parity; bulk polymer-property validation remains open.**
+**Release state: 0.5.0.dev0 — periodic n-alkane assignment, Ewald verification and bounded preparation pilots; equilibrium polymer-property validation remains open.**
 
 The long-term scope is a general-purpose connection from polymer chemistry and
 microstructure to quantum-informed parameterization, molecular dynamics,
@@ -33,12 +33,15 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 | Sourced fixed-charge parameter assignment | Frozen GROMACS v2025.3 OPLS-AA CT/HC numerical subset with per-type source lines and hashes; empirical charges, no new QM charge fitting |
 | Independent energy/force reference | Original local analytic differentiation of harmonic, Fourier, LJ and Coulomb equations; isolated, unshifted finite-cutoff model |
 | LAMMPS energy/force verification | Generated full-atom input, run-zero single points, strict identity/parser checks and component/force comparison; no relaxation or property validation |
+| Periodic parameter assembly | Global/source atom and molecule identity, images, all intermolecular pairs and frozen per-molecule assignments are revalidated |
+| Periodic Ewald reference and engine parity | Explicit real/reciprocal/self/exclusion terms, analytic forces, minimum-image gates and declared finite-sum budgets; no automatic convergence claim |
+| Bounded periodic preparation | Reviewable minimization, NVT and NPT pilot with box/resource guards, native/canonical units and final-state checks; short execution never certifies equilibrium |
 | LAMMPS subprocess adapter | Bounded execution, exclusive run directory, output hashes and thermo checks; real reduced-unit LJ smoke executed |
 | Density analysis | Physical-unit conversion and conditional block diagnostics; no polymer equilibrium or external validation claim |
 | Dependency inspection and CLI | Implemented; presence inspection does not execute or validate engines |
 | Property catalogue | 19 planned material-property families; the catalogue is not an executable property engine |
-| Broader chemical typing, periodic bulk parameter assembly and force-field relaxation | Planned |
-| End-to-end polymer MD and QM protocols | Planned |
+| Broader chemistry, production sampling and state-matched bulk benchmarks | Planned |
+| Validated polymer-property MD and QM protocols | Planned |
 | Experimental validation and publication benchmarks | Planned; no performance or material-property result is claimed |
 
 RadonPy and other polymer workflow packages are neither dependencies nor vendored
@@ -116,6 +119,36 @@ parameter snapshot; it is not an assertion that every OPLS-AA release is identic
 The finite-cutoff, nonperiodic verification model is separate from a bulk MD
 protocol with independently chosen long-range treatment and sampling.
 
+Assemble the supported periodic cell and inspect or run its explicit Ewald setup:
+
+```bash
+polychemmd parameterize-cell artifacts/pe-cell.json --output artifacts/assigned-cell.json
+polychemmd periodic-lammps artifacts/assigned-cell.json --run-dir artifacts/periodic-plan --plan --output artifacts/periodic-plan.json
+polychemmd periodic-prepare artifacts/assigned-cell.json --protocol examples/periodic_protocol.json --run-dir artifacts/preparation-plan --plan --output artifacts/preparation-plan.json
+```
+
+Both plans run nothing and create no engine directory. Omit `--plan` to execute
+the separately bounded calculation in a new run directory. The first command
+accepts the original packed cell or its result envelope; later commands also
+accept the strictly validated assigned-cell record. `periodic-energy` evaluates
+the independent Ewald reference without an engine.
+
+The reproducibility runner checks the original 128-atom cell, a boundary-crossing
+translation of the same state, and a short minimization/NVT/NPT preparation:
+
+```bash
+OMP_NUM_THREADS=1 UCX_TLS=self python scripts/verify_periodic_v05.py --output-dir artifacts/periodic-v05
+```
+
+Its translated cells are an invariance test, not independent physical samples.
+The selected model is 3D periodic Ewald with explicit alpha/reciprocal bounds,
+real-space cutoff, geometric LJ mixing, and no LJ tail correction. See
+[periodic assignment](docs/PERIODIC_ASSIGNMENT.md),
+[Ewald reference](docs/PERIODIC_EWALD_REFERENCE.md),
+[engine verification](docs/PERIODIC_LAMMPS.md) and
+[bounded protocol](docs/PERIODIC_PROTOCOL.md). The default 200 integration steps
+are a preparation pilot, not evidence of equilibrated polymer density.
+
 For the separately installed Linux/x86-64 engine smoke environment:
 
 ```bash
@@ -160,9 +193,11 @@ Each step needs executed evidence. Graph verification and a real process smoke
 test do not establish a polymer production MD protocol or experimental
 predictivity. TASK-006A now supplies bounded coordinate/cell preparation.
 TASK-006B adds attributed parameter assignment and engine energy/force parity for
-the restricted n-alkane graph. TASK-006 remains open until periodic model
-assembly, production treatment, sampling and external comparison are complete.
-The next bounded step is TASK-006C1 periodic parameter assembly and protocol preparation.
+the restricted n-alkane graph. TASK-006C1 now adds periodic model assembly,
+independent Ewald/engine verification and a bounded preparation protocol.
+TASK-006 remains open until an appropriate state/preparation, production
+sampling, independent cells and external comparison are established. The next
+step is TASK-006C2 sampling/protocol qualification under a declared compute budget.
 
 ## Reproducibility and dependencies
 

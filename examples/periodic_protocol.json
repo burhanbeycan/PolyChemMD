@@ -1,0 +1,14 @@
+{
+  "temperature_k": 300.0,
+  "pressure_bar": 1.0,
+  "timestep_fs": 0.25,
+  "minimize_max_iterations": 200,
+  "minimize_max_evaluations": 1000,
+  "nvt_steps": 100,
+  "npt_steps": 100,
+  "velocity_seed": 49217,
+  "timeout_seconds": 60.0,
+  "cutoff_angstrom": 10.0,
+  "ewald_alpha_per_angstrom": 0.30,
+  "reciprocal_nmax": 16
+}

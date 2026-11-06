@@ -1,0 +1,21 @@
+{
+  "evidence_kind": "executed_wheel_periodic_assignment_reference_and_plan_check",
+  "release": "0.5.0.dev0",
+  "wheel": "polychemmd-0.5.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "f3bcf50ab360f75a9e06a85be9b5dae14ab0c014b7cc31f6665e22c468c2d42b",
+  "build_command": "PIP_NO_INDEX=1 python -m pip wheel --no-deps --no-build-isolation --wheel-dir artifacts/wheels-v05 .",
+  "isolation": "new temporary cwd; python -S; modules asserted imported from wheel, no editable/source paths or site-packages",
+  "fixture": "evidence/geometry_v03/cell.json",
+  "fixture_sha256": "b48400d7181a436c7e858d02f74491c45b71f3ca0aa2465351bc3add3c19dd41",
+  "result": {
+    "version": "0.5.0.dev0",
+    "assigned_atoms": 128,
+    "force_vectors": 128,
+    "reference_reciprocal_nmax": 2,
+    "protocol_plan_status": "planned",
+    "run_directory_created": false,
+    "rdkit_imported": false,
+    "numpy_imported": false
+  },
+  "limits": "Installed artifact execution only; coarse reciprocal_nmax=2 is explicitly not an Ewald convergence test. Protocol planning executes no engine."
+}

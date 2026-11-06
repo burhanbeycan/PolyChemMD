@@ -184,3 +184,50 @@ assembly/protocol preparation and the complete density milestone remain open.
 
 Hosted Python 3.11/3.12 and actual-engine CI checks are separate from this local
 execution record; workflow configuration alone is not a successful check.
+
+## Periodic Ewald and preparation v0.5 — executed milestone
+
+Executed 7 November 2026 in Türkiye (6 November UTC), Linux, Python 3.12.14.
+
+- Offline editable install succeeded; **295 tests passed, zero skipped**.
+  New checks cover global/source identity, image reconstruction, full periodic
+  topology and pair rules, analytical Ewald derivatives, finite reciprocal
+  enumeration/bounds, special-pair corrections, translated representations,
+  numeric/resource gates, periodic data/force parsing and protocol contracts.
+  [evidence/tests_v05.json](evidence/tests_v05.json) records the run.
+- Under `python -S`, **249 passed and 46 intentionally skipped**, with neither
+  RDKit nor NumPy imported. These are the same tests in a dependency-absent
+  environment, not additional material-validation cases. See
+  [evidence/core_only_v05.json](evidence/core_only_v05.json).
+- A regular wheel was built offline. In a separate temporary directory under
+  `python -S`, its own packaged code/data assigned a 128-atom cell, evaluated
+  an explicitly coarse finite reciprocal sum and produced a no-execution
+  protocol plan. The run directory remained absent. This verifies packaging,
+  not Ewald convergence; see [evidence/wheel_v05.json](evidence/wheel_v05.json).
+- The actual periodic auditor passed for the original 128-atom cell and a
+  boundary-crossing translation of that same state. Maximum component-energy
+  error was **6.96818874530436e-5 kJ/mol** and maximum force-component error
+  **2.5901448821308293e-5 kJ/(mol angstrom)**, within predeclared 1e-4 absolute
+  tolerances. Translation invariance passed the tighter 1e-7 criteria; translated
+  cells are not independent preparation samples.
+- Source-level review quantitatively explained residuals using pinned LAMMPS
+  erfc approximations and its near-planar OPLS sine safeguard. Reciprocal engine
+  energy agreed to about 4e-13 kJ/mol in the inspected case. Reference equations,
+  seed, Ewald controls and declared tolerances were retained.
+- The same auditor executed actual CG minimization plus **100 NVT + 100 NPT
+  steps** at 0.25 fs, with time/iteration/box/bond-image guards. The process
+  completed and final identity/unit/state checks passed. Minimization stopped
+  at its 200-iteration budget (400 evaluations), rather than force convergence.
+- Final instantaneous temperature/pressure were 190.8469707 K and
+  -397.0057981 bar; these are not equilibrium averages. Canonical final density
+  was 0.0684353798999353 g/cm^3 and raw native engine density
+  0.06843537387703591 g/cm^3. Their different constants are explicitly audited.
+  The result remains **insufficient_sampling**, **production_ready: false** and
+  **density_prediction_validation: not_performed**.
+
+[Actual public inputs, outputs and reports](evidence/periodic_v05/README.md)
+retain source/model/artifact hashes and numerical contexts. The 50 fs pilot is
+execution/preparation evidence, not an equilibrated polymer density or external
+property benchmark. TASK-006C1 is complete in its restricted periodic domain;
+TASK-006C2 sampling/state qualification and the full density milestone remain
+open. Hosted checks are recorded separately by GitHub Actions.

@@ -10,5 +10,6 @@ trajectories/
 *.dcd
 *.dump
 !evidence/alkane_v04/*/forces.dump
+!evidence/periodic_v05/*/*.dump
 .env
 *.key

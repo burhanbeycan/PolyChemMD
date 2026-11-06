@@ -1,0 +1,27 @@
+{
+  "schema_version": "0.1",
+  "release": "0.5.0.dev0",
+  "evidence_kind": "executed_local_unit_and_contract_tests",
+  "started_utc": "2026-11-06T23:22:10.838174+00:00",
+  "completed_utc": "2026-11-06T23:22:24.963603+00:00",
+  "command_equivalent": "python -m unittest discover -s tests -v",
+  "invocation_detail": "standard unittest discovery and TextTestRunner API; full log saved locally",
+  "python": "3.12.14",
+  "platform": "Linux",
+  "optional_packages": {
+    "rdkit": "2026.9.1",
+    "lammps": "2025.7.22.4.0",
+    "mpich": "5.0.2"
+  },
+  "tests_run": 295,
+  "tests_skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "elapsed_seconds": 14.130909,
+  "log_sha256": "ab430b1d0024e47f9580e6f47661c0b8c573f3b75cb20f1b856a3d6c22b1e5e7",
+  "scientific_limits": [
+    "Equation, identity, numeric-range and protocol-contract tests do not establish polymer equilibrium or property accuracy.",
+    "Actual periodic Ewald and bounded MD execution evidence is recorded separately; no production or experimental validation is claimed."
+  ]
+}

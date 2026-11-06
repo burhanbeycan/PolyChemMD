@@ -6,7 +6,7 @@ PolyChemMD is intended to become a general polymer chemistry and molecular-simul
 
 ## Implemented boundary
 
-The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, immutable geometry records, seeded RDKit ETKDGv3 coordinates, independent orthorhombic rigid cell packing, structure visualization exports, full Fourier-torsion analysis/conversion, assigned-parameter coverage, sourced neutral n-alkane OPLS-AA assignment, an independent analytic energy/force reference, bounded LAMMPS smoke/single-point checks and density diagnostics. It does not yet assemble/relax/equilibrate fully assigned periodic polymer cells, run end-to-end polymer MD/QM, or provide experimentally validated polymer-property predictions. Graph, geometry, parameter identity and engine numerical parity are separate from material validation.
+The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, immutable geometry records, seeded RDKit ETKDGv3 coordinates, independent rigid cell packing, structure exports, Fourier-torsion analysis/conversion, sourced n-alkane assignments, isolated and periodic Ewald energy/force references, bounded LAMMPS verification/preparation and density diagnostics. It now assembles supported fully assigned periodic starting cells and executes finite minimization/NVT/NPT pilots. It does not establish equilibrated polymer states, production sampling, validated polymer-property MD/QM or experimental predictivity. Graph, geometry, parameter identity, numerical parity and process execution are separate from equilibrium/material validation.
 
 `geometry.py` owns the dependency-free molecular coordinate contract.
 `builders/conformers.py` consumes validated linear graphs and invokes optional
@@ -25,6 +25,17 @@ equations and their local analytic derivatives without a simulation engine.
 `engines/alkane.py` exports the same model and compares actual LAMMPS run-zero
 components and forces. Shared parameter values are intentional; independent
 numerical implementations test conventions/derivatives, not fitted accuracy.
+
+`forcefields/periodic.py` revalidates the packed-source geometry, images and
+global/source identities before combining frozen molecular assignments.
+`periodic_reference.py` evaluates explicit finite Ewald sums and analytical
+forces, including special-pair corrections, reciprocal/self terms and numerical
+work limits. `engines/periodic_alkane.py` exports the same declared periodic
+model and compares actual component energies/forces; it records source-scoped
+backend numerical approximations. Its scientific setup helper is reused by
+`protocols/alkane.py`, whose finite preparation stages retain minimizer stopping
+status, actual step counts and final state. Process completion cannot promote a
+short pilot into an equilibrium or density-validation result.
 
 The names below describe architectural responsibilities; they do not assert that all listed Python classes or modules already exist.
 
