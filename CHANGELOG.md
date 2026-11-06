@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0.dev0 — 2026-11-07
+
+- Added an attributed frozen OPLS-AA CT/HC numerical subset and independent
+  neutral explicit n-alkane typing, fixed charges and full interaction topology.
+- Added an analytic energy/force reference and generated LAMMPS run-zero parity
+  checks with strict atom/coordinate and failure records.
+- Protected frozen-model identity against changed serialized assignments.
+- Added CLI assignment/evaluation/engine commands, source conversion checks and
+  an actual three-molecule reproducibility recipe.
+- Completed restricted TASK-006B; periodic bulk assembly, equilibrium sampling
+  and polymer density/experimental validation remain open.
+
 ## 0.3.0.dev0 — 2026-11-07
 
 - Added immutable, dependency-free geometry/lineage serialization contracts.

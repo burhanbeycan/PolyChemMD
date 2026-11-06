@@ -9,5 +9,6 @@ trajectories/
 *.xtc
 *.dcd
 *.dump
+!evidence/alkane_v04/*/forces.dump
 .env
 *.key

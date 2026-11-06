@@ -1,0 +1,27 @@
+{
+  "schema_version": "0.1",
+  "release": "0.4.0.dev0",
+  "evidence_kind": "executed_local_unit_and_contract_tests",
+  "started_utc": "2026-11-06T22:50:04.554196+00:00",
+  "completed_utc": "2026-11-06T22:50:09.484830+00:00",
+  "command_equivalent": "python -m unittest discover -s tests -v",
+  "invocation_detail": "standard unittest discovery and TextTestRunner API; full log saved locally",
+  "python": "3.12.14",
+  "platform": "Linux",
+  "optional_packages": {
+    "rdkit": "2026.9.1",
+    "lammps": "2025.7.22.4.0",
+    "mpich": "5.0.2"
+  },
+  "tests_run": 243,
+  "tests_skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "elapsed_seconds": 4.934321,
+  "log_sha256": "0693264242617a90c70424ac2202e0138e658ba42c06d9522b0e974eeff25fc6",
+  "scientific_limits": [
+    "Unit/contract tests validate equations, conversion, identity and failure behavior, not material accuracy.",
+    "Actual LAMMPS single-point evidence is recorded separately; no production polymer MD or QM campaign is claimed."
+  ]
+}

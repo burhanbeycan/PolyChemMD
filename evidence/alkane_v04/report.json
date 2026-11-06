@@ -1,0 +1,498 @@
+{
+  "schema_version": "1",
+  "evidence_kind": "executed_isolated_n_alkane_energy_force_parity",
+  "status": "passed",
+  "started_utc": "2026-11-06T22:49:54.056991+00:00",
+  "finished_utc": "2026-11-06T22:49:56.031968+00:00",
+  "elapsed_seconds": 1.9749770679991343,
+  "command": "python scripts/verify_alkane_v04.py --output-dir NEW_DIRECTORY [--executable LAMMPS]",
+  "software": {
+    "polychemmd": "0.4.0.dev0",
+    "python": "3.12.14",
+    "python_implementation": "CPython",
+    "rdkit": "2026.09.1"
+  },
+  "runtime_environment": {
+    "OMP_NUM_THREADS": "1",
+    "UCX_TLS": "self"
+  },
+  "input_recipe": {
+    "path": "examples/alkane_validation.json",
+    "sha256": "ff3769de5c550b49c1080a0667763aceea69f5ef1714bea86b7f3b0725aea4ed",
+    "hash_basis": "exact checked-in recipe-file bytes",
+    "record": {
+      "schema_version": "1",
+      "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+      "repeat_unit": {
+        "label": "PE repeat graph for isolated alkane verification",
+        "smiles": "[*:1]CC[*:2]",
+        "head_map": 1,
+        "tail_map": 2
+      },
+      "head_cap": "H",
+      "tail_cap": "H",
+      "cases": [
+        {
+          "name": "ethane",
+          "degree_of_polymerization": 1,
+          "seed": 12101
+        },
+        {
+          "name": "butane",
+          "degree_of_polymerization": 2,
+          "seed": 12102
+        },
+        {
+          "name": "decane",
+          "degree_of_polymerization": 5,
+          "seed": 12105
+        }
+      ],
+      "cutoff_angstrom": 12.0,
+      "timeout_seconds_per_engine": 30.0,
+      "energy_abs_tol_kj_mol": 1e-06,
+      "force_abs_tol_kj_mol_angstrom": 1e-05,
+      "evidence_scope": "Isolated single-point numerical parity; zero MD integration steps; no bulk-density or experimental validation."
+    }
+  },
+  "source_module_hashes": {
+    "src/polychemmd/__init__.py": {
+      "sha256": "f9108ec6d58b19cdca990a097e08116538f81b2d1b08f408700c193c67ed61c8"
+    },
+    "src/polychemmd/geometry.py": {
+      "sha256": "83623358a5f29fd453625adec2416d053a6ed4d5768a896a1c738ad5d12df4e8"
+    },
+    "src/polychemmd/provenance.py": {
+      "sha256": "2b27ea3cb03cbd4f5f0845bac262a2720293c3a58758d4e8ce6401427cb44d45"
+    },
+    "src/polychemmd/chemistry/contracts.py": {
+      "sha256": "a700b4141441a6cf0d0c993f58949a41666971e6fa4dd334386e8647d0627024"
+    },
+    "src/polychemmd/builders/linear.py": {
+      "sha256": "cc65584899acdbc1b0f70a6e9eeef9bf23c522bbfbfe1238e453445d64183e62"
+    },
+    "src/polychemmd/builders/conformers.py": {
+      "sha256": "68fd080f9ca8de65afef67754b8b939a29f8da0946c9de63f02d46680d16d99f"
+    },
+    "src/polychemmd/forcefields/alkane_data.py": {
+      "sha256": "79b32ed54a41f58cc6a61d9faa0448e87f9bbb6df00af34d2de30e647b951550"
+    },
+    "src/polychemmd/forcefields/alkanes.py": {
+      "sha256": "d77177b8a7565f713d4b55afb2cb25eb81f5b030ebc51f8ea05847dbae0f9b3a"
+    },
+    "src/polychemmd/forcefields/contracts.py": {
+      "sha256": "79504f525f95cf2a7277ae9dde63bf2bff3643fbe90ea854296c5ea61fd38bef"
+    },
+    "src/polychemmd/forcefields/reference.py": {
+      "sha256": "7ce9e2c1912907f1854aadae23a52eac8f4d166df5ffe78af20e37dc1898d1dc"
+    },
+    "src/polychemmd/descriptors/torsion.py": {
+      "sha256": "6651e247d16ef8879b25ae3f010eea9204ea3adfb3070bab97edfabf8be7c956"
+    },
+    "src/polychemmd/engines/alkane.py": {
+      "sha256": "9595c8e6ac6f1a38d369b8850ebe80a146d7a44413b3236e0f4f79a3cfa16f47"
+    },
+    "src/polychemmd/engines/lammps.py": {
+      "sha256": "13b06cb0f6252a338a24497381b7c974184e82f39589b3c5dd926266fbb092b3"
+    },
+    "scripts/verify_alkane_v04.py": {
+      "sha256": "098a155ccfdba86174f18373c309d287ad613b9b5c03602fe228cd2dc8c616a8"
+    }
+  },
+  "parameter_json_sha256": "3c4cb7a13d4bf88165bda3004eebb4adf0cf570239584c687f42b6f3a6b014ec",
+  "parameter_set_canonical_sha256": "412b0edbedbd065a3afcd19f8da4c03af41c548a472072ddfa837a936cd81fb1",
+  "source_snapshot": {
+    "repository": "https://github.com/gromacs/gromacs",
+    "tag": "v2025.3",
+    "commit": "820db9e499e4edc7f0dc734e6baeb0e9c3f87859",
+    "files": {
+      "ffbonded.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp",
+        "sha256": "145e6924f52fae7e93108fa3d674f31a53aea10c80b13dd89abf0b011adfd4fa",
+        "git_blob_sha": "944e9c82913333def13ab6b17a7bb5d8248016fc",
+        "bytes": 209608
+      },
+      "forcefield.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp",
+        "sha256": "6eb8f0d08684e1ac6f525bb323eae75ed197b2980ddfde975a24ca1a8c931d06",
+        "git_blob_sha": "e69c4728d7117662a32fa392409e751ea6caf03d",
+        "bytes": 862
+      },
+      "ffnonbonded.itp": {
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp",
+        "sha256": "fdf072dac9900c039b58e21323ce621b2112dc86c46a4b5e49e1398ae5d3b9f0",
+        "git_blob_sha": "20e5b31d9562f4c368c3b9ece318ed5892712e5b",
+        "bytes": 62929
+      }
+    },
+    "interpretation": "Selected numerical CT/HC facts transcribed and converted independently; no upstream workflow source is vendored.",
+    "parameter_family": "GROMACS v2025.3 distributed OPLS-AA alkane subset, including November 1999 HC-CT-CT-HC update",
+    "paper": "https://doi.org/10.1021/ja9621760",
+    "license_context": "The upstream repository provides LGPL-2.1 text. These selected numerical facts have attribution; this is not a license statement covering every OPLS variant."
+  },
+  "canonical_payload_hash_basis": "sorted-key compact finite JSON encoded as UTF-8",
+  "predeclared_balance_tolerances": {
+    "energy_component_sum_kj_mol": 1e-09,
+    "net_force_norm_kj_mol_angstrom": 1e-07,
+    "net_torque_norm_kj_mol": 1e-07
+  },
+  "cases": [
+    {
+      "case": {
+        "name": "ethane",
+        "degree_of_polymerization": 1,
+        "seed": 12101
+      },
+      "molecular_formula": "C2H6",
+      "status": "passed",
+      "elapsed_seconds": 0.8495537350027007,
+      "topology_audit": {
+        "status": "passed",
+        "carbon_count": 2,
+        "atom_count": 8,
+        "interaction_counts": {
+          "bonds": 7,
+          "angles": 12,
+          "dihedrals": 9,
+          "impropers": 0
+        },
+        "atom_type_counts": {
+          "opls_135": 2,
+          "opls_140": 6
+        },
+        "total_partial_charge_e": 0.0,
+        "formal_charge_e": 0,
+        "all_unordered_pairs_enumerated": true
+      },
+      "independent_balance_checks": {
+        "reference": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            1.7763568394002505e-14,
+            0.0,
+            -6.217248937900877e-15
+          ],
+          "net_force_norm_kj_mol_angstrom": 1.882016329483446e-14,
+          "net_torque_about_centroid_kj_mol": [
+            4.884981308350689e-15,
+            3.019806626980426e-14,
+            -6.217248937900877e-15
+          ],
+          "net_torque_norm_kj_mol": 3.1216028465745846e-14
+        },
+        "engine": {
+          "energy_component_sum_error_kj_mol": 3.552713678800501e-15,
+          "net_force_kj_mol_angstrom": [
+            1.2434497875801753e-14,
+            -3.774758283725532e-14,
+            -2.4868995751603507e-14
+          ],
+          "net_force_norm_kj_mol_angstrom": 4.6882445511854903e-14,
+          "net_torque_about_centroid_kj_mol": [
+            3.108624468950438e-14,
+            0.0,
+            -3.197442310920451e-14
+          ],
+          "net_torque_norm_kj_mol": 4.459504840295804e-14
+        }
+      },
+      "source_graph_sha256": "a954a5bb7878ed6ef243585cfb6da7443f462ef0a50111d01e5c52586d391044",
+      "geometry_canonical_payload_sha256": "f8df804c802f42a6192b5553a63a399f6ae91558093bf1411ed22be15809ea83",
+      "assignment_canonical_payload_sha256": "1b6118bf08aa46edb5955b8051c681c548b7847b933ca9c5d182e146a0bb2d89",
+      "public_parity_canonical_payload_sha256": "8d528d1a3cdfed5de29445ed8ffe371d7016f7882d47f0a019e30c365656d4f8",
+      "energy_component_abs_errors_kj_mol": {
+        "bond": 8.881784197001252e-16,
+        "angle": 1.0658141036401503e-14,
+        "dihedral": 3.3306690738754696e-15,
+        "lj": 8.222589276130066e-16,
+        "coulomb": 0.0,
+        "total": 3.552713678800501e-15
+      },
+      "maximum_energy_component_abs_error_kj_mol": 1.0658141036401503e-14,
+      "max_force_component_abs_error_kj_mol_angstrom": 1.4921397450962104e-13,
+      "rms_force_component_error_kj_mol_angstrom": 5.267069333635836e-14,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "near_planar_dihedral_count": 0,
+      "observed_source_sine_threshold": 1e-05,
+      "backend_diagnostic_source_url": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/MOLECULE/dihedral_opls.cpp#L171-L180",
+      "backend_diagnostic_threshold_scope": "observed in the cited pinned source; not guaranteed for other engine versions or builds",
+      "md_integration_steps": 0,
+      "public_case_directory": "ethane",
+      "artifact_files": {
+        "assignment.json": {
+          "sha256": "7cade9c8cd2f093d83828f402d5b13ce787008a1f103ed00e57f79ca011b0a82",
+          "bytes": 35587
+        },
+        "forces.dump": {
+          "sha256": "0bc279c994a01c62b91d77bc976b6c7de4d9e049677a8549dd083f731971b15b",
+          "bytes": 1205
+        },
+        "geometry.json": {
+          "sha256": "edad4040bce19982efeda7587553abd7ab72e2a73eb978973e7585ed2fdfcadd",
+          "bytes": 10237
+        },
+        "input.lammps": {
+          "sha256": "2e63c49cfe04dacf8445a01cca317ee7980a608a450885837d45fec376fe67a1",
+          "bytes": 619
+        },
+        "log.lammps": {
+          "sha256": "b37f7b023b0232e7a97054ad570535df4f18cc8045b23a3937919e1e82eb2940",
+          "bytes": 3714
+        },
+        "parity.json": {
+          "sha256": "1c887fd3a880762c17c4f681db6ff467502d445e5223c0d4251087946b37f717",
+          "bytes": 14221
+        },
+        "system.data": {
+          "sha256": "5445966b99ce94d9c7373f2875ba0d89214a22aa84900284462a09adf976a2f1",
+          "bytes": 1988
+        }
+      }
+    },
+    {
+      "case": {
+        "name": "butane",
+        "degree_of_polymerization": 2,
+        "seed": 12102
+      },
+      "molecular_formula": "C4H10",
+      "status": "passed",
+      "elapsed_seconds": 0.5816953300018213,
+      "topology_audit": {
+        "status": "passed",
+        "carbon_count": 4,
+        "atom_count": 14,
+        "interaction_counts": {
+          "bonds": 13,
+          "angles": 24,
+          "dihedrals": 27,
+          "impropers": 0
+        },
+        "atom_type_counts": {
+          "opls_135": 2,
+          "opls_136": 2,
+          "opls_140": 10
+        },
+        "total_partial_charge_e": 0.0,
+        "formal_charge_e": 0,
+        "all_unordered_pairs_enumerated": true
+      },
+      "independent_balance_checks": {
+        "reference": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            9.50350909079134e-14,
+            9.631184738623233e-14,
+            2.4424906541753444e-14
+          ],
+          "net_force_norm_kj_mol_angstrom": 1.3749260529351266e-13,
+          "net_torque_about_centroid_kj_mol": [
+            3.2862601528904634e-14,
+            -2.3092638912203256e-14,
+            -1.1546319456101628e-14
+          ],
+          "net_torque_norm_kj_mol": 4.1791602555529266e-14
+        },
+        "engine": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            2.042810365310288e-14,
+            2.0872192862952943e-14,
+            3.8191672047105385e-14
+          ],
+          "net_force_norm_kj_mol_angstrom": 4.807868204853238e-14,
+          "net_torque_about_centroid_kj_mol": [
+            -1.3322676295501878e-14,
+            -4.440892098500626e-15,
+            5.417888360170764e-14
+          ],
+          "net_torque_norm_kj_mol": 5.5969336735686246e-14
+        }
+      },
+      "source_graph_sha256": "db360039fdb564553e2fe18261cc2672ecdb78b92aebcbb47fcb4632b7d8f754",
+      "geometry_canonical_payload_sha256": "36a5621962c90dbe279723d277626f18b26209f0b2d3dfa706e2ff344b778691",
+      "assignment_canonical_payload_sha256": "3c12ac2c9d9b5199af3eb1e43c0cbfeec992d4b29925dcec77f217e386bee432",
+      "public_parity_canonical_payload_sha256": "c9a2b6fec598d102b60740eee4bdcff3986b8bb82e2e29481bea260fbfb1bb2c",
+      "energy_component_abs_errors_kj_mol": {
+        "bond": 0.0,
+        "angle": 1.7763568394002505e-15,
+        "dihedral": 0.0,
+        "lj": 2.6645352591003757e-15,
+        "coulomb": 1.7763568394002505e-15,
+        "total": 0.0
+      },
+      "maximum_energy_component_abs_error_kj_mol": 2.6645352591003757e-15,
+      "max_force_component_abs_error_kj_mol_angstrom": 1.6342482922482304e-13,
+      "rms_force_component_error_kj_mol_angstrom": 4.657896515550281e-14,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "near_planar_dihedral_count": 0,
+      "observed_source_sine_threshold": 1e-05,
+      "backend_diagnostic_source_url": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/MOLECULE/dihedral_opls.cpp#L171-L180",
+      "backend_diagnostic_threshold_scope": "observed in the cited pinned source; not guaranteed for other engine versions or builds",
+      "md_integration_steps": 0,
+      "public_case_directory": "butane",
+      "artifact_files": {
+        "assignment.json": {
+          "sha256": "855dd6aa4447e577f7b29100155ba635e028801822200abb9fe6f34a33c28b6a",
+          "bytes": 63448
+        },
+        "forces.dump": {
+          "sha256": "b788fce3f722f91aab656b532ebefd26e3577d497c9a18a265ee4648c50aabc8",
+          "bytes": 1940
+        },
+        "geometry.json": {
+          "sha256": "72e4e2f29d41d2f8f5113b8cd0273c646166f725caebfea18afa4a9ffc27dabb",
+          "bytes": 16122
+        },
+        "input.lammps": {
+          "sha256": "2e63c49cfe04dacf8445a01cca317ee7980a608a450885837d45fec376fe67a1",
+          "bytes": 619
+        },
+        "log.lammps": {
+          "sha256": "cd8815a47754b01b8efaa98f02c561a2a6d197c7ab63c5ac32e4c48db7fc11a7",
+          "bytes": 3723
+        },
+        "parity.json": {
+          "sha256": "bfc262cdb2218f4fbd6b56505da58a3a259527032a60267a1aaac5b3a8dccec0",
+          "bytes": 16967
+        },
+        "system.data": {
+          "sha256": "f37c08f76bbcc5515731a25a6adb243a2657a96f52426f3c48d1e9037bf040a5",
+          "bytes": 2951
+        }
+      }
+    },
+    {
+      "case": {
+        "name": "decane",
+        "degree_of_polymerization": 5,
+        "seed": 12105
+      },
+      "molecular_formula": "C10H22",
+      "status": "passed",
+      "elapsed_seconds": 0.5401213920049486,
+      "topology_audit": {
+        "status": "passed",
+        "carbon_count": 10,
+        "atom_count": 32,
+        "interaction_counts": {
+          "bonds": 31,
+          "angles": 60,
+          "dihedrals": 81,
+          "impropers": 0
+        },
+        "atom_type_counts": {
+          "opls_135": 2,
+          "opls_136": 8,
+          "opls_140": 22
+        },
+        "total_partial_charge_e": 0.0,
+        "formal_charge_e": 0,
+        "all_unordered_pairs_enumerated": true
+      },
+      "independent_balance_checks": {
+        "reference": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            -8.659739592076221e-15,
+            -5.927203172717554e-14,
+            1.2811973704174306e-13
+          ],
+          "net_force_norm_kj_mol_angstrom": 1.4143136800057923e-13,
+          "net_torque_about_centroid_kj_mol": [
+            2.6423307986078726e-13,
+            -3.6148861681795097e-13,
+            3.668176873361517e-13
+          ],
+          "net_torque_norm_kj_mol": 5.788336171339009e-13
+        },
+        "engine": {
+          "energy_component_sum_error_kj_mol": 0.0,
+          "net_force_kj_mol_angstrom": [
+            1.3522516439934407e-13,
+            8.798517470154366e-15,
+            3.36952687973735e-14
+          ],
+          "net_force_norm_kj_mol_angstrom": 1.3963749545100519e-13,
+          "net_torque_about_centroid_kj_mol": [
+            -1.2356782264077992e-13,
+            -2.3803181647963356e-13,
+            4.529709940470639e-14
+          ],
+          "net_torque_norm_kj_mol": 2.719926095747034e-13
+        }
+      },
+      "source_graph_sha256": "3e019d33699a4f4818c1661eaf0f97d1ba93b550b6a06b7e9f922153d9ec5f5e",
+      "geometry_canonical_payload_sha256": "c77d8d6dc93a4951454f265d52501061b45ef17345f563f05a8458bcc80fc8b9",
+      "assignment_canonical_payload_sha256": "e21a5aa70129e9ce17b51f9773657d73236280daeb83c74c4a911c7699dd8d57",
+      "public_parity_canonical_payload_sha256": "645e67ef44e85028d9b58af5c787ae0b2d95d01494d740b5e9ab85a205dbdfbe",
+      "energy_component_abs_errors_kj_mol": {
+        "bond": 0.0,
+        "angle": 3.552713678800501e-15,
+        "dihedral": 1.4210854715202004e-14,
+        "lj": 2.842170943040401e-14,
+        "coulomb": 7.105427357601002e-15,
+        "total": 1.4210854715202004e-14
+      },
+      "maximum_energy_component_abs_error_kj_mol": 2.842170943040401e-14,
+      "max_force_component_abs_error_kj_mol_angstrom": 5.104751160445176e-06,
+      "rms_force_component_error_kj_mol_angstrom": 1.1985471178884848e-06,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "near_planar_dihedral_count": 1,
+      "observed_source_sine_threshold": 1e-05,
+      "backend_diagnostic_source_url": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/MOLECULE/dihedral_opls.cpp#L171-L180",
+      "backend_diagnostic_threshold_scope": "observed in the cited pinned source; not guaranteed for other engine versions or builds",
+      "md_integration_steps": 0,
+      "public_case_directory": "decane",
+      "artifact_files": {
+        "assignment.json": {
+          "sha256": "5ed914ba3ba771d3ca386f9b9c56db7c8636255a3a3096b82e88a39111a92070",
+          "bytes": 190872
+        },
+        "forces.dump": {
+          "sha256": "8b95b7e6a4bbd0204e00dea4436161d795d837f6c204101ec777b357c7910154",
+          "bytes": 4109
+        },
+        "geometry.json": {
+          "sha256": "6f2ea5db1d1f2b11a8af956e37d1510929e1633e445dc847795a72d35dfe77cb",
+          "bytes": 33746
+        },
+        "input.lammps": {
+          "sha256": "2e63c49cfe04dacf8445a01cca317ee7980a608a450885837d45fec376fe67a1",
+          "bytes": 619
+        },
+        "log.lammps": {
+          "sha256": "a50580028d0577683ba671074b52ecc3ec15373f79a1111082e98a767ba2ec73",
+          "bytes": 3723
+        },
+        "parity.json": {
+          "sha256": "0f516643d7447e37691fc6e08af8236e75c1ad62ffcf58bdb478e3b0eab7de76",
+          "bytes": 25495
+        },
+        "system.data": {
+          "sha256": "4b309a93578e92450636da5223bc0e80727e31f3022443b2630ff064660c61fb",
+          "bytes": 5878
+        }
+      }
+    }
+  ],
+  "maximum_energy_component_abs_error_kj_mol": 2.842170943040401e-14,
+  "max_force_component_abs_error_kj_mol_angstrom": 5.104751160445176e-06,
+  "public_record_policy": "Only per-case public directories and this report are intended for publication; private_engine_runs retains unsanitized process records separately. Public parity replaces host paths and incidental help diagnostics, retaining scientific inputs, versions and hashes. Raw input/data/log/force artifacts are copied byte-for-byte.",
+  "md_integration_steps": 0,
+  "trajectory_production_performed": false,
+  "quantum_calculation_performed": false,
+  "equilibrium_status": "not_assessed",
+  "bulk_production_model_validated": false,
+  "material_property_validation": "not_performed",
+  "scientific_limits": [
+    "The attributed frozen subset is assigned only to supported neutral explicit n-alkanes.",
+    "Actual isolated nonperiodic finite-cutoff LAMMPS run-zero energies/forces are compared; no trajectory is integrated.",
+    "Energy/force agreement validates implementation parity, not force-field physical accuracy or polymer transferability.",
+    "LAMMPS OPLS uses a near-planar sine derivative safeguard. Actual residuals are retained and the analytical reference, geometry, seeds and declared tolerances are not changed to imitate that safeguard; case parity records preserve its diagnostic context.",
+    "Periodic bulk electrostatics, dense packing, relaxation, equilibration and physical properties remain separate milestones."
+  ]
+}

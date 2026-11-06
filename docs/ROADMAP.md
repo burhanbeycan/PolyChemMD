@@ -1,6 +1,6 @@
 # Development roadmap
 
-This is a staged research-software plan, not a statement that the complete platform exists. Version 0.3 adds seeded coordinates, immutable geometry contracts, bounded orthorhombic rigid cell packing and viewing exports to the graph/convention/parameter/execution/analysis core. Production atom typing, force-field relaxation and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
+This is a staged research-software plan, not a statement that the complete platform exists. Version 0.4 adds a sourced n-alkane parameter/charge assignment and independent analytic-versus-LAMMPS single-point parity to the graph/geometry/packing/analysis core. Broader chemical coverage, periodic parameter assembly, bulk protocol and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
 
 ## P0 — Freeze the chemical and scientific contracts
 
@@ -47,9 +47,11 @@ Acceptance:
 Complete one supported chemistry/state/protocol from specification to actual MD artifacts and one basic observable, then expand to independent chemical families. Density is an appropriate early target only after chemical and parameter checks pass.
 
 TASK-006A supplies the starting geometry layer. It deliberately does not assign
-a thermodynamic phase or optimize the requested cell density. TASK-006B must
-supply sourced chemical typing/charges and energy/force checks before these
-coordinates can be treated as a production polymer model.
+a thermodynamic phase or optimize the requested cell density. TASK-006B now
+supplies sourced typing/charges and energy/force parity for restricted neutral
+n-alkanes. That static finite-cutoff check is not a periodic production polymer
+model; TASK-006C1 must assemble the periodic parameterized system and define its
+bulk treatment before relaxation, sampling and an external density comparison.
 
 Acceptance:
 

@@ -4,7 +4,11 @@
 
 Develop an independently implemented, general polymer platform linking chemical connectivity and microstructure to molecular interactions, dynamics and observables. No property is supported merely because its name appears in a registry or a roadmap.
 
-The starter implements generic analytical and metadata functionality. Its illustrative Fourier profiles are analytical examples, not measured properties, force-field fits or simulated data for a real polymer.
+The development core implements graph/geometry preparation, restricted sourced
+n-alkane parameter assignment and independent numerical engine parity. Bulk
+polymer-property validation remains open. The original illustrative Fourier
+profiles remain analytical examples and must be kept distinct from the later
+attributed OPLS-AA numerical subset; neither is a new force-field fit.
 
 ## Units and chemical identity
 

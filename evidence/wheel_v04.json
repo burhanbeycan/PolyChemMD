@@ -1,0 +1,19 @@
+{
+  "evidence_kind": "executed_wheel_assignment_and_reference_check",
+  "release": "0.4.0.dev0",
+  "wheel": "polychemmd-0.4.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "1e29443003ed5eb660774d8e5c04e239e30356cc370c042f751971a0555b566a",
+  "build_command": "PIP_NO_INDEX=1 python -m pip wheel --no-deps --no-build-isolation --wheel-dir artifacts/wheels-v04 .",
+  "isolation": "new temporary cwd; python -S; imported from wheel, with no editable/source module paths or site-packages",
+  "fixture": "evidence/geometry_v03/conformer.json",
+  "fixture_sha256": "f63fae3a907b6b49b6417e7c57ecd4c625fdba084a9bc8248a3ca0d66f8968cd",
+  "result": {
+    "version": "0.4.0.dev0",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "assigned_atoms": 32,
+    "force_vectors": 32,
+    "rdkit_imported": false,
+    "numpy_imported": false
+  },
+  "limits": "Installed-artifact packaging and reference execution check; no new engine or material validation."
+}

@@ -1,0 +1,983 @@
+{
+  "schema_version": "1",
+  "status": "passed",
+  "evidence_level": "engine_energy_force_parity",
+  "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+  "boundary": "isolated_nonperiodic",
+  "cutoff_angstrom": 12.0,
+  "nonbonded_policy": "unshifted finite-cutoff LJ and Coulomb; geometric mixing; scaled 1-4 pairs",
+  "tolerances": {
+    "energy_abs_kj_mol": 1e-06,
+    "force_component_abs_kj_mol_angstrom": 1e-05
+  },
+  "reference": {
+    "schema_version": "1",
+    "kind": "isolated_alkane_energy_force_reference",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "atom_ids": [
+      "repeat:0:atom:1",
+      "repeat:0:atom:2",
+      "repeat:1:atom:1",
+      "repeat:1:atom:2",
+      "repeat:2:atom:1",
+      "repeat:2:atom:2",
+      "repeat:3:atom:1",
+      "repeat:3:atom:2",
+      "repeat:4:atom:1",
+      "repeat:4:atom:2",
+      "cap:head:H",
+      "cap:tail:H",
+      "repeat:0:atom:1:H:0",
+      "repeat:0:atom:1:H:1",
+      "repeat:0:atom:2:H:0",
+      "repeat:0:atom:2:H:1",
+      "repeat:1:atom:1:H:0",
+      "repeat:1:atom:1:H:1",
+      "repeat:1:atom:2:H:0",
+      "repeat:1:atom:2:H:1",
+      "repeat:2:atom:1:H:0",
+      "repeat:2:atom:1:H:1",
+      "repeat:2:atom:2:H:0",
+      "repeat:2:atom:2:H:1",
+      "repeat:3:atom:1:H:0",
+      "repeat:3:atom:1:H:1",
+      "repeat:3:atom:2:H:0",
+      "repeat:3:atom:2:H:1",
+      "repeat:4:atom:1:H:0",
+      "repeat:4:atom:1:H:1",
+      "repeat:4:atom:2:H:0",
+      "repeat:4:atom:2:H:1"
+    ],
+    "evaluated_coordinates_angstrom": [
+      [
+        -4.421273707552236,
+        0.6532929890381928,
+        0.3893845467534508
+      ],
+      [
+        -3.1417238865574477,
+        0.005567927086592657,
+        0.847784557453589
+      ],
+      [
+        -2.5428263546379783,
+        -0.9044261838404377,
+        -0.18992951979166087
+      ],
+      [
+        -1.2725252841460424,
+        -1.4857085462559152,
+        0.3932605509731792
+      ],
+      [
+        -0.24868299907203958,
+        -0.4369864024925196,
+        0.7628979363222282
+      ],
+      [
+        0.19294682176904815,
+        0.39442324904897924,
+        -0.3995437794645914
+      ],
+      [
+        1.214905499415911,
+        1.430802458440057,
+        0.013406727979750017
+      ],
+      [
+        2.4679291407067696,
+        0.8575693677428063,
+        0.6056955564951233
+      ],
+      [
+        3.1999978680770513,
+        -0.05891658670060056,
+        -0.337630603685992
+      ],
+      [
+        4.434192791302647,
+        -0.5639367626224858,
+        0.3778815340010677
+      ],
+      [
+        -4.730241580474465,
+        1.3766017906362087,
+        1.1723299202017778
+      ],
+      [
+        5.230412384040566,
+        -0.6030119793921327,
+        -0.4107467953316815
+      ],
+      [
+        -5.252693139268165,
+        -0.02568787612291486,
+        0.19791295847468784
+      ],
+      [
+        -4.176242460054205,
+        1.1919399103553936,
+        -0.5593473560048504
+      ],
+      [
+        -2.420477638598095,
+        0.8600326616674966,
+        0.9965875328698209
+      ],
+      [
+        -3.2353837463771713,
+        -0.4821063090531446,
+        1.822038151426593
+      ],
+      [
+        -3.206393880133936,
+        -1.7515338016559534,
+        -0.45603412791264425
+      ],
+      [
+        -2.3078878083929966,
+        -0.3500417217414369,
+        -1.1432137573416015
+      ],
+      [
+        -0.8531126429135363,
+        -2.293136599989763,
+        -0.20696263969750187
+      ],
+      [
+        -1.592221212003873,
+        -1.9627630569693624,
+        1.36344264470224
+      ],
+      [
+        0.6412110383052895,
+        -1.001780187089489,
+        1.1518778093622124
+      ],
+      [
+        -0.5984686744959192,
+        0.16996878929244588,
+        1.5983733657778687
+      ],
+      [
+        0.690303336703356,
+        -0.21618627817344774,
+        -1.1881326062834008
+      ],
+      [
+        -0.6592232259735251,
+        0.9337871777547194,
+        -0.8894159340011724
+      ],
+      [
+        0.7275973834550458,
+        2.0161341969823483,
+        0.8319581169667657
+      ],
+      [
+        1.4393155196654694,
+        2.1743806407205466,
+        -0.781358843234059
+      ],
+      [
+        2.194434384435441,
+        0.26646850497919666,
+        1.5007645614954366
+      ],
+      [
+        3.196108918892618,
+        1.6635853604907096,
+        0.879859714863738
+      ],
+      [
+        3.543997784439437,
+        0.4691303250309505,
+        -1.2484983983897138
+      ],
+      [
+        2.5293855676313854,
+        -0.9265714448825402,
+        -0.6028873420098356
+      ],
+      [
+        4.193089019732533,
+        -1.56079871126582,
+        0.7715315829548878
+      ],
+      [
+        4.763550782079026,
+        0.15990709898132668,
+        1.139862232601506
+      ]
+    ],
+    "coordinates_override_used": false,
+    "energy_components_kj_mol": {
+      "bond": 25.02715607083097,
+      "angle": 29.255829254495573,
+      "dihedral": 25.700456526801855,
+      "lj": 35.44101352188235,
+      "coulomb": 9.97937765283756,
+      "total": 125.4038330268483
+    },
+    "forces_kj_mol_angstrom": [
+      [
+        -14.730576490411291,
+        96.95475281233159,
+        -33.10483759097636
+      ],
+      [
+        48.82899548528142,
+        126.04241000266262,
+        41.20384483587674
+      ],
+      [
+        21.535045200486262,
+        -42.169864579741514,
+        -136.692947661855
+      ],
+      [
+        -59.36819041925008,
+        -89.63625697266137,
+        133.3245269648363
+      ],
+      [
+        112.00652515562774,
+        -128.11923764978084,
+        84.28693635663052
+      ],
+      [
+        18.6544841422122,
+        66.49674506250042,
+        -192.03813661827974
+      ],
+      [
+        -77.90318979146052,
+        171.76967268681906,
+        65.27969368648871
+      ],
+      [
+        78.26105427546804,
+        21.56287916411895,
+        55.8991759571207
+      ],
+      [
+        -14.604136815650762,
+        -68.91642090039304,
+        -44.40860049667092
+      ],
+      [
+        55.94045889968789,
+        1.8225104922551867,
+        -108.98831571208405
+      ],
+      [
+        -0.5319691696561464,
+        -25.483323427167495,
+        -54.6538028104577
+      ],
+      [
+        -41.10955673995596,
+        -33.87066558848619,
+        83.92441550920454
+      ],
+      [
+        11.770362724129093,
+        -15.661817508057807,
+        5.540258513857074
+      ],
+      [
+        -47.594636242901515,
+        -20.224327268014942,
+        68.12103906520315
+      ],
+      [
+        -99.84328556832335,
+        -69.66855118785756,
+        -4.868093134103708
+      ],
+      [
+        -22.7120387785919,
+        -0.11320008525714918,
+        -10.163282694898166
+      ],
+      [
+        11.774589287409906,
+        51.244810408523975,
+        16.699726987312484
+      ],
+      [
+        -46.743390069766676,
+        -62.4874530547922,
+        83.81837127845533
+      ],
+      [
+        2.749831458030204,
+        13.104568065232845,
+        -20.080065395048305
+      ],
+      [
+        49.91091723511358,
+        15.622063376237458,
+        -95.02603118182702
+      ],
+      [
+        -97.73390225974241,
+        34.399151166599296,
+        -27.26227594236644
+      ],
+      [
+        23.498342703445843,
+        0.7218903156230932,
+        1.7756487328466137
+      ],
+      [
+        -85.17916964864547,
+        25.28289225745845,
+        37.803266872653545
+      ],
+      [
+        71.28491671343632,
+        -40.71715716665239,
+        45.83211845037206
+      ],
+      [
+        39.97685655522363,
+        -20.20296961817925,
+        -66.30875506088618
+      ],
+      [
+        -10.53925600832882,
+        -56.92020490875076,
+        25.26126048422321
+      ],
+      [
+        50.912436591818086,
+        63.26177772248252,
+        -12.41841611711415
+      ],
+      [
+        -84.90766221893732,
+        -39.446390713683186,
+        4.22613000490802
+      ],
+      [
+        -46.228755220613984,
+        -17.197971640767378,
+        29.00791376110762
+      ],
+      [
+        98.78200239654163,
+        71.82585175313974,
+        3.577767614784757
+      ],
+      [
+        43.172323986059645,
+        22.32861184934047,
+        20.091114096613957
+      ],
+      [
+        10.67057263226471,
+        -51.604774865082675,
+        0.34035124407252004
+      ]
+    ],
+    "energy_units": "kJ/mol",
+    "force_units": "kJ/(mol angstrom)",
+    "boundary_conditions": "isolated_nonperiodic",
+    "nonbonded_model": "unshifted_lj12_6_plus_truncated_coulomb",
+    "cutoff_angstrom": 12.0,
+    "dielectric_relative": 1.0,
+    "coulomb_constant_kj_mol_angstrom_e2": 1389.35456264,
+    "coulomb_constant_basis": "332.06371 kcal angstrom/(mol e^2), matching LAMMPS real-unit numerical convention",
+    "lj_mixing_rule": "geometric_sigma_and_epsilon",
+    "tail_correction": false,
+    "long_range_electrostatics": "not_used; finite isolated verification model",
+    "pair_counts": {
+      "included": 405,
+      "excluded": 91,
+      "beyond_cutoff": 0
+    },
+    "force_derivation": "original local forward-mode differentiation of explicit energy equations",
+    "finite_difference_forces": false,
+    "trajectory_integration_performed": false,
+    "equilibrium_status": "not_assessed",
+    "material_validation": "not_performed"
+  },
+  "engine_run": {
+    "status": "completed",
+    "simulation_performed": true,
+    "run_directory": "private_engine_run_not_in_public_records",
+    "input_sha256": "2e63c49cfe04dacf8445a01cca317ee7980a608a450885837d45fec376fe67a1",
+    "timeout_seconds": 30.0,
+    "expected_artifacts": [
+      "log.lammps",
+      "forces.dump"
+    ],
+    "required_thermo_columns": [
+      "Step",
+      "Temp",
+      "E_bond",
+      "E_angle",
+      "E_dihed",
+      "E_vdwl",
+      "E_coul",
+      "PotEng"
+    ],
+    "material_validation": "not_performed",
+    "declared_units_style": "real",
+    "input_units_style": "real",
+    "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+    "units_style_confidence": "recipe_literal_not_engine_verified",
+    "recipe_run_units_styles": [
+      "real"
+    ],
+    "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+    "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+    "evidence_level": "engine_execution",
+    "executable": "lmp",
+    "started_utc": "2026-11-06T22:49:55.617856+00:00",
+    "staged_input_sha256": {
+      "system.data": "4b309a93578e92450636da5223bc0e80727e31f3022443b2630ff064660c61fb"
+    },
+    "runtime_environment": {
+      "OMP_NUM_THREADS": "1",
+      "UCX_TLS": "self"
+    },
+    "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+    "engine_help_sha256": "9f42b8471d2790e07e1187e5ac3a672e80649ddb380ede64da1b49338b934c88",
+    "engine_help_first_line": "Incidental host diagnostic omitted; see engine_version_banner",
+    "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+    "command": [
+      "lmp",
+      "-in",
+      "input.lammps",
+      "-log",
+      "log.lammps",
+      "-screen",
+      "screen.lammps"
+    ],
+    "returncode": 0,
+    "artifact_sha256": {
+      "log.lammps": "a50580028d0577683ba671074b52ecc3ec15373f79a1111082e98a767ba2ec73",
+      "forces.dump": "8b95b7e6a4bbd0204e00dea4436161d795d837f6c204101ec777b357c7910154"
+    },
+    "thermo_blocks": [
+      {
+        "columns": [
+          "Step",
+          "Temp",
+          "E_bond",
+          "E_angle",
+          "E_dihed",
+          "E_vdwl",
+          "E_coul",
+          "PotEng"
+        ],
+        "rows": [
+          [
+            0.0,
+            0.0,
+            5.981633860141245,
+            6.992311007288616,
+            6.142556531262397,
+            8.470605526262505,
+            2.385128502112229,
+            29.97223542706699
+          ]
+        ],
+        "loop_complete": true
+      }
+    ],
+    "warning_lines": [
+      "WARNING: No fixes with time integration, atoms won't move"
+    ],
+    "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+    "equilibration_validation": "not_performed",
+    "finished_utc": "2026-11-06T22:49:56.016907+00:00",
+    "elapsed_seconds": 0.39903528799914056
+  },
+  "backend_numerical_diagnostics": {
+    "kind": "near_planar_opls_backend_numerical_screen",
+    "screen_method": "absolute cross product of unit adjacent-plane normals",
+    "pinned_source_engine": "LAMMPS 22 Jul 2025 Update 4, dihedral_style opls",
+    "pinned_source_url": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/MOLECULE/dihedral_opls.cpp#L171-L180",
+    "observed_source_sine_threshold": 1e-05,
+    "threshold_scope": "observed in the cited pinned source; not guaranteed for other engine versions or builds",
+    "actual_engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+    "near_planar_dihedrals": [
+      {
+        "interaction_id": "dihedral:64",
+        "atom_ids": [
+          "repeat:3:atom:1",
+          "repeat:3:atom:2",
+          "repeat:4:atom:1",
+          "repeat:4:atom:2"
+        ],
+        "type_id": "torsion_CCCC",
+        "abs_sin_phi": 2.045963805142942e-06
+      }
+    ],
+    "interpretation": "The pinned OPLS implementation floors the sine used in derivative ratios near planar torsions; force differences can exceed roundoff while energies agree. This screen does not establish that another build uses the same numerical treatment.",
+    "reference_or_potential_modified": false,
+    "parity_tolerances_modified": false
+  },
+  "atom_ids": [
+    "repeat:0:atom:1",
+    "repeat:0:atom:2",
+    "repeat:1:atom:1",
+    "repeat:1:atom:2",
+    "repeat:2:atom:1",
+    "repeat:2:atom:2",
+    "repeat:3:atom:1",
+    "repeat:3:atom:2",
+    "repeat:4:atom:1",
+    "repeat:4:atom:2",
+    "cap:head:H",
+    "cap:tail:H",
+    "repeat:0:atom:1:H:0",
+    "repeat:0:atom:1:H:1",
+    "repeat:0:atom:2:H:0",
+    "repeat:0:atom:2:H:1",
+    "repeat:1:atom:1:H:0",
+    "repeat:1:atom:1:H:1",
+    "repeat:1:atom:2:H:0",
+    "repeat:1:atom:2:H:1",
+    "repeat:2:atom:1:H:0",
+    "repeat:2:atom:1:H:1",
+    "repeat:2:atom:2:H:0",
+    "repeat:2:atom:2:H:1",
+    "repeat:3:atom:1:H:0",
+    "repeat:3:atom:1:H:1",
+    "repeat:3:atom:2:H:0",
+    "repeat:3:atom:2:H:1",
+    "repeat:4:atom:1:H:0",
+    "repeat:4:atom:1:H:1",
+    "repeat:4:atom:2:H:0",
+    "repeat:4:atom:2:H:1"
+  ],
+  "engine_atom_identity": [
+    {
+      "engine_atom_id": 1,
+      "source_atom_id": "repeat:0:atom:1",
+      "source_atom_map": 1
+    },
+    {
+      "engine_atom_id": 2,
+      "source_atom_id": "repeat:0:atom:2",
+      "source_atom_map": 2
+    },
+    {
+      "engine_atom_id": 3,
+      "source_atom_id": "repeat:1:atom:1",
+      "source_atom_map": 3
+    },
+    {
+      "engine_atom_id": 4,
+      "source_atom_id": "repeat:1:atom:2",
+      "source_atom_map": 4
+    },
+    {
+      "engine_atom_id": 5,
+      "source_atom_id": "repeat:2:atom:1",
+      "source_atom_map": 5
+    },
+    {
+      "engine_atom_id": 6,
+      "source_atom_id": "repeat:2:atom:2",
+      "source_atom_map": 6
+    },
+    {
+      "engine_atom_id": 7,
+      "source_atom_id": "repeat:3:atom:1",
+      "source_atom_map": 7
+    },
+    {
+      "engine_atom_id": 8,
+      "source_atom_id": "repeat:3:atom:2",
+      "source_atom_map": 8
+    },
+    {
+      "engine_atom_id": 9,
+      "source_atom_id": "repeat:4:atom:1",
+      "source_atom_map": 9
+    },
+    {
+      "engine_atom_id": 10,
+      "source_atom_id": "repeat:4:atom:2",
+      "source_atom_map": 10
+    },
+    {
+      "engine_atom_id": 11,
+      "source_atom_id": "cap:head:H",
+      "source_atom_map": 11
+    },
+    {
+      "engine_atom_id": 12,
+      "source_atom_id": "cap:tail:H",
+      "source_atom_map": 12
+    },
+    {
+      "engine_atom_id": 13,
+      "source_atom_id": "repeat:0:atom:1:H:0",
+      "source_atom_map": 13
+    },
+    {
+      "engine_atom_id": 14,
+      "source_atom_id": "repeat:0:atom:1:H:1",
+      "source_atom_map": 14
+    },
+    {
+      "engine_atom_id": 15,
+      "source_atom_id": "repeat:0:atom:2:H:0",
+      "source_atom_map": 15
+    },
+    {
+      "engine_atom_id": 16,
+      "source_atom_id": "repeat:0:atom:2:H:1",
+      "source_atom_map": 16
+    },
+    {
+      "engine_atom_id": 17,
+      "source_atom_id": "repeat:1:atom:1:H:0",
+      "source_atom_map": 17
+    },
+    {
+      "engine_atom_id": 18,
+      "source_atom_id": "repeat:1:atom:1:H:1",
+      "source_atom_map": 18
+    },
+    {
+      "engine_atom_id": 19,
+      "source_atom_id": "repeat:1:atom:2:H:0",
+      "source_atom_map": 19
+    },
+    {
+      "engine_atom_id": 20,
+      "source_atom_id": "repeat:1:atom:2:H:1",
+      "source_atom_map": 20
+    },
+    {
+      "engine_atom_id": 21,
+      "source_atom_id": "repeat:2:atom:1:H:0",
+      "source_atom_map": 21
+    },
+    {
+      "engine_atom_id": 22,
+      "source_atom_id": "repeat:2:atom:1:H:1",
+      "source_atom_map": 22
+    },
+    {
+      "engine_atom_id": 23,
+      "source_atom_id": "repeat:2:atom:2:H:0",
+      "source_atom_map": 23
+    },
+    {
+      "engine_atom_id": 24,
+      "source_atom_id": "repeat:2:atom:2:H:1",
+      "source_atom_map": 24
+    },
+    {
+      "engine_atom_id": 25,
+      "source_atom_id": "repeat:3:atom:1:H:0",
+      "source_atom_map": 25
+    },
+    {
+      "engine_atom_id": 26,
+      "source_atom_id": "repeat:3:atom:1:H:1",
+      "source_atom_map": 26
+    },
+    {
+      "engine_atom_id": 27,
+      "source_atom_id": "repeat:3:atom:2:H:0",
+      "source_atom_map": 27
+    },
+    {
+      "engine_atom_id": 28,
+      "source_atom_id": "repeat:3:atom:2:H:1",
+      "source_atom_map": 28
+    },
+    {
+      "engine_atom_id": 29,
+      "source_atom_id": "repeat:4:atom:1:H:0",
+      "source_atom_map": 29
+    },
+    {
+      "engine_atom_id": 30,
+      "source_atom_id": "repeat:4:atom:1:H:1",
+      "source_atom_map": 30
+    },
+    {
+      "engine_atom_id": 31,
+      "source_atom_id": "repeat:4:atom:2:H:0",
+      "source_atom_map": 31
+    },
+    {
+      "engine_atom_id": 32,
+      "source_atom_id": "repeat:4:atom:2:H:1",
+      "source_atom_map": 32
+    }
+  ],
+  "source_graph_sha256": "3e019d33699a4f4818c1661eaf0f97d1ba93b550b6a06b7e9f922153d9ec5f5e",
+  "assignment_canonical_sha256": "e21a5aa70129e9ce17b51f9773657d73236280daeb83c74c4a911c7699dd8d57",
+  "source_snapshot": {
+    "commit": "820db9e499e4edc7f0dc734e6baeb0e9c3f87859",
+    "files": {
+      "ffbonded.itp": {
+        "bytes": 209608,
+        "git_blob_sha": "944e9c82913333def13ab6b17a7bb5d8248016fc",
+        "sha256": "145e6924f52fae7e93108fa3d674f31a53aea10c80b13dd89abf0b011adfd4fa",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp"
+      },
+      "ffnonbonded.itp": {
+        "bytes": 62929,
+        "git_blob_sha": "20e5b31d9562f4c368c3b9ece318ed5892712e5b",
+        "sha256": "fdf072dac9900c039b58e21323ce621b2112dc86c46a4b5e49e1398ae5d3b9f0",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp"
+      },
+      "forcefield.itp": {
+        "bytes": 862,
+        "git_blob_sha": "e69c4728d7117662a32fa392409e751ea6caf03d",
+        "sha256": "6eb8f0d08684e1ac6f525bb323eae75ed197b2980ddfde975a24ca1a8c931d06",
+        "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp"
+      }
+    },
+    "interpretation": "Selected numerical CT/HC facts transcribed and converted independently; no upstream workflow source is vendored.",
+    "license_context": "The upstream repository provides LGPL-2.1 text. These selected numerical facts have attribution; this is not a license statement covering every OPLS variant.",
+    "paper": "https://doi.org/10.1021/ja9621760",
+    "parameter_family": "GROMACS v2025.3 distributed OPLS-AA alkane subset, including November 1999 HC-CT-CT-HC update",
+    "repository": "https://github.com/gromacs/gromacs",
+    "tag": "v2025.3"
+  },
+  "input_files": {
+    "input.lammps_sha256": "2e63c49cfe04dacf8445a01cca317ee7980a608a450885837d45fec376fe67a1",
+    "system.data_sha256": "4b309a93578e92450636da5223bc0e80727e31f3022443b2630ff064660c61fb"
+  },
+  "md_integration_steps": 0,
+  "trajectory_production_performed": false,
+  "equilibrium_status": "not_assessed",
+  "force_field_physical_accuracy": "not_assessed",
+  "material_property_validation": "not_performed",
+  "engine_energy_components_kj_mol": {
+    "bond": 25.02715607083097,
+    "angle": 29.25582925449557,
+    "dihedral": 25.70045652680187,
+    "lj": 35.44101352188232,
+    "coulomb": 9.979377652837567,
+    "total": 125.40383302684829
+  },
+  "engine_forces_kj_mol_angstrom": [
+    [
+      -14.730576490411304,
+      96.95475281233163,
+      -33.104837590976395
+    ],
+    [
+      48.82899548528132,
+      126.04241000266269,
+      41.20384483587676
+    ],
+    [
+      21.535045200486273,
+      -42.16986457974152,
+      -136.692947661855
+    ],
+    [
+      -59.36819041925001,
+      -89.63625697266139,
+      133.32452696483645
+    ],
+    [
+      112.00652515562778,
+      -128.11923764978079,
+      84.2869363566305
+    ],
+    [
+      18.65448414221218,
+      66.49674506250042,
+      -192.0381366182799
+    ],
+    [
+      -77.90318667354686,
+      171.76967733563703,
+      65.2796915896008
+    ],
+    [
+      78.2610508517618,
+      21.56287405936779,
+      55.899178259658854
+    ],
+    [
+      -14.604139493953262,
+      -68.916424893768,
+      -44.408598695416636
+    ],
+    [
+      55.94046188378277,
+      1.8225149415631883,
+      -108.98831771898863
+    ],
+    [
+      -0.5319691696561415,
+      -25.48332342716749,
+      -54.653802810457705
+    ],
+    [
+      -41.109556739955934,
+      -33.87066558848615,
+      83.9244155092045
+    ],
+    [
+      11.770362724129097,
+      -15.661817508057807,
+      5.540258513857072
+    ],
+    [
+      -47.59463624290149,
+      -20.224327268014942,
+      68.12103906520315
+    ],
+    [
+      -99.84328556832335,
+      -69.66855118785755,
+      -4.868093134103678
+    ],
+    [
+      -22.712038778591854,
+      -0.11320008525716804,
+      -10.163282694898166
+    ],
+    [
+      11.77458928740991,
+      51.244810408523946,
+      16.699726987312495
+    ],
+    [
+      -46.743390069766626,
+      -62.48745305479219,
+      83.81837127845532
+    ],
+    [
+      2.749831458030215,
+      13.10456806523288,
+      -20.080065395048337
+    ],
+    [
+      49.91091723511351,
+      15.62206337623748,
+      -95.02603118182701
+    ],
+    [
+      -97.73390225974234,
+      34.39915116659935,
+      -27.2622759423665
+    ],
+    [
+      23.498342703445832,
+      0.7218903156231051,
+      1.775648732846615
+    ],
+    [
+      -85.17916964864551,
+      25.282892257458457,
+      37.80326687265353
+    ],
+    [
+      71.28491671343632,
+      -40.717157166652406,
+      45.8321184503721
+    ],
+    [
+      39.9768565552237,
+      -20.20296961817927,
+      -66.30875506088621
+    ],
+    [
+      -10.53925600832881,
+      -56.9202049087508,
+      25.261260484223197
+    ],
+    [
+      50.912436591818036,
+      63.26177772248251,
+      -12.418416117114155
+    ],
+    [
+      -84.9076622189373,
+      -39.44639071368318,
+      4.226130004908022
+    ],
+    [
+      -46.228755220613934,
+      -17.19797164076734,
+      29.00791376110764
+    ],
+    [
+      98.78200239654166,
+      71.82585175313974,
+      3.57776761478487
+    ],
+    [
+      43.172323986059666,
+      22.328611849340465,
+      20.091114096613964
+    ],
+    [
+      10.670572632264808,
+      -51.60477486508272,
+      0.3403512440725113
+    ]
+  ],
+  "energy_component_abs_errors_kj_mol": {
+    "bond": 0.0,
+    "angle": 3.552713678800501e-15,
+    "dihedral": 1.4210854715202004e-14,
+    "lj": 2.842170943040401e-14,
+    "coulomb": 7.105427357601002e-15,
+    "total": 1.4210854715202004e-14
+  },
+  "max_force_component_abs_error_kj_mol_angstrom": 5.104751160445176e-06,
+  "rms_force_component_error_kj_mol_angstrom": 1.1985471178884848e-06,
+  "atom_and_coordinate_identity": "passed",
+  "public_record_sanitization": {
+    "changes": [
+      "engine_run.run_directory replaced with a non-host label",
+      "engine_run.executable reduced to basename; executable hash retained",
+      "engine_run.command executable reduced to basename",
+      "incidental engine-help host diagnostic omitted"
+    ],
+    "scope": "Only host-specific paths and incidental help diagnostics are replaced. Scientific inputs, actual engine identity/version/hash and raw artifact hashes are retained.",
+    "raw_record_location": "separate private_engine_runs case directory; not part of public case records"
+  },
+  "independent_balance_checks": {
+    "reference": {
+      "energy_component_sum_error_kj_mol": 0.0,
+      "net_force_kj_mol_angstrom": [
+        -8.659739592076221e-15,
+        -5.927203172717554e-14,
+        1.2811973704174306e-13
+      ],
+      "net_force_norm_kj_mol_angstrom": 1.4143136800057923e-13,
+      "net_torque_about_centroid_kj_mol": [
+        2.6423307986078726e-13,
+        -3.6148861681795097e-13,
+        3.668176873361517e-13
+      ],
+      "net_torque_norm_kj_mol": 5.788336171339009e-13
+    },
+    "engine": {
+      "energy_component_sum_error_kj_mol": 0.0,
+      "net_force_kj_mol_angstrom": [
+        1.3522516439934407e-13,
+        8.798517470154366e-15,
+        3.36952687973735e-14
+      ],
+      "net_force_norm_kj_mol_angstrom": 1.3963749545100519e-13,
+      "net_torque_about_centroid_kj_mol": [
+        -1.2356782264077992e-13,
+        -2.3803181647963356e-13,
+        4.529709940470639e-14
+      ],
+      "net_torque_norm_kj_mol": 2.719926095747034e-13
+    }
+  }
+}

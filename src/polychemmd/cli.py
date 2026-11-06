@@ -92,6 +92,13 @@ def _positive_recipe_number(value, name):
     return value
 
 
+def _geometry_from_record(data):
+    from .geometry import MolecularGeometry
+    if isinstance(data, dict) and "record_kind" in data and "payload" in data:
+        data = data["payload"]
+    return MolecularGeometry.from_mapping(data)
+
+
 def _prepare_cell(data):
     from .builders.conformers import generate_conformer
     from .builders.packing import pack_cell
@@ -182,6 +189,21 @@ def main(argv=None):
     xyz.add_argument("input")
     xyz.add_argument("--wrapped", action="store_true", help="Use wrapped positions for packed cells")
     xyz.add_argument("--output")
+    assignment = commands.add_parser("parameterize-alkane", help="Assign the frozen OPLS-AA numerical subset to a neutral explicit n-alkane")
+    assignment.add_argument("input", help="Molecular geometry JSON or its result envelope")
+    assignment.add_argument("--output")
+    evaluate = commands.add_parser("alkane-energy", help="Evaluate isolated finite-cutoff alkane energies and analytic forces; no engine")
+    evaluate.add_argument("input")
+    evaluate.add_argument("--cutoff-angstrom", type=float, default=12.0)
+    evaluate.add_argument("--output")
+    parity = commands.add_parser("alkane-lammps", help="Verify a run-zero LAMMPS single point against independent energies and forces")
+    parity.add_argument("input")
+    parity.add_argument("--run-dir", required=True)
+    parity.add_argument("--executable")
+    parity.add_argument("--timeout", type=float, default=30.)
+    parity.add_argument("--cutoff-angstrom", type=float, default=12.0)
+    parity.add_argument("--plan", action="store_true", help="Return generated inputs without running or writing an engine directory")
+    parity.add_argument("--output")
     convert = commands.add_parser("torsion-import", help="Explicitly convert a supported LAMMPS torsion convention")
     convert.add_argument("input")
     convert.add_argument("--source", choices=("lammps-fourier", "lammps-opls"), required=True)
@@ -273,6 +295,36 @@ def main(argv=None):
             else:
                 raise ValueError("unsupported structure kind for XYZ export")
             _emit_text(text, args.output)
+        elif args.command in ("parameterize-alkane", "alkane-energy", "alkane-lammps"):
+            from .forcefields import assign_alkane, evaluate_alkane
+            _check_output_path(args.input, args.output)
+            if args.command == "alkane-lammps" and args.output is not None:
+                if Path(args.output).resolve().is_relative_to(Path(args.run_dir).resolve()):
+                    raise ValueError("summary output must be outside the engine run directory to preserve its artifacts")
+            raw, data = _read(args.input)
+            assigned = assign_alkane(_geometry_from_record(data))
+            if args.command == "parameterize-alkane":
+                _emit(envelope(assigned.to_dict(), raw, "alkane_parameter_assignment"), args.output)
+            elif args.command == "alkane-energy":
+                _emit(envelope(evaluate_alkane(assigned, cutoff_angstrom=args.cutoff_angstrom),
+                               raw, "alkane_energy_force_evaluation"), args.output)
+            else:
+                from .engines import plan_lammps, prepare_alkane_singlepoint, verify_alkane_singlepoint
+                if args.plan:
+                    spec = prepare_alkane_singlepoint(assigned, run_directory=args.run_dir,
+                                                     executable=args.executable, timeout_seconds=args.timeout,
+                                                     cutoff_angstrom=args.cutoff_angstrom)
+                    payload = {"model_id": assigned.to_dict()["model_id"],
+                               "engine_plan": plan_lammps(spec), "input_script": spec.input_script,
+                               "staged_inputs": dict(spec.input_files),
+                               "md_integration_steps": 0, "material_property_validation": "not_performed"}
+                    kind = "alkane_singlepoint_plan"
+                else:
+                    payload = verify_alkane_singlepoint(assigned, run_directory=args.run_dir,
+                                                       executable=args.executable, timeout_seconds=args.timeout,
+                                                       cutoff_angstrom=args.cutoff_angstrom)
+                    kind = "alkane_engine_energy_force_parity"
+                _emit(envelope(payload, raw, kind), args.output)
         elif args.command == "torsion-import":
             from .descriptors.conventions import import_lammps_fourier, import_lammps_opls
             _check_output_path(args.input, args.output)
