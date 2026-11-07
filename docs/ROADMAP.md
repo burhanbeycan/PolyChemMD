@@ -1,6 +1,6 @@
 # Development roadmap
 
-This is a staged research-software plan, not a statement that the complete platform exists. Version 0.5 adds periodic assignment, finite Ewald/engine parity and bounded minimization/NVT/NPT preparation to the sourced graph/geometry/parameter/analysis core. Broader chemistry, qualified production sampling and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
+This is a staged research-software plan, not a statement that the complete platform exists. Version 0.6 adds native checkpoint/continuation, physical-time density diagnostics and explicit campaign/resource/cell-capacity planning to the sourced graph/geometry/periodic preparation core. Broader chemistry, qualified production sampling and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
 
 ## P0 — Freeze the chemical and scientific contracts
 

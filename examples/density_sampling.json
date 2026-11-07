@@ -1,0 +1,18 @@
+{
+  "timestep_fs": 0.25,
+  "discard_steps": 0,
+  "min_duration_ps": 10.0,
+  "block_size": 50,
+  "min_blocks": 16,
+  "max_autocorrelation_lag": 128,
+  "min_effective_samples": 50.0,
+  "min_block_inefficiency_ratio": 5.0,
+  "max_abs_block_lag_one": 0.2,
+  "max_coarsened_se_ratio": 1.25,
+  "max_density_relative_half_width": 0.02,
+  "max_density_relative_drift": 0.02,
+  "target_temperature_k": 300.0,
+  "temperature_mean_tolerance_k": 15.0,
+  "target_pressure_bar": 1.0,
+  "pressure_mean_tolerance_bar": 100.0
+}

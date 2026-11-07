@@ -27,6 +27,22 @@ certificate that phase, chain relaxation or any property has converged.
 - Mark unknown values as unknown. Do not convert an assumption into an observation.
 - Store target and realized ensemble statistics separately. Mean molecular weight and dispersity do not uniquely specify the entire chain-length distribution.
 
+## Continuation and sampling boundary
+
+A restart is an evolved state tied to its original topology, parameter model,
+engine build, process layout and physical controls. Verify the checkpoint hash
+before staging, retain timestep/images/velocities and the NPT extended state,
+and never treat a continuation fragment as an independent prepared cell. Native
+binary checkpoints are not a portable interchange format.
+
+Prespecify sampling windows, physical duration, block/autocorrelation checks,
+state-mean tolerances and uncertainty gates. Numerical diagnostic success is
+conditional on those estimators; it cannot alone prove phase identity, polymer
+chain relaxation or predictive accuracy. Retain failed and inconclusive cells
+in the declared replicate set. A campaign plan is not an execution result;
+projected timings are not measured whole-campaign costs. Cell capacity and
+minimum-image cutoff admissibility must be checked before targeting a bulk state.
+
 ## Canonical torsion convention
 
 The analytical convention is

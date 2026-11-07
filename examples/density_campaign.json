@@ -1,0 +1,104 @@
+{
+  "schema_version": "1",
+  "chemistry": "neutral_explicit_n_alkane",
+  "phase_target": "liquid_candidate",
+  "carbon_counts": [
+    10,
+    10,
+    10,
+    10
+  ],
+  "temperature_k": 300.0,
+  "pressure_bar": 1.0,
+  "target_density_range_g_cm3": [
+    0.65,
+    0.8
+  ],
+  "initialization": {
+    "strategy": "dilute_rigid_then_npt",
+    "density_g_cm3": 0.06837,
+    "min_distance_angstrom": 1.5,
+    "packing_attempts_per_molecule": 2000
+  },
+  "replicates": [
+    {
+      "cell_id": "decane_cell_01",
+      "conformer_seeds": [
+        73001,
+        73002,
+        73003,
+        73004
+      ],
+      "packing_seed": 73010,
+      "velocity_seed": 73020
+    },
+    {
+      "cell_id": "decane_cell_02",
+      "conformer_seeds": [
+        73101,
+        73102,
+        73103,
+        73104
+      ],
+      "packing_seed": 73110,
+      "velocity_seed": 73120
+    },
+    {
+      "cell_id": "decane_cell_03",
+      "conformer_seeds": [
+        73201,
+        73202,
+        73203,
+        73204
+      ],
+      "packing_seed": 73210,
+      "velocity_seed": 73220
+    }
+  ],
+  "integration": {
+    "timestep_fs": 0.25,
+    "minimize_max_iterations": 200,
+    "minimize_max_evaluations": 1000,
+    "nvt_steps": 5000,
+    "npt_steps": 5000,
+    "production_steps": 40000,
+    "segment_steps": 10000,
+    "thermo_stride_steps": 10
+  },
+  "numerics": {
+    "baseline": {
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "cutoff_variant": {
+      "cutoff_angstrom": 11.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "ewald_variant": {
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 20
+    }
+  },
+  "sampling_gates": {
+    "min_independent_cells": 3,
+    "min_production_duration_ps": 10.0,
+    "density_relative_drift_limit": 0.02,
+    "density_relative_interval_halfwidth_limit": 0.05,
+    "temperature_absolute_mean_deviation_k": 10.0,
+    "pressure_absolute_mean_deviation_bar": 100.0,
+    "cutoff_relative_density_change_limit": 0.02,
+    "ewald_relative_density_change_limit": 0.01,
+    "finite_size_assessment_required": true
+  },
+  "resources": {
+    "hardware_label": "hosted_single_rank_cpu_unmeasured",
+    "threads": 1,
+    "max_wall_seconds": 600.0,
+    "max_engine_runs": 45,
+    "per_run_timeout_seconds": 60.0
+  },
+  "calibration": null
+}

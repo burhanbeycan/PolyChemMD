@@ -1,0 +1,5 @@
+{
+  "steps": 100,
+  "timeout_seconds": 60.0,
+  "thermo_stride_steps": 10
+}

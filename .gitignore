@@ -13,3 +13,5 @@ trajectories/
 !evidence/periodic_v05/*/*.dump
 .env
 *.key
+!evidence/restart_v06/*/*.dump
+*.restart

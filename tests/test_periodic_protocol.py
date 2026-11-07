@@ -133,6 +133,11 @@ class ExecutionContractTests(unittest.TestCase):
         (directory/'log.lammps').write_text(log)
         (directory/'prepared.data').write_text('LAMMPS data file, timestep = 5, units = real\n')
         (directory/'final.dump').write_text(fixture_dump(step=6 if bad_step else 5))
+        (directory/'checkpoint.restart').write_bytes(b'SYNTHETIC_NATIVE_CHECKPOINT_FIXTURE_NOT_ENGINE_EVIDENCE')
+        checkpoint_lines=fixture_dump(step=6 if bad_step else 5).splitlines()
+        checkpoint_lines[8]+=' vx vy vz'
+        checkpoint_lines[9:]=[line+' 0.001 -0.002 0.003' for line in checkpoint_lines[9:]]
+        (directory/'checkpoint.dump').write_text('\n'.join(checkpoint_lines)+'\n')
         density=(1.008+1.008)/(24**3)/.602214129
         def row(step):
             return [step,300.,1.,24**3,density,1.,2.,.1,.2,.3,.4,.5,-.5,19. if bad_box else 24.,24.,24.]
@@ -140,7 +145,9 @@ class ExecutionContractTests(unittest.TestCase):
                 {'columns':list(_THERMO_COLUMNS),'rows':[row(0),row(2)]},
                 {'columns':list(_THERMO_COLUMNS),'rows':[row(2),row(5)]}]
         return LammpsRunResult({'status':'completed','evidence_kind':'synthetic_process_fixture',
-                                'simulation_performed':True,'thermo_blocks':blocks})
+                                'simulation_performed':True,'thermo_blocks':blocks,
+                                'engine_identity':{'fixture':'not_a_real_engine'},
+                                'engine_version_banner':'SYNTHETIC_PROCESS_FIXTURE'})
 
     def test_executed_pilot_does_not_promote_sampling_or_minimizer_status(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -161,6 +168,8 @@ class ExecutionContractTests(unittest.TestCase):
             self.assertEqual(report['final_state']['density_conversion_audit']['engine_abs_difference_g_cm3'],0)
             self.assertNotEqual(report['final_state']['density_g_cm3'],report['final_state']['engine_density_g_cm3'])
             self.assertTrue((directory/'protocol_record.json').is_file())
+            self.assertEqual(report['checkpoint']['step'],5)
+            self.assertEqual(report['checkpoint']['integrator']['fix_id'],'polychemmd_npt')
 
     def test_malformed_or_out_of_regime_actual_output_is_a_failed_protocol(self):
         for kwargs in ({'bad_step':True},{'bad_box':True}):

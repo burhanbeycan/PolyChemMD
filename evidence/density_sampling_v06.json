@@ -1,0 +1,76 @@
+{
+  "result_schema_version": "0.1",
+  "record_kind": "executed_sampling_review_of_existing_pilot",
+  "software": {
+    "name": "PolyChemMD",
+    "version": "0.6.0.dev0",
+    "python": "3.12.14"
+  },
+  "created_utc": "2026-11-06T23:54:02.771547+00:00",
+  "input_sha256": "206bfa833046c5738c2ab84491ef819ba5fb197b2d61a5af7f8a026887daf43a",
+  "input_hash_basis": "exact input-file bytes",
+  "payload": {
+    "schema_version": "1",
+    "kind": "density_sampling_review",
+    "sampling_status": "insufficient_sampling",
+    "status": "insufficient_sampling",
+    "equilibrium_status": "not_assessed",
+    "production_ready": false,
+    "density_prediction_validation": "not_performed",
+    "simulation_executed_by_analysis": false,
+    "spec": {
+      "timestep_fs": 0.25,
+      "discard_steps": 0,
+      "min_duration_ps": 10.0,
+      "block_size": 50,
+      "min_blocks": 16,
+      "max_autocorrelation_lag": 128,
+      "min_effective_samples": 50.0,
+      "min_block_inefficiency_ratio": 5.0,
+      "max_abs_block_lag_one": 0.2,
+      "max_coarsened_se_ratio": 1.25,
+      "max_density_relative_half_width": 0.02,
+      "max_density_relative_drift": 0.02,
+      "target_temperature_k": 300.0,
+      "temperature_mean_tolerance_k": 15.0,
+      "target_pressure_bar": 1.0,
+      "pressure_mean_tolerance_bar": 100.0
+    },
+    "n_input_frames": 11,
+    "n_discarded_frames": 0,
+    "n_retained_frames": 11,
+    "independent_cell_count": 1,
+    "sampling_stride_steps": 10,
+    "sampling_interval_fs": 2.5,
+    "retained_duration_ps": 0.025,
+    "flags": [
+      "physical_duration",
+      "complete_blocks",
+      "coarsened_blocks",
+      "too_few_frames_for_variability_diagnostics"
+    ],
+    "gates": {
+      "physical_duration": false,
+      "complete_blocks": false,
+      "coarsened_blocks": false
+    },
+    "uncertainty_interpretation": "conditional finite-series estimates; neither a calibrated confidence interval nor independent-cell uncertainty",
+    "unverified_requirements": [
+      "discard removes preparation transients",
+      "unobserved slow modes and chain relaxation",
+      "phase and force-field applicability",
+      "independently prepared cell agreement",
+      "cell size and numerical sensitivity",
+      "state-matched external comparison"
+    ],
+    "n_complete_blocks": 0,
+    "n_used_frames": 0,
+    "used_duration_ps": 0.0,
+    "n_omitted_trailing_frames": 11,
+    "source_reference": "evidence/periodic_v05/preparation_pilot/protocol.json",
+    "source_sha256": "206bfa833046c5738c2ab84491ef819ba5fb197b2d61a5af7f8a026887daf43a",
+    "source_kind": "previously_executed_simulation",
+    "new_simulation_performed": false,
+    "protocol_input_sha256": "650dc2606ffbdcad478de3b0577f7f61518330615e1b04be82a9f28bf00a4689"
+  }
+}

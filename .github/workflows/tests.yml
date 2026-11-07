@@ -46,3 +46,4 @@ jobs:
       - run: polychemmd lammps-run examples/lammps_smoke.in --run-dir artifacts/lammps-ci --expect smoke.data --output artifacts/engine-result.json
       - run: python scripts/verify_alkane_v04.py --output-dir artifacts/alkane-ci
       - run: python scripts/verify_periodic_v05.py --output-dir artifacts/periodic-ci
+      - run: python scripts/verify_restart_v06.py --output-dir artifacts/restart-ci

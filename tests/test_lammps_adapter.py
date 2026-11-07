@@ -84,6 +84,23 @@ if mode=='nonzero':
         self.assertEqual(result, json.loads((spec.run_directory/'run_record.json').read_text()))
         self.assertEqual(result['command'][0], str(executable.resolve()))
 
+    def test_binary_checkpoint_inputs_are_staged_and_hashed(self):
+        raw=b'\x00\xffNATIVE_CHECKPOINT_PROCESS_FIXTURE'
+        spec=self.spec(self.fake(),input_binary_files=(("source.restart",raw),))
+        result=run_lammps(spec).to_dict()
+        self.assertEqual((spec.run_directory/'source.restart').read_bytes(),raw)
+        self.assertEqual(result['staged_binary_input_sha256']['source.restart'],hashlib.sha256(raw).hexdigest())
+
+    def test_changed_engine_identity_fails_before_integration(self):
+        executable=self.fake()
+        first=run_lammps(self.spec(executable)).to_dict()
+        changed=dict(first['engine_identity']);changed['entrypoint_sha256']='0'*64
+        spec=LammpsRunSpec('run 20',self.root/'different_run',executable=executable,
+                           expected_engine_identity=changed)
+        with self.assertRaisesRegex(LammpsError,'identity/configuration') as caught:run_lammps(spec)
+        self.assertFalse(caught.exception.record['simulation_performed'])
+        self.assertEqual(caught.exception.record['failure_phase'],'engine_identification')
+
     def test_zero_exit_alone_is_insufficient(self):
         for mode in ('missing', 'empty', 'stale'):
             with self.subTest(mode=mode):
@@ -174,6 +191,27 @@ if mode=='nonzero':
 
 
 class ThermoAndSpecTests(unittest.TestCase):
+    def test_help_identity_filters_host_noise_but_preserves_engine_configuration(self):
+        from polychemmd.engines.lammps import _runtime_identity
+        with tempfile.TemporaryDirectory() as temporary:
+            executable=Path(temporary)/'fixture';executable.write_bytes(b'fixture_not_engine')
+            help_text='Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025\nInstalled packages:\nMOLECULE KSPACE\n'
+            first=_runtime_identity(executable,'[123.45] [host:1234:0] foo UCX ERROR hostfailure\n'+help_text)
+            second=_runtime_identity(executable,'[678.90] [host:9876:0] foo UCX ERROR hostfailure\n'+help_text)
+            self.assertEqual(first,second)
+            changed=_runtime_identity(executable,help_text.replace('MOLECULE KSPACE','MOLECULE'))
+            self.assertNotEqual(first['help_configuration_sha256'],changed['help_configuration_sha256'])
+
+    def test_binary_input_contract_rejects_ambiguous_or_unsafe_staging(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            for pairs in ((("../escape.restart",b'x'),),(("log.lammps",b'x'),),
+                          (("source.restart",''),),(("source.restart",b''),)):
+                with self.subTest(pairs=pairs),self.assertRaises(ValueError):
+                    LammpsRunSpec('run 0',temporary,input_binary_files=pairs)
+            with self.assertRaisesRegex(ValueError,'unique'):
+                LammpsRunSpec('run 0',temporary,input_files=(("source.restart","text"),),
+                               input_binary_files=(("source.restart",b'binary'),))
+
     def test_clear_resets_units_to_default_lj(self):
         with tempfile.TemporaryDirectory() as directory:
             spec = LammpsRunSpec('units real\nclear\nrun 0', directory)

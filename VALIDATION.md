@@ -231,3 +231,56 @@ execution/preparation evidence, not an equilibrated polymer density or external
 property benchmark. TASK-006C1 is complete in its restricted periodic domain;
 TASK-006C2 sampling/state qualification and the full density milestone remain
 open. Hosted checks are recorded separately by GitHub Actions.
+
+
+## Restart and density review foundations v0.6 — executed milestone
+
+Executed 7 November 2026 in Türkiye (6 November UTC), Linux, Python 3.12.14.
+
+- Offline editable installation succeeded. **370 tests passed, zero skipped**;
+  see [evidence/tests_v06.json](evidence/tests_v06.json). Meaningful new checks
+  cover native checkpoint integrity, binary staging, runtime identity, evolved
+  state/velocity/image restoration, typed topology multisets, density sampling,
+  independent-cell accounting, capacity/resource gates and CLI input protection.
+- Under `python -S`, **324 passed and 46 intentionally skipped**. RDKit, NumPy
+  and LAMMPS were not imported. These are dependency-absence checks on the same
+  suite, not extra material simulations; see
+  [evidence/core_only_v06.json](evidence/core_only_v06.json).
+- An offline wheel was exercised from a new temporary directory under
+  `python -S`. Its own packaged code/data assigned the actual 128-atom source,
+  planned a native continuation without reading checkpoints or creating a run
+  directory, produced a campaign plan and rejected a short sampling window as
+  insufficient. Packaged source bytes matched the checkout. See
+  [evidence/wheel_v06.json](evidence/wheel_v06.json).
+- The final actual restart auditor completed four bounded engine invocations in
+  **8.886093162 s** on the measured single-rank CPU host. Preparation executed
+  100 NVT + 100 NPT steps; the same checkpoint then continued for 40 steps versus
+  20+20. Maximum endpoint differences were **1.0658141036401503e-14 angstrom**
+  for positions, **1.93421667571414e-15 angstrom/fs** for velocities,
+  **2.5501378786429996e-11 kJ/(mol angstrom)** for forces, zero for box
+  components and **5.684341886080801e-13 kJ/mol** for energy, within the
+  original predeclared tolerances. Atom/molecule/charge/image identities matched.
+- Source/parameter/engine identities, initial restoration, NPT fix state,
+  canonical/native units and output hashes were checked. All nine recorded
+  source hashes match this final runtime source. Public text artifacts are
+  byte-preserved; native binary checkpoint hashes are retained without committing
+  the binaries. [Restart evidence](evidence/restart_v06/README.md) includes two
+  initial failed read-back attempts and their source-scoped fixes. No scientific
+  comparison tolerance was widened.
+- Branches repeat one physical path and remain **one prepared cell**. There were
+  280 integration steps across all branches; the longest path was 240 steps,
+  **60 fs including preparation**. The five-frame continuous NPT window spans
+  **0.01 ps** and correctly reports `insufficient_sampling`. No density
+  uncertainty or external material comparison is invented.
+- The executed no-engine campaign plan declares three independent cell recipes,
+  paired numerical sensitivities and a resource budget. Its mass/cutoff capacity
+  check rejects the candidate liquid-density range for the current small cell;
+  planning does not execute the 45 requested runs. See
+  [the plan](evidence/density_campaign_plan_v06.json) and
+  [review of the earlier actual pilot](evidence/density_sampling_v06.json).
+
+TASK-006C2A restart/diagnostic/planning foundations are implemented. The complete
+state/sampling qualification and validated density milestone remain open.
+TASK-006C2B must establish larger admissible periodic cells with verified numerical
+scaling before a liquid-scale sampling campaign. Hosted checks are reported by
+GitHub Actions independently of these local records.

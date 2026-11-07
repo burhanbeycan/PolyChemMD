@@ -23,6 +23,7 @@ _THERMO_COLUMNS = ("Step", "Temp", "Press", "Volume", "Density", "PotEng", "TotE
                    "E_bond", "E_angle", "E_dihed", "E_vdwl", "E_coul", "E_long",
                    "Lx", "Ly", "Lz")
 _DUMP_COLUMNS = ("id", "mol", "q", "x", "y", "z", "ix", "iy", "iz", "fx", "fy", "fz")
+_STATE_DUMP_COLUMNS = (*_DUMP_COLUMNS, "vx", "vy", "vz")
 _MARKERS = ("POLYCHEMMD_MINIMIZE_BEGIN", "POLYCHEMMD_MINIMIZE_END",
             "POLYCHEMMD_NVT_BEGIN", "POLYCHEMMD_NVT_END",
             "POLYCHEMMD_NPT_BEGIN", "POLYCHEMMD_NPT_END")
@@ -158,13 +159,17 @@ def _prepare(assigned, spec, run_directory, executable):
         'print "POLYCHEMMD_NVT_END"', "unfix polychemmd_nvt",
         f"fix polychemmd_npt all npt temp {target} {target} 100.0 iso {pressure} {pressure} 1000.0",
         'print "POLYCHEMMD_NPT_BEGIN"', f"run {spec.npt_steps}",
-        'print "POLYCHEMMD_NPT_END"', "unfix polychemmd_npt",
+        'print "POLYCHEMMD_NPT_END"',
+        "# Preserve active Nose-Hoover/barostat state before removing its fix.",
+        "write_restart checkpoint.restart",
+        "write_dump all custom checkpoint.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g",
+        "unfix polychemmd_npt",
         "unfix polychemmd_boxguard", "unfix polychemmd_bondguard", "write_data prepared.data",
         "write_dump all custom final.dump id mol q x y z ix iy iz fx fy fz modify sort id format float %.17g",
         'print "POLYCHEMMD_RUN_COMPLETE"', ""))
     run_spec = LammpsRunSpec(script, run_directory, executable=executable,
                              timeout_seconds=spec.timeout_seconds,
-                             expected_artifacts=("log.lammps", "prepared.data", "final.dump"),
+                             expected_artifacts=("log.lammps", "prepared.data", "final.dump", "checkpoint.restart", "checkpoint.dump"),
                              required_thermo_columns=_THERMO_COLUMNS,
                              input_files=(("system.data", data),), units_style="real")
     record = assigned.to_dict()
@@ -196,7 +201,7 @@ def _integer_token(token, name):
     return int(token)
 
 
-def parse_periodic_final_dump(text, assigned_record, expected_step):
+def parse_periodic_final_dump(text, assigned_record, expected_step, *, include_velocities=False):
     """Parse one actual final frame; positions may differ from the starting cell."""
     lines = text.splitlines()
     atoms = assigned_record["atoms"]
@@ -219,12 +224,13 @@ def parse_periodic_final_dump(text, assigned_record, expected_step):
         origin.append(low); lengths.append(high-low)
     if not all(math.isfinite(v) and v > 0 for v in lengths):
         raise ValueError("final box lengths are unrepresentable")
-    if lines[8].split() != ["ITEM:", "ATOMS", *_DUMP_COLUMNS]:
+    columns = _STATE_DUMP_COLUMNS if include_velocities else _DUMP_COLUMNS
+    if lines[8].split() != ["ITEM:", "ATOMS", *columns]:
         raise ValueError("final dump columns differ from the required identity/coordinate/force fields")
     result = {}
     for line in lines[9:]:
         tokens = line.split()
-        if len(tokens) != len(_DUMP_COLUMNS):
+        if len(tokens) != len(columns):
             raise ValueError("malformed final dump row")
         identity, molecule = (_integer_token(tokens[i], name) for i,name in ((0,"atom ID"),(1,"molecule ID")))
         if not 1 <= identity <= count or identity in result:
@@ -246,6 +252,11 @@ def parse_periodic_final_dump(text, assigned_record, expected_step):
                             "molecule_index": source["molecule_index"], "charge_e": charge,
                             "wrapped_coordinates_angstrom": position, "image_flags": images,
                             "coordinates_angstrom": unwrapped, "forces_kj_mol_angstrom": forces}
+        if include_velocities:
+            velocities = [float(v) for v in tokens[12:15]]
+            if not all(math.isfinite(v) for v in velocities):
+                raise ValueError("checkpoint velocities must be finite")
+            result[identity]["velocities_angstrom_fs"] = velocities
     if set(result) != set(range(1,count+1)):
         raise ValueError("final dump lost source atoms")
     return {"step":step,"atom_count":count,
@@ -369,7 +380,11 @@ def run_periodic_alkane_protocol(assigned, spec, *, run_directory, executable=No
     report.update(engine_run=run,simulation_performed=True)
     try:
         stages,final,unit_check = _audit_outputs(run,spec,assignment,run_spec.run_directory)
+        from .restart import checkpoint_manifest
+        checkpoint = checkpoint_manifest(assignment,spec,run,run_spec.run_directory,
+                                         step=spec.nvt_steps+spec.npt_steps)
         report.update(status="completed_preparation_pilot",stages=stages,final_state=final,
+                      checkpoint=checkpoint,
                       equilibrium_status="insufficient_sampling",
                       md_integration_steps_executed=spec.nvt_steps+spec.npt_steps,
                       independent_output_unit_check=unit_check,

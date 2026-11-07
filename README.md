@@ -2,7 +2,7 @@
 
 Independent polymer chemistry simulation and property-analysis research project.
 
-**Release state: 0.5.0.dev0 — periodic n-alkane assignment, Ewald verification and bounded preparation pilots; equilibrium polymer-property validation remains open.**
+**Release state: 0.6.0.dev0 — bounded native restart, density sampling diagnostics and resource-aware campaign plans; equilibrium polymer-property validation remains open.**
 
 The long-term scope is a general-purpose connection from polymer chemistry and
 microstructure to quantum-informed parameterization, molecular dynamics,
@@ -37,7 +37,9 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 | Periodic Ewald reference and engine parity | Explicit real/reciprocal/self/exclusion terms, analytic forces, minimum-image gates and declared finite-sum budgets; no automatic convergence claim |
 | Bounded periodic preparation | Reviewable minimization, NVT and NPT pilot with box/resource guards, native/canonical units and final-state checks; short execution never certifies equilibrium |
 | LAMMPS subprocess adapter | Bounded execution, exclusive run directory, output hashes and thermo checks; real reduced-unit LJ smoke executed |
-| Density analysis | Physical-unit conversion and conditional block diagnostics; no polymer equilibrium or external validation claim |
+| Native NPT checkpoint/continuation | Hash-bound restart with parameter/state/engine identity checks and retained thermostat/barostat state; restricted to the same supported engine build and platform |
+| Density analysis | Physical-unit conversion, autocorrelation/block diagnostics and independent-cell summaries; diagnostics never certify equilibrium or external accuracy |
+| Density campaign planning | Declared state, seed identities, physical durations, numerical sensitivities and resource/cell-capacity gates; no automatic campaign execution |
 | Dependency inspection and CLI | Implemented; presence inspection does not execute or validate engines |
 | Property catalogue | 19 planned material-property families; the catalogue is not an executable property engine |
 | Broader chemistry, production sampling and state-matched bulk benchmarks | Planned |
@@ -149,6 +151,29 @@ real-space cutoff, geometric LJ mixing, and no LJ tail correction. See
 [bounded protocol](docs/PERIODIC_PROTOCOL.md). The default 200 integration steps
 are a preparation pilot, not evidence of equilibrated polymer density.
 
+Review a campaign and resume a locally retained native checkpoint:
+
+```bash
+polychemmd density-plan examples/density_campaign.json --output artifacts/density-plan.json
+polychemmd periodic-resume artifacts/assigned-cell.json --checkpoint artifacts/preparation-result.json --checkpoint-dir artifacts/preparation --protocol examples/periodic_continuation.json --run-dir artifacts/continuation-plan --plan --output artifacts/continuation-plan.json
+OMP_NUM_THREADS=1 UCX_TLS=self python scripts/verify_restart_v06.py --output-dir artifacts/restart-v06
+```
+
+The restart auditor compares uninterrupted and split continuation of the **same**
+cell. Fragments and frames are not independent material samples. Binary restart
+files stay with local run artifacts; public evidence retains their hashes and
+reproduction recipes. A native restart requires the same engine build/platform
+and preserves the original NPT fix state without reseeding velocities.
+
+`density-sampling INPUT --protocol examples/density_sampling.json` accepts
+explicit physical-unit thermo rows and predeclared duration/statistical gates.
+Passing those diagnostics does not establish phase or full chain relaxation.
+See [restart](docs/RESTART_PROTOCOL.md), [sampling](docs/DENSITY_SAMPLING.md),
+[campaign planning](docs/DENSITY_CAMPAIGN.md) and [actual restart evidence](evidence/restart_v06/README.md).
+The example plan exposes the mismatch between the current 512-atom limit,
+10 angstrom cutoff and its declared candidate liquid-density range. It does not
+silently shorten the cutoff or report the dilute pilot as a liquid prediction.
+
 For the separately installed Linux/x86-64 engine smoke environment:
 
 ```bash
@@ -196,8 +221,9 @@ TASK-006B adds attributed parameter assignment and engine energy/force parity fo
 the restricted n-alkane graph. TASK-006C1 now adds periodic model assembly,
 independent Ewald/engine verification and a bounded preparation protocol.
 TASK-006 remains open until an appropriate state/preparation, production
-sampling, independent cells and external comparison are established. The next
-step is TASK-006C2 sampling/protocol qualification under a declared compute budget.
+sampling, independent cells and external comparison are established. TASK-006C2A now supplies restart and sampling/planning foundations. The next
+bounded step is TASK-006C2B: scale the periodic representation and verify
+physically admissible liquid-size cells before the qualification campaign.
 
 ## Reproducibility and dependencies
 

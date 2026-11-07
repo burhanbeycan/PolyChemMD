@@ -11,9 +11,9 @@ These are repository task specifications, not claims that GitHub issues have alr
 | 003 | Implemented | Analytic energy checks for LAMMPS Fourier/OPLS conversions, not material parameter validation |
 | 004 | Implemented contract | Assigned-type coverage only; no chemical atom typing or production parameter set |
 | 005 | Implemented process adapter | Real reduced-unit LJ smoke, plus independent failure/parser tests |
-| 006 | Geometry, restricted parameters, TASK-006C1 periodic assembly/Ewald/preparation implemented | No validated polymer-density result exists; sampling and external comparison remain open |
+| 006 | Geometry, restricted parameters, TASK-006C1 plus TASK-006C2A restart/sampling/planning foundations implemented | No validated polymer-density result exists; sampling and external comparison remain open |
 | 007 | Planned | No representation advantage or chemical-family benchmark claimed |
-| 008 | Development evidence audit implemented for v0.2–v0.5 | Machine-readable geometry/parameter/periodic/engine checks; complete scientific benchmarks remain open |
+| 008 | Development evidence audit implemented for v0.2–v0.6 | Machine-readable geometry/parameter/periodic/engine checks; complete scientific benchmarks remain open |
 
 ## TASK-001 — Chemical contract and atom-lineage schema
 
@@ -115,7 +115,7 @@ record and a subsequent deformed engine state have separate roles. Native and
 canonical density values remain explicit. Short preparation does not close the
 full density milestone.
 
-### Next bounded task — TASK-006C2
+### TASK-006C2 — state and sampling qualification (still open)
 
 Qualify the preparation and sampling protocol for a precisely declared state and
 chemistry before reporting a density prediction. Define target phase, chain/cell
@@ -125,6 +125,28 @@ states and observable-specific diagnostics; distinguish independent cells from
 correlated frames. Retain failed/inconclusive cases and perform a state-matched
 external comparison only after the sampling gates pass. The dilute four-oligomer
 pilot and its 200 steps do not establish these conditions.
+
+### TASK-006C2A — restart, diagnostics and campaign foundations
+
+Implemented in v0.6 within the restricted periodic n-alkane model: native NPT
+checkpoint manifests and bounded continuation, same-cell split/restart auditing,
+explicit physical-time density diagnostics, independent-cell summary contracts,
+and a state/resource-aware no-execution campaign planner. A diagnostic pass is
+not an equilibrium certificate. Actual short runs remain insufficiently sampled;
+no external density comparison or validated polymer density is reported.
+
+### Next bounded task — TASK-006C2B: admissible liquid-scale cells
+
+Remove the present periodic assignment's 512-atom/all-pair capacity bottleneck
+with a separately tested representation while retaining frozen parameter,
+identity, exclusion and image invariants. Verify that declared target density,
+cell mass and cutoff permit a three-axis minimum-image cell. For the current
+four-decane fixture, a 10 angstrom cutoff requires a volume strictly above
+8000 angstrom cubed; the pilot cannot represent the planned liquid density.
+Do not shrink the cutoff just to fit. Demonstrate a larger bounded cell and
+numerical cutoff/long-range sensitivity before committing to a production
+campaign. Measure cost on available hardware; long sampling, finite-size checks,
+phase/chain relaxation and state-matched external evaluation remain later gates.
 
 ## TASK-007 — Chemically conditioned torsion descriptors
 

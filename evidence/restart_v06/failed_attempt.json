@@ -1,0 +1,646 @@
+{
+  "schema_version": "1",
+  "evidence_kind": "executed_same_cell_native_npt_restart_audit",
+  "status": "failed",
+  "started_utc": "2026-11-06T23:51:48.296308+00:00",
+  "software": {
+    "polychemmd": "0.6.0.dev0",
+    "python": "3.12.14"
+  },
+  "system": {
+    "molecules": 4,
+    "atoms": 128,
+    "formula_per_molecule": "C10H22",
+    "initial_box_lengths_angstrom": [
+      24.0,
+      24.0,
+      24.0
+    ],
+    "initial_density_interpretation": "Dilute construction fixture; no liquid or polymer-melt phase validation",
+    "independently_prepared_cells": 1,
+    "restart_branches_interpretation": "Alternative executions of one cell and identical checkpoint; not independent samples"
+  },
+  "hardware": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "processor": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "logical_cpu_count": 9,
+    "engine_parallelism": "one MPI rank, one OpenMP thread; no GPU requested",
+    "timing_interpretation": "Measured on this executing host; not a benchmark of the project owner's desktop or GPU"
+  },
+  "source_module_hashes": {
+    "src/polychemmd/__init__.py": {
+      "sha256": "dff521c895940c4ffd2ad2ddb93b1e88041d88a902b199882e91d4bee479fcb6"
+    },
+    "src/polychemmd/engines/lammps.py": {
+      "sha256": "c9a456971bb51ff79cc4bad074ca16eff34a8e3339d04d3e4dc833d678a311a1"
+    },
+    "src/polychemmd/engines/periodic_alkane.py": {
+      "sha256": "18adc1e90ee7c6a4b784f1c8106cd2fa7d475a9e74a52bff6c91a4a73ea075b4"
+    },
+    "src/polychemmd/forcefields/periodic.py": {
+      "sha256": "95cdf8459fe33ab23f7234f632dd60fa5ae68c24bc88d5e59e1aa1c8f33ff3e2"
+    },
+    "src/polychemmd/protocols/alkane.py": {
+      "sha256": "5bd6cead63e2d9c76cc06e4b40758cada0f90d93d55b622da4d29892406478b0"
+    },
+    "src/polychemmd/protocols/restart.py": {
+      "sha256": "b328d23bd3cbea3728503dd65f636f517c8164528e4e21abe60e99ae0b95b72a"
+    },
+    "src/polychemmd/analysis/density.py": {
+      "sha256": "fcae6449a47f522b7177ae44ce272a700c43539a77091b1e5ffb35ad01474f98"
+    },
+    "src/polychemmd/analysis/sampling.py": {
+      "sha256": "2ced43b83fc2bf1475cf605f3812fc6c18bdcc206f5bb8c513d36f9bc8ab08fc"
+    },
+    "scripts/verify_restart_v06.py": {
+      "sha256": "eb0ea9079c793a9a3eb6325b601000a653074a8d58762bfe1359452e9b774efc"
+    }
+  },
+  "source_cell": {
+    "path": "evidence/geometry_v03/cell.json",
+    "sha256": "b48400d7181a436c7e858d02f74491c45b71f3ca0aa2465351bc3add3c19dd41"
+  },
+  "assignment_canonical_sha256": "07cf4aff9366ad00b4da1972ded417c7cd283a5a8037e9cfd129218a0bfaa307",
+  "predeclared": {
+    "preparation": {
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "minimize_max_iterations": 200,
+      "minimize_max_evaluations": 1000,
+      "nvt_steps": 100,
+      "npt_steps": 100,
+      "velocity_seed": 49217,
+      "timeout_seconds": 60.0,
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "continuous_steps": 40,
+    "split_steps": [
+      20,
+      20
+    ],
+    "per_engine_timeout_seconds": 60.0,
+    "total_engine_and_audit_wall_budget_seconds": 240.0,
+    "maximum_engine_invocations": 4,
+    "absolute_tolerances": {
+      "position_component_angstrom": 1e-09,
+      "velocity_component_angstrom_fs": 1e-10,
+      "box_component_angstrom": 1e-09,
+      "energy_kj_mol": 1e-07,
+      "force_component_kj_mol_angstrom": 1e-06
+    }
+  },
+  "runtime_environment": {
+    "OMP_NUM_THREADS": "1",
+    "UCX_TLS": "self"
+  },
+  "stages": [
+    {
+      "name": "preparation",
+      "status": "completed_preparation_pilot",
+      "measured_stage_wall_seconds": 4.775568516000931,
+      "engine_elapsed_seconds": 4.637337448002654,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "checkpoint": {
+        "schema_version": "1",
+        "kind": "periodic_alkane_npt_checkpoint",
+        "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+        "assignment_canonical_sha256": "07cf4aff9366ad00b4da1972ded417c7cd283a5a8037e9cfd129218a0bfaa307",
+        "artifact": {
+          "file_name": "checkpoint.restart",
+          "sha256": "a738d23680827cb5cd84b310bbf0ec9d364480cb430709ed4617df70cd379204",
+          "size_bytes": 41593
+        },
+        "state_snapshot": {
+          "file_name": "checkpoint.dump",
+          "sha256": "5bcd6b1570d3a81ac7b81a0fd25f7569486abe7b6bc1ec7435abae8812af3037",
+          "size_bytes": 27253
+        },
+        "units_style": "real",
+        "step": 200,
+        "elapsed_time_fs": 50.0,
+        "atom_count": 128,
+        "box": {
+          "origin_angstrom": [
+            0.004080851428650334,
+            0.004080851428650334,
+            0.004080851428650334
+          ],
+          "lengths_angstrom": [
+            23.991838297142717,
+            23.991838297142717,
+            23.991838297142717
+          ],
+          "periodic": [
+            true,
+            true,
+            true
+          ]
+        },
+        "protocol_spec": {
+          "temperature_k": 300.0,
+          "pressure_bar": 1.0,
+          "timestep_fs": 0.25,
+          "minimize_max_iterations": 200,
+          "minimize_max_evaluations": 1000,
+          "nvt_steps": 100,
+          "npt_steps": 100,
+          "velocity_seed": 49217,
+          "timeout_seconds": 60.0,
+          "cutoff_angstrom": 10.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "integrator": {
+          "fix_id": "polychemmd_npt",
+          "group_id": "all",
+          "style": "npt",
+          "thermostat_damping_fs": 100.0,
+          "barostat_damping_fs": 1000.0,
+          "target_schedule": "constant_temperature_and_isotropic_pressure"
+        },
+        "producer_engine_identity": {
+          "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+          "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+          "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+          "native_runtime_sha256": {
+            "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+            "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+          },
+          "platform": {
+            "system": "Linux",
+            "machine": "x86_64",
+            "byteorder": "little",
+            "python_implementation": "CPython"
+          },
+          "runtime_environment": {
+            "OMP_NUM_THREADS": "1",
+            "UCX_TLS": "self",
+            "LD_LIBRARY_PATH": null,
+            "LAMMPS_PLUGIN_PATH": null
+          },
+          "process_layout": "direct_single_engine_process_no_MPI_launcher"
+        },
+        "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+        "parent_checkpoint_canonical_sha256": null,
+        "checkpoint_chain_index": 0,
+        "equilibrium_status": "insufficient_sampling",
+        "production_ready": false,
+        "checkpoint_canonical_sha256": "6360019c8151bc40d129606df72422729d2601103fa00d13f7982937d5c06b42"
+      },
+      "text_artifacts": {
+        "input.lammps": {
+          "sha256": "001e66043e1554bb5e48a749deeea2be8bdbc4e95240f728903185f66d73a1ba",
+          "bytes": 2138
+        },
+        "system.data": {
+          "sha256": "977b46d38455bb11197dbd2b8c876fb95724e5d0c877711e7c8c94be70fae876",
+          "bytes": 22853
+        },
+        "log.lammps": {
+          "sha256": "a3b3331d8c87d8576cf69234e7fad093c366b61dc96bc5a27c4854a9ca9b4352",
+          "bytes": 21183
+        },
+        "prepared.data": {
+          "sha256": "93cf3a1df4d32af2aeafb7c3374b7e35e0f59698e2f1f015598a7a7e78d85796",
+          "bytes": 29663
+        },
+        "final.dump": {
+          "sha256": "72cdef80883a71a85a02a36ac7d1c97df6ad8a4c06277f8a56c5c20ceaa3a82d",
+          "bytes": 18715
+        },
+        "checkpoint.dump": {
+          "sha256": "5bcd6b1570d3a81ac7b81a0fd25f7569486abe7b6bc1ec7435abae8812af3037",
+          "bytes": 27253
+        }
+      }
+    }
+  ],
+  "equilibrium_status": "insufficient_sampling",
+  "production_ready": false,
+  "density_prediction_validation": "not_performed",
+  "external_comparison": "not_performed",
+  "scientific_limits": [
+    "One dilute, four-decane starting cell is reused for every branch; branches and frames are correlated and are not independent preparation replicates.",
+    "The longest physical path has only 60 fs integration including preparation; minimization iterations add no trajectory duration.",
+    "Native checkpoint portability and trajectory continuity are restricted to the exact executable, linked runtime and configuration checked by the continuation protocol.",
+    "Restart parity does not validate a liquid phase, polymer melt, force-field predictivity, sampling adequacy or any experimental density.",
+    "No quantum calculation, parameter fit or external material-property comparison is performed."
+  ],
+  "public_record_policy": "Publish report.json and stage text artifacts only. Binary checkpoints remain in private_engine_runs; their hashes, sizes and lineage are in public manifests. Regenerate checkpoints with this script on the supported matching engine/configuration.",
+  "failure_stage": "continuous_40",
+  "failure_type": "PeriodicProtocolError",
+  "failure_reason": "native checkpoint read-back changed Angle Coeffs parameters/topology",
+  "failed_protocol_record": {
+    "schema_version": "1",
+    "kind": "periodic_alkane_npt_continuation",
+    "status": "failed",
+    "simulation_performed": true,
+    "input_script": "# Native NPT continuation: no minimization, reseeding or timestep reset.\nclear\nread_restart source.restart\n# Kspace/neighbor/fixes are not restored by read_restart; redeclare them.\nkspace_style ewald 1e-8\nkspace_modify gewald 0.29999999999999999 kmax/ewald 16 16 16\npair_modify mix geometric shift no tail no table 0\ndielectric 1.0\nneighbor 2.0 bin\nneigh_modify every 1 delay 0 check yes\ntimestep 0.25\nfix polychemmd_npt all npt temp 300 300 100.0 iso 0.98692326671601283 0.98692326671601283 1000.0\nvariable polychemmd_box_invalid equal \"(lx<=20)||(ly<=20)||(lz<=20)\"\nfix polychemmd_boxguard all halt 1 v_polychemmd_box_invalid != 0 error hard message yes\nfix polychemmd_bondguard all halt 1 bondmax >= 3.3333333333333335 error hard message yes\nthermo 10\nthermo_style custom step temp press vol density pe etotal ebond eangle edihed evdwl ecoul elong lx ly lz\nthermo_modify norm no format float %.17g\nprint \"POLYCHEMMD_RESTART_INITIAL_BEGIN\"\nrun 0\nprint \"POLYCHEMMD_RESTART_INITIAL_END\"\nwrite_data resumed_initial.data\nwrite_dump all custom resumed_initial.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g\nprint \"POLYCHEMMD_CONTINUATION_BEGIN\"\nrun 40\nprint \"POLYCHEMMD_CONTINUATION_END\"\nwrite_restart checkpoint.restart\nwrite_dump all custom checkpoint.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g\nwrite_data prepared.data\nprint \"POLYCHEMMD_RUN_COMPLETE\"\n",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "assignment_canonical_sha256": "07cf4aff9366ad00b4da1972ded417c7cd283a5a8037e9cfd129218a0bfaa307",
+    "source_checkpoint_canonical_sha256": "6360019c8151bc40d129606df72422729d2601103fa00d13f7982937d5c06b42",
+    "source_checkpoint_artifact_sha256": "a738d23680827cb5cd84b310bbf0ec9d364480cb430709ed4617df70cd379204",
+    "continuation_spec": {
+      "steps": 40,
+      "timeout_seconds": 60.0,
+      "thermo_stride_steps": 10
+    },
+    "protocol_spec": {
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "minimize_max_iterations": 200,
+      "minimize_max_evaluations": 1000,
+      "nvt_steps": 100,
+      "npt_steps": 100,
+      "velocity_seed": 49217,
+      "timeout_seconds": 60.0,
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "start_step": 200,
+    "end_step_requested": 240,
+    "duration_fs_requested": 10.0,
+    "physical_time_fs_requested": 60.0,
+    "engine_plan": {
+      "status": "planned",
+      "simulation_performed": false,
+      "run_directory": "private_engine_run_not_published",
+      "input_sha256": "a3f7ac13027ede9bc9025aed1633c63a1ff9ed493c3b9236b3a3893dfb73f5f1",
+      "timeout_seconds": 60.0,
+      "expected_artifacts": [
+        "log.lammps",
+        "resumed_initial.data",
+        "resumed_initial.dump",
+        "prepared.data",
+        "checkpoint.restart",
+        "checkpoint.dump"
+      ],
+      "required_thermo_columns": [
+        "Step",
+        "Temp",
+        "Press",
+        "Volume",
+        "Density",
+        "PotEng",
+        "TotEng",
+        "E_bond",
+        "E_angle",
+        "E_dihed",
+        "E_vdwl",
+        "E_coul",
+        "E_long",
+        "Lx",
+        "Ly",
+        "Lz"
+      ],
+      "material_validation": "not_performed",
+      "declared_units_style": "real",
+      "input_units_style": null,
+      "input_units_style_source": "dynamic_or_unsupported_recipe_control",
+      "units_style_confidence": "unresolved",
+      "recipe_run_units_styles": [],
+      "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+      "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+      "staged_binary_input_sha256": {
+        "source.restart": "a738d23680827cb5cd84b310bbf0ec9d364480cb430709ed4617df70cd379204"
+      },
+      "expected_engine_identity": {
+        "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+        "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+        "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+        "native_runtime_sha256": {
+          "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+          "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+        },
+        "platform": {
+          "system": "Linux",
+          "machine": "x86_64",
+          "byteorder": "little",
+          "python_implementation": "CPython"
+        },
+        "runtime_environment": {
+          "OMP_NUM_THREADS": "1",
+          "UCX_TLS": "self",
+          "LD_LIBRARY_PATH": null,
+          "LAMMPS_PLUGIN_PATH": null
+        },
+        "process_layout": "direct_single_engine_process_no_MPI_launcher"
+      }
+    },
+    "equilibrium_status": "not_assessed",
+    "production_ready": false,
+    "density_prediction_validation": "not_performed",
+    "state_interpretation": "evolved native MD state; original rigid packing remains immutable",
+    "native_restart_compatibility": "same engine build/platform/configuration/direct process layout only; linked-system libraries beyond recorded native package hashes are not exhaustively fingerprinted",
+    "checkpoint_artifact_validation": "passed",
+    "engine_run": {
+      "status": "completed",
+      "simulation_performed": true,
+      "run_directory": "private_engine_run_not_published",
+      "input_sha256": "a3f7ac13027ede9bc9025aed1633c63a1ff9ed493c3b9236b3a3893dfb73f5f1",
+      "timeout_seconds": 60.0,
+      "expected_artifacts": [
+        "log.lammps",
+        "resumed_initial.data",
+        "resumed_initial.dump",
+        "prepared.data",
+        "checkpoint.restart",
+        "checkpoint.dump"
+      ],
+      "required_thermo_columns": [
+        "Step",
+        "Temp",
+        "Press",
+        "Volume",
+        "Density",
+        "PotEng",
+        "TotEng",
+        "E_bond",
+        "E_angle",
+        "E_dihed",
+        "E_vdwl",
+        "E_coul",
+        "E_long",
+        "Lx",
+        "Ly",
+        "Lz"
+      ],
+      "material_validation": "not_performed",
+      "declared_units_style": "real",
+      "input_units_style": null,
+      "input_units_style_source": "dynamic_or_unsupported_recipe_control",
+      "units_style_confidence": "unresolved",
+      "recipe_run_units_styles": [],
+      "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+      "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+      "staged_binary_input_sha256": {
+        "source.restart": "a738d23680827cb5cd84b310bbf0ec9d364480cb430709ed4617df70cd379204"
+      },
+      "expected_engine_identity": {
+        "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+        "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+        "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+        "native_runtime_sha256": {
+          "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+          "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+        },
+        "platform": {
+          "system": "Linux",
+          "machine": "x86_64",
+          "byteorder": "little",
+          "python_implementation": "CPython"
+        },
+        "runtime_environment": {
+          "OMP_NUM_THREADS": "1",
+          "UCX_TLS": "self",
+          "LD_LIBRARY_PATH": null,
+          "LAMMPS_PLUGIN_PATH": null
+        },
+        "process_layout": "direct_single_engine_process_no_MPI_launcher"
+      },
+      "evidence_level": "engine_execution",
+      "executable": "lmp",
+      "started_utc": "2026-11-06T23:51:53.180451+00:00",
+      "staged_input_sha256": {},
+      "runtime_environment": {
+        "OMP_NUM_THREADS": "1",
+        "UCX_TLS": "self"
+      },
+      "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "engine_help_sha256": "455abef449370b39576cae7f939f3ee467d77ad99f4f9905d7dd463e6e2ac83d",
+      "engine_help_first_line": "Incidental host diagnostic omitted; see engine_version_banner",
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_identity": {
+        "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+        "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+        "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+        "native_runtime_sha256": {
+          "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+          "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+        },
+        "platform": {
+          "system": "Linux",
+          "machine": "x86_64",
+          "byteorder": "little",
+          "python_implementation": "CPython"
+        },
+        "runtime_environment": {
+          "OMP_NUM_THREADS": "1",
+          "UCX_TLS": "self",
+          "LD_LIBRARY_PATH": null,
+          "LAMMPS_PLUGIN_PATH": null
+        },
+        "process_layout": "direct_single_engine_process_no_MPI_launcher"
+      },
+      "command": [
+        "lmp",
+        "-in",
+        "input.lammps",
+        "-log",
+        "log.lammps",
+        "-screen",
+        "screen.lammps"
+      ],
+      "returncode": 0,
+      "artifact_sha256": {
+        "log.lammps": "ff825b1d1cca83ca2f4498951ae56c9e81745735a58939a55311548756e05f73",
+        "resumed_initial.data": "cfc15d5a3d6939bc0472b11a1372266163d6b5f965ddc5bce7e9f2d2c1e42691",
+        "resumed_initial.dump": "6c97eb3eee8daabc509b5ba2ec2b9d9d149358590421cbcb6983774aa5d462e2",
+        "prepared.data": "8e705d97652948825ca7ce200f57acfd2506f0ff6abe616a6e90f5d21b64a7c5",
+        "checkpoint.restart": "849b3d512749b3829b7e20ef8b067fad5f01dfa2ab6cf3f47a0b6ab9d1f69989",
+        "checkpoint.dump": "b8411c3e8c124b52dd4682dff5115b015a590aebb25f9bc32d5565a280afc4cf"
+      },
+      "thermo_blocks": [
+        {
+          "columns": [
+            "Step",
+            "Temp",
+            "Press",
+            "Volume",
+            "Density",
+            "PotEng",
+            "TotEng",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "Lx",
+            "Ly",
+            "Lz"
+          ],
+          "rows": [
+            [
+              200.0,
+              190.8469707120551,
+              -391.81425913348056,
+              13809.901373083272,
+              0.06843537387703588,
+              73.4503010841849,
+              145.6978792596247,
+              12.181053811649289,
+              35.19101831883099,
+              16.854110428029216,
+              -1.8381650726280534,
+              67.55881076058554,
+              -56.496527162282064,
+              23.991838297142717,
+              23.991838297142717,
+              23.991838297142717
+            ]
+          ],
+          "loop_complete": true
+        },
+        {
+          "columns": [
+            "Step",
+            "Temp",
+            "Press",
+            "Volume",
+            "Density",
+            "PotEng",
+            "TotEng",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "Lx",
+            "Ly",
+            "Lz"
+          ],
+          "rows": [
+            [
+              200.0,
+              190.8469707120551,
+              -391.81425913348056,
+              13809.901373083272,
+              0.06843537387703588,
+              73.4503010841849,
+              145.6978792596247,
+              12.181053811649289,
+              35.19101831883099,
+              16.854110428029216,
+              -1.8381650726280534,
+              67.55881076058554,
+              -56.49652716228206,
+              23.991838297142717,
+              23.991838297142717,
+              23.991838297142717
+            ],
+            [
+              210.0,
+              149.2813306431119,
+              -198.3315470948801,
+              13808.083432707312,
+              0.06844438392031389,
+              89.66445813919134,
+              146.17682805280316,
+              22.92370716385507,
+              40.416267729768805,
+              17.013625667094125,
+              -1.8229637736031339,
+              67.66418854080244,
+              -56.53036718872596,
+              23.990785486207553,
+              23.990785486207553,
+              23.990785486207553
+            ],
+            [
+              220.0,
+              160.68223330450076,
+              504.2226367536292,
+              13806.166369330129,
+              0.06845388780562697,
+              85.67923497472518,
+              146.50756339281872,
+              16.273047696416846,
+              42.868468977649144,
+              17.176067652150824,
+              -1.8532778843016433,
+              67.78205750263466,
+              -56.56712896982467,
+              23.989675170763697,
+              23.989675170763697,
+              23.989675170763697
+            ],
+            [
+              230.0,
+              169.4078269554371,
+              456.58298519362654,
+              13804.544366876817,
+              0.06846193098119356,
+              82.87048393867376,
+              147.00199818712707,
+              17.716811477497092,
+              38.7437523376986,
+              17.21611182798797,
+              -1.9437531477755394,
+              67.69502114082124,
+              -56.557459697555586,
+              23.98873566699759,
+              23.98873566699759,
+              23.98873566699759
+            ],
+            [
+              240.0,
+              157.50025549648632,
+              -361.38283403410264,
+              13803.183786182417,
+              0.0684686792780385,
+              87.84396747092902,
+              147.46771721753876,
+              27.16429341930337,
+              34.183103350600966,
+              17.285769097462587,
+              -1.7520745864726945,
+              67.47400483512645,
+              -56.51112864509164,
+              23.987947528393526,
+              23.987947528393526,
+              23.987947528393526
+            ]
+          ],
+          "loop_complete": true
+        }
+      ],
+      "warning_lines": [],
+      "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+      "equilibration_validation": "not_performed",
+      "finished_utc": "2026-11-06T23:51:54.114082+00:00",
+      "elapsed_seconds": 0.9336213419956039
+    },
+    "failure_phase": "continuation_output_audit",
+    "failure_reason": "native checkpoint read-back changed Angle Coeffs parameters/topology",
+    "public_record_sanitization": {
+      "changes": [
+        "record.engine_plan.run_directory replaced",
+        "record.engine_run.run_directory replaced",
+        "record.engine_run.executable reduced to basename; identity hashes retained",
+        "record.engine_run.engine_help_first_line omitted host diagnostic"
+      ],
+      "scope": "Only host-only path/diagnostic text changes; scientific values, native checkpoint identities and raw artifact hashes remain explicit."
+    }
+  },
+  "finished_utc": "2026-11-06T23:51:54.160168+00:00",
+  "measured_total_wall_seconds": 5.86390499099798,
+  "public_record_sanitization": {
+    "changes": [
+      "record.failed_protocol_record.engine_plan.run_directory replaced",
+      "record.failed_protocol_record.engine_run.run_directory replaced",
+      "record.failed_protocol_record.engine_run.executable reduced to basename; identity hashes retained"
+    ],
+    "scope": "Only host-only path/diagnostic text changes; scientific values, native checkpoint identities and raw artifact hashes remain explicit."
+  },
+  "original_failed_report_sha256": "ce1ea953a6bdc32a5ce5758f8047d5f502b325327cbb10d31a838608fa900040",
+  "failure_retention_note": "Retained first actual failed attempt; no successful or numerical material result is inferred. Resolution is documented in README.md after investigation."
+}
