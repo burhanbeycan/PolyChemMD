@@ -16,11 +16,13 @@ import json
 import math
 import os
 from pathlib import Path, PurePosixPath
+import platform
 import re
 import shutil
 import signal
 import subprocess
 import time
+import sys
 
 
 class LammpsError(RuntimeError):
@@ -69,6 +71,8 @@ class LammpsRunSpec:
     completion_marker: str = "POLYCHEMMD_RUN_COMPLETE"
     input_files: tuple[tuple[str, str], ...] = ()
     units_style: str | None = None
+    input_binary_files: tuple[tuple[str, bytes], ...] = ()
+    expected_engine_identity: dict | None = None
 
     def __post_init__(self):
         if not isinstance(self.input_script, str) or not self.input_script.strip():
@@ -116,6 +120,25 @@ class LammpsRunSpec:
         if len(names) != len(set(names)):
             raise ValueError("staged input names must be unique")
         object.__setattr__(self, "input_files", inputs)
+        binary = tuple(tuple(item) for item in self.input_binary_files)
+        for item in binary:
+            if len(item) != 2:
+                raise ValueError("input_binary_files must contain (relative_name, bytes) pairs")
+            name, content = item
+            _name(name)
+            if name in reserved or name in expected or not isinstance(content, bytes) or not content:
+                raise ValueError("staged binary inputs must be nonempty bytes and distinct from outputs/reserved names")
+            names.append(name)
+        if len(names) != len(set(names)):
+            raise ValueError("all staged text/binary input names must be unique")
+        object.__setattr__(self, "input_binary_files", binary)
+        if self.expected_engine_identity is not None:
+            identity = self.expected_engine_identity
+            if not isinstance(identity, dict) or not identity or not all(isinstance(k,str) for k in identity):
+                raise ValueError("expected_engine_identity must be a nonempty mapping")
+            # JSON copying rejects unsupported nonfinite/nonserializable identity records.
+            identity = json.loads(json.dumps(identity, allow_nan=False))
+            object.__setattr__(self, "expected_engine_identity", identity)
 
 
 @dataclass(frozen=True)
@@ -202,6 +225,47 @@ def _sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def _runtime_identity(executable, help_text):
+    """Conservative build/configuration identity, not a portable restart claim.
+
+    The common PyPI console entrypoint is a wrapper, so its SHA alone would miss
+    native-engine updates. Recognize that exact wrapper role without importing
+    the optional solver, and hash its installed native executable/library too.
+    External launchers remain entrypoint/help scoped and are documented as such.
+    """
+    entrypoint = executable.read_bytes()
+    native = {}
+    if b"from lammps.executable import lmp" in entrypoint:
+        from importlib import metadata
+        try:
+            distribution = metadata.distribution("lammps")
+            for name in ("lammps/lmp", "lammps/lmp.exe", "lammps/liblammps.so", "lammps/liblammps.dylib", "lammps/liblammps.dll"):
+                path = Path(distribution.locate_file(name))
+                if path.is_file():
+                    native[name] = _sha(path.read_bytes())
+        except metadata.PackageNotFoundError:
+            pass
+        if not native:
+            raise LammpsError("recognized LAMMPS console wrapper has no identifiable native runtime files")
+    # This container can prepend timestamp/PID-bearing UCX host diagnostics to
+    # an otherwise successful help response. Keep raw help/hash in run metadata,
+    # but identify the actual engine configuration from its banner onward.
+    lines = help_text.splitlines()
+    banner = next((i for i,line in enumerate(lines) if "Large-scale Atomic" in line
+                   or re.match(r"^LAMMPS\s*\(\d",line.strip())), 0)
+    configuration = "\n".join(line.rstrip() for line in lines[banner:]
+        if not re.match(r"^\[\d+\.\d+\]\s+\[[^\]]+\]\s+.*UCX\s+(?:ERROR|WARN)",line.strip()))
+    return {"entrypoint_sha256": _sha(entrypoint),
+            "help_configuration_sha256": _sha(configuration.encode("utf-8")),
+            "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+            "native_runtime_sha256": native,
+            "platform": {"system":platform.system(),"machine":platform.machine(),
+                         "byteorder":sys.byteorder,"python_implementation":platform.python_implementation()},
+            "runtime_environment": {name:os.environ.get(name) for name in
+                ("OMP_NUM_THREADS","UCX_TLS","LD_LIBRARY_PATH","LAMMPS_PLUGIN_PATH")},
+            "process_layout": "direct_single_engine_process_no_MPI_launcher"}
+
+
 def _units_analysis(script):
     """Conservative recipe inference, explicitly not an engine interpreter.
 
@@ -266,6 +330,8 @@ def plan_lammps(spec):
         "recipe_run_units_styles": units["run_styles"],
         "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
         "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+        "staged_binary_input_sha256": {name:_sha(content) for name,content in spec.input_binary_files},
+        "expected_engine_identity": deepcopy(spec.expected_engine_identity),
     }
 
 
@@ -298,8 +364,9 @@ def run_lammps(spec):
     """Execute and verify one new run; raise LammpsError on any failed gate.
 
     LAMMPS input is trusted and may itself perform file/process operations. This
-    adapter is not a security sandbox. MPI launching and restart recovery are
-    separate future orchestration features.
+    adapter is not a security sandbox. MPI launching is a separate orchestration
+    feature. Validated binary inputs can stage native checkpoints without
+    pointing the engine at mutable earlier-run paths.
     """
     if not isinstance(spec, LammpsRunSpec):
         raise TypeError("spec must be LammpsRunSpec")
@@ -334,11 +401,18 @@ def run_lammps(spec):
         record["engine_help_first_line"] = next(x.strip() for x in help_text.splitlines() if x.strip())
         record["engine_version_banner"] = next((line.strip() for line in help_text.splitlines()
                                                  if "Large-scale Atomic" in line or re.match(r"^LAMMPS\s*\(\d", line.strip())), None)
+        record["engine_identity"] = _runtime_identity(executable,help_text)
+        if spec.expected_engine_identity is not None and record["engine_identity"] != spec.expected_engine_identity:
+            raise LammpsError("engine identity/configuration differs from the checkpoint producer")
         (directory / "input.lammps").write_bytes(spec.input_script.encode("utf-8"))
         for name, content in spec.input_files:
             path = directory / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(content.encode("utf-8"))
+        for name,content in spec.input_binary_files:
+            path = directory/name
+            path.parent.mkdir(parents=True,exist_ok=True)
+            path.write_bytes(content)
         command = [str(executable), "-in", "input.lammps", "-log", "log.lammps", "-screen", "screen.lammps"]
         record["command"] = command
         phase = "engine_run"

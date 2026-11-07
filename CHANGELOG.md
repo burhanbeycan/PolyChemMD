@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.0.dev0 — 2026-11-07
+
+- Added native NPT checkpoint manifests, binary staging and bounded continuation
+  with original assignment, engine/configuration, topology and state audits.
+- Added actual same-cell uninterrupted versus split-restart verification,
+  retaining failed read-back attempts and predeclared dynamical tolerances.
+- Added physical-time density/autocorrelation/block diagnostics and conservative
+  independent-cell summaries without equilibrium certification.
+- Added declared state/seed/duration/sensitivity/resource campaign plans and
+  a mass/cutoff capacity gate exposing the current liquid-cell size limitation.
+- Added continuation/planning/sampling CLI commands and a bounded restart CI
+  recipe. TASK-006C2A foundations are implemented; bulk density qualification
+  and TASK-006C2B larger-cell support remain open.
+
 ## 0.5.0.dev0 — 2026-11-07
 
 - Added source/global identity-preserving periodic n-alkane assignment.

@@ -1,0 +1,21 @@
+{
+  "evidence_kind": "executed_isolated_wheel_campaign_restart_and_sampling_check",
+  "release": "0.6.0.dev0",
+  "wheel": "polychemmd-0.6.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "c9a935ec5823f0125833099ddc6a0ed56014ff36e33b1f08a587fc62c7ab4f71",
+  "build_command": "PIP_NO_INDEX=1 python -m pip wheel --no-deps --no-build-isolation --wheel-dir artifacts/wheels-v06 .",
+  "isolation": "new temporary cwd; python -S; modules asserted imported from wheel; all packaged sources matched checkout; no optional packages imported",
+  "result": {
+    "version": "0.6.0.dev0",
+    "assigned_atoms": 128,
+    "campaign_status": "planned",
+    "campaign_execution_supported": false,
+    "restart_plan_status": "planned",
+    "run_directory_created": false,
+    "sampling_status": "insufficient_sampling",
+    "rdkit_imported": false,
+    "numpy_imported": false,
+    "lammps_imported": false
+  },
+  "limits": "Packaging and no-execution plans only; no extra engine run or material validation."
+}

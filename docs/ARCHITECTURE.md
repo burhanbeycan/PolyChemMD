@@ -37,6 +37,16 @@ backend numerical approximations. Its scientific setup helper is reused by
 status, actual step counts and final state. Process completion cannot promote a
 short pilot into an equilibrium or density-validation result.
 
+`protocols/restart.py` separates evolved MD state from immutable source geometry.
+It consumes a hash-bound native checkpoint and original assignment, verifies the
+producer engine/configuration and restores the named NPT fix without resetting
+time or velocities. Native binary staging belongs to the process adapter.
+`analysis/sampling.py` checks physical-time density series and keeps independent
+cell summaries distinct from frame-level diagnostics. `protocols/campaign.py`
+validates declared phase/state hypotheses, seeds, durations, sensitivities and
+resource/cell-capacity limits without dispatching a campaign. These foundations
+leave the complete TASK-006 density qualification open.
+
 The names below describe architectural responsibilities; they do not assert that all listed Python classes or modules already exist.
 
 ## Layers and ownership

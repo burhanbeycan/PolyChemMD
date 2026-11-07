@@ -1,0 +1,409 @@
+{
+  "result_schema_version": "0.1",
+  "record_kind": "density_campaign_plan",
+  "software": {
+    "name": "PolyChemMD",
+    "version": "0.6.0.dev0",
+    "python": "3.12.14"
+  },
+  "created_utc": "2026-11-06T23:54:02.623022+00:00",
+  "input_sha256": "3f54463d68499f777624ec64663a6ec41caddd9e8e8e2a522521ee0ac532ae36",
+  "input_hash_basis": "exact input-file bytes",
+  "payload": {
+    "schema_version": "1",
+    "kind": "density_campaign_plan",
+    "status": "planned",
+    "campaign_spec": {
+      "calibration": null,
+      "carbon_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "chemistry": "neutral_explicit_n_alkane",
+      "initialization": {
+        "density_g_cm3": 0.06837,
+        "min_distance_angstrom": 1.5,
+        "packing_attempts_per_molecule": 2000,
+        "strategy": "dilute_rigid_then_npt"
+      },
+      "integration": {
+        "minimize_max_evaluations": 1000,
+        "minimize_max_iterations": 200,
+        "npt_steps": 5000,
+        "nvt_steps": 5000,
+        "production_steps": 40000,
+        "segment_steps": 10000,
+        "thermo_stride_steps": 10,
+        "timestep_fs": 0.25
+      },
+      "numerics": {
+        "baseline": {
+          "cutoff_angstrom": 10.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "cutoff_variant": {
+          "cutoff_angstrom": 11.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "ewald_variant": {
+          "cutoff_angstrom": 10.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 20
+        }
+      },
+      "phase_target": "liquid_candidate",
+      "pressure_bar": 1.0,
+      "replicates": [
+        {
+          "cell_id": "decane_cell_01",
+          "conformer_seeds": [
+            73001,
+            73002,
+            73003,
+            73004
+          ],
+          "packing_seed": 73010,
+          "velocity_seed": 73020
+        },
+        {
+          "cell_id": "decane_cell_02",
+          "conformer_seeds": [
+            73101,
+            73102,
+            73103,
+            73104
+          ],
+          "packing_seed": 73110,
+          "velocity_seed": 73120
+        },
+        {
+          "cell_id": "decane_cell_03",
+          "conformer_seeds": [
+            73201,
+            73202,
+            73203,
+            73204
+          ],
+          "packing_seed": 73210,
+          "velocity_seed": 73220
+        }
+      ],
+      "resources": {
+        "hardware_label": "hosted_single_rank_cpu_unmeasured",
+        "max_engine_runs": 45,
+        "max_wall_seconds": 600.0,
+        "per_run_timeout_seconds": 60.0,
+        "threads": 1
+      },
+      "sampling_gates": {
+        "cutoff_relative_density_change_limit": 0.02,
+        "density_relative_drift_limit": 0.02,
+        "density_relative_interval_halfwidth_limit": 0.05,
+        "ewald_relative_density_change_limit": 0.01,
+        "finite_size_assessment_required": true,
+        "min_independent_cells": 3,
+        "min_production_duration_ps": 10.0,
+        "pressure_absolute_mean_deviation_bar": 100.0,
+        "temperature_absolute_mean_deviation_k": 10.0
+      },
+      "schema_version": "1",
+      "target_density_range_g_cm3": [
+        0.65,
+        0.8
+      ],
+      "temperature_k": 300.0
+    },
+    "campaign_canonical_sha256": "8db2fca7d4b0550d809e9e09c353aba70dba79692a163fc8bfb2c87b1fba6ecf",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "simulation_performed": false,
+    "execution_supported": false,
+    "execution_boundary": "planning only; no campaign dispatcher, finite-size campaign or phase validator implemented",
+    "target_state": {
+      "chemistry": "neutral_explicit_n_alkane",
+      "phase_target": "liquid_candidate",
+      "phase_observed": "not_assessed",
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "chain_carbon_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "molecule_count_per_cell": 4,
+      "atom_count_per_cell": 128
+    },
+    "initial_state_request": {
+      "density_g_cm3": 0.06837,
+      "density_role": "construction_input_not_prediction",
+      "cubic_box_length_angstrom": 23.99948338640275,
+      "volume_angstrom3": 13823.107310919873,
+      "total_molar_mass_g_mol": 569.144,
+      "geometry_feasibility": "not_tested; actual conformer extent and packing can fail",
+      "compression_to_target_phase": "not_established"
+    },
+    "state_capacity_gate": {
+      "status": "incompatible_target_range_with_current_cell_and_cutoff_bound",
+      "target_density_range_g_cm3": [
+        0.65,
+        0.8
+      ],
+      "range_role": "declared_planning_hypothesis_not_measured_or_external_reference",
+      "strict_density_upper_bound_g_cm3": 0.08875712310739968,
+      "bound_basis": "cell molar mass / (exact-SI Avogadro factor * (2*largest requested cutoff)^3); each box axis must be strictly longer than twice cutoff",
+      "largest_cutoff_angstrom": 11.0,
+      "current_default_atom_capacity": 512,
+      "geometric_bound_is_sufficient_for_liquid_preparation": false,
+      "required_action_if_incompatible": "increase supported cell capacity and verify numerical scaling, or independently validate a different numerical model; do not silently shrink cutoff"
+    },
+    "sampling_accounting": {
+      "independent_cell_recipes_requested": 3,
+      "independent_cells_executed": 0,
+      "correlated_frames_executed": 0,
+      "numerical_variants_are_paired_with_each_primary_cell": true,
+      "seed_uniqueness_proves_statistical_independence": false,
+      "continued_segments_are_new_independent_cells": false,
+      "production_duration_ps_per_setting_per_cell": 10.0,
+      "preparation_duration_ps_per_setting_per_cell": 2.5
+    },
+    "work_requests": [
+      {
+        "cell_id": "decane_cell_01",
+        "numerical_setting": "baseline",
+        "recipe": {
+          "cell_id": "decane_cell_01",
+          "conformer_seeds": [
+            73001,
+            73002,
+            73003,
+            73004
+          ],
+          "packing_seed": 73010,
+          "velocity_seed": 73020
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_01",
+        "numerical_setting": "cutoff_variant",
+        "recipe": {
+          "cell_id": "decane_cell_01",
+          "conformer_seeds": [
+            73001,
+            73002,
+            73003,
+            73004
+          ],
+          "packing_seed": 73010,
+          "velocity_seed": 73020
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_01",
+        "numerical_setting": "ewald_variant",
+        "recipe": {
+          "cell_id": "decane_cell_01",
+          "conformer_seeds": [
+            73001,
+            73002,
+            73003,
+            73004
+          ],
+          "packing_seed": 73010,
+          "velocity_seed": 73020
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_02",
+        "numerical_setting": "baseline",
+        "recipe": {
+          "cell_id": "decane_cell_02",
+          "conformer_seeds": [
+            73101,
+            73102,
+            73103,
+            73104
+          ],
+          "packing_seed": 73110,
+          "velocity_seed": 73120
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_02",
+        "numerical_setting": "cutoff_variant",
+        "recipe": {
+          "cell_id": "decane_cell_02",
+          "conformer_seeds": [
+            73101,
+            73102,
+            73103,
+            73104
+          ],
+          "packing_seed": 73110,
+          "velocity_seed": 73120
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_02",
+        "numerical_setting": "ewald_variant",
+        "recipe": {
+          "cell_id": "decane_cell_02",
+          "conformer_seeds": [
+            73101,
+            73102,
+            73103,
+            73104
+          ],
+          "packing_seed": 73110,
+          "velocity_seed": 73120
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_03",
+        "numerical_setting": "baseline",
+        "recipe": {
+          "cell_id": "decane_cell_03",
+          "conformer_seeds": [
+            73201,
+            73202,
+            73203,
+            73204
+          ],
+          "packing_seed": 73210,
+          "velocity_seed": 73220
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_03",
+        "numerical_setting": "cutoff_variant",
+        "recipe": {
+          "cell_id": "decane_cell_03",
+          "conformer_seeds": [
+            73201,
+            73202,
+            73203,
+            73204
+          ],
+          "packing_seed": 73210,
+          "velocity_seed": 73220
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      },
+      {
+        "cell_id": "decane_cell_03",
+        "numerical_setting": "ewald_variant",
+        "recipe": {
+          "cell_id": "decane_cell_03",
+          "conformer_seeds": [
+            73201,
+            73202,
+            73203,
+            73204
+          ],
+          "packing_seed": 73210,
+          "velocity_seed": 73220
+        },
+        "preparation_runs": 1,
+        "continuation_runs": 4,
+        "integration_steps_requested": 50000,
+        "production_steps_requested": 40000,
+        "status": "planned_not_executed"
+      }
+    ],
+    "resource_accounting": {
+      "engine_runs_requested": 45,
+      "integration_steps_requested": 450000,
+      "minimization_max_iterations_per_preparation": 200,
+      "run_count_budget_status": "within_declared_run_count",
+      "timeout_sum_seconds": 2700.0,
+      "timeout_sum_is_elapsed_time_estimate": false,
+      "wall_budget_status": "unqualified_no_complete_campaign_measurement",
+      "projection": null
+    },
+    "qualification_gates": {
+      "observable": "mass_density",
+      "thresholds": {
+        "cutoff_relative_density_change_limit": 0.02,
+        "density_relative_drift_limit": 0.02,
+        "density_relative_interval_halfwidth_limit": 0.05,
+        "ewald_relative_density_change_limit": 0.01,
+        "finite_size_assessment_required": true,
+        "min_independent_cells": 3,
+        "min_production_duration_ps": 10.0,
+        "pressure_absolute_mean_deviation_bar": 100.0,
+        "temperature_absolute_mean_deviation_k": 10.0
+      },
+      "status": "not_evaluated",
+      "equilibrium_status": "not_assessed",
+      "required_evidence": [
+        "fresh actual cell/topology and parameter hashes",
+        "independent prepared-cell identities, not frame count",
+        "uninterrupted same-state NPT sampling with authenticated restart lineage",
+        "temperature/pressure state sampling and observed phase assessment",
+        "density stationarity, correlation-aware uncertainty and block-size sensitivity",
+        "agreement across independent cells",
+        "paired cutoff and reciprocal-bound sensitivity",
+        "finite-size comparison",
+        "documented finite resource consumption and retained failures"
+      ],
+      "duration_threshold_is_sufficient_for_equilibrium": false
+    },
+    "external_comparison": {
+      "status": "deferred_until_sampling_and_state_gates_pass",
+      "required_reference_match": [
+        "chemical_identity",
+        "chain_length_distribution",
+        "temperature_k",
+        "pressure_bar",
+        "phase",
+        "density_definition"
+      ],
+      "comparison_performed": false
+    },
+    "production_ready": false,
+    "density_prediction_validation": "not_performed",
+    "material_property_validation": "not_performed"
+  }
+}

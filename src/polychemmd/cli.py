@@ -164,7 +164,8 @@ def doctor():
         "optional_executables": {name: shutil.which(name) for name in ("lmp", "lmp_serial", "gmx", "xtb", "cp2k.psmp")},
         "scope": "Presence check only; this does not verify a working engine or an implemented adapter.",
         "md_adapter_status": "implemented_process_adapter",
-        "polymer_md_protocol_status": "bounded_periodic_preparation_only",
+        "polymer_md_protocol_status": "bounded_periodic_preparation_and_restart",
+        "density_sampling_status": "diagnostics_only_no_equilibrium_certificate",
         "polymer_equilibrium_validation": "not_implemented",
         "qm_adapter_status": "planned",
     }
@@ -241,6 +242,22 @@ def main(argv=None):
     preparation.add_argument("--executable")
     preparation.add_argument("--plan", action="store_true")
     preparation.add_argument("--output")
+    continuation = commands.add_parser("periodic-resume", help="Plan/run a hash-bound native NPT restart; no reseeding or equilibrium claim")
+    continuation.add_argument("input", help="Initial assigned cell or its source packed cell")
+    continuation.add_argument("--checkpoint", required=True, help="Checkpoint manifest or preparation/continuation result JSON")
+    continuation.add_argument("--checkpoint-dir", required=True, help="Directory containing the native checkpoint binary")
+    continuation.add_argument("--protocol", required=True, help="Bounded continuation-spec JSON")
+    continuation.add_argument("--run-dir", required=True)
+    continuation.add_argument("--executable")
+    continuation.add_argument("--plan", action="store_true")
+    continuation.add_argument("--output")
+    campaign = commands.add_parser("density-plan", help="Review a declared state, independent cells, sampling gates and campaign budget; run nothing")
+    campaign.add_argument("input")
+    campaign.add_argument("--output")
+    sampling = commands.add_parser("density-sampling", help="Check a physical-time series against predeclared density diagnostics; no equilibrium certificate")
+    sampling.add_argument("input")
+    sampling.add_argument("--protocol", required=True, help="Explicit density sampling gates JSON")
+    sampling.add_argument("--output")
     convert = commands.add_parser("torsion-import", help="Explicitly convert a supported LAMMPS torsion convention")
     convert.add_argument("input")
     convert.add_argument("--source", choices=("lammps-fourier", "lammps-opls"), required=True)
@@ -406,6 +423,53 @@ def main(argv=None):
                 payload["protocol_input_sha256"] = hashlib.sha256(protocol_raw).hexdigest()
                 kind = "periodic_preparation_plan" if args.plan else "bounded_periodic_preparation"
             _emit(envelope(payload, raw, kind), args.output)
+        elif args.command == "periodic-resume":
+            from .protocols.restart import (PeriodicAlkaneContinuationSpec,
+                plan_periodic_alkane_continuation, run_periodic_alkane_continuation)
+            for source in (args.input, args.checkpoint, args.protocol):
+                _check_output_path(source, args.output)
+            if args.output is not None and any(Path(args.output).resolve().is_relative_to(Path(directory).resolve())
+                                               for directory in (args.run_dir, args.checkpoint_dir)):
+                raise ValueError("summary output must be outside engine/checkpoint directories to preserve their artifacts")
+            raw, data = _read(args.input)
+            checkpoint_raw, checkpoint = _read(args.checkpoint)
+            protocol_raw, protocol = _read(args.protocol)
+            if isinstance(checkpoint, dict) and "record_kind" in checkpoint and "payload" in checkpoint:
+                checkpoint = checkpoint["payload"]
+            if isinstance(checkpoint, dict) and "checkpoint" in checkpoint:
+                checkpoint = checkpoint["checkpoint"]
+            spec = PeriodicAlkaneContinuationSpec.from_mapping(protocol)
+            function = plan_periodic_alkane_continuation if args.plan else run_periodic_alkane_continuation
+            payload = function(_periodic_assignment_from_record(data), checkpoint, spec,
+                               checkpoint_directory=args.checkpoint_dir,
+                               run_directory=args.run_dir, executable=args.executable)
+            payload["checkpoint_input_sha256"] = hashlib.sha256(checkpoint_raw).hexdigest()
+            payload["protocol_input_sha256"] = hashlib.sha256(protocol_raw).hexdigest()
+            _emit(envelope(payload, raw, "periodic_continuation_plan" if args.plan else "bounded_periodic_continuation"), args.output)
+        elif args.command == "density-plan":
+            from .protocols.campaign import DensityCampaignSpec, plan_density_campaign
+            _check_output_path(args.input, args.output)
+            raw, data = _read(args.input)
+            _emit(envelope(plan_density_campaign(DensityCampaignSpec.from_mapping(data)), raw,
+                           "density_campaign_plan"), args.output)
+        elif args.command == "density-sampling":
+            from .analysis.sampling import DensitySamplingSpec, analyze_density_sampling
+            for source in (args.input, args.protocol):
+                _check_output_path(source, args.output)
+            raw, data = _read(args.input)
+            protocol_raw, protocol = _read(args.protocol)
+            expected = {"units", "rows", "source_reference", "source_kind"}
+            if not isinstance(data, dict) or set(data) != expected:
+                raise ValueError(f"sampling input requires exactly {sorted(expected)}")
+            if data["units"] != {"density": "g/cm^3", "temperature": "K", "pressure": "bar"}:
+                raise ValueError("sampling rows require explicit g/cm^3, K and bar units")
+            if data["source_kind"] not in ("analytic_demo", "simulation", "experiment") or not isinstance(data["source_reference"], str) or not data["source_reference"].strip():
+                raise ValueError("provide a valid source_kind and nonempty source_reference")
+            payload = analyze_density_sampling(data["rows"], DensitySamplingSpec.from_mapping(protocol))
+            payload["source_kind_reported_by_input"] = data["source_kind"]
+            payload["source_reference_reported_by_input"] = data["source_reference"]
+            payload["protocol_input_sha256"] = hashlib.sha256(protocol_raw).hexdigest()
+            _emit(envelope(payload, raw, "density_sampling_diagnostics"), args.output)
         elif args.command == "torsion-import":
             from .descriptors.conventions import import_lammps_fourier, import_lammps_opls
             _check_output_path(args.input, args.output)

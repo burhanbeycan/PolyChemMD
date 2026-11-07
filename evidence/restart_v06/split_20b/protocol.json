@@ -1,0 +1,4482 @@
+{
+  "schema_version": "1",
+  "kind": "periodic_alkane_npt_continuation",
+  "status": "completed_npt_continuation",
+  "simulation_performed": true,
+  "input_script": "# Native NPT continuation: no minimization, reseeding or timestep reset.\nclear\nread_restart source.restart\n# Kspace/neighbor/fixes are not restored by read_restart; redeclare them.\nkspace_style ewald 1e-8\nkspace_modify gewald 0.29999999999999999 kmax/ewald 16 16 16\npair_modify mix geometric shift no tail no table 0\ndielectric 1.0\nneighbor 2.0 bin\nneigh_modify every 1 delay 0 check yes\ntimestep 0.25\nfix polychemmd_npt all npt temp 300 300 100.0 iso 0.98692326671601283 0.98692326671601283 1000.0\nvariable polychemmd_box_invalid equal \"(lx<=20)||(ly<=20)||(lz<=20)\"\nfix polychemmd_boxguard all halt 1 v_polychemmd_box_invalid != 0 error hard message yes\nfix polychemmd_bondguard all halt 1 bondmax >= 3.3333333333333335 error hard message yes\nthermo 10\nthermo_style custom step temp press vol density pe etotal ebond eangle edihed evdwl ecoul elong lx ly lz\nthermo_modify norm no format float %.17g\nprint \"POLYCHEMMD_RESTART_INITIAL_BEGIN\"\nrun 0\nprint \"POLYCHEMMD_RESTART_INITIAL_END\"\nwrite_data resumed_initial.data\nwrite_dump all custom resumed_initial.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g\nprint \"POLYCHEMMD_CONTINUATION_BEGIN\"\nrun 20\nprint \"POLYCHEMMD_CONTINUATION_END\"\nwrite_restart checkpoint.restart\nwrite_dump all custom checkpoint.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g\nwrite_data prepared.data\nprint \"POLYCHEMMD_RUN_COMPLETE\"\n",
+  "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+  "assignment_canonical_sha256": "07cf4aff9366ad00b4da1972ded417c7cd283a5a8037e9cfd129218a0bfaa307",
+  "source_checkpoint_canonical_sha256": "a28ddcfad0e04193fb3535a102bb6edf43d92dd8e1e8d6f421a1e6f00c420324",
+  "source_checkpoint_artifact_sha256": "8ee8e5ef35d4744084f4c1088c1ec4bb197f01d43cb0119000d3e3b0924e1669",
+  "continuation_spec": {
+    "steps": 20,
+    "timeout_seconds": 60.0,
+    "thermo_stride_steps": 10
+  },
+  "protocol_spec": {
+    "temperature_k": 300.0,
+    "pressure_bar": 1.0,
+    "timestep_fs": 0.25,
+    "minimize_max_iterations": 200,
+    "minimize_max_evaluations": 1000,
+    "nvt_steps": 100,
+    "npt_steps": 100,
+    "velocity_seed": 49217,
+    "timeout_seconds": 60.0,
+    "cutoff_angstrom": 10.0,
+    "ewald_alpha_per_angstrom": 0.3,
+    "reciprocal_nmax": 16
+  },
+  "start_step": 220,
+  "end_step_requested": 240,
+  "duration_fs_requested": 5.0,
+  "physical_time_fs_requested": 60.0,
+  "engine_plan": {
+    "status": "planned",
+    "simulation_performed": false,
+    "run_directory": "private_engine_run_not_published",
+    "input_sha256": "cd7fc964525b5f35f9b4a79cfa2fe91aa75477d16e0dc4dc03e1813eacb9ac5d",
+    "timeout_seconds": 60.0,
+    "expected_artifacts": [
+      "log.lammps",
+      "resumed_initial.data",
+      "resumed_initial.dump",
+      "prepared.data",
+      "checkpoint.restart",
+      "checkpoint.dump"
+    ],
+    "required_thermo_columns": [
+      "Step",
+      "Temp",
+      "Press",
+      "Volume",
+      "Density",
+      "PotEng",
+      "TotEng",
+      "E_bond",
+      "E_angle",
+      "E_dihed",
+      "E_vdwl",
+      "E_coul",
+      "E_long",
+      "Lx",
+      "Ly",
+      "Lz"
+    ],
+    "material_validation": "not_performed",
+    "declared_units_style": "real",
+    "input_units_style": null,
+    "input_units_style_source": "dynamic_or_unsupported_recipe_control",
+    "units_style_confidence": "unresolved",
+    "recipe_run_units_styles": [],
+    "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+    "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+    "staged_binary_input_sha256": {
+      "source.restart": "8ee8e5ef35d4744084f4c1088c1ec4bb197f01d43cb0119000d3e3b0924e1669"
+    },
+    "expected_engine_identity": {
+      "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+      "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+      "native_runtime_sha256": {
+        "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+        "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+      },
+      "platform": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "byteorder": "little",
+        "python_implementation": "CPython"
+      },
+      "runtime_environment": {
+        "OMP_NUM_THREADS": "1",
+        "UCX_TLS": "self",
+        "LD_LIBRARY_PATH": null,
+        "LAMMPS_PLUGIN_PATH": null
+      },
+      "process_layout": "direct_single_engine_process_no_MPI_launcher"
+    }
+  },
+  "equilibrium_status": "insufficient_sampling",
+  "production_ready": false,
+  "density_prediction_validation": "not_performed",
+  "state_interpretation": "evolved native MD state; original rigid packing remains immutable",
+  "native_restart_compatibility": "same engine build/platform/configuration/direct process layout only; linked-system libraries beyond recorded native package hashes are not exhaustively fingerprinted",
+  "parameter_readback_precision": {
+    "binary": "unchanged native checkpoint SHA256; no coefficient rounding for dynamics",
+    "text_coefficients": "pinned Pair/Bond/Angle/Dihedral write_data uses C %g; compare the six-significant-digit serialization",
+    "angle_writer_source": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/MOLECULE/angle_harmonic.cpp",
+    "restored_force_component_abs_tolerance_kj_mol_angstrom": 1e-07
+  },
+  "checkpoint_artifact_validation": "passed",
+  "engine_run": {
+    "status": "completed",
+    "simulation_performed": true,
+    "run_directory": "private_engine_run_not_published",
+    "input_sha256": "cd7fc964525b5f35f9b4a79cfa2fe91aa75477d16e0dc4dc03e1813eacb9ac5d",
+    "timeout_seconds": 60.0,
+    "expected_artifacts": [
+      "log.lammps",
+      "resumed_initial.data",
+      "resumed_initial.dump",
+      "prepared.data",
+      "checkpoint.restart",
+      "checkpoint.dump"
+    ],
+    "required_thermo_columns": [
+      "Step",
+      "Temp",
+      "Press",
+      "Volume",
+      "Density",
+      "PotEng",
+      "TotEng",
+      "E_bond",
+      "E_angle",
+      "E_dihed",
+      "E_vdwl",
+      "E_coul",
+      "E_long",
+      "Lx",
+      "Ly",
+      "Lz"
+    ],
+    "material_validation": "not_performed",
+    "declared_units_style": "real",
+    "input_units_style": null,
+    "input_units_style_source": "dynamic_or_unsupported_recipe_control",
+    "units_style_confidence": "unresolved",
+    "recipe_run_units_styles": [],
+    "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+    "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+    "staged_binary_input_sha256": {
+      "source.restart": "8ee8e5ef35d4744084f4c1088c1ec4bb197f01d43cb0119000d3e3b0924e1669"
+    },
+    "expected_engine_identity": {
+      "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+      "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+      "native_runtime_sha256": {
+        "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+        "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+      },
+      "platform": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "byteorder": "little",
+        "python_implementation": "CPython"
+      },
+      "runtime_environment": {
+        "OMP_NUM_THREADS": "1",
+        "UCX_TLS": "self",
+        "LD_LIBRARY_PATH": null,
+        "LAMMPS_PLUGIN_PATH": null
+      },
+      "process_layout": "direct_single_engine_process_no_MPI_launcher"
+    },
+    "evidence_level": "engine_execution",
+    "executable": "lmp",
+    "started_utc": "2026-11-06T23:56:58.653160+00:00",
+    "staged_input_sha256": {},
+    "runtime_environment": {
+      "OMP_NUM_THREADS": "1",
+      "UCX_TLS": "self"
+    },
+    "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+    "engine_help_sha256": "4276f0a2ebc82a1d03df7647e51c6955acf8583d554056af1978243eabc76f97",
+    "engine_help_first_line": "Incidental host diagnostic omitted; see engine_version_banner",
+    "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+    "engine_identity": {
+      "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+      "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+      "native_runtime_sha256": {
+        "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+        "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+      },
+      "platform": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "byteorder": "little",
+        "python_implementation": "CPython"
+      },
+      "runtime_environment": {
+        "OMP_NUM_THREADS": "1",
+        "UCX_TLS": "self",
+        "LD_LIBRARY_PATH": null,
+        "LAMMPS_PLUGIN_PATH": null
+      },
+      "process_layout": "direct_single_engine_process_no_MPI_launcher"
+    },
+    "command": [
+      "lmp",
+      "-in",
+      "input.lammps",
+      "-log",
+      "log.lammps",
+      "-screen",
+      "screen.lammps"
+    ],
+    "returncode": 0,
+    "artifact_sha256": {
+      "log.lammps": "b79db78acfe853b0b0e133bf2d2cf67076e32f599627de0952db3156e4e61a51",
+      "resumed_initial.data": "b914d585fcf8b183e842c197467b9167a9fdbc58a1d5f45713a96876274704bc",
+      "resumed_initial.dump": "c1c22091de269f97ea7a145ae978d9ae12a1fb72b7f7c7cf7feff7818debc3f0",
+      "prepared.data": "2aba76e989a1ec66997121b9dd71bbff50ed849a03ce2a96bb6f5034952e72b5",
+      "checkpoint.restart": "538b913d476673dbda2eb458d93e82306131954d03d2313ec7143ab5804ccce1",
+      "checkpoint.dump": "b24c4173b5949e71460d9d1b4e72c72eab50f6569707c414085c117f18578c02"
+    },
+    "thermo_blocks": [
+      {
+        "columns": [
+          "Step",
+          "Temp",
+          "Press",
+          "Volume",
+          "Density",
+          "PotEng",
+          "TotEng",
+          "E_bond",
+          "E_angle",
+          "E_dihed",
+          "E_vdwl",
+          "E_coul",
+          "E_long",
+          "Lx",
+          "Ly",
+          "Lz"
+        ],
+        "rows": [
+          [
+            220.0,
+            160.68223330450076,
+            504.2226367536289,
+            13806.166369330129,
+            0.06845388780562697,
+            85.67923497472518,
+            146.50756339281872,
+            16.273047696416846,
+            42.868468977649144,
+            17.176067652150824,
+            -1.8532778843016429,
+            67.78205750263466,
+            -56.56712896982467,
+            23.989675170763697,
+            23.989675170763697,
+            23.989675170763697
+          ]
+        ],
+        "loop_complete": true
+      },
+      {
+        "columns": [
+          "Step",
+          "Temp",
+          "Press",
+          "Volume",
+          "Density",
+          "PotEng",
+          "TotEng",
+          "E_bond",
+          "E_angle",
+          "E_dihed",
+          "E_vdwl",
+          "E_coul",
+          "E_long",
+          "Lx",
+          "Ly",
+          "Lz"
+        ],
+        "rows": [
+          [
+            220.0,
+            160.68223330450076,
+            504.2226367536289,
+            13806.166369330129,
+            0.06845388780562697,
+            85.67923497472518,
+            146.50756339281872,
+            16.273047696416846,
+            42.868468977649144,
+            17.176067652150824,
+            -1.8532778843016429,
+            67.78205750263466,
+            -56.56712896982467,
+            23.989675170763697,
+            23.989675170763697,
+            23.989675170763697
+          ],
+          [
+            230.0,
+            169.4078269554372,
+            456.5829851936204,
+            13804.544366876817,
+            0.06846193098119356,
+            82.87048393867347,
+            147.00199818712684,
+            17.71681147749699,
+            38.74375233769841,
+            17.21611182798797,
+            -1.9437531477755483,
+            67.69502114082124,
+            -56.557459697555586,
+            23.98873566699759,
+            23.98873566699759,
+            23.98873566699759
+          ],
+          [
+            240.0,
+            157.50025549648603,
+            -361.38283403410196,
+            13803.183786182417,
+            0.0684686792780385,
+            87.84396747092899,
+            147.46771721753862,
+            27.16429341930354,
+            34.18310335060074,
+            17.285769097462595,
+            -1.7520745864727039,
+            67.47400483512645,
+            -56.51112864509164,
+            23.987947528393526,
+            23.987947528393526,
+            23.987947528393526
+          ]
+        ],
+        "loop_complete": true
+      }
+    ],
+    "warning_lines": [],
+    "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+    "equilibration_validation": "not_performed",
+    "finished_utc": "2026-11-06T23:56:59.317835+00:00",
+    "elapsed_seconds": 0.664658811998379
+  },
+  "final_state": {
+    "step": 240,
+    "atom_count": 128,
+    "box": {
+      "origin_angstrom": [
+        0.006026235803238578,
+        0.006026235803238578,
+        0.006026235803238578
+      ],
+      "lengths_angstrom": [
+        23.987947528393526,
+        23.987947528393526,
+        23.987947528393526
+      ],
+      "periodic": [
+        true,
+        true,
+        true
+      ]
+    },
+    "atoms": [
+      {
+        "engine_id": 1,
+        "cell_atom_id": "molecule:0/repeat:0:atom:1",
+        "molecule_index": 0,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          11.213349660566296,
+          22.73031307192911,
+          12.60179480167982
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.213349660566296,
+          22.73031307192911,
+          12.60179480167982
+        ],
+        "forces_kj_mol_angstrom": [
+          15.7398332932959,
+          34.769055655940036,
+          -44.178185665533064
+        ],
+        "velocities_angstrom_fs": [
+          0.0061246078931149585,
+          0.0012206129806677166,
+          -0.0010375943918085643
+        ]
+      },
+      {
+        "engine_id": 2,
+        "cell_atom_id": "molecule:0/repeat:0:atom:2",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          9.736785709011798,
+          22.86649325952257,
+          12.994441112123209
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.736785709011798,
+          22.86649325952257,
+          12.994441112123209
+        ],
+        "forces_kj_mol_angstrom": [
+          -97.72871612602917,
+          -35.45484158326752,
+          130.9993386377436
+        ],
+        "velocities_angstrom_fs": [
+          0.0030719323507853017,
+          -0.0022849943649897206,
+          -0.0006061403232767545
+        ]
+      },
+      {
+        "engine_id": 3,
+        "cell_atom_id": "molecule:0/repeat:1:atom:1",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          8.827467907533645,
+          21.676525724758704,
+          12.615906028121449
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          8.827467907533645,
+          21.676525724758704,
+          12.615906028121449
+        ],
+        "forces_kj_mol_angstrom": [
+          -75.04295820848945,
+          -5.196675339319452,
+          58.31701367061523
+        ],
+        "velocities_angstrom_fs": [
+          0.0034677926089222784,
+          0.0023675446787004718,
+          -0.0066681384072575026
+        ]
+      },
+      {
+        "engine_id": 4,
+        "cell_atom_id": "molecule:0/repeat:1:atom:2",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          8.408439312269886,
+          21.46207698274842,
+          11.154465302114602
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          8.408439312269886,
+          21.46207698274842,
+          11.154465302114602
+        ],
+        "forces_kj_mol_angstrom": [
+          34.496659610306715,
+          -115.70523669505711,
+          -181.64691420828316
+        ],
+        "velocities_angstrom_fs": [
+          0.00340699216219901,
+          0.001219600612526553,
+          -0.0017875398603267676
+        ]
+      },
+      {
+        "engine_id": 5,
+        "cell_atom_id": "molecule:0/repeat:2:atom:1",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          7.788007389319266,
+          22.624004159967598,
+          10.358964540528277
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          7.788007389319266,
+          22.624004159967598,
+          10.358964540528277
+        ],
+        "forces_kj_mol_angstrom": [
+          37.05831932329855,
+          112.63848554124587,
+          48.69432614400212
+        ],
+        "velocities_angstrom_fs": [
+          0.002905241615908167,
+          -0.0003191060655893559,
+          -0.00351453922931457
+        ]
+      },
+      {
+        "engine_id": 6,
+        "cell_atom_id": "molecule:0/repeat:2:atom:2",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          6.388489627611207,
+          22.994045855274692,
+          10.89475043819422
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.388489627611207,
+          22.994045855274692,
+          10.89475043819422
+        ],
+        "forces_kj_mol_angstrom": [
+          -52.801994796643925,
+          -40.20236506050414,
+          -1.9185003125965165
+        ],
+        "velocities_angstrom_fs": [
+          0.0030264805652059175,
+          0.0010057170614332345,
+          -0.004028108111297913
+        ]
+      },
+      {
+        "engine_id": 7,
+        "cell_atom_id": "molecule:0/repeat:3:atom:1",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          5.673911858916661,
+          0.10109239470148897,
+          10.144060053573428
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          5.673911858916661,
+          24.089039923095015,
+          10.144060053573428
+        ],
+        "forces_kj_mol_angstrom": [
+          -142.216324994984,
+          161.0992293869307,
+          -122.83761714397228
+        ],
+        "velocities_angstrom_fs": [
+          1.8450388922155336e-05,
+          -0.003147809406362894,
+          -0.0015879930654401908
+        ]
+      },
+      {
+        "engine_id": 8,
+        "cell_atom_id": "molecule:0/repeat:3:atom:2",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          5.180119049036349,
+          23.612194833036057,
+          8.747932404780192
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          5.180119049036349,
+          23.612194833036057,
+          8.747932404780192
+        ],
+        "forces_kj_mol_angstrom": [
+          7.923568466294364,
+          42.682663371152756,
+          -38.59966938137237
+        ],
+        "velocities_angstrom_fs": [
+          0.004423158179179208,
+          -0.005887447992411714,
+          0.00013726281580368885
+        ]
+      },
+      {
+        "engine_id": 9,
+        "cell_atom_id": "molecule:0/repeat:4:atom:1",
+        "molecule_index": 0,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          4.667426954384937,
+          0.7318425018469992,
+          7.80509161654896
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          4.667426954384937,
+          24.719790030240524,
+          7.80509161654896
+        ],
+        "forces_kj_mol_angstrom": [
+          -106.6800447193808,
+          109.8683497936502,
+          194.5298514949963
+        ],
+        "velocities_angstrom_fs": [
+          -0.0010835467308253654,
+          -0.0031415590482143166,
+          0.007913415410096923
+        ]
+      },
+      {
+        "engine_id": 10,
+        "cell_atom_id": "molecule:0/repeat:4:atom:2",
+        "molecule_index": 0,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          4.039488187247117,
+          0.31349389661158644,
+          6.462101263659757
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          4.039488187247117,
+          24.301441425005113,
+          6.462101263659757
+        ],
+        "forces_kj_mol_angstrom": [
+          35.2350032646849,
+          -12.995244287995824,
+          -26.61944905426335
+        ],
+        "velocities_angstrom_fs": [
+          -0.0013030938134522357,
+          6.066771575826529e-05,
+          0.0035870919209731477
+        ]
+      },
+      {
+        "engine_id": 11,
+        "cell_atom_id": "molecule:0/cap:head:H",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.787139269470511,
+          23.666040436292462,
+          12.768885308373662
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.787139269470511,
+          23.666040436292462,
+          12.768885308373662
+        ],
+        "forces_kj_mol_angstrom": [
+          -29.229042721876265,
+          -52.81021034601349,
+          15.604492438786998
+        ],
+        "velocities_angstrom_fs": [
+          0.011899147395890323,
+          -0.002387522796705389,
+          0.003304899998535912
+        ]
+      },
+      {
+        "engine_id": 12,
+        "cell_atom_id": "molecule:0/cap:tail:H",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          3.190745609333693,
+          23.614772982776202,
+          6.594493526862575
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          3.190745609333693,
+          23.614772982776202,
+          6.594493526862575
+        ],
+        "forces_kj_mol_angstrom": [
+          17.734882214647968,
+          20.36262883611361,
+          -3.037431692390597
+        ],
+        "velocities_angstrom_fs": [
+          -0.003073869673379031,
+          -0.01996107587648485,
+          -0.016022918762771926
+        ]
+      },
+      {
+        "engine_id": 13,
+        "cell_atom_id": "molecule:0/repeat:0:atom:1:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.723880853806463,
+          21.87289172935219,
+          13.06615711084252
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.723880853806463,
+          21.87289172935219,
+          13.06615711084252
+        ],
+        "forces_kj_mol_angstrom": [
+          -17.76141910899292,
+          26.80734111492641,
+          -1.517172540559096
+        ],
+        "velocities_angstrom_fs": [
+          0.020253362631681524,
+          -0.006072916269224952,
+          -0.010325004209161954
+        ]
+      },
+      {
+        "engine_id": 14,
+        "cell_atom_id": "molecule:0/repeat:0:atom:1:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.229888449127708,
+          22.580642102032378,
+          11.52279704167383
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.229888449127708,
+          22.580642102032378,
+          11.52279704167383
+        ],
+        "forces_kj_mol_angstrom": [
+          17.825026415103906,
+          -9.514330399818673,
+          -1.027494315906003
+        ],
+        "velocities_angstrom_fs": [
+          0.01809951788758582,
+          0.0052239735257168666,
+          -0.00683994467544756
+        ]
+      },
+      {
+        "engine_id": 15,
+        "cell_atom_id": "molecule:0/repeat:0:atom:2:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.263457234318663,
+          23.763322665522573,
+          12.619667990275095
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.263457234318663,
+          23.763322665522573,
+          12.619667990275095
+        ],
+        "forces_kj_mol_angstrom": [
+          20.351294910858403,
+          32.166148920454106,
+          -24.400077013703903
+        ],
+        "velocities_angstrom_fs": [
+          0.0068154440976177354,
+          0.009846577815677384,
+          -0.0036973374836591494
+        ]
+      },
+      {
+        "engine_id": 16,
+        "cell_atom_id": "molecule:0/repeat:0:atom:2:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.596545951164076,
+          22.943732544008604,
+          14.110142600259026
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.596545951164076,
+          22.943732544008604,
+          14.110142600259026
+        ],
+        "forces_kj_mol_angstrom": [
+          58.32325248723192,
+          7.637719245090551,
+          -97.68693482915222
+        ],
+        "velocities_angstrom_fs": [
+          -0.004967472948326741,
+          -0.006886111828468005,
+          -0.014250063124954394
+        ]
+      },
+      {
+        "engine_id": 17,
+        "cell_atom_id": "molecule:0/repeat:1:atom:1:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.276457116951029,
+          20.748485573175806,
+          12.976961211826424
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.276457116951029,
+          20.748485573175806,
+          12.976961211826424
+        ],
+        "forces_kj_mol_angstrom": [
+          -0.8185971533737517,
+          6.662749727417663,
+          4.702874132330465
+        ],
+        "velocities_angstrom_fs": [
+          0.00018483579547656212,
+          -0.003229137728386351,
+          0.013845440788052027
+        ]
+      },
+      {
+        "engine_id": 18,
+        "cell_atom_id": "molecule:0/repeat:1:atom:1:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          7.870638229143125,
+          21.785545703766317,
+          13.183895948742132
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          7.870638229143125,
+          21.785545703766317,
+          13.183895948742132
+        ],
+        "forces_kj_mol_angstrom": [
+          72.09799207509428,
+          -7.485873022261271,
+          -29.057430490483313
+        ],
+        "velocities_angstrom_fs": [
+          0.008597064474220059,
+          -0.0045014020100667225,
+          -0.0031085987222485645
+        ]
+      },
+      {
+        "engine_id": 19,
+        "cell_atom_id": "molecule:0/repeat:1:atom:2:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.25660497723113,
+          21.106484187614925,
+          10.504944020775675
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.25660497723113,
+          21.106484187614925,
+          10.504944020775675
+        ],
+        "forces_kj_mol_angstrom": [
+          -49.742143634840694,
+          29.09163240960942,
+          93.02307938828446
+        ],
+        "velocities_angstrom_fs": [
+          -0.012032156065980928,
+          -0.00671708568899466,
+          -0.007640622441425978
+        ]
+      },
+      {
+        "engine_id": 20,
+        "cell_atom_id": "molecule:0/repeat:1:atom:2:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          7.676415007645717,
+          20.61676734281353,
+          11.108625725798719
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          7.676415007645717,
+          20.61676734281353,
+          11.108625725798719
+        ],
+        "forces_kj_mol_angstrom": [
+          57.506885926887925,
+          55.718615912374986,
+          14.500527740112949
+        ],
+        "velocities_angstrom_fs": [
+          0.011336044914113783,
+          -0.00945981282049374,
+          0.013835226885980987
+        ]
+      },
+      {
+        "engine_id": 21,
+        "cell_atom_id": "molecule:0/repeat:2:atom:1:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          7.708924957886407,
+          22.401974252645125,
+          9.290737404353246
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          7.708924957886407,
+          22.401974252645125,
+          9.290737404353246
+        ],
+        "forces_kj_mol_angstrom": [
+          13.077127678920176,
+          -29.88682087230367,
+          21.27255756518321
+        ],
+        "velocities_angstrom_fs": [
+          0.0036485269441614778,
+          0.02032010475491386,
+          -0.017401196869618652
+        ]
+      },
+      {
+        "engine_id": 22,
+        "cell_atom_id": "molecule:0/repeat:2:atom:1:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          8.482597631145493,
+          23.498935289885402,
+          10.39050427938777
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          8.482597631145493,
+          23.498935289885402,
+          10.39050427938777
+        ],
+        "forces_kj_mol_angstrom": [
+          -56.51572437062161,
+          -54.46257049557633,
+          7.371574478458474
+        ],
+        "velocities_angstrom_fs": [
+          0.010279751514932342,
+          -0.015759996071919816,
+          -0.0005938621619927085
+        ]
+      },
+      {
+        "engine_id": 23,
+        "cell_atom_id": "molecule:0/repeat:2:atom:2:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          5.720827726207582,
+          22.124235669313073,
+          10.848549060111843
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          5.720827726207582,
+          22.124235669313073,
+          10.848549060111843
+        ],
+        "forces_kj_mol_angstrom": [
+          24.989382069887178,
+          2.9777895355350887,
+          23.365084247741112
+        ],
+        "velocities_angstrom_fs": [
+          -0.004766307844890111,
+          0.014626188272485711,
+          0.00977716842167276
+        ]
+      },
+      {
+        "engine_id": 24,
+        "cell_atom_id": "molecule:0/repeat:2:atom:2:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          6.416523419846459,
+          23.331719381175432,
+          11.91385050052303
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.416523419846459,
+          23.331719381175432,
+          11.91385050052303
+        ],
+        "forces_kj_mol_angstrom": [
+          26.592962321207537,
+          -8.7414054249087,
+          51.94489435265573
+        ],
+        "velocities_angstrom_fs": [
+          -0.01000357261218135,
+          -0.015175295653012264,
+          0.01551445704076577
+        ]
+      },
+      {
+        "engine_id": 25,
+        "cell_atom_id": "molecule:0/repeat:3:atom:1:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          6.396171044971341,
+          0.8776383914971105,
+          9.851629099072644
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.396171044971341,
+          24.865585919890638,
+          9.851629099072644
+        ],
+        "forces_kj_mol_angstrom": [
+          -14.352811062158274,
+          0.48005591558960065,
+          63.48737155912643
+        ],
+        "velocities_angstrom_fs": [
+          0.006610017334102045,
+          0.01904769700695157,
+          -0.006009809826670846
+        ]
+      },
+      {
+        "engine_id": 26,
+        "cell_atom_id": "molecule:0/repeat:3:atom:1:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          4.780796206668382,
+          0.6067722310233618,
+          10.692305134288283
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          4.780796206668382,
+          24.59471975941689,
+          10.692305134288283
+        ],
+        "forces_kj_mol_angstrom": [
+          170.2540333708759,
+          -102.4582442491858,
+          -68.14524151357865
+        ],
+        "velocities_angstrom_fs": [
+          0.022858369478000563,
+          0.0015540468917203867,
+          0.007452385824538901
+        ]
+      },
+      {
+        "engine_id": 27,
+        "cell_atom_id": "molecule:0/repeat:3:atom:2:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          5.95932170850233,
+          23.082259893971,
+          8.245086768848667
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          5.95932170850233,
+          23.082259893971,
+          8.245086768848667
+        ],
+        "forces_kj_mol_angstrom": [
+          42.689589915813585,
+          -21.07166676319367,
+          -33.781233133619615
+        ],
+        "velocities_angstrom_fs": [
+          -0.008070200781511666,
+          -0.01495376168296033,
+          0.0016637809083150088
+        ]
+      },
+      {
+        "engine_id": 28,
+        "cell_atom_id": "molecule:0/repeat:3:atom:2:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          4.39322978551636,
+          22.911808146714527,
+          8.82089330203965
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          4.39322978551636,
+          22.911808146714527,
+          8.82089330203965
+        ],
+        "forces_kj_mol_angstrom": [
+          -66.39488730055112,
+          -71.25392445947037,
+          40.00172387961595
+        ],
+        "velocities_angstrom_fs": [
+          -0.005375648560834614,
+          -2.6170280872462253e-05,
+          0.011458893138952198
+        ]
+      },
+      {
+        "engine_id": 29,
+        "cell_atom_id": "molecule:0/repeat:4:atom:1:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          5.426652628290798,
+          1.5146701075857583,
+          7.715607182683826
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          5.426652628290798,
+          25.502617635979284,
+          7.715607182683826
+        ],
+        "forces_kj_mol_angstrom": [
+          -1.915379362927854,
+          -15.768080887109635,
+          -33.355709212578475
+        ],
+        "velocities_angstrom_fs": [
+          0.00039110834707544633,
+          0.012520093812994192,
+          -0.017578231077082538
+        ]
+      },
+      {
+        "engine_id": 30,
+        "cell_atom_id": "molecule:0/repeat:4:atom:1:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          3.8611701942156795,
+          1.2105077622920593,
+          8.445294049235644
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          3.8611701942156795,
+          25.198455290685587,
+          8.445294049235644
+        ],
+        "forces_kj_mol_angstrom": [
+          76.95837242988753,
+          -33.429776676782005,
+          -102.41143420767443
+        ],
+        "velocities_angstrom_fs": [
+          0.028622790224169834,
+          0.025565319590304808,
+          0.012127207828516964
+        ]
+      },
+      {
+        "engine_id": 31,
+        "cell_atom_id": "molecule:0/repeat:4:atom:2:H:0",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          3.7230074490917393,
+          1.1839647965702045,
+          5.869013013619591
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          3.7230074490917393,
+          25.17191232496373,
+          5.869013013619591
+        ],
+        "forces_kj_mol_angstrom": [
+          -9.841733095380933,
+          -17.662281002781803,
+          29.795658465693514
+        ],
+        "velocities_angstrom_fs": [
+          0.003550028844389908,
+          -0.00909628861736071,
+          -0.022128329415627167
+        ]
+      },
+      {
+        "engine_id": 32,
+        "cell_atom_id": "molecule:0/repeat:4:atom:2:H:1",
+        "molecule_index": 0,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          4.786345597304577,
+          23.80713839732949,
+          5.835066834801898
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          4.786345597304577,
+          23.80713839732949,
+          5.835066834801898
+        ],
+        "forces_kj_mol_angstrom": [
+          -7.806594012685953,
+          -8.869868102847299,
+          12.700490267892741
+        ],
+        "velocities_angstrom_fs": [
+          -0.003454041845192314,
+          -0.012314296972722757,
+          0.00883785520367752
+        ]
+      },
+      {
+        "engine_id": 33,
+        "cell_atom_id": "molecule:1/repeat:0:atom:1",
+        "molecule_index": 1,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          21.458132864242614,
+          5.5860432089197385,
+          23.87378448524978
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -2.529814664150912,
+          5.5860432089197385,
+          23.87378448524978
+        ],
+        "forces_kj_mol_angstrom": [
+          21.490062223564227,
+          -37.52209455246086,
+          -5.498892058390315
+        ],
+        "velocities_angstrom_fs": [
+          0.0056640130064161435,
+          0.00024815798536583855,
+          -0.0014443276117930151
+        ]
+      },
+      {
+        "engine_id": 34,
+        "cell_atom_id": "molecule:1/repeat:0:atom:2",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          22.402503598738576,
+          6.350113108820657,
+          22.936124501441896
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -1.58544392965495,
+          6.350113108820657,
+          22.936124501441896
+        ],
+        "forces_kj_mol_angstrom": [
+          103.06379053679532,
+          -16.59829954111856,
+          -118.53795952530083
+        ],
+        "velocities_angstrom_fs": [
+          0.003955510134560865,
+          -0.0036322853746249125,
+          0.002454511800987186
+        ]
+      },
+      {
+        "engine_id": 35,
+        "cell_atom_id": "molecule:1/repeat:1:atom:1",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          23.235145771015304,
+          7.400561578869472,
+          23.67927832992082
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -0.7528017573782222,
+          7.400561578869472,
+          23.67927832992082
+        ],
+        "forces_kj_mol_angstrom": [
+          -13.379331933332159,
+          49.59133322786195,
+          -41.80949111800076
+        ],
+        "velocities_angstrom_fs": [
+          -0.00791957527105694,
+          0.002147028381253453,
+          0.005028964084124956
+        ]
+      },
+      {
+        "engine_id": 36,
+        "cell_atom_id": "molecule:1/repeat:1:atom:2",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          0.15938969379164208,
+          8.356784486960644,
+          22.76802416343744
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          0.15938969379164208,
+          8.356784486960644,
+          22.76802416343744
+        ],
+        "forces_kj_mol_angstrom": [
+          -206.36193672457964,
+          -127.9806010768633,
+          9.581146863816791
+        ],
+        "velocities_angstrom_fs": [
+          0.0031994226355576893,
+          -0.00035835484401132173,
+          -0.0009480660248457648
+        ]
+      },
+      {
+        "engine_id": 37,
+        "cell_atom_id": "molecule:1/repeat:2:atom:1",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          23.397757772642187,
+          9.599231634290676,
+          22.332681790363026
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -0.5901897557513394,
+          9.599231634290676,
+          22.332681790363026
+        ],
+        "forces_kj_mol_angstrom": [
+          -136.09268918706445,
+          4.644964532130174,
+          43.52788500538983
+        ],
+        "velocities_angstrom_fs": [
+          0.0008775559283818868,
+          0.00014883749312679582,
+          -0.0030327413840101386
+        ]
+      },
+      {
+        "engine_id": 38,
+        "cell_atom_id": "molecule:1/repeat:2:atom:2",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          0.18436938079696072,
+          10.597735781348748,
+          21.521918701668028
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          0.18436938079696072,
+          10.597735781348748,
+          21.521918701668028
+        ],
+        "forces_kj_mol_angstrom": [
+          176.21827637600984,
+          71.97323024731544,
+          -30.682536438029828
+        ],
+        "velocities_angstrom_fs": [
+          -0.0016772315242098736,
+          0.0014414291178962576,
+          -0.0026033161033569806
+        ]
+      },
+      {
+        "engine_id": 39,
+        "cell_atom_id": "molecule:1/repeat:3:atom:1",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          1.3490901593439597,
+          11.216811241073222,
+          22.365292151867436
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          1.3490901593439597,
+          11.216811241073222,
+          22.365292151867436
+        ],
+        "forces_kj_mol_angstrom": [
+          -80.23050495049392,
+          -45.4522042049108,
+          -7.172827975127722
+        ],
+        "velocities_angstrom_fs": [
+          0.0011161557655521212,
+          0.001763923146583394,
+          0.0008252062690150694
+        ]
+      },
+      {
+        "engine_id": 40,
+        "cell_atom_id": "molecule:1/repeat:3:atom:2",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          2.1924835384910573,
+          12.226718632407074,
+          21.626250311733372
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          2.1924835384910573,
+          12.226718632407074,
+          21.626250311733372
+        ],
+        "forces_kj_mol_angstrom": [
+          -104.80349949664938,
+          103.77359397412134,
+          -44.10354191090759
+        ],
+        "velocities_angstrom_fs": [
+          -0.0012118913518990619,
+          -0.0027680128397403634,
+          0.003315109025848566
+        ]
+      },
+      {
+        "engine_id": 41,
+        "cell_atom_id": "molecule:1/repeat:4:atom:1",
+        "molecule_index": 1,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          1.433199927622002,
+          13.524685757031577,
+          21.261164177964744
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          1.433199927622002,
+          13.524685757031577,
+          21.261164177964744
+        ],
+        "forces_kj_mol_angstrom": [
+          -35.92781157827633,
+          -112.15179701015347,
+          45.15652372432872
+        ],
+        "velocities_angstrom_fs": [
+          -0.007139830609239445,
+          0.0019280137010285227,
+          0.002745582739260752
+        ]
+      },
+      {
+        "engine_id": 42,
+        "cell_atom_id": "molecule:1/repeat:4:atom:2",
+        "molecule_index": 1,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          2.3402266198103776,
+          14.572075959481623,
+          20.647803827015203
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          2.3402266198103776,
+          14.572075959481623,
+          20.647803827015203
+        ],
+        "forces_kj_mol_angstrom": [
+          15.365696710185059,
+          134.08607047975153,
+          45.09387793202177
+        ],
+        "velocities_angstrom_fs": [
+          0.0016419875942075216,
+          0.003407666295866258,
+          0.004674429655955598
+        ]
+      },
+      {
+        "engine_id": 43,
+        "cell_atom_id": "molecule:1/cap:head:H",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          20.93693938569757,
+          4.79136858716533,
+          23.310802925384174
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -3.051008142695956,
+          4.79136858716533,
+          23.310802925384174
+        ],
+        "forces_kj_mol_angstrom": [
+          10.822449622897167,
+          26.03906378968637,
+          32.947185779942494
+        ],
+        "velocities_angstrom_fs": [
+          -0.027499791616614252,
+          -0.020671405496266938,
+          0.02206921862503106
+        ]
+      },
+      {
+        "engine_id": 44,
+        "cell_atom_id": "molecule:1/cap:tail:H",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          2.810899184090818,
+          14.232419477376318,
+          19.731481370082008
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          2.810899184090818,
+          14.232419477376318,
+          19.731481370082008
+        ],
+        "forces_kj_mol_angstrom": [
+          19.031801510681547,
+          -13.762089765289728,
+          -4.538324765630572
+        ],
+        "velocities_angstrom_fs": [
+          0.013710043175244765,
+          -0.013947899484595551,
+          0.0001583884613139032
+        ]
+      },
+      {
+        "engine_id": 45,
+        "cell_atom_id": "molecule:1/repeat:0:atom:1:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          22.026646146605792,
+          5.138803382247794,
+          0.7177004438810631
+        ],
+        "image_flags": [
+          -1,
+          0,
+          1
+        ],
+        "coordinates_angstrom": [
+          -1.9613013817877345,
+          5.138803382247794,
+          24.70564797227459
+        ],
+        "forces_kj_mol_angstrom": [
+          -20.952283844767493,
+          -2.2454495852151815,
+          -31.81603203974335
+        ],
+        "velocities_angstrom_fs": [
+          -0.007043748767726947,
+          -0.004781967929525244,
+          0.006405746380551726
+        ]
+      },
+      {
+        "engine_id": 46,
+        "cell_atom_id": "molecule:1/repeat:0:atom:1:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          20.72946428929278,
+          6.2527964278053165,
+          0.34358045004562177
+        ],
+        "image_flags": [
+          -1,
+          0,
+          1
+        ],
+        "coordinates_angstrom": [
+          -3.258483239100748,
+          6.2527964278053165,
+          24.331527978439148
+        ],
+        "forces_kj_mol_angstrom": [
+          -13.603815257516516,
+          0.1463798837527011,
+          -9.417076552371238
+        ],
+        "velocities_angstrom_fs": [
+          -0.022081637864290952,
+          -0.0011312350315966686,
+          -0.006189137471825771
+        ]
+      },
+      {
+        "engine_id": 47,
+        "cell_atom_id": "molecule:1/repeat:0:atom:2:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          21.867705186463176,
+          6.816816814448498,
+          22.09940281655878
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -2.12024234193035,
+          6.816816814448498,
+          22.09940281655878
+        ],
+        "forces_kj_mol_angstrom": [
+          -13.363934159664025,
+          -2.958362552671045,
+          31.546504135566202
+        ],
+        "velocities_angstrom_fs": [
+          0.01787167441387742,
+          0.003687661547614885,
+          -0.011611666272420076
+        ]
+      },
+      {
+        "engine_id": 48,
+        "cell_atom_id": "molecule:1/repeat:0:atom:2:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          23.133353487654865,
+          5.665063500865225,
+          22.417968185087958
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -0.854594040738661,
+          5.665063500865225,
+          22.417968185087958
+        ],
+        "forces_kj_mol_angstrom": [
+          -79.39072412445753,
+          42.313576738051275,
+          61.04724894693692
+        ],
+        "velocities_angstrom_fs": [
+          -0.011230416527766334,
+          -0.007053833126616332,
+          5.723258523392754e-05
+        ]
+      },
+      {
+        "engine_id": 49,
+        "cell_atom_id": "molecule:1/repeat:1:atom:1:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          22.56590112474742,
+          7.925420239697828,
+          0.3930528931960802
+        ],
+        "image_flags": [
+          -1,
+          0,
+          1
+        ],
+        "coordinates_angstrom": [
+          -1.4220464036461067,
+          7.925420239697828,
+          24.381000421589608
+        ],
+        "forces_kj_mol_angstrom": [
+          30.461329304026986,
+          30.726093342255243,
+          -46.098032617154104
+        ],
+        "velocities_angstrom_fs": [
+          -0.0037905997903965303,
+          0.025677733689299542,
+          -0.00894962709667427
+        ]
+      },
+      {
+        "engine_id": 50,
+        "cell_atom_id": "molecule:1/repeat:1:atom:1:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          23.81973558644382,
+          6.824789343931335,
+          0.37761982315186415
+        ],
+        "image_flags": [
+          -1,
+          0,
+          1
+        ],
+        "coordinates_angstrom": [
+          -0.168211941949707,
+          6.824789343931335,
+          24.36556735154539
+        ],
+        "forces_kj_mol_angstrom": [
+          73.17930797536677,
+          -13.35212930432256,
+          21.057482250448484
+        ],
+        "velocities_angstrom_fs": [
+          0.008957651731421132,
+          -0.004041038480185286,
+          0.007877971596630411
+        ]
+      },
+      {
+        "engine_id": 51,
+        "cell_atom_id": "molecule:1/repeat:1:atom:2:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          0.6090539406562644,
+          7.866952625461318,
+          21.898567207120777
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          0.6090539406562644,
+          7.866952625461318,
+          21.898567207120777
+        ],
+        "forces_kj_mol_angstrom": [
+          -0.7604567223644904,
+          -15.818964837177825,
+          22.44981418552606
+        ],
+        "velocities_angstrom_fs": [
+          -5.944521623838718e-05,
+          0.010771657074768475,
+          0.00937447787463022
+        ]
+      },
+      {
+        "engine_id": 52,
+        "cell_atom_id": "molecule:1/repeat:1:atom:2:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          0.9031859289241986,
+          8.710376642957902,
+          23.38071761689973
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          0.9031859289241986,
+          8.710376642957902,
+          23.38071761689973
+        ],
+        "forces_kj_mol_angstrom": [
+          148.06145962943032,
+          26.071739403923004,
+          98.8294836451631
+        ],
+        "velocities_angstrom_fs": [
+          0.03230255727099336,
+          0.000983034383318834,
+          0.00033333120483834824
+        ]
+      },
+      {
+        "engine_id": 53,
+        "cell_atom_id": "molecule:1/repeat:2:atom:1:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          22.57152008688474,
+          9.309229504610919,
+          21.69142761329916
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -1.4164274415087874,
+          9.309229504610919,
+          21.69142761329916
+        ],
+        "forces_kj_mol_angstrom": [
+          -19.943334317135964,
+          -19.050157616082004,
+          7.601973264263834
+        ],
+        "velocities_angstrom_fs": [
+          -0.007203239985258058,
+          0.002987241062856234,
+          -0.0251642739375423
+        ]
+      },
+      {
+        "engine_id": 54,
+        "cell_atom_id": "molecule:1/repeat:2:atom:1:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          22.940981519612095,
+          10.080373047959995,
+          23.231270122983922
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -1.0469660087814319,
+          10.080373047959995,
+          23.231270122983922
+        ],
+        "forces_kj_mol_angstrom": [
+          31.49241968953476,
+          -20.250250687007068,
+          -64.65938875128819
+        ],
+        "velocities_angstrom_fs": [
+          0.020296133795812816,
+          -0.027521543733161426,
+          0.01649071141001187
+        ]
+      },
+      {
+        "engine_id": 55,
+        "cell_atom_id": "molecule:1/repeat:2:atom:2:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          0.6489819857325841,
+          10.168700413431097,
+          20.606512041405132
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          0.6489819857325841,
+          10.168700413431097,
+          20.606512041405132
+        ],
+        "forces_kj_mol_angstrom": [
+          -46.73403048824396,
+          -3.7422268879291067,
+          53.204572209139094
+        ],
+        "velocities_angstrom_fs": [
+          -0.011420806673301021,
+          5.982608650933031e-05,
+          0.0010230137726256856
+        ]
+      },
+      {
+        "engine_id": 56,
+        "cell_atom_id": "molecule:1/repeat:2:atom:2:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          23.50707621116316,
+          11.378465882671836,
+          21.159257709458643
+        ],
+        "image_flags": [
+          -1,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          -0.4808713172303669,
+          11.378465882671836,
+          21.159257709458643
+        ],
+        "forces_kj_mol_angstrom": [
+          -9.733519668214214,
+          4.620267875192645,
+          9.505919242238859
+        ],
+        "velocities_angstrom_fs": [
+          -0.018271911019921688,
+          -0.0037460676428253173,
+          -0.0035559437804676794
+        ]
+      },
+      {
+        "engine_id": 57,
+        "cell_atom_id": "molecule:1/repeat:3:atom:1:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          1.0041522923640398,
+          11.641040037434491,
+          23.304029245087044
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          1.0041522923640398,
+          11.641040037434491,
+          23.304029245087044
+        ],
+        "forces_kj_mol_angstrom": [
+          -26.991851322485967,
+          14.247069237587839,
+          -1.1050228656876484
+        ],
+        "velocities_angstrom_fs": [
+          0.011306246390590117,
+          0.014393680555715648,
+          0.0026967043165207647
+        ]
+      },
+      {
+        "engine_id": 58,
+        "cell_atom_id": "molecule:1/repeat:3:atom:1:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          1.9875655940303845,
+          10.415861674475716,
+          22.694891489257678
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          1.9875655940303845,
+          10.415861674475716,
+          22.694891489257678
+        ],
+        "forces_kj_mol_angstrom": [
+          40.24367353712092,
+          -18.417314970529674,
+          -5.001314642545296
+        ],
+        "velocities_angstrom_fs": [
+          -0.0009661549360091417,
+          -0.00344224046335692,
+          -0.0012959888815300778
+        ]
+      },
+      {
+        "engine_id": 59,
+        "cell_atom_id": "molecule:1/repeat:3:atom:2:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          2.6094169403642113,
+          11.822229586415228,
+          20.743570979617722
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          2.6094169403642113,
+          11.822229586415228,
+          20.743570979617722
+        ],
+        "forces_kj_mol_angstrom": [
+          40.47252730606319,
+          -52.88331014675256,
+          -73.5899188347533
+        ],
+        "velocities_angstrom_fs": [
+          -0.0021224284076889833,
+          0.02806825841185788,
+          -0.010533705653267106
+        ]
+      },
+      {
+        "engine_id": 60,
+        "cell_atom_id": "molecule:1/repeat:3:atom:2:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          2.991510799028594,
+          12.503484221905744,
+          22.246202993014514
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          2.991510799028594,
+          12.503484221905744,
+          22.246202993014514
+        ],
+        "forces_kj_mol_angstrom": [
+          100.18607859371203,
+          19.697874907723634,
+          67.65586224730286
+        ],
+        "velocities_angstrom_fs": [
+          0.0034937162413061352,
+          0.0030613473201511056,
+          0.010294086949906717
+        ]
+      },
+      {
+        "engine_id": 61,
+        "cell_atom_id": "molecule:1/repeat:4:atom:1:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          0.9547225860176487,
+          13.837593512941075,
+          22.203636785968214
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          0.9547225860176487,
+          13.837593512941075,
+          22.203636785968214
+        ],
+        "forces_kj_mol_angstrom": [
+          7.116140484689733,
+          37.2142654630327,
+          -46.60329172898203
+        ],
+        "velocities_angstrom_fs": [
+          0.005063282414307136,
+          -0.0190993873197187,
+          0.011601888780721147
+        ]
+      },
+      {
+        "engine_id": 62,
+        "cell_atom_id": "molecule:1/repeat:4:atom:1:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          0.6426188435025649,
+          13.280381948025589,
+          20.538417415421407
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          0.6426188435025649,
+          13.280381948025589,
+          20.538417415421407
+        ],
+        "forces_kj_mol_angstrom": [
+          9.342590625985956,
+          13.963528466265892,
+          21.913261215092756
+        ],
+        "velocities_angstrom_fs": [
+          -0.00298953094447095,
+          0.015067878877341644,
+          -0.016918274015232725
+        ]
+      },
+      {
+        "engine_id": 63,
+        "cell_atom_id": "molecule:1/repeat:4:atom:2:H:0",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          3.0993582516998996,
+          14.938460465965608,
+          21.373950357916968
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          3.0993582516998996,
+          14.938460465965608,
+          21.373950357916968
+        ],
+        "forces_kj_mol_angstrom": [
+          -28.001221094192143,
+          -40.302864197963885,
+          -46.85803181663778
+        ],
+        "velocities_angstrom_fs": [
+          0.012527010069831904,
+          -0.018318950127987774,
+          0.008060027098084835
+        ]
+      },
+      {
+        "engine_id": 64,
+        "cell_atom_id": "molecule:1/repeat:4:atom:2:H:1",
+        "molecule_index": 1,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          1.7638305252022521,
+          15.473391311571916,
+          20.378906137255157
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          1.7638305252022521,
+          15.473391311571916,
+          20.378906137255157
+        ],
+        "forces_kj_mol_angstrom": [
+          9.917121598426862,
+          -36.32649236571234,
+          6.608514707358518
+        ],
+        "velocities_angstrom_fs": [
+          -0.007859555146074941,
+          0.0013316840730635306,
+          0.0034894949719957162
+        ]
+      },
+      {
+        "engine_id": 65,
+        "cell_atom_id": "molecule:2/repeat:0:atom:1",
+        "molecule_index": 2,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          10.826599571478056,
+          2.3783830966296526,
+          21.375927449229728
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.826599571478056,
+          26.366330625023178,
+          21.375927449229728
+        ],
+        "forces_kj_mol_angstrom": [
+          -17.265731728169136,
+          0.38383863888233877,
+          22.929267301529435
+        ],
+        "velocities_angstrom_fs": [
+          -0.003949439378478477,
+          0.001847878004363718,
+          -0.002019145041933851
+        ]
+      },
+      {
+        "engine_id": 66,
+        "cell_atom_id": "molecule:2/repeat:0:atom:2",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          10.110525994597747,
+          1.1014799818045449,
+          20.96916362971441
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.110525994597747,
+          25.08942751019807,
+          20.96916362971441
+        ],
+        "forces_kj_mol_angstrom": [
+          20.879902615929318,
+          45.503200663338994,
+          64.12031650240607
+        ],
+        "velocities_angstrom_fs": [
+          -0.0024901150640412734,
+          0.004169107761450095,
+          0.0005311165613468646
+        ]
+      },
+      {
+        "engine_id": 67,
+        "cell_atom_id": "molecule:2/repeat:1:atom:1",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          10.195882718777536,
+          23.899345074321822,
+          21.96223381050502
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.195882718777536,
+          23.899345074321822,
+          21.96223381050502
+        ],
+        "forces_kj_mol_angstrom": [
+          -62.46401173104939,
+          2.7858823320869615,
+          -47.59561640600088
+        ],
+        "velocities_angstrom_fs": [
+          -0.0010148998369284797,
+          -0.004154505610521705,
+          -0.003014507696619768
+        ]
+      },
+      {
+        "engine_id": 68,
+        "cell_atom_id": "molecule:2/repeat:1:atom:2",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          9.34244491382539,
+          22.69705554264563,
+          21.459116091174288
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.34244491382539,
+          22.69705554264563,
+          21.459116091174288
+        ],
+        "forces_kj_mol_angstrom": [
+          -20.639655118204388,
+          164.09409761829465,
+          -46.20825334741414
+        ],
+        "velocities_angstrom_fs": [
+          -0.0074932752899591745,
+          -0.00034115995504150563,
+          -0.001682461627273058
+        ]
+      },
+      {
+        "engine_id": 69,
+        "cell_atom_id": "molecule:2/repeat:2:atom:1",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          9.348350768242673,
+          21.481055211798072,
+          22.323747938508745
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.348350768242673,
+          21.481055211798072,
+          22.323747938508745
+        ],
+        "forces_kj_mol_angstrom": [
+          50.18823963530965,
+          -163.4669839032662,
+          221.96716545227355
+        ],
+        "velocities_angstrom_fs": [
+          -0.0006704480560475963,
+          -0.0011096981834936067,
+          0.0024594252904516804
+        ]
+      },
+      {
+        "engine_id": 70,
+        "cell_atom_id": "molecule:2/repeat:2:atom:2",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          8.733856591300386,
+          20.19453965818579,
+          21.697057268527402
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          8.733856591300386,
+          20.19453965818579,
+          21.697057268527402
+        ],
+        "forces_kj_mol_angstrom": [
+          172.66240655284,
+          2.303037652910689,
+          -143.14256125751174
+        ],
+        "velocities_angstrom_fs": [
+          -0.0066740144848798115,
+          0.003495197247733752,
+          -0.0013033168946149749
+        ]
+      },
+      {
+        "engine_id": 71,
+        "cell_atom_id": "molecule:2/repeat:3:atom:1",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          7.295798920858831,
+          20.314017272785534,
+          21.298325391850312
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          7.295798920858831,
+          20.314017272785534,
+          21.298325391850312
+        ],
+        "forces_kj_mol_angstrom": [
+          -171.33795365897086,
+          158.32296205413562,
+          -9.351064320509654
+        ],
+        "velocities_angstrom_fs": [
+          -0.0038430565242801406,
+          0.001292220253370539,
+          -0.000695408202041399
+        ]
+      },
+      {
+        "engine_id": 72,
+        "cell_atom_id": "molecule:2/repeat:3:atom:2",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          6.309975615832351,
+          20.599683832550262,
+          22.470672553301576
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.309975615832351,
+          20.599683832550262,
+          22.470672553301576
+        ],
+        "forces_kj_mol_angstrom": [
+          8.103323738790445,
+          82.30996433386902,
+          -18.165112703921466
+        ],
+        "velocities_angstrom_fs": [
+          0.000531605099532802,
+          0.0010750232821325886,
+          0.0031571283412188136
+        ]
+      },
+      {
+        "engine_id": 73,
+        "cell_atom_id": "molecule:2/repeat:4:atom:1",
+        "molecule_index": 2,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          6.2674875485101325,
+          19.564164709315214,
+          23.577616607557644
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.2674875485101325,
+          19.564164709315214,
+          23.577616607557644
+        ],
+        "forces_kj_mol_angstrom": [
+          5.590276171682305,
+          14.953666671981486,
+          168.3992046405902
+        ],
+        "velocities_angstrom_fs": [
+          0.0002823666839905237,
+          -0.0007971850127355843,
+          0.0050044180289174215
+        ]
+      },
+      {
+        "engine_id": 74,
+        "cell_atom_id": "molecule:2/repeat:4:atom:2",
+        "molecule_index": 2,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          5.642547650372932,
+          18.1952985920541,
+          23.318022973629283
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          5.642547650372932,
+          18.1952985920541,
+          23.318022973629283
+        ],
+        "forces_kj_mol_angstrom": [
+          69.81314956947358,
+          31.057159057585427,
+          4.436892213238267
+        ],
+        "velocities_angstrom_fs": [
+          -0.0006852974988819434,
+          -0.0013299329696617576,
+          0.0031649817153974885
+        ]
+      },
+      {
+        "engine_id": 75,
+        "cell_atom_id": "molecule:2/cap:head:H",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.87133694991582,
+          2.188224240762926,
+          21.488760133410274
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.87133694991582,
+          26.176171769156454,
+          21.488760133410274
+        ],
+        "forces_kj_mol_angstrom": [
+          63.48266122500413,
+          -5.746444832174425,
+          16.578621501255544
+        ],
+        "velocities_angstrom_fs": [
+          0.003364640017235241,
+          -0.02284694878867342,
+          -0.007569232130273789
+        ]
+      },
+      {
+        "engine_id": 76,
+        "cell_atom_id": "molecule:2/cap:tail:H",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          4.622939174767225,
+          18.246114403292516,
+          23.034235439394536
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          4.622939174767225,
+          18.246114403292516,
+          23.034235439394536
+        ],
+        "forces_kj_mol_angstrom": [
+          -82.95199721217615,
+          15.582127826805594,
+          -25.453403180863845
+        ],
+        "velocities_angstrom_fs": [
+          -0.00228874798932249,
+          0.013344477911282735,
+          0.012228723777473204
+        ]
+      },
+      {
+        "engine_id": 77,
+        "cell_atom_id": "molecule:2/repeat:0:atom:1:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          10.438489906188453,
+          2.798886004633553,
+          22.308398506777685
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.438489906188453,
+          26.786833533027078,
+          22.308398506777685
+        ],
+        "forces_kj_mol_angstrom": [
+          1.3858201437225555,
+          -8.021560118923988,
+          -10.921650018365476
+        ],
+        "velocities_angstrom_fs": [
+          0.006529257712275378,
+          0.004991862838828683,
+          -0.00787037735160519
+        ]
+      },
+      {
+        "engine_id": 78,
+        "cell_atom_id": "molecule:2/repeat:0:atom:1:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          10.725929255149454,
+          3.1255998399002185,
+          20.591278427509522
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.725929255149454,
+          27.113547368293744,
+          20.591278427509522
+        ],
+        "forces_kj_mol_angstrom": [
+          -3.4161233883496496,
+          12.354902948893292,
+          2.488766372925455
+        ],
+        "velocities_angstrom_fs": [
+          -0.005937769263407604,
+          -0.005071294398892472,
+          -0.0038957452488585006
+        ]
+      },
+      {
+        "engine_id": 79,
+        "cell_atom_id": "molecule:2/repeat:0:atom:2:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          10.439677297566336,
+          0.8972715573953334,
+          19.975475005086743
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.439677297566336,
+          24.88521908578886,
+          19.975475005086743
+        ],
+        "forces_kj_mol_angstrom": [
+          19.82910375230373,
+          -64.0282822060219,
+          -54.974148367268604
+        ],
+        "velocities_angstrom_fs": [
+          -0.004834305805964251,
+          0.00545697833523791,
+          0.0007452842762071414
+        ]
+      },
+      {
+        "engine_id": 80,
+        "cell_atom_id": "molecule:2/repeat:0:atom:2:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.104906461309135,
+          1.4287919373477547,
+          20.880816524402967
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.104906461309135,
+          25.41673946574128,
+          20.880816524402967
+        ],
+        "forces_kj_mol_angstrom": [
+          -91.89339501083174,
+          -10.80287301396226,
+          -14.613370045423874
+        ],
+        "velocities_angstrom_fs": [
+          -0.005757738455677824,
+          0.0033283130185271367,
+          -0.013513125888206
+        ]
+      },
+      {
+        "engine_id": 81,
+        "cell_atom_id": "molecule:2/repeat:1:atom:1:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.21699932316116,
+          23.593018328413315,
+          22.09175948102552
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.21699932316116,
+          23.593018328413315,
+          22.09175948102552
+        ],
+        "forces_kj_mol_angstrom": [
+          47.029536569605575,
+          -10.97931852513017,
+          4.714834734061331
+        ],
+        "velocities_angstrom_fs": [
+          0.004683582466834634,
+          -0.001985748926284957,
+          0.0023688079942393294
+        ]
+      },
+      {
+        "engine_id": 82,
+        "cell_atom_id": "molecule:2/repeat:1:atom:1:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.850527238381984,
+          0.25459495087654116,
+          22.932191527429374
+        ],
+        "image_flags": [
+          0,
+          1,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.850527238381984,
+          24.242542479270067,
+          22.932191527429374
+        ],
+        "forces_kj_mol_angstrom": [
+          -9.517925330339017,
+          -7.217316457815061,
+          16.80925258519431
+        ],
+        "velocities_angstrom_fs": [
+          -0.00819903618338675,
+          -0.008525360340010266,
+          -0.004628892004445044
+        ]
+      },
+      {
+        "engine_id": 83,
+        "cell_atom_id": "molecule:2/repeat:1:atom:2:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.807444089050714,
+          22.373563633172893,
+          20.55893434813916
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.807444089050714,
+          22.373563633172893,
+          20.55893434813916
+        ],
+        "forces_kj_mol_angstrom": [
+          14.84189079347247,
+          -6.402628544094211,
+          -81.96465677635985
+        ],
+        "velocities_angstrom_fs": [
+          0.0019345045776210025,
+          -0.018390492628824986,
+          -0.007031630186382851
+        ]
+      },
+      {
+        "engine_id": 84,
+        "cell_atom_id": "molecule:2/repeat:1:atom:2:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          8.327221696569966,
+          23.077343489028678,
+          21.186306205510974
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          8.327221696569966,
+          23.077343489028678,
+          21.186306205510974
+        ],
+        "forces_kj_mol_angstrom": [
+          58.912641801919186,
+          -50.600498171413804,
+          33.14314745073229
+        ],
+        "velocities_angstrom_fs": [
+          0.010091216521468353,
+          0.004365047011311348,
+          0.006971792395051564
+        ]
+      },
+      {
+        "engine_id": 85,
+        "cell_atom_id": "molecule:2/repeat:2:atom:1:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          10.412734415368483,
+          21.20888585643157,
+          22.631610802190416
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.412734415368483,
+          21.20888585643157,
+          22.631610802190416
+        ],
+        "forces_kj_mol_angstrom": [
+          -128.2046443925672,
+          50.81291891439956,
+          -40.66183429993104
+        ],
+        "velocities_angstrom_fs": [
+          0.0034361257894916456,
+          0.007120444796082601,
+          -0.02184964803453958
+        ]
+      },
+      {
+        "engine_id": 86,
+        "cell_atom_id": "molecule:2/repeat:2:atom:1:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          8.794130017546962,
+          21.671657711391823,
+          23.273112606841103
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          8.794130017546962,
+          21.671657711391823,
+          23.273112606841103
+        ],
+        "forces_kj_mol_angstrom": [
+          55.0165109962905,
+          6.638481022530842,
+          -57.46953551150136
+        ],
+        "velocities_angstrom_fs": [
+          -0.016251666602323495,
+          0.00011846567738471569,
+          0.0022384520462064047
+        ]
+      },
+      {
+        "engine_id": 87,
+        "cell_atom_id": "molecule:2/repeat:2:atom:2:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          9.290741606735681,
+          20.049615917959642,
+          20.711709137869413
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          9.290741606735681,
+          20.049615917959642,
+          20.711709137869413
+        ],
+        "forces_kj_mol_angstrom": [
+          -55.83125665251739,
+          -14.606630090560504,
+          136.03368678613995
+        ],
+        "velocities_angstrom_fs": [
+          -0.005485754229401524,
+          0.006937037596054879,
+          0.007363930615918718
+        ]
+      },
+      {
+        "engine_id": 88,
+        "cell_atom_id": "molecule:2/repeat:2:atom:2:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          8.894201591504608,
+          19.298614458370764,
+          22.324275759850607
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          8.894201591504608,
+          19.298614458370764,
+          22.324275759850607
+        ],
+        "forces_kj_mol_angstrom": [
+          1.3866385399892218,
+          37.28732130886721,
+          -22.09995474345457
+        ],
+        "velocities_angstrom_fs": [
+          0.013175517110625814,
+          -0.004392373079791429,
+          0.006408971055594444
+        ]
+      },
+      {
+        "engine_id": 89,
+        "cell_atom_id": "molecule:2/repeat:3:atom:1:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          7.18340602366011,
+          21.20593430168592,
+          20.635866445674843
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          7.18340602366011,
+          21.20593430168592,
+          20.635866445674843
+        ],
+        "forces_kj_mol_angstrom": [
+          19.584986114704595,
+          -71.14108318566946,
+          30.915718314152052
+        ],
+        "velocities_angstrom_fs": [
+          0.011162318345829283,
+          -0.0020720564961229913,
+          0.008244520911418567
+        ]
+      },
+      {
+        "engine_id": 90,
+        "cell_atom_id": "molecule:2/repeat:3:atom:1:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          6.937187562724258,
+          19.50839335832115,
+          20.677724539531333
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.937187562724258,
+          19.50839335832115,
+          20.677724539531333
+        ],
+        "forces_kj_mol_angstrom": [
+          7.83849540329567,
+          -50.67099780103626,
+          0.5763133339502132
+        ],
+        "velocities_angstrom_fs": [
+          0.001599802466523836,
+          -0.00939022196467836,
+          -0.005568658481784669
+        ]
+      },
+      {
+        "engine_id": 91,
+        "cell_atom_id": "molecule:2/repeat:3:atom:2:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          5.285611638894288,
+          20.80019518864792,
+          22.11022301793046
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          5.285611638894288,
+          20.80019518864792,
+          22.11022301793046
+        ],
+        "forces_kj_mol_angstrom": [
+          39.02480655465871,
+          -19.163381708520234,
+          -3.4680181621166026
+        ],
+        "velocities_angstrom_fs": [
+          -0.0038656202959194657,
+          0.013291911885134717,
+          0.010246698968997808
+        ]
+      },
+      {
+        "engine_id": 92,
+        "cell_atom_id": "molecule:2/repeat:3:atom:2:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          6.614171155480515,
+          21.55847539963556,
+          22.963471066670536
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.614171155480515,
+          21.55847539963556,
+          22.963471066670536
+        ],
+        "forces_kj_mol_angstrom": [
+          -28.816135802857534,
+          -66.52702658994073,
+          -48.815878502012225
+        ],
+        "velocities_angstrom_fs": [
+          0.014795512216774755,
+          -0.0058659868308632524,
+          -0.002070534537966963
+        ]
+      },
+      {
+        "engine_id": 93,
+        "cell_atom_id": "molecule:2/repeat:4:atom:1:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          7.266364866876092,
+          19.443480427463996,
+          0.05416035178627965
+        ],
+        "image_flags": [
+          0,
+          0,
+          1
+        ],
+        "coordinates_angstrom": [
+          7.266364866876092,
+          19.443480427463996,
+          24.042107880179806
+        ],
+        "forces_kj_mol_angstrom": [
+          -40.23823044369568,
+          2.0418655497963094,
+          -33.44446277335125
+        ],
+        "velocities_angstrom_fs": [
+          -0.0046788986049557295,
+          -0.008185909153820621,
+          0.016620710597578015
+        ]
+      },
+      {
+        "engine_id": 94,
+        "cell_atom_id": "molecule:2/repeat:4:atom:1:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          5.656058873371336,
+          20.01886536110166,
+          0.39461904595313474
+        ],
+        "image_flags": [
+          0,
+          0,
+          1
+        ],
+        "coordinates_angstrom": [
+          5.656058873371336,
+          20.01886536110166,
+          24.38256657434666
+        ],
+        "forces_kj_mol_angstrom": [
+          31.831029124534005,
+          -22.175772967411895,
+          -31.402809879378978
+        ],
+        "velocities_angstrom_fs": [
+          0.0006122718599685716,
+          0.007086729937490897,
+          0.001048613445458812
+        ]
+      },
+      {
+        "engine_id": 95,
+        "cell_atom_id": "molecule:2/repeat:4:atom:2:H:0",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          5.708143911981223,
+          17.57513429249272,
+          0.21837867400554156
+        ],
+        "image_flags": [
+          0,
+          0,
+          1
+        ],
+        "coordinates_angstrom": [
+          5.708143911981223,
+          17.57513429249272,
+          24.20632620239907
+        ],
+        "forces_kj_mol_angstrom": [
+          0.2242935205848356,
+          -12.44096644495266,
+          8.685318082110392
+        ],
+        "velocities_angstrom_fs": [
+          -0.002230814641409582,
+          -0.009453113095150938,
+          -0.015053660914080657
+        ]
+      },
+      {
+        "engine_id": 96,
+        "cell_atom_id": "molecule:2/repeat:4:atom:2:H:1",
+        "molecule_index": 2,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          6.183266796534609,
+          17.717924310814396,
+          22.53076420273834
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          6.183266796534609,
+          17.717924310814396,
+          22.53076420273834
+        ],
+        "forces_kj_mol_angstrom": [
+          25.403923849019787,
+          -41.94978868035088,
+          -44.29006748650238
+        ],
+        "velocities_angstrom_fs": [
+          -0.011187525503307552,
+          -0.000490812189800984,
+          0.0016865933219113649
+        ]
+      },
+      {
+        "engine_id": 97,
+        "cell_atom_id": "molecule:3/repeat:0:atom:1",
+        "molecule_index": 3,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          18.8213843907345,
+          20.73921532392243,
+          0.2947070314878563
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          18.8213843907345,
+          -3.2487322044710965,
+          0.2947070314878563
+        ],
+        "forces_kj_mol_angstrom": [
+          -85.83121398642392,
+          -67.98163912093854,
+          -70.06285020436152
+        ],
+        "velocities_angstrom_fs": [
+          -0.0027727408619657875,
+          0.0037537354497311545,
+          -0.0031118404740642803
+        ]
+      },
+      {
+        "engine_id": 98,
+        "cell_atom_id": "molecule:3/repeat:0:atom:2",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          17.601116420131078,
+          21.624906827327557,
+          23.97805365381746
+        ],
+        "image_flags": [
+          0,
+          -1,
+          -1
+        ],
+        "coordinates_angstrom": [
+          17.601116420131078,
+          -2.3630407010659695,
+          -0.009893874576064832
+        ],
+        "forces_kj_mol_angstrom": [
+          -32.73728509052386,
+          40.39356049360066,
+          224.93706044400392
+        ],
+        "velocities_angstrom_fs": [
+          -0.0006313512769538589,
+          0.0022435250464559295,
+          0.007137154656869546
+        ]
+      },
+      {
+        "engine_id": 99,
+        "cell_atom_id": "molecule:3/repeat:1:atom:1",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          17.876052137745383,
+          23.097716279944663,
+          0.4566040575130445
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          17.876052137745383,
+          -0.8902312484488633,
+          0.4566040575130445
+        ],
+        "forces_kj_mol_angstrom": [
+          -120.34441512952407,
+          -137.49606987248353,
+          -42.29909828597359
+        ],
+        "velocities_angstrom_fs": [
+          -0.0010737380990733013,
+          0.0005437531148397074,
+          0.00038544103310381535
+        ]
+      },
+      {
+        "engine_id": 100,
+        "cell_atom_id": "molecule:3/repeat:1:atom:2",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          16.864733824575573,
+          0.08429383148503693,
+          23.835554428442187
+        ],
+        "image_flags": [
+          0,
+          0,
+          -1
+        ],
+        "coordinates_angstrom": [
+          16.864733824575573,
+          0.08429383148503693,
+          -0.15239309995133965
+        ],
+        "forces_kj_mol_angstrom": [
+          -13.207835342358296,
+          108.29645446055846,
+          16.766829622291556
+        ],
+        "velocities_angstrom_fs": [
+          0.0031066539767312887,
+          -0.000993144358766378,
+          -0.005353344398705872
+        ]
+      },
+      {
+        "engine_id": 101,
+        "cell_atom_id": "molecule:3/repeat:2:atom:1",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          15.359148962270691,
+          23.82837104509813,
+          0.22408594103729362
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          15.359148962270691,
+          -0.1595764832953961,
+          0.22408594103729362
+        ],
+        "forces_kj_mol_angstrom": [
+          106.14829359595875,
+          19.639783003237305,
+          -97.3045937553213
+        ],
+        "velocities_angstrom_fs": [
+          -0.0009830138255014094,
+          -0.0019965925378192355,
+          -0.004515533883702755
+        ]
+      },
+      {
+        "engine_id": 102,
+        "cell_atom_id": "molecule:3/repeat:2:atom:2",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          14.500097191978384,
+          1.057508102261783,
+          23.820395991511255
+        ],
+        "image_flags": [
+          0,
+          0,
+          -1
+        ],
+        "coordinates_angstrom": [
+          14.500097191978384,
+          1.057508102261783,
+          -0.16755153688227153
+        ],
+        "forces_kj_mol_angstrom": [
+          -142.00938905891252,
+          -87.90502090549037,
+          63.54503894941402
+        ],
+        "velocities_angstrom_fs": [
+          -0.0005139723212401777,
+          0.0003559381376206128,
+          -0.001967984108153291
+        ]
+      },
+      {
+        "engine_id": 103,
+        "cell_atom_id": "molecule:3/repeat:3:atom:1",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          14.70014066912774,
+          2.3082736361872853,
+          0.7551153167938391
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          14.70014066912774,
+          2.3082736361872853,
+          0.7551153167938391
+        ],
+        "forces_kj_mol_angstrom": [
+          -21.613894074700568,
+          -22.964436750911013,
+          -86.74202980531534
+        ],
+        "velocities_angstrom_fs": [
+          0.001266675131681683,
+          -0.0001529252576351913,
+          0.0028811625212344836
+        ]
+      },
+      {
+        "engine_id": 104,
+        "cell_atom_id": "molecule:3/repeat:3:atom:2",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          13.708614688519765,
+          3.476313634504617,
+          0.37360796562590937
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          13.708614688519765,
+          3.476313634504617,
+          0.37360796562590937
+        ],
+        "forces_kj_mol_angstrom": [
+          39.5149683894356,
+          -178.01567327534363,
+          96.67255067773084
+        ],
+        "velocities_angstrom_fs": [
+          -0.004129903537949472,
+          -0.0036670342013164657,
+          0.0015933338122631282
+        ]
+      },
+      {
+        "engine_id": 105,
+        "cell_atom_id": "molecule:3/repeat:4:atom:1",
+        "molecule_index": 3,
+        "charge_e": -0.12,
+        "wrapped_coordinates_angstrom": [
+          12.245260834050702,
+          3.1986245133317923,
+          0.7593990978914512
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          12.245260834050702,
+          3.1986245133317923,
+          0.7593990978914512
+        ],
+        "forces_kj_mol_angstrom": [
+          104.4438280282379,
+          28.287562012793884,
+          222.94278181086494
+        ],
+        "velocities_angstrom_fs": [
+          -0.0009184835330619315,
+          0.00045830031095110045,
+          0.0010927121312184333
+        ]
+      },
+      {
+        "engine_id": 106,
+        "cell_atom_id": "molecule:3/repeat:4:atom:2",
+        "molecule_index": 3,
+        "charge_e": -0.18,
+        "wrapped_coordinates_angstrom": [
+          11.402753171935299,
+          4.493605364117023,
+          0.76792378328575
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.402753171935299,
+          4.493605364117023,
+          0.76792378328575
+        ],
+        "forces_kj_mol_angstrom": [
+          50.50528433967087,
+          43.26579330720317,
+          -60.78699271330516
+        ],
+        "velocities_angstrom_fs": [
+          0.000401232587195689,
+          0.004175125848705968,
+          0.001629725384770936
+        ]
+      },
+      {
+        "engine_id": 107,
+        "cell_atom_id": "molecule:3/cap:head:H",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          19.092145644692607,
+          20.748365443197045,
+          1.319981895531426
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          19.092145644692607,
+          -3.2395820851964814,
+          1.319981895531426
+        ],
+        "forces_kj_mol_angstrom": [
+          12.458136284565212,
+          8.227392863544962,
+          84.7838396895647
+        ],
+        "velocities_angstrom_fs": [
+          -0.0012980313961051754,
+          -0.009710977780292993,
+          0.010866492573597376
+        ]
+      },
+      {
+        "engine_id": 108,
+        "cell_atom_id": "molecule:3/cap:tail:H",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.863450986723423,
+          5.425725695456532,
+          1.1978602209623765
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.863450986723423,
+          5.425725695456532,
+          1.1978602209623765
+        ],
+        "forces_kj_mol_angstrom": [
+          -10.8570380946838,
+          -100.44950337118165,
+          -29.594558028183354
+        ],
+        "velocities_angstrom_fs": [
+          -0.0028653257520398654,
+          -0.008044473222439329,
+          0.00395061784315633
+        ]
+      },
+      {
+        "engine_id": 109,
+        "cell_atom_id": "molecule:3/repeat:0:atom:1:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          18.493786971668094,
+          19.717859266183616,
+          0.0628620945640814
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          18.493786971668094,
+          -4.27008826220991,
+          0.0628620945640814
+        ],
+        "forces_kj_mol_angstrom": [
+          38.866893148973986,
+          8.34465136002897,
+          1.665702570902614
+        ],
+        "velocities_angstrom_fs": [
+          0.01170760102886883,
+          0.0076145222515765386,
+          0.0067140149062214815
+        ]
+      },
+      {
+        "engine_id": 110,
+        "cell_atom_id": "molecule:3/repeat:0:atom:1:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          19.718724619125986,
+          20.967548425335416,
+          23.707924015007755
+        ],
+        "image_flags": [
+          0,
+          -1,
+          -1
+        ],
+        "coordinates_angstrom": [
+          19.718724619125986,
+          -3.0203991030581108,
+          -0.28002351338577114
+        ],
+        "forces_kj_mol_angstrom": [
+          -9.638379501128684,
+          11.296508342038173,
+          -13.891130734625966
+        ],
+        "velocities_angstrom_fs": [
+          0.0009183627335334473,
+          -0.007952286579559549,
+          -0.0021080309383725367
+        ]
+      },
+      {
+        "engine_id": 111,
+        "cell_atom_id": "molecule:3/repeat:0:atom:2:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          17.432286238219262,
+          21.61451763570915,
+          22.962793153167674
+        ],
+        "image_flags": [
+          0,
+          -1,
+          -1
+        ],
+        "coordinates_angstrom": [
+          17.432286238219262,
+          -2.3734298926843778,
+          -1.0251543752258527
+        ],
+        "forces_kj_mol_angstrom": [
+          -15.406435520156982,
+          1.3860812986587934,
+          -175.64247841859805
+        ],
+        "velocities_angstrom_fs": [
+          0.003067597532954379,
+          0.01780794219756476,
+          -0.023824430988686106
+        ]
+      },
+      {
+        "engine_id": 112,
+        "cell_atom_id": "molecule:3/repeat:0:atom:2:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          16.630050490967434,
+          21.198005686340892,
+          0.41413515817735647
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          16.630050490967434,
+          -2.7899418420526345,
+          0.41413515817735647
+        ],
+        "forces_kj_mol_angstrom": [
+          136.0725206802493,
+          58.915926483952546,
+          -25.748907582452045
+        ],
+        "velocities_angstrom_fs": [
+          0.02733773769535689,
+          0.003966641442280857,
+          0.015006815933680343
+        ]
+      },
+      {
+        "engine_id": 113,
+        "cell_atom_id": "molecule:3/repeat:1:atom:1:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          17.855683600399956,
+          23.161919545608406,
+          1.5381994829748982
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          17.855683600399956,
+          -0.8260279827851207,
+          1.5381994829748982
+        ],
+        "forces_kj_mol_angstrom": [
+          -5.771487949953333,
+          -3.5480813539452773,
+          20.74287886704313
+        ],
+        "velocities_angstrom_fs": [
+          0.007416553769627702,
+          0.008160457555101704,
+          -0.0019206676514778268
+        ]
+      },
+      {
+        "engine_id": 114,
+        "cell_atom_id": "molecule:3/repeat:1:atom:1:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          18.8653444584347,
+          23.372477760511565,
+          0.17643017612423956
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          18.8653444584347,
+          -0.6154697678819616,
+          0.17643017612423956
+        ],
+        "forces_kj_mol_angstrom": [
+          66.1802752587707,
+          29.52058501093879,
+          -27.451085871067583
+        ],
+        "velocities_angstrom_fs": [
+          0.008091277849957536,
+          0.011843989794150994,
+          0.02020142529110283
+        ]
+      },
+      {
+        "engine_id": 115,
+        "cell_atom_id": "molecule:3/repeat:1:atom:2:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          16.98390985423314,
+          0.22208255601600793,
+          22.735187831926957
+        ],
+        "image_flags": [
+          0,
+          0,
+          -1
+        ],
+        "coordinates_angstrom": [
+          16.98390985423314,
+          0.22208255601600793,
+          -1.252759696466569
+        ],
+        "forces_kj_mol_angstrom": [
+          -1.7188509610071818,
+          -31.951780372234783,
+          66.61815955175797
+        ],
+        "velocities_angstrom_fs": [
+          -0.014191271805645398,
+          -0.006988862631875099,
+          -0.009303781290068052
+        ]
+      },
+      {
+        "engine_id": 116,
+        "cell_atom_id": "molecule:3/repeat:1:atom:2:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          17.187483566277876,
+          1.0518252746703396,
+          0.28413904813449653
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          17.187483566277876,
+          1.0518252746703396,
+          0.28413904813449653
+        ],
+        "forces_kj_mol_angstrom": [
+          -28.468279590803473,
+          -41.862663726774684,
+          -34.28214199362335
+        ],
+        "velocities_angstrom_fs": [
+          0.011746084961694025,
+          0.002121783304105582,
+          -0.009875509043573025
+        ]
+      },
+      {
+        "engine_id": 117,
+        "cell_atom_id": "molecule:3/repeat:2:atom:1:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          15.264120044725054,
+          23.592039948347676,
+          1.2556887403808519
+        ],
+        "image_flags": [
+          0,
+          -1,
+          0
+        ],
+        "coordinates_angstrom": [
+          15.264120044725054,
+          -0.3959075800458507,
+          1.2556887403808519
+        ],
+        "forces_kj_mol_angstrom": [
+          -12.176429394790034,
+          -4.1946674364704295,
+          80.3430373316618
+        ],
+        "velocities_angstrom_fs": [
+          0.0038098341760667825,
+          0.01592986529208397,
+          0.015420248631348218
+        ]
+      },
+      {
+        "engine_id": 118,
+        "cell_atom_id": "molecule:3/repeat:2:atom:1:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          15.03007514556457,
+          22.93152302966471,
+          23.677774917798338
+        ],
+        "image_flags": [
+          0,
+          -1,
+          -1
+        ],
+        "coordinates_angstrom": [
+          15.03007514556457,
+          -1.0564244987288163,
+          -0.3101726105951883
+        ],
+        "forces_kj_mol_angstrom": [
+          -10.594853366962024,
+          16.68725301026226,
+          1.8615112320352731
+        ],
+        "velocities_angstrom_fs": [
+          -0.0032358871989190004,
+          0.01070136327405785,
+          -0.033761299262552155
+        ]
+      },
+      {
+        "engine_id": 119,
+        "cell_atom_id": "molecule:3/repeat:2:atom:2:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          13.414848908855339,
+          0.7173737658146985,
+          23.76887011265972
+        ],
+        "image_flags": [
+          0,
+          0,
+          -1
+        ],
+        "coordinates_angstrom": [
+          13.414848908855339,
+          0.7173737658146985,
+          -0.2190774157338069
+        ],
+        "forces_kj_mol_angstrom": [
+          125.86751288516889,
+          53.34339781355644,
+          29.979639820021223
+        ],
+        "velocities_angstrom_fs": [
+          0.0122706381839809,
+          0.009135551532030745,
+          0.004717730661181468
+        ]
+      },
+      {
+        "engine_id": 120,
+        "cell_atom_id": "molecule:3/repeat:2:atom:2:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          14.756109097870441,
+          1.254882579543749,
+          22.79656930752875
+        ],
+        "image_flags": [
+          0,
+          0,
+          -1
+        ],
+        "coordinates_angstrom": [
+          14.756109097870441,
+          1.254882579543749,
+          -1.1913782208647774
+        ],
+        "forces_kj_mol_angstrom": [
+          -1.102119742612343,
+          47.087092644304825,
+          -42.94624410514567
+        ],
+        "velocities_angstrom_fs": [
+          -0.0025183511431021693,
+          -0.022591834184696097,
+          -0.02690556452257126
+        ]
+      },
+      {
+        "engine_id": 121,
+        "cell_atom_id": "molecule:3/repeat:3:atom:1:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          15.706312097597834,
+          2.630885451976127,
+          0.5262907774583049
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          15.706312097597834,
+          2.630885451976127,
+          0.5262907774583049
+        ],
+        "forces_kj_mol_angstrom": [
+          10.746180406049303,
+          39.19411066395312,
+          -3.507143899205758
+        ],
+        "velocities_angstrom_fs": [
+          0.005143670563194862,
+          -0.0009286690398454149,
+          -0.011769008734386764
+        ]
+      },
+      {
+        "engine_id": 122,
+        "cell_atom_id": "molecule:3/repeat:3:atom:1:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          14.808773845002094,
+          2.0614946027920924,
+          1.8270139565845458
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          14.808773845002094,
+          2.0614946027920924,
+          1.8270139565845458
+        ],
+        "forces_kj_mol_angstrom": [
+          -63.820642507793885,
+          10.599595704313245,
+          -34.18888739465915
+        ],
+        "velocities_angstrom_fs": [
+          -0.0030485046235100735,
+          -0.0028847233136580375,
+          0.0020583186807981092
+        ]
+      },
+      {
+        "engine_id": 123,
+        "cell_atom_id": "molecule:3/repeat:3:atom:2:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          14.034522852351227,
+          4.317253630752028,
+          0.9164407010661785
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          14.034522852351227,
+          4.317253630752028,
+          0.9164407010661785
+        ],
+        "forces_kj_mol_angstrom": [
+          32.06525784275558,
+          94.5116318979014,
+          45.659131585349385
+        ],
+        "velocities_angstrom_fs": [
+          -0.014631928321097862,
+          0.013356878258831,
+          -0.001674230870858425
+        ]
+      },
+      {
+        "engine_id": 124,
+        "cell_atom_id": "molecule:3/repeat:3:atom:2:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          13.840075349294752,
+          3.7078913004029186,
+          23.33943385813339
+        ],
+        "image_flags": [
+          0,
+          0,
+          -1
+        ],
+        "coordinates_angstrom": [
+          13.840075349294752,
+          3.7078913004029186,
+          -0.6485136702601366
+        ],
+        "forces_kj_mol_angstrom": [
+          -13.710510611994895,
+          27.1410514531967,
+          -97.46486835437275
+        ],
+        "velocities_angstrom_fs": [
+          -0.01347351166232736,
+          0.004831617535488239,
+          0.0008829141601759785
+        ]
+      },
+      {
+        "engine_id": 125,
+        "cell_atom_id": "molecule:3/repeat:4:atom:1:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.831008484206764,
+          2.3936816048286134,
+          0.18046494277967315
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          11.831008484206764,
+          2.3936816048286134,
+          0.18046494277967315
+        ],
+        "forces_kj_mol_angstrom": [
+          -32.67803355126049,
+          -19.91113686113761,
+          -27.70256279935903
+        ],
+        "velocities_angstrom_fs": [
+          -0.005441702693090323,
+          -0.014605702373442683,
+          -0.0041921641655751135
+        ]
+      },
+      {
+        "engine_id": 126,
+        "cell_atom_id": "molecule:3/repeat:4:atom:1:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          12.325922084538396,
+          2.8210829410225062,
+          1.8285186383999144
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          12.325922084538396,
+          2.8210829410225062,
+          1.8285186383999144
+        ],
+        "forces_kj_mol_angstrom": [
+          -39.19031837949037,
+          38.06010619074922,
+          -122.28238127618708
+        ],
+        "velocities_angstrom_fs": [
+          0.0008396451917953448,
+          -0.0014683266298731444,
+          -0.015721921100183747
+        ]
+      },
+      {
+        "engine_id": 127,
+        "cell_atom_id": "molecule:3/repeat:4:atom:2:H:0",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          11.17580705996652,
+          4.687917276328041,
+          23.70624650656933
+        ],
+        "image_flags": [
+          0,
+          0,
+          -1
+        ],
+        "coordinates_angstrom": [
+          11.17580705996652,
+          4.687917276328041,
+          -0.28170102182419754
+        ],
+        "forces_kj_mol_angstrom": [
+          -9.251664521078867,
+          28.04120631562356,
+          10.549233046789517
+        ],
+        "velocities_angstrom_fs": [
+          0.010471002422758125,
+          0.0011404974147068941,
+          -0.0017018776003183836
+        ]
+      },
+      {
+        "engine_id": 128,
+        "cell_atom_id": "molecule:3/repeat:4:atom:2:H:1",
+        "molecule_index": 3,
+        "charge_e": 0.06,
+        "wrapped_coordinates_angstrom": [
+          10.470216058593012,
+          4.352279193939088,
+          1.2704029291079426
+        ],
+        "image_flags": [
+          0,
+          0,
+          0
+        ],
+        "coordinates_angstrom": [
+          10.470216058593012,
+          4.352279193939088,
+          1.2704029291079426
+        ],
+        "forces_kj_mol_angstrom": [
+          -53.392246647491085,
+          -16.736436600764275,
+          26.748517072096615
+        ],
+        "velocities_angstrom_fs": [
+          -0.03169834075274074,
+          -0.01638930955582957,
+          -0.016928540790535945
+        ]
+      }
+    ],
+    "temperature_k": 157.50025549648603,
+    "pressure_bar": -366.1711565850538,
+    "volume_angstrom3": 13803.183786182417,
+    "density_g_cm3": 0.06846868530386906,
+    "engine_density_g_cm3": 0.0684686792780385,
+    "potential_energy_kj_mol": 367.5391598983669,
+    "total_energy_kj_mol": 617.0049288381816
+  },
+  "checkpoint": {
+    "schema_version": "1",
+    "kind": "periodic_alkane_npt_checkpoint",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "assignment_canonical_sha256": "07cf4aff9366ad00b4da1972ded417c7cd283a5a8037e9cfd129218a0bfaa307",
+    "artifact": {
+      "file_name": "checkpoint.restart",
+      "sha256": "538b913d476673dbda2eb458d93e82306131954d03d2313ec7143ab5804ccce1",
+      "size_bytes": 41593
+    },
+    "state_snapshot": {
+      "file_name": "checkpoint.dump",
+      "sha256": "b24c4173b5949e71460d9d1b4e72c72eab50f6569707c414085c117f18578c02",
+      "size_bytes": 27257
+    },
+    "units_style": "real",
+    "step": 240,
+    "elapsed_time_fs": 60.0,
+    "atom_count": 128,
+    "box": {
+      "origin_angstrom": [
+        0.006026235803238578,
+        0.006026235803238578,
+        0.006026235803238578
+      ],
+      "lengths_angstrom": [
+        23.987947528393526,
+        23.987947528393526,
+        23.987947528393526
+      ],
+      "periodic": [
+        true,
+        true,
+        true
+      ]
+    },
+    "protocol_spec": {
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "minimize_max_iterations": 200,
+      "minimize_max_evaluations": 1000,
+      "nvt_steps": 100,
+      "npt_steps": 100,
+      "velocity_seed": 49217,
+      "timeout_seconds": 60.0,
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "integrator": {
+      "fix_id": "polychemmd_npt",
+      "group_id": "all",
+      "style": "npt",
+      "thermostat_damping_fs": 100.0,
+      "barostat_damping_fs": 1000.0,
+      "target_schedule": "constant_temperature_and_isotropic_pressure"
+    },
+    "producer_engine_identity": {
+      "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+      "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+      "native_runtime_sha256": {
+        "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+        "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+      },
+      "platform": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "byteorder": "little",
+        "python_implementation": "CPython"
+      },
+      "runtime_environment": {
+        "OMP_NUM_THREADS": "1",
+        "UCX_TLS": "self",
+        "LD_LIBRARY_PATH": null,
+        "LAMMPS_PLUGIN_PATH": null
+      },
+      "process_layout": "direct_single_engine_process_no_MPI_launcher"
+    },
+    "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+    "parent_checkpoint_canonical_sha256": "a28ddcfad0e04193fb3535a102bb6edf43d92dd8e1e8d6f421a1e6f00c420324",
+    "checkpoint_chain_index": 2,
+    "equilibrium_status": "insufficient_sampling",
+    "production_ready": false,
+    "checkpoint_canonical_sha256": "6fc2f137681b3c29f305608f69ec9ad6e3d7502a933482ebd5ec1ba00ffacb43"
+  },
+  "thermo_rows": [
+    {
+      "step": 220,
+      "time_fs": 55.0,
+      "temperature_k": 160.68223330450076,
+      "pressure_bar": 510.9035866906145,
+      "volume_angstrom3": 13806.166369330129,
+      "density_g_cm3": 0.06845389383015577,
+      "engine_density_g_cm3": 0.06845388780562697
+    },
+    {
+      "step": 230,
+      "time_fs": 57.5,
+      "temperature_k": 169.4078269554372,
+      "pressure_bar": 462.63270974743585,
+      "volume_angstrom3": 13804.544366876817,
+      "density_g_cm3": 0.06846193700643023,
+      "engine_density_g_cm3": 0.06846193098119356
+    },
+    {
+      "step": 240,
+      "time_fs": 60.0,
+      "temperature_k": 157.50025549648603,
+      "pressure_bar": -366.1711565850538,
+      "volume_angstrom3": 13803.183786182417,
+      "density_g_cm3": 0.06846868530386906,
+      "engine_density_g_cm3": 0.0684686792780385
+    }
+  ],
+  "md_integration_steps_executed": 20,
+  "npt_fix_restart_state": "engine_confirmed_restoration_same_fix_id",
+  "topology_parameter_unit_readback_audit": "passed",
+  "initial_position_velocity_image_box_audit": "passed",
+  "public_record_sanitization": {
+    "changes": [
+      "record.engine_plan.run_directory replaced",
+      "record.engine_run.run_directory replaced",
+      "record.engine_run.executable reduced to basename; identity hashes retained",
+      "record.engine_run.engine_help_first_line omitted host diagnostic"
+    ],
+    "scope": "Only host-only path/diagnostic text changes; scientific values, native checkpoint identities and raw artifact hashes remain explicit."
+  }
+}

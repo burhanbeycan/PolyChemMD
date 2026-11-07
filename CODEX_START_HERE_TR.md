@@ -166,3 +166,13 @@ doğrulamayı, sınırlamaları ve sonraki tek görevi raporla.
 Kodun çalışması kimyasal doğruluğun ilk kontrolüdür. Bağ yapısı, yük, birim, faz ve istatistiksel örnekleme ayrıca incelenmeli. Yapay analitik örnek, motor testi, sayısal yakınsama ve deneysel karşılaştırma farklı kanıt düzeyleridir.
 
 Makale için katkı iddiasını; kimyasal çevre/mikroyapı duyarlılığı, kuantumdan uzun zincire aktarım ve karşılaştırmayla sınanmış descriptor/özellik yöntemleri üzerine kuracağız. Deponun büyüklüğü veya özellik adlarının sayısı tek başına bilimsel sonuç değildir.
+
+## v0.6 geliştirme sınırı
+
+Yerel ikili NPT checkpoint dosyasından devam etme, önceden belirlenen yoğunluk
+örnekleme kontrolleri ve bağımsız hücre/kaynak bütçesi planlaması eklendi.
+`density-plan examples/density_campaign.json` simülasyon başlatmaz.
+Kısa devam koşuları aynı hücrenin parçalarıdır; bağımsız örnek veya dengeye
+ulaşmış polimer yoğunluğu değildir. Sonraki görev TASK-006C2B: 512 atom
+sınırını ve hedef sıvı yoğunluğu/kesim yarıçapı uyumsuzluğunu giderecek,
+kimlik ve parametre denetimlerini koruyan daha büyük periyodik hücre desteği.
