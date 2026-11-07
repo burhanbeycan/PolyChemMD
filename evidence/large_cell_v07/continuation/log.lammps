@@ -1,0 +1,183 @@
+LAMMPS (22 Jul 2025 - Update 4)
+  using 1 OpenMP thread(s) per MPI task
+# Native NPT continuation: no minimization, reseeding or timestep reset.
+clear
+  using 1 OpenMP thread(s) per MPI task
+read_restart source.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style full from restart
+  orthogonal box = (-0.00010087786 -0.00011872548 -0.00011872548) to (26.000101 30.600119 30.600119)
+  1 by 1 by 1 MPI processor grid
+  restoring pair style lj/cut/coul/long from restart
+  restoring bond style harmonic from restart
+  restoring angle style harmonic from restart
+  restoring dihedral style opls from restart
+  2304 atoms
+  2232 bonds
+  4320 angles
+  5832 dihedrals
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        0.5     
+  special bond factors coul:  0        0        0.5     
+     4 = max # of 1-2 neighbors
+     6 = max # of 1-3 neighbors
+    12 = max # of 1-4 neighbors
+    16 = max # of special neighbors
+  special bonds CPU = 0.004 seconds
+  read_restart CPU = 0.008 seconds
+# Kspace/neighbor/fixes are not restored by read_restart; redeclare them.
+kspace_style ewald 1e-8
+kspace_modify gewald 0.29999999999999999 kmax/ewald 16 16 16
+pair_modify mix geometric shift no tail no table 0
+dielectric 1.0
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check yes
+timestep 0.25
+fix polychemmd_npt all npt temp 300 300 100.0 iso 0.98692326671601283 0.98692326671601283 1000.0
+Resetting global fix info from restart file:
+  fix style: npt, fix ID: polychemmd_npt
+variable polychemmd_box_invalid equal "(lx<=20)||(ly<=20)||(lz<=20)"
+fix polychemmd_boxguard all halt 1 v_polychemmd_box_invalid != 0 error hard message yes
+fix polychemmd_bondguard all halt 1 bondmax >= 3.3333333333333335 error hard message yes
+thermo 10
+thermo_style custom step temp press vol density pe etotal ebond eangle edihed evdwl ecoul elong lx ly lz
+thermo_modify norm no format float %.17g
+print "POLYCHEMMD_RESTART_INITIAL_BEGIN"
+POLYCHEMMD_RESTART_INITIAL_BEGIN
+run 0
+Ewald initialization ...
+  using polynomial approximation for long-range coulomb
+  G vector (1/distance) = 0.3
+  estimated absolute RMS force accuracy = 6.4582399e-05
+  estimated relative force accuracy = 1.9448798e-07
+  KSpace vectors: actual max1d max3d = 11342 16 17968
+                  kxmax kymax kzmax  = 16 16 16
+Generated 3 of 3 mixed pair_coeff terms from geometric mixing rule
+All restart file global fix info was re-assigned
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12
+  ghost atom cutoff = 12
+  binsize = 6, bins = 5 6 6
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/coul/long, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 43.01 | 43.01 | 43.01 Mbytes
+   Step          Temp          Press          Volume        Density         PotEng         TotEng         E_bond        E_angle        E_dihed         E_vdwl         E_coul         E_long           Lx             Ly             Lz      
+        20  180.38102926563676 7012.1550299849077 24345.926752343865 0.69874291166415159 1564.3032434289262 2802.5839333715339 232.69032268598357 907.07290893393895 557.0059377384224 -309.61408274935815 1214.836315053351 -1037.6881582334113 26.000201755715743 30.60023745095776 30.60023745095776
+Loop time of 1.758e-06 on 1 procs for 0 steps with 2304 atoms
+
+170.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Bond    | 0          | 0          | 0          |   0.0 |  0.00
+Kspace  | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.758e-06  |            |       |100.00
+
+Nlocal:           2304 ave        2304 max        2304 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          11815 ave       11815 max       11815 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:         790684 ave      790684 max      790684 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 790684
+Ave neighs/atom = 343.17882
+Ave special neighs/atom = 10.75
+Neighbor list builds = 0
+Dangerous builds = 0
+print "POLYCHEMMD_RESTART_INITIAL_END"
+POLYCHEMMD_RESTART_INITIAL_END
+write_data resumed_initial.data
+System init for write_data ...
+Ewald initialization ...
+  using polynomial approximation for long-range coulomb
+  G vector (1/distance) = 0.3
+  estimated absolute RMS force accuracy = 6.4582399e-05
+  estimated relative force accuracy = 1.9448798e-07
+  KSpace vectors: actual max1d max3d = 11342 16 17968
+                  kxmax kymax kzmax  = 16 16 16
+Generated 3 of 3 mixed pair_coeff terms from geometric mixing rule
+write_dump all custom resumed_initial.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g
+print "POLYCHEMMD_CONTINUATION_BEGIN"
+POLYCHEMMD_CONTINUATION_BEGIN
+run 10
+Ewald initialization ...
+  using polynomial approximation for long-range coulomb
+  G vector (1/distance) = 0.3
+  estimated absolute RMS force accuracy = 6.4582399e-05
+  estimated relative force accuracy = 1.9448798e-07
+  KSpace vectors: actual max1d max3d = 11342 16 17968
+                  kxmax kymax kzmax  = 16 16 16
+Generated 3 of 3 mixed pair_coeff terms from geometric mixing rule
+Per MPI rank memory allocation (min/avg/max) = 43.01 | 43.01 | 43.01 Mbytes
+   Step          Temp          Press          Volume        Density         PotEng         TotEng         E_bond        E_angle        E_dihed         E_vdwl         E_coul         E_long           Lx             Ly             Lz      
+        20  180.38102926563676 7012.1550299849077 24345.926752343865 0.69874291166415159 1564.303243428926 2802.5839333715335 232.69032268598357 907.07290893393895 557.0059377384224 -309.61408274935815 1214.836315053351 -1037.6881582334115 26.000201755715743 30.60023745095776 30.60023745095776
+        30  127.63842142870227 7004.9998495877771 24347.360417860727 0.69870176701436559 1928.3567563982906 2804.5696995962385 520.66163615872017 999.55075715557052 549.64588316446873 -320.10158303384316 1215.9443414173818 -1037.3442784640074 26.000712106124741 30.600838094131426 30.600838094131426
+Loop time of 1.74888 on 1 procs for 10 steps with 2304 atoms
+
+Performance: 0.124 ns/day, 194.320 hours/ns, 5.718 timesteps/s, 13.174 katom-step/s
+100.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.21176    | 0.21176    | 0.21176    |   0.0 | 12.11
+Bond    | 0.01514    | 0.01514    | 0.01514    |   0.0 |  0.87
+Kspace  | 1.5153     | 1.5153     | 1.5153     |   0.0 | 86.64
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0010166  | 0.0010166  | 0.0010166  |   0.0 |  0.06
+Output  | 7.5875e-05 | 7.5875e-05 | 7.5875e-05 |   0.0 |  0.00
+Modify  | 0.005256   | 0.005256   | 0.005256   |   0.0 |  0.30
+Other   |            | 0.0003461  |            |       |  0.02
+
+Nlocal:           2304 ave        2304 max        2304 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          11815 ave       11815 max       11815 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:         790684 ave      790684 max      790684 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 790684
+Ave neighs/atom = 343.17882
+Ave special neighs/atom = 10.75
+Neighbor list builds = 0
+Dangerous builds = 0
+print "POLYCHEMMD_CONTINUATION_END"
+POLYCHEMMD_CONTINUATION_END
+write_restart checkpoint.restart
+System init for write_restart ...
+Ewald initialization ...
+  using polynomial approximation for long-range coulomb
+  G vector (1/distance) = 0.3
+  estimated absolute RMS force accuracy = 6.4580498e-05
+  estimated relative force accuracy = 1.9448225e-07
+  KSpace vectors: actual max1d max3d = 11342 16 17968
+                  kxmax kymax kzmax  = 16 16 16
+Generated 3 of 3 mixed pair_coeff terms from geometric mixing rule
+write_dump all custom checkpoint.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g
+write_data prepared.data
+System init for write_data ...
+Ewald initialization ...
+  using polynomial approximation for long-range coulomb
+  G vector (1/distance) = 0.3
+  estimated absolute RMS force accuracy = 6.4580498e-05
+  estimated relative force accuracy = 1.9448225e-07
+  KSpace vectors: actual max1d max3d = 11342 16 17968
+                  kxmax kymax kzmax  = 16 16 16
+Generated 3 of 3 mixed pair_coeff terms from geometric mixing rule
+print "POLYCHEMMD_RUN_COMPLETE"
+POLYCHEMMD_RUN_COMPLETE
+Total wall time: 0:00:02

@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1",
+  "release": "0.7.0.dev0",
+  "evidence_kind": "executed_local_tests",
+  "started_utc": "2026-11-07T08:55:48.939070+00:00",
+  "completed_utc": "2026-11-07T08:56:21.473927+00:00",
+  "command_equivalent": "python -m unittest discover -s tests -v",
+  "invocation_detail": "standard unittest discovery/TextTestRunner API; full log retained locally",
+  "python": "3.12.14",
+  "platform": "Linux",
+  "tests_run": 434,
+  "tests_skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "elapsed_seconds": 32.534870049000006,
+  "log_sha256": "462864038053e09e8ffe4bc1589ac03ddafd193630f5a71b81150b86283cfcd7",
+  "scientific_limits": "Contract/equation/CLI tests do not establish equilibrium, material predictivity or external validation."
+}

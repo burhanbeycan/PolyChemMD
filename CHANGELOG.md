@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.0.dev0 — 2026-11-07
+
+- Added compact schema-2 periodic assignment with sparse special pairs, exact
+  implicit pair counts and explicit global/per-molecule/work budgets.
+- Preserved legacy schema-1 assignment and scientific engine inputs exactly.
+- Added deterministic ordered motif tiling with periodic linked-bin contacts,
+  source/rigid/image checks and explicit construction-versus-phase boundaries.
+- Added larger-cell engine-only single points, bounded small-reference pair
+  streaming, compact campaign plans and numerical sensitivity evidence.
+- Added tiling/compact assignment/engine CLI commands and a bounded large-cell
+  auditor; full state/sampling and external density qualification remain open.
+
 ## 0.6.0.dev0 — 2026-11-07
 
 - Added native NPT checkpoint manifests, binary staging and bounded continuation

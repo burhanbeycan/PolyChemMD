@@ -18,6 +18,20 @@ def recipe():
     return json.loads((ROOT / "examples/density_campaign.json").read_text())
 
 
+def large_recipe():
+    return json.loads((ROOT / "examples/density_campaign_large.json").read_text())
+
+
+def with_chain_counts(data, counts):
+    data["carbon_counts"] = counts
+    for index, rep in enumerate(data["replicates"]):
+        base = 10000 + index * 10000
+        rep["conformer_seeds"] = [base + i for i in range(len(counts))]
+        rep["packing_seed"] = base + 5000
+        rep["velocity_seed"] = base + 6000
+    return data
+
+
 class DensityCampaignTests(unittest.TestCase):
     def plan(self, data=None):
         return plan_density_campaign(DensityCampaignSpec.from_mapping(recipe() if data is None else data))
@@ -201,6 +215,87 @@ class DensityCampaignTests(unittest.TestCase):
                                "cutoff_angstrom": 10., "reciprocal_nmax": 16}
         with self.assertRaisesRegex(ValueError, "seconds per step"):
             self.plan(data)
+
+    def test_legacy_plan_matches_preserved_v06_evidence_exactly(self):
+        archived = json.loads((ROOT / "evidence/density_campaign_plan_v06.json").read_text())["payload"]
+        self.assertEqual(self.plan(), archived)
+        self.assertNotIn("assignment_representation", DensityCampaignSpec.from_mapping(recipe()).to_dict())
+        self.assertNotIn("assignment_capacity", self.plan())
+
+    def test_large_compact_recipe_is_box_admissible_but_has_no_executed_cells(self):
+        result = self.plan(large_recipe())
+        self.assertEqual(result["target_state"]["atom_count_per_cell"], 2304)
+        self.assertEqual(result["target_state"]["molecule_count_per_cell"], 72)
+        self.assertEqual(result["assignment_capacity"]["atom_capacity"], 8192)
+        self.assertEqual(result["assignment_capacity"]["max_atoms_per_chain"], 512)
+        self.assertEqual(result["assignment_capacity"]["intramolecular_pairs_requested"], 35712)
+        self.assertEqual(result["assignment_capacity"]["engine_nonbonded_rules_representation"], "sparse_topological_exceptions")
+        mass_g = 72 * (10 * 12.011 + 22 * 1.008) / 6.02214076e23
+        self.assertAlmostEqual(result["state_capacity_gate"]["strict_density_upper_bound_g_cm3"], mass_g / ((24 ** 3) * 1e-24), places=13)
+        self.assertGreater(result["state_capacity_gate"]["strict_density_upper_bound_g_cm3"], .8)
+        self.assertGreater(result["initial_state_request"]["cubic_box_length_angstrom"], 24.)
+        self.assertEqual(result["initial_state_request"]["density_role"], "construction_input_not_prediction")
+        self.assertIn("box_cutoff_bound_only", result["state_capacity_gate"]["status"])
+        self.assertEqual(result["sampling_accounting"]["independent_cell_recipes_requested"], 3)
+        self.assertEqual(result["sampling_accounting"]["independent_cells_executed"], 0)
+        self.assertFalse(result["sampling_accounting"]["tiling_one_cell_creates_independent_preparations"])
+        self.assertFalse(result["execution_supported"])
+        self.assertFalse(result["production_ready"])
+        self.assertFalse(result["simulation_performed"])
+        self.assertFalse(result["state_capacity_gate"]["geometric_bound_is_sufficient_for_liquid_preparation"])
+
+    def test_compact_opt_in_is_explicit_and_rejects_unknown_representation(self):
+        data = large_recipe(); data.pop("assignment_representation")
+        with self.assertRaises(ValueError): self.plan(data)
+        for representation in (None, True, [], "dense_v3", "sparse_topological_exceptions"):
+            data = large_recipe(); data["assignment_representation"] = representation
+            with self.subTest(representation=representation), self.assertRaises(ValueError):
+                self.plan(data)
+        data = recipe(); data["assignment_representation"] = "explicit_all_pairs_v1"
+        self.assertEqual(self.plan(data)["assignment_capacity"]["atom_capacity"], 512)
+
+    def test_compact_global_atom_and_per_chain_limits(self):
+        data = with_chain_counts(large_recipe(), [2] * 1024)
+        result = self.plan(data)
+        self.assertEqual(result["target_state"]["atom_count_per_cell"], 8192)
+        data = with_chain_counts(large_recipe(), [10] * 257)
+        with self.assertRaisesRegex(ValueError, "8192-atom"):
+            self.plan(data)
+        data = with_chain_counts(large_recipe(), [171])
+        with self.assertRaises(ValueError): self.plan(data)
+
+    def test_compact_intramolecular_audit_budget_is_not_global_pair_count(self):
+        # 15 C170H342 chains fit the 512-atom-per-chain and aggregate audit budget;
+        # 16 fit 8192 atoms but exceed two million intramolecular audit pairs.
+        accepted = self.plan(with_chain_counts(large_recipe(), [170] * 15))
+        self.assertEqual(accepted["target_state"]["atom_count_per_cell"], 7680)
+        self.assertEqual(accepted["assignment_capacity"]["intramolecular_pairs_requested"], 1962240)
+        with self.assertRaisesRegex(ValueError, "intramolecular-pair audit budget"):
+            self.plan(with_chain_counts(large_recipe(), [170] * 16))
+
+    def test_compact_calibration_uses_selected_size_without_certifying_budget(self):
+        data = large_recipe()
+        data["calibration"] = {"hardware_label": data["resources"]["hardware_label"],
+                               "engine_executable_sha256": "ab" * 32, "atom_count": 2304,
+                               "integration_steps": 1000, "wall_seconds": 2.,
+                               "cutoff_angstrom": 10., "reciprocal_nmax": 16}
+        result = self.plan(data)
+        self.assertEqual(result["resource_accounting"]["projection"]["baseline_integration_seconds_estimated"], 300.)
+        self.assertFalse(result["resource_accounting"]["projection"]["whole_campaign_budget_verified"])
+        data["calibration"]["atom_count"] = 128
+        with self.assertRaisesRegex(ValueError, "atom count"):
+            self.plan(data)
+        data["calibration"]["atom_count"] = 8193
+        with self.assertRaises(ValueError): self.plan(data)
+
+    def test_dense_construction_strategy_is_named_without_phase_claim(self):
+        data = large_recipe()
+        self.assertEqual(data["initialization"]["strategy"], "seeded_rigid_then_npt")
+        self.assertEqual(self.plan(data)["target_state"]["phase_observed"], "not_assessed")
+        legacy = recipe(); legacy["initialization"]["strategy"] = "seeded_rigid_then_npt"
+        with self.assertRaises(ValueError): self.plan(legacy)
+        data["initialization"]["strategy"] = []
+        with self.assertRaises(ValueError): self.plan(data)
 
     def test_wrong_api_types_fail(self):
         for data in (None, [], "{}", {}):

@@ -1,6 +1,6 @@
 # Development roadmap
 
-This is a staged research-software plan, not a statement that the complete platform exists. Version 0.6 adds native checkpoint/continuation, physical-time density diagnostics and explicit campaign/resource/cell-capacity planning to the sourced graph/geometry/periodic preparation core. Broader chemistry, qualified production sampling and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
+This is a staged research-software plan, not a statement that the complete platform exists. Version 0.7 adds compact periodic assignment, ordered molecular tiling and larger-cell numerical sensitivity audits to the sourced graph/geometry/restart/sampling core. Broader chemistry, qualified production sampling and material-property validation remain open. Current task evidence is recorded in docs/TASKS.md and VALIDATION.md.
 
 ## P0 — Freeze the chemical and scientific contracts
 

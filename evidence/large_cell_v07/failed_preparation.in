@@ -1,0 +1,54 @@
+# Periodic assigned OPLS-AA model with explicit finite Ewald settings.
+clear
+units real
+atom_style full
+boundary p p p
+bond_style harmonic
+angle_style harmonic
+dihedral_style opls
+pair_style lj/cut/coul/long 10
+pair_modify mix geometric shift no tail no table 0
+dielectric 1.0
+special_bonds lj/coul 0.0 0.0 0.5
+read_data system.data
+kspace_style ewald 1e-8
+kspace_modify gewald 0.29999999999999999 kmax/ewald 16 16 16
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check yes
+# Bounded preparation pilot; no automatic equilibrium/density validation.
+thermo 10
+thermo_style custom step temp press vol density pe etotal ebond eangle edihed evdwl ecoul elong lx ly lz
+thermo_modify norm no format float %.17g
+variable polychemmd_box_invalid equal "(lx<=20)||(ly<=20)||(lz<=20)"
+fix polychemmd_boxguard all halt 1 v_polychemmd_box_invalid != 0 error hard message yes
+fix polychemmd_bondguard all halt 1 bondmax >= 3.3333333333333335 error hard message yes
+min_style cg
+min_modify dmax 0.1
+print "POLYCHEMMD_MINIMIZE_BEGIN"
+minimize 1e-6 1e-6 200 1000
+print "POLYCHEMMD_MINIMIZE_END"
+unfix polychemmd_boxguard
+unfix polychemmd_bondguard
+reset_timestep 0
+fix polychemmd_boxguard all halt 1 v_polychemmd_box_invalid != 0 error hard message yes
+fix polychemmd_bondguard all halt 1 bondmax >= 3.3333333333333335 error hard message yes
+timestep 0.25
+velocity all create 300 49217 mom yes rot yes dist gaussian
+fix polychemmd_nvt all nvt temp 300 300 100.0
+print "POLYCHEMMD_NVT_BEGIN"
+run 10
+print "POLYCHEMMD_NVT_END"
+unfix polychemmd_nvt
+fix polychemmd_npt all npt temp 300 300 100.0 iso 0.98692326671601283 0.98692326671601283 1000.0
+print "POLYCHEMMD_NPT_BEGIN"
+run 10
+print "POLYCHEMMD_NPT_END"
+# Preserve active Nose-Hoover/barostat state before removing its fix.
+write_restart checkpoint.restart
+write_dump all custom checkpoint.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g
+unfix polychemmd_npt
+unfix polychemmd_boxguard
+unfix polychemmd_bondguard
+write_data prepared.data
+write_dump all custom final.dump id mol q x y z ix iy iz fx fy fz modify sort id format float %.17g
+print "POLYCHEMMD_RUN_COMPLETE"

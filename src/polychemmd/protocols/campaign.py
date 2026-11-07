@@ -15,6 +15,12 @@ _MODEL = "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET"
 _TOP = {"schema_version", "chemistry", "phase_target", "carbon_counts", "temperature_k",
         "pressure_bar", "target_density_range_g_cm3", "initialization", "replicates", "integration", "numerics",
         "sampling_gates", "resources", "calibration"}
+_OPTIONAL_TOP = {"assignment_representation"}
+_LEGACY_REPRESENTATION = "explicit_all_pairs_v1"
+_COMPACT_REPRESENTATION = "compact_sparse_pairs_v2"
+_COMPACT_MAX_ATOMS = 8192
+_MAX_ATOMS_PER_CHAIN = 512
+_MAX_INTRAMOLECULAR_PAIRS = 2_000_000
 
 
 def _canonical(value):
@@ -71,20 +77,37 @@ def _geometry_values(data):
     return mass, volume, length, cutoff, density_upper
 
 
+def _assignment_limits(data):
+    representation = data.get("assignment_representation", _LEGACY_REPRESENTATION)
+    if representation not in (_LEGACY_REPRESENTATION, _COMPACT_REPRESENTATION):
+        raise ValueError("unsupported assignment_representation")
+    compact = representation == _COMPACT_REPRESENTATION
+    return representation, (_COMPACT_MAX_ATOMS if compact else 512), (1024 if compact else 64)
+
+
 def _validate(data):
-    _keys(data, _TOP, "campaign")
+    if not isinstance(data, dict) or not _TOP.issubset(data) or not set(data).issubset(_TOP | _OPTIONAL_TOP):
+        raise ValueError(f"campaign requires {sorted(_TOP)}; optional fields are {sorted(_OPTIONAL_TOP)}")
+    representation, max_atoms, max_chains = _assignment_limits(data)
     if data["schema_version"] != "1" or data["chemistry"] != "neutral_explicit_n_alkane":
         raise ValueError("only schema 1 neutral explicit n-alkane planning is supported")
     if data["phase_target"] != "liquid_candidate":
         raise ValueError("this bounded contract only plans an unverified liquid_candidate")
     counts = data["carbon_counts"]
-    if not isinstance(counts, list) or not counts or len(counts) > 64:
-        raise ValueError("carbon_counts must contain 1 to 64 finite-chain carbon counts")
+    if not isinstance(counts, list) or not counts or len(counts) > max_chains:
+        raise ValueError(f"carbon_counts must contain 1 to {max_chains} finite-chain carbon counts")
     for value in counts:
         _integer(value, "chain carbon count", 2, 170)
     atom_count = sum(3 * value + 2 for value in counts)
-    if atom_count > 512:
-        raise ValueError("campaign exceeds the 512-atom supported default periodic assignment domain")
+    if atom_count > max_atoms:
+        raise ValueError(f"campaign exceeds the {max_atoms}-atom selected periodic assignment domain")
+    if representation == _COMPACT_REPRESENTATION:
+        atoms_per_chain = [3 * value + 2 for value in counts]
+        if any(count > _MAX_ATOMS_PER_CHAIN for count in atoms_per_chain):
+            raise ValueError("compact assignment permits at most 512 explicit atoms per chain")
+        intramolecular_pairs = sum(count * (count - 1) // 2 for count in atoms_per_chain)
+        if intramolecular_pairs > _MAX_INTRAMOLECULAR_PAIRS:
+            raise ValueError("compact assignment exceeds the 2000000 intramolecular-pair audit budget")
     _number(data["temperature_k"], "temperature_k", maximum=5000)
     _number(data["pressure_bar"], "pressure_bar", maximum=100000)
     density_range = data["target_density_range_g_cm3"]
@@ -96,8 +119,11 @@ def _validate(data):
             raise ValueError("target density bounds must be strictly increasing")
     initial = data["initialization"]
     _keys(initial, {"strategy", "density_g_cm3", "min_distance_angstrom", "packing_attempts_per_molecule"}, "initialization")
-    if initial["strategy"] != "dilute_rigid_then_npt":
-        raise ValueError("only dilute rigid construction followed by explicitly assessed NPT is planned")
+    allowed_strategies = {"dilute_rigid_then_npt"}
+    if representation == _COMPACT_REPRESENTATION:
+        allowed_strategies.add("seeded_rigid_then_npt")
+    if not isinstance(initial["strategy"], str) or initial["strategy"] not in allowed_strategies:
+        raise ValueError(f"initialization strategy must be one of {sorted(allowed_strategies)}")
     _number(initial["density_g_cm3"], "initial density", maximum=5)
     _number(initial["min_distance_angstrom"], "minimum packing distance", maximum=10)
     _integer(initial["packing_attempts_per_molecule"], "packing attempts", 1, 100000)
@@ -184,7 +210,7 @@ def _validate(data):
             raise ValueError("calibration hardware must match the declared hardware")
         if not isinstance(calibration["engine_executable_sha256"], str) or not re.fullmatch(r"[a-f0-9]{64}", calibration["engine_executable_sha256"]):
             raise ValueError("calibration must identify its actual engine executable hash")
-        if _integer(calibration["atom_count"], "calibration atom_count", 1, 512) != atom_count:
+        if _integer(calibration["atom_count"], "calibration atom_count", 1, max_atoms) != atom_count:
             raise ValueError("calibration atom count must match the planned primary cell")
         _integer(calibration["integration_steps"], "calibration integration_steps", 1, 10000000)
         _number(calibration["wall_seconds"], "calibration wall_seconds", maximum=86400)
@@ -226,6 +252,7 @@ def plan_density_campaign(spec):
     if not isinstance(spec, DensityCampaignSpec):
         raise ValueError("spec must be a DensityCampaignSpec")
     data = spec.to_dict()
+    representation, max_atoms, _ = _assignment_limits(data)
     counts, integ, resources = data["carbon_counts"], data["integration"], data["resources"]
     atom_count = sum(3 * count + 2 for count in counts)
     mass, volume, box_length, cutoff, density_upper = _geometry_values(data)
@@ -264,7 +291,7 @@ def plan_density_campaign(spec):
                       "excludes": ["minimization", "per-process startup and checkpoint IO changes", "cutoff/Ewald variants", "finite-size comparison"],
                       "measurement_authenticated_by_planner": False,
                       "whole_campaign_budget_verified": False}
-    return {
+    result = {
         "schema_version": "1", "kind": "density_campaign_plan", "status": "planned",
         "campaign_spec": data, "campaign_canonical_sha256": hashlib.sha256(spec.payload_json.encode()).hexdigest(),
         "model_id": _MODEL, "simulation_performed": False, "execution_supported": False,
@@ -317,3 +344,19 @@ def plan_density_campaign(spec):
         "production_ready": False, "density_prediction_validation": "not_performed",
         "material_property_validation": "not_performed",
     }
+    if "assignment_representation" in data:
+        atoms_per_chain = [3 * count + 2 for count in counts]
+        result["assignment_capacity"] = {
+            "assignment_representation": representation,
+            "assignment_schema_version": "2" if representation == _COMPACT_REPRESENTATION else "1",
+            "engine_nonbonded_rules_representation": "sparse_topological_exceptions" if representation == _COMPACT_REPRESENTATION else "enumerated_pairs",
+            "atom_capacity": max_atoms,
+            "max_atoms_per_chain": _MAX_ATOMS_PER_CHAIN,
+            "intramolecular_pairs_requested": sum(count * (count - 1) // 2 for count in atoms_per_chain),
+            "intramolecular_pair_audit_budget": _MAX_INTRAMOLECULAR_PAIRS if representation == _COMPACT_REPRESENTATION else None,
+            "physical_state_validation": "not_performed",
+        }
+        result["state_capacity_gate"]["selected_assignment_atom_capacity"] = max_atoms
+        result["sampling_accounting"]["planned_construction_recipe"] = "independently_seeded_rigid_packing_not_executed"
+        result["sampling_accounting"]["tiling_one_cell_creates_independent_preparations"] = False
+    return result

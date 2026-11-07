@@ -17,7 +17,7 @@ from .alkane import (
     AlkaneParityError, KCAL_TO_KJ, _finite, _format, _opls_coefficients,
     _opls_backend_diagnostics,
 )
-from .lammps import LammpsRunSpec, run_lammps
+from .lammps import LammpsError, LammpsRunSpec, run_lammps
 
 
 _MODEL = "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET"
@@ -29,12 +29,15 @@ _COMPONENTS = {"bond": "E_bond", "angle": "E_angle", "dihedral": "E_dihed",
 
 
 def _record(assigned):
-    from ..forcefields.periodic import AssignedPeriodicAlkaneCell
-    if not isinstance(assigned, AssignedPeriodicAlkaneCell):
-        raise ValueError("assigned must be an AssignedPeriodicAlkaneCell")
+    from ..forcefields.periodic import AssignedPeriodicAlkaneCell, CompactAssignedPeriodicAlkaneCell
+    if not isinstance(assigned, (AssignedPeriodicAlkaneCell, CompactAssignedPeriodicAlkaneCell)):
+        raise ValueError("assigned must be a validated periodic alkane assignment")
     record = assigned.to_dict()
-    if record.get("kind") != "assigned_periodic_opls_aa_n_alkane_cell" or record.get("model_id") != _MODEL:
+    if record.get("kind") not in ("assigned_periodic_opls_aa_n_alkane_cell",
+            "compact_assigned_periodic_opls_aa_n_alkane_cell") or record.get("model_id") != _MODEL:
         raise ValueError("unsupported periodic assigned model")
+    if not 0 < len(record["atoms"]) <= 8192:
+        raise ValueError("the bounded periodic engine export supports 1 to 8192 atoms")
     return record
 
 
@@ -57,7 +60,8 @@ def _settings(record, cutoff, alpha, nmax):
     # Every short topology pair must refer to its bonded molecule image, not a
     # different nearest image. This also makes the real-space Ewald special-pair
     # correction complete inside the chosen cutoff.
-    for pair in record["nonbonded_pairs"]:
+    pairs = record["special_pairs"] if record["schema_version"] == "2" else record["nonbonded_pairs"]
+    for pair in pairs:
         distance = pair["topological_distance"]
         if not pair["same_molecule"] or distance is None or distance > 3:
             continue
@@ -153,24 +157,34 @@ def build_periodic_alkane_input(assigned, *, cutoff_angstrom=10.0,
     setup, data = build_periodic_alkane_setup(assigned, cutoff_angstrom=cutoff_angstrom,
                     ewald_alpha_per_angstrom=ewald_alpha_per_angstrom,
                     reciprocal_nmax=reciprocal_nmax)
-    script = setup + "\n".join((
+    return _singlepoint_script(setup), data
+
+
+def _singlepoint_script(setup, *, native_readback=False):
+    commands = [
         "thermo 1", "thermo_style custom step temp ebond eangle edihed evdwl ecoul elong pe",
         "thermo_modify norm no format float %.17g", "run 0",
         "write_dump all custom forces.dump id mol x y z ix iy iz fx fy fz modify sort id format float %.17g",
-        'print "POLYCHEMMD_RUN_COMPLETE"', "",
-    ))
-    return script, data
+    ]
+    if native_readback:
+        commands.append("write_data singlepoint.data")
+    commands.extend(['print "POLYCHEMMD_RUN_COMPLETE"', ""])
+    return setup + "\n".join(commands)
 
 
 def prepare_periodic_alkane_singlepoint(assigned, *, run_directory, executable=None,
         timeout_seconds=30.0, cutoff_angstrom=10.0,
-        ewald_alpha_per_angstrom=.30, reciprocal_nmax=16):
-    script, data = build_periodic_alkane_input(assigned, cutoff_angstrom=cutoff_angstrom,
+        ewald_alpha_per_angstrom=.30, reciprocal_nmax=16, native_readback=False):
+    if type(native_readback) is not bool:
+        raise ValueError("native_readback must be a Boolean")
+    setup, data = build_periodic_alkane_setup(assigned, cutoff_angstrom=cutoff_angstrom,
                     ewald_alpha_per_angstrom=ewald_alpha_per_angstrom,
                     reciprocal_nmax=reciprocal_nmax)
+    script = _singlepoint_script(setup, native_readback=native_readback)
+    expected = ("log.lammps", "forces.dump", "singlepoint.data") if native_readback else ("log.lammps", "forces.dump")
     return LammpsRunSpec(input_script=script, run_directory=run_directory,
         executable=executable, timeout_seconds=timeout_seconds,
-        expected_artifacts=("log.lammps", "forces.dump"), required_thermo_columns=_THERMO,
+        expected_artifacts=expected, required_thermo_columns=_THERMO,
         input_files=(("system.data", data),), units_style="real")
 
 
@@ -226,6 +240,102 @@ def parse_periodic_alkane_force_dump(text, expected_atoms, box_lengths_angstrom)
     if set(rows) != set(range(1, count+1)):
         raise ValueError("periodic dump lost one or more atoms")
     return tuple(rows[i] for i in range(1, count+1))
+
+
+class PeriodicSinglepointError(LammpsError):
+    """An actual single-point process or its output identity/unit audit failed."""
+
+
+def run_periodic_alkane_singlepoint(assigned, *, run_directory, executable=None,
+        timeout_seconds=30.0, cutoff_angstrom=10.0,
+        ewald_alpha_per_angstrom=.30, reciprocal_nmax=16):
+    """Execute a bounded periodic single point without claiming reference parity.
+
+    This accepts the compact representation for larger cells. It does not call
+    the deliberately small independent Ewald reference. Scientific sensitivity
+    comparisons can consume these energies/forces, but a completed run alone
+    establishes neither numerical convergence nor material-property accuracy.
+    """
+    timeout = _finite(timeout_seconds, "timeout_seconds", positive=True)
+    if timeout > 120:
+        raise ValueError("a bounded periodic single point permits at most 120 seconds")
+    record = _record(assigned)
+    spec = prepare_periodic_alkane_singlepoint(assigned, run_directory=run_directory,
+        executable=executable, timeout_seconds=timeout, cutoff_angstrom=cutoff_angstrom,
+        ewald_alpha_per_angstrom=ewald_alpha_per_angstrom, reciprocal_nmax=reciprocal_nmax,
+        native_readback=True)
+    report = {
+        "schema_version": "1", "kind": "periodic_alkane_engine_singlepoint",
+        "status": "failed", "evidence_level": "engine_execution_and_state_audit",
+        "model_id": record["model_id"], "assignment_schema_version": record["schema_version"],
+        "assignment_canonical_sha256": hashlib.sha256(json.dumps(record,
+            sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest(),
+        "input_files": {"input.lammps_sha256": hashlib.sha256(spec.input_script.encode()).hexdigest(),
+            "system.data_sha256": hashlib.sha256(dict(spec.input_files)["system.data"].encode()).hexdigest()},
+        "ewald_settings": {"cutoff_angstrom": float(cutoff_angstrom),
+            "alpha_per_angstrom": float(ewald_alpha_per_angstrom), "reciprocal_nmax": reciprocal_nmax,
+            "relative_engine_accuracy_request": 1e-8, "surface_boundary": "tin_foil",
+            "realspace_coulomb_table": False, "lj_tail_correction": False},
+        "atom_ids": [atom["cell_atom_id"] for atom in record["atoms"]],
+        "atom_count": len(record["atoms"]), "molecule_count": len(record["molecules"]),
+        "simulation_performed": False, "independent_reference_status": "not_performed",
+        "native_parameter_readback_status": "not_performed_by_singlepoint_adapter",
+        "parameter_identity_basis": "validated frozen assignment and exact generated-input hashes; native coefficient/charge read-back is a separate audit",
+        "numerical_convergence_status": "not_established",
+        "md_integration_steps": 0, "trajectory_production_performed": False,
+        "equilibrium_status": "not_assessed", "bulk_production_model_validated": False,
+        "material_property_validation": "not_performed",
+        "energy_units": "kJ/mol", "force_units": "kJ/(mol angstrom)",
+    }
+
+    def persist():
+        (spec.run_directory/"periodic_singlepoint_record.json").write_text(
+            json.dumps(report, indent=2, allow_nan=False)+"\n", encoding="utf-8")
+
+    try:
+        run = run_lammps(spec).to_dict()
+    except LammpsError as exc:
+        report.update(failure_phase="engine", failure_reason=str(exc), engine_run=exc.record,
+            simulation_performed=bool(exc.record and exc.record.get("simulation_performed")))
+        if exc.record is not None and spec.run_directory.is_dir():
+            persist()
+        raise PeriodicSinglepointError(str(exc), record=report) from exc
+    report.update(engine_run=run, simulation_performed=True)
+    try:
+        blocks = run["thermo_blocks"]
+        if (len(blocks) != 1 or tuple(blocks[0]["columns"]) != _THERMO
+                or len(blocks[0]["rows"]) != 1):
+            raise ValueError("periodic single point requires exactly the prescribed thermo block and row")
+        row = blocks[0]["rows"][0]
+        if len(row) != len(_THERMO) or not all(math.isfinite(v) for v in row):
+            raise ValueError("periodic single-point thermo row is malformed or nonfinite")
+        thermo = dict(zip(_THERMO, row))
+        if thermo["Step"] != 0:
+            raise ValueError("periodic single point must execute step zero")
+        energies = {name: thermo[column]*KCAL_TO_KJ for name,column in _COMPONENTS.items()}
+        raw = parse_periodic_alkane_force_dump((spec.run_directory/"forces.dump").read_text(),
+            record["atoms"], record["box"]["lengths_angstrom"])
+        forces = [[value*KCAL_TO_KJ for value in force] for force in raw]
+        if not all(math.isfinite(v) for v in [*energies.values(), *(v for force in forces for v in force)]):
+            raise ValueError("canonical single-point energies or forces exceed the finite numeric range")
+        component_sum = math.fsum(value for name,value in energies.items() if name != "total")
+        if not math.isclose(component_sum, energies["total"], rel_tol=1e-12, abs_tol=1e-8):
+            raise ValueError("single-point energy components do not sum to the actual potential energy")
+        header = (spec.run_directory/"singlepoint.data").read_text().splitlines()[0]
+        if "units = real" not in header:
+            raise ValueError("actual native data header does not confirm LAMMPS real units")
+        report.update(status="completed_singlepoint", energy_components_kj_mol=energies,
+            forces_kj_mol_angstrom=forces,
+            atom_coordinate_molecule_image_identity="passed",
+            independent_output_unit_check={"basis": "actual LAMMPS write_data header",
+                "header": header, "confirmed_units_style": "real"},
+            energy_component_sum_abs_difference_kj_mol=abs(component_sum-energies["total"]))
+    except (OSError, ValueError, KeyError, TypeError, OverflowError, IndexError) as exc:
+        report.update(failure_phase="singlepoint_output_audit", failure_reason=str(exc))
+        persist()
+        raise PeriodicSinglepointError(str(exc), record=report) from exc
+    persist()
+    return report
 
 
 def verify_periodic_alkane_singlepoint(assigned, *, run_directory, executable=None,

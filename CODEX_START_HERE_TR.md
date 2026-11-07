@@ -176,3 +176,13 @@ Kısa devam koşuları aynı hücrenin parçalarıdır; bağımsız örnek veya 
 ulaşmış polimer yoğunluğu değildir. Sonraki görev TASK-006C2B: 512 atom
 sınırını ve hedef sıvı yoğunluğu/kesim yarıçapı uyumsuzluğunu giderecek,
 kimlik ve parametre denetimlerini koruyan daha büyük periyodik hücre desteği.
+
+## v0.7 geliştirme sınırı
+
+Kompakt periyodik atama (8192 atom üst sınırı), molekül başına ve yerel çift
+hesaplama bütçeleri ile eklendi. Düzenli motif döşemesi 2304 atomlu geometrik
+başlangıç hücresini oluşturur. Verilen kutudan bulunan yaklaşık 0.70 g/cm³,
+denge yoğunluğu veya sıvı/kristal faz kanıtı değildir. `parameterize-cell --compact`
+yeni temsili seçer; `periodic-singlepoint` büyük hücrede motor çıktısı üretir ve
+bağımsız referans eşleşmesi iddia etmez. Sonraki görev TASK-006C2C: hazırlık
+geçmişi, sayısal ayarlar ve bağımsız hücre/örnekleme yeterliliğinin doğrulanması.

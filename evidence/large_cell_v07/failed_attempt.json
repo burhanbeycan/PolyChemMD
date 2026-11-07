@@ -1,0 +1,713 @@
+{
+  "schema_version": "1",
+  "evidence_kind": "executed_large_sparse_cell_engine_audit",
+  "status": "failed",
+  "started_utc": "2026-11-07T08:52:06.611314+00:00",
+  "software": {
+    "polychemmd": "0.7.0.dev0",
+    "python": "3.12.14"
+  },
+  "hardware": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "processor": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "logical_cpu_count": 9,
+    "engine_parallelism": "one direct engine process, one OpenMP thread; no GPU requested",
+    "timing_interpretation": "Measured on this executing host, not a benchmark of the project owner's computer"
+  },
+  "source_module_hashes": {
+    "src/polychemmd/__init__.py": {
+      "sha256": "5501eb387c4ae2b0964a8261eb53dcf982494bdbed532536819b59bf3de4daba"
+    },
+    "src/polychemmd/geometry.py": {
+      "sha256": "83623358a5f29fd453625adec2416d053a6ed4d5768a896a1c738ad5d12df4e8"
+    },
+    "src/polychemmd/builders/tiling.py": {
+      "sha256": "f5574e5a7965b986df3922484810f476244edd5e75d3fc20ea78975e102bd7e4"
+    },
+    "src/polychemmd/forcefields/periodic.py": {
+      "sha256": "b48f754b190a90dae911f3772c9ee951583d664b43f34d7991d0cefda2e77194"
+    },
+    "src/polychemmd/engines/periodic_alkane.py": {
+      "sha256": "2c4d5ef17f8dc623361b96fedc9b9fef396b134b0e2b36eb94cbedfa58336bad"
+    },
+    "src/polychemmd/engines/lammps.py": {
+      "sha256": "c9a456971bb51ff79cc4bad074ca16eff34a8e3339d04d3e4dc833d678a311a1"
+    },
+    "src/polychemmd/protocols/alkane.py": {
+      "sha256": "5bd6cead63e2d9c76cc06e4b40758cada0f90d93d55b622da4d29892406478b0"
+    },
+    "src/polychemmd/protocols/restart.py": {
+      "sha256": "785eb3f6714b98823229e3a87d5e2fb46916494d05c2594e91ae564ef7e7c41e"
+    },
+    "src/polychemmd/analysis/sampling.py": {
+      "sha256": "f107ae715846718bd18132911721202f323f87e9b003c9c1c0f0b42170b06eb9"
+    },
+    "scripts/verify_large_cell_v07.py": {
+      "sha256": "ec9325ad95044a7c3261fc4591ad6961a91f4f6b79397f52b55ffa825767de44"
+    }
+  },
+  "predeclared": {
+    "construction_recipe": {
+      "repeats": [
+        2,
+        6,
+        6
+      ],
+      "spacing_angstrom": [
+        13.0,
+        5.1,
+        5.1
+      ],
+      "rotation_matrix": null,
+      "min_distance_angstrom": 1.5,
+      "max_atoms": 8192,
+      "max_distance_checks": 5000000
+    },
+    "singlepoint_settings": {
+      "baseline": {
+        "cutoff_angstrom": 10.0,
+        "ewald_alpha_per_angstrom": 0.3,
+        "reciprocal_nmax": 16
+      },
+      "cutoff_12": {
+        "cutoff_angstrom": 12.0,
+        "ewald_alpha_per_angstrom": 0.3,
+        "reciprocal_nmax": 16
+      },
+      "reciprocal_20": {
+        "cutoff_angstrom": 10.0,
+        "ewald_alpha_per_angstrom": 0.3,
+        "reciprocal_nmax": 20
+      }
+    },
+    "preparation": {
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "minimize_max_iterations": 200,
+      "minimize_max_evaluations": 1000,
+      "nvt_steps": 10,
+      "npt_steps": 10,
+      "velocity_seed": 49217,
+      "timeout_seconds": 60.0,
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "continuation_steps": 10,
+    "maximum_engine_invocations": 5,
+    "per_engine_timeout_seconds": 60.0,
+    "total_engine_and_audit_wall_budget_seconds": 240.0,
+    "sensitivity_development_review_limits": {
+      "cutoff_12": {
+        "total_energy_difference_per_atom_kj_mol": 0.02,
+        "max_force_component_difference_kj_mol_angstrom": 0.05
+      },
+      "reciprocal_20": {
+        "total_energy_difference_per_atom_kj_mol": 1e-05,
+        "max_force_component_difference_kj_mol_angstrom": 0.0001
+      }
+    },
+    "unchanged_component_abs_tolerance_kj_mol": 1e-07
+  },
+  "stages": [
+    {
+      "name": "baseline",
+      "status": "completed_singlepoint",
+      "measured_stage_wall_seconds": 1.164821839999945,
+      "engine_elapsed_seconds": 0.7645953510000254,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "engine_identity": {
+        "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+        "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+        "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+        "native_runtime_sha256": {
+          "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+          "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+        },
+        "platform": {
+          "system": "Linux",
+          "machine": "x86_64",
+          "byteorder": "little",
+          "python_implementation": "CPython"
+        },
+        "runtime_environment": {
+          "OMP_NUM_THREADS": "1",
+          "UCX_TLS": "self",
+          "LD_LIBRARY_PATH": null,
+          "LAMMPS_PLUGIN_PATH": null
+        },
+        "process_layout": "direct_single_engine_process_no_MPI_launcher"
+      },
+      "raw_artifacts": {
+        "input.lammps": {
+          "sha256": "59eb73b14bfe7c3ccc575ff9015c142be4e765864a50ff56b373885a3e5d4cee",
+          "bytes": 760,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "system.data": {
+          "sha256": "bd25325c83aea0147915a763ea310449fadad6a9d19a7302f8daf3eaa679d7fd",
+          "bytes": 474014,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "log.lammps": {
+          "sha256": "b6c0f8fb4ae0ec23a86dba600570ff79c7006102313ba42b14db52152fb75b95",
+          "bytes": 4620,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "forces.dump": {
+          "sha256": "fddd0ff310362da3e4a0f667213af7484ec682cf96dd9a0c0d7627c85358069a",
+          "bytes": 295866,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "singlepoint.data": {
+          "sha256": "0e1b5ceedc591313d74b08230573d387fd8d4d00021d8ae62e8968ae621b8093",
+          "bytes": 467381,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        }
+      }
+    },
+    {
+      "name": "cutoff_12",
+      "status": "completed_singlepoint",
+      "measured_stage_wall_seconds": 1.1471547529999953,
+      "engine_elapsed_seconds": 0.7452935039999602,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "engine_identity": {
+        "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+        "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+        "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+        "native_runtime_sha256": {
+          "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+          "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+        },
+        "platform": {
+          "system": "Linux",
+          "machine": "x86_64",
+          "byteorder": "little",
+          "python_implementation": "CPython"
+        },
+        "runtime_environment": {
+          "OMP_NUM_THREADS": "1",
+          "UCX_TLS": "self",
+          "LD_LIBRARY_PATH": null,
+          "LAMMPS_PLUGIN_PATH": null
+        },
+        "process_layout": "direct_single_engine_process_no_MPI_launcher"
+      },
+      "raw_artifacts": {
+        "input.lammps": {
+          "sha256": "ec8054f5b6b90203bc651bfa34fdfcada87466f0b82c634607c72d682ae8f477",
+          "bytes": 760,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "system.data": {
+          "sha256": "bd25325c83aea0147915a763ea310449fadad6a9d19a7302f8daf3eaa679d7fd",
+          "bytes": 474014,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "log.lammps": {
+          "sha256": "8c8d2a43a82fe24f1c43ee0e4a84bead149bc42a246ba68db7b7744540c62d56",
+          "bytes": 4630,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "forces.dump": {
+          "sha256": "1447a3606d83928ce4d91618e3e7d3b75a03a7967c5886546129bbc97f28eea0",
+          "bytes": 295865,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "singlepoint.data": {
+          "sha256": "5f118b0abdc839f03e08b078cfaa5faf2deecca71658a21d8dce494e6776aee9",
+          "bytes": 467381,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        }
+      }
+    },
+    {
+      "name": "reciprocal_20",
+      "status": "completed_singlepoint",
+      "measured_stage_wall_seconds": 1.2622013719999359,
+      "engine_elapsed_seconds": 0.8486462100000836,
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "engine_identity": {
+        "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+        "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+        "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+        "native_runtime_sha256": {
+          "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+          "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+        },
+        "platform": {
+          "system": "Linux",
+          "machine": "x86_64",
+          "byteorder": "little",
+          "python_implementation": "CPython"
+        },
+        "runtime_environment": {
+          "OMP_NUM_THREADS": "1",
+          "UCX_TLS": "self",
+          "LD_LIBRARY_PATH": null,
+          "LAMMPS_PLUGIN_PATH": null
+        },
+        "process_layout": "direct_single_engine_process_no_MPI_launcher"
+      },
+      "raw_artifacts": {
+        "input.lammps": {
+          "sha256": "beda299ecbdcfb1c36c778576044de4da4e0b0a8e34eb2bea37a47440dddddeb",
+          "bytes": 760,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "system.data": {
+          "sha256": "bd25325c83aea0147915a763ea310449fadad6a9d19a7302f8daf3eaa679d7fd",
+          "bytes": 474014,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "log.lammps": {
+          "sha256": "87a40db7d548e55853b13b8fc250baff4a3731a121cebb5097dbf0a40c75de89",
+          "bytes": 4628,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "forces.dump": {
+          "sha256": "60508370a84634b2f5a5c54ec4cc9af53b996802ae3c4f844b0271e8383f0346",
+          "bytes": 295861,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        },
+        "singlepoint.data": {
+          "sha256": "0e1b5ceedc591313d74b08230573d387fd8d4d00021d8ae62e8968ae621b8093",
+          "bytes": 467381,
+          "public_path": null,
+          "availability": "failed_attempt_raw_hash_only; retained in local first-attempt artifacts"
+        }
+      }
+    }
+  ],
+  "engine_requests_started": 4,
+  "equilibrium_status": "insufficient_sampling",
+  "production_ready": false,
+  "density_prediction_validation": "not_performed",
+  "external_comparison": "not_performed",
+  "scientific_limits": [
+    "One ordered tiled starting cell, not a validated liquid, crystal or amorphous phase",
+    "Construction density is a requested input; the short trajectory does not predict bulk density",
+    "Repeated molecules, numerical variants and continuation fragments are not independent prepared cells",
+    "Large-cell energy/force execution has no independent analytical-reference comparison; small-cell representation tests supply separate implementation evidence",
+    "Two numerical choices do not establish infinite-cutoff, infinite-reciprocal or bulk-property convergence"
+  ],
+  "public_record_policy": "Commit fixed source geometry/recipe, one shared system.data, each stage input/log, three singlepoint force dumps and the final continuation checkpoint.dump. Other large outputs and native binaries remain hash-only; regenerate with this script.",
+  "source_geometry": {
+    "source_path": "evidence/geometry_v03/cell.json",
+    "source_file_sha256": "b48400d7181a436c7e858d02f74491c45b71f3ca0aa2465351bc3add3c19dd41",
+    "molecule_index": 0,
+    "canonical_geometry_sha256": "db711064dd3c34a77efec95920b288e190d69ce439c931da69f936a6fc283757",
+    "recipe_path": "examples/tiled_decane.json",
+    "recipe_file_sha256": "c1655dc3719229fdd62438b09fc25bd33ecde9338f75ee6438da765173b40929"
+  },
+  "construction_wall_seconds": 0.21961599799999476,
+  "system": {
+    "atoms": 2304,
+    "molecules": 72,
+    "formula_per_molecule": "C10H22",
+    "box_lengths_angstrom": [
+      26.0,
+      30.599999999999998,
+      30.599999999999998
+    ],
+    "construction_density_g_cm3": 0.6987592396767455,
+    "density_interpretation": "Mass divided by requested geometric volume; not an equilibrium prediction",
+    "phase_observed": "not_assessed",
+    "construction": "ordered repeated molecular motif",
+    "independently_prepared_cells": 1,
+    "molecules_are_independent_cell_replicates": false
+  },
+  "independent_motif_contact_reference": {
+    "minimum_periodic_intermolecular_distance_angstrom": 1.6099405152823842,
+    "checked_nonzero_lattice_offsets": 26,
+    "atom_pair_distance_evaluations": 26624,
+    "farther_offset_distance_lower_bound_angstrom": 6.063975729010847,
+    "method": "26 neighboring motif offsets plus coordinate-span lower bound for all farther offsets",
+    "construction_geometry_only": true
+  },
+  "construction_canonical_sha256": "5a31aaf3cfa6010fb5609b6e5edcbb6dc5225f3770eea2db76b6d684e1cb6cca",
+  "assignment": {
+    "canonical_sha256": "489988ba88cd359c55bb841c9a0971f6a2d595b6863e9dca18a7c93f881d6aa9",
+    "canonical_json_bytes": 9326465,
+    "wall_seconds": 1.2641155619999154,
+    "schema_version": "2",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "special_pair_records": 12384,
+    "implicit_all_unordered_pair_count": 2653056,
+    "global_nonbonded_pairs_materialized": false,
+    "parameter_set_sha256": "412b0edbedbd065a3afcd19f8da4c03af41c548a472072ddfa837a936cd81fb1",
+    "source_snapshot": {
+      "commit": "820db9e499e4edc7f0dc734e6baeb0e9c3f87859",
+      "files": {
+        "ffbonded.itp": {
+          "bytes": 209608,
+          "git_blob_sha": "944e9c82913333def13ab6b17a7bb5d8248016fc",
+          "sha256": "145e6924f52fae7e93108fa3d674f31a53aea10c80b13dd89abf0b011adfd4fa",
+          "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffbonded.itp"
+        },
+        "ffnonbonded.itp": {
+          "bytes": 62929,
+          "git_blob_sha": "20e5b31d9562f4c368c3b9ece318ed5892712e5b",
+          "sha256": "fdf072dac9900c039b58e21323ce621b2112dc86c46a4b5e49e1398ae5d3b9f0",
+          "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/ffnonbonded.itp"
+        },
+        "forcefield.itp": {
+          "bytes": 862,
+          "git_blob_sha": "e69c4728d7117662a32fa392409e751ea6caf03d",
+          "sha256": "6eb8f0d08684e1ac6f525bb323eae75ed197b2980ddfde975a24ca1a8c931d06",
+          "url": "https://github.com/gromacs/gromacs/blob/820db9e499e4edc7f0dc734e6baeb0e9c3f87859/share/top/oplsaa.ff/forcefield.itp"
+        }
+      },
+      "interpretation": "Selected numerical CT/HC facts transcribed and converted independently; no upstream workflow source is vendored.",
+      "license_context": "The upstream repository provides LGPL-2.1 text. These selected numerical facts have attribution; this is not a license statement covering every OPLS variant.",
+      "paper": "https://doi.org/10.1021/ja9621760",
+      "parameter_family": "GROMACS v2025.3 distributed OPLS-AA alkane subset, including November 1999 HC-CT-CT-HC update",
+      "repository": "https://github.com/gromacs/gromacs",
+      "tag": "v2025.3"
+    },
+    "validation": {
+      "actual_intramolecular_pair_distances_preserved": true,
+      "atom_count": 2304,
+      "chemical_typing": "performed_per_supported_neutral_explicit_n_alkane_molecule",
+      "construction_density_g_cm3": 0.6987592396767455,
+      "coordinate_absolute_tolerance_angstrom": 1e-08,
+      "cutoff_and_long_range_model": "not_selected_by_assignment",
+      "density_interpretation": "mass divided by prescribed box volume, not predicted density",
+      "equilibrium_status": "not_assessed",
+      "explicit_global_all_pairs_materialized": false,
+      "force_field_assigned": true,
+      "formal_charge_e": 0,
+      "implementation_limits": {
+        "max_atoms": 8192,
+        "max_atoms_per_molecule": 512,
+        "max_intramolecular_pairs": 2000000
+      },
+      "implicit_pair_rule_coverage": "all_unordered_pairs_via_unit_default_and_unique_exceptions",
+      "intramolecular_pair_work": 35712,
+      "largest_molecule_atom_count": 32,
+      "material_property_validation": "not_performed",
+      "molecular_source_assignments": "recomputed_and_hash_bound_not_duplicated",
+      "molecule_count": 72,
+      "pair_scaling_counts": {
+        "excluded": 6552,
+        "intermolecular": 2617344,
+        "scaled_14": 5832,
+        "unscaled_intramolecular": 23328
+      },
+      "production_ready": false,
+      "proper_source_rigid_transforms": true,
+      "rotation_absolute_tolerance": 1e-10,
+      "simulation_performed": false,
+      "source_coordinate_and_image_identity": true,
+      "source_graph_bonds_and_lineage_preserved": true,
+      "source_nonbonded_contacts": "not re-certified by parameter assignment",
+      "source_validation_flags": "untrusted supplied metadata; no reliance on their values",
+      "special_pair_count": 12384,
+      "topology_counts": {
+        "angles": 4320,
+        "bonds": 2232,
+        "dihedrals": 5832,
+        "impropers": 0
+      },
+      "total_molar_mass_g_mol": 10244.591999999999,
+      "total_partial_charge_e": 0.0,
+      "total_unordered_pair_count": 2653056
+    }
+  },
+  "numerical_sensitivity": {
+    "cutoff_12": {
+      "variant": "cutoff_12",
+      "same_assignment_and_atom_identity": true,
+      "signed_component_energy_differences_kj_mol": {
+        "bond": 1.3642420526593924e-12,
+        "angle": -9.094947017729282e-13,
+        "dihedral": 4.547473508864641e-12,
+        "lj": -94.6441132497821,
+        "coulomb_realspace": 0.04192321849131986,
+        "coulomb_kspace": 0.0,
+        "total": -94.60219003128441
+      },
+      "total_energy_difference_per_atom_kj_mol": 0.04105997831218941,
+      "max_force_component_difference_kj_mol_angstrom": 0.0073084167087529295,
+      "rms_force_component_difference_kj_mol_angstrom": 0.00228262085805535,
+      "predeclared_development_review_limits": {
+        "total_energy_difference_per_atom_kj_mol": 0.02,
+        "max_force_component_difference_kj_mol_angstrom": 0.05
+      },
+      "review_status": "requires_review",
+      "unchanged_component_invariants": "passed",
+      "interpretation": "Two LJ/Coulomb real-space cutoffs change the truncated Hamiltonian; this is sensitivity, not error against an exact model",
+      "bulk_property_convergence": "not_established"
+    },
+    "reciprocal_20": {
+      "variant": "reciprocal_20",
+      "same_assignment_and_atom_identity": true,
+      "signed_component_energy_differences_kj_mol": {
+        "bond": 0.0,
+        "angle": 0.0,
+        "dihedral": 0.0,
+        "lj": 0.0,
+        "coulomb_realspace": 0.0,
+        "coulomb_kspace": 0.0,
+        "total": 0.0
+      },
+      "total_energy_difference_per_atom_kj_mol": 0.0,
+      "max_force_component_difference_kj_mol_angstrom": 1.4210854715202004e-14,
+      "rms_force_component_difference_kj_mol_angstrom": 4.154803896033785e-16,
+      "predeclared_development_review_limits": {
+        "total_energy_difference_per_atom_kj_mol": 1e-05,
+        "max_force_component_difference_kj_mol_angstrom": 0.0001
+      },
+      "review_status": "diagnostics_passed",
+      "unchanged_component_invariants": "passed",
+      "interpretation": "Two finite reciprocal bounds at fixed splitting/cutoff; not a bound on the infinite Ewald error",
+      "bulk_property_convergence": "not_established"
+    }
+  },
+  "numerical_sensitivity_review_status": "requires_review",
+  "failure_stage": "preparation",
+  "failure_type": "PeriodicProtocolError",
+  "failure_reason": "engine_run: Command '['/home/agent/.local/bin/lmp', '-in', 'input.lammps', '-log', 'log.lammps', '-screen', 'screen.lammps']' timed out after 60.0 seconds",
+  "failed_protocol_record": {
+    "schema_version": "1",
+    "kind": "periodic_alkane_preparation_protocol_execution",
+    "status": "failed",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "assignment_canonical_sha256": "489988ba88cd359c55bb841c9a0971f6a2d595b6863e9dca18a7c93f881d6aa9",
+    "protocol_spec": {
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "minimize_max_iterations": 200,
+      "minimize_max_evaluations": 1000,
+      "nvt_steps": 10,
+      "npt_steps": 10,
+      "velocity_seed": 49217,
+      "timeout_seconds": 60.0,
+      "cutoff_angstrom": 10.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16
+    },
+    "scientific_controls": {
+      "boundary": "orthorhombic_three_axis_periodic",
+      "potential": "sourced_OPLS_AA_subset_with_real_space_LJ_and_periodic_Ewald_Coulomb",
+      "minimizer": "cg",
+      "minimizer_maximum_atom_move_angstrom": 0.1,
+      "minimize_energy_tolerance_dimensionless": 1e-06,
+      "minimize_force_tolerance_kcal_mol_angstrom": 1e-06,
+      "minimize_force_tolerance_kj_mol_angstrom": 4.184e-06,
+      "thermostat_damping_fs": 100.0,
+      "barostat_damping_fs": 1000.0,
+      "engine_pressure_target_atm": 0.9869232667160128,
+      "pressure_conversion": "1 atm = 1.01325 bar",
+      "engine_density_conversion_factor": 1.6605389210321897,
+      "engine_density_conversion_source": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/update.cpp#L175",
+      "canonical_density_basis": "supplied g/mol masses divided by volume with exact SI Avogadro constant",
+      "thermo_stride_steps": 10,
+      "runtime_box_guard": "fix halt every minimization/integration step; explicit Boolean axis checks, hard error if any box length <= 2*cutoff",
+      "runtime_bond_guard": "fix halt every minimization/integration step; hard error if bondmax >= cutoff/3, a sufficient bound keeping every 1-4 endpoint separation within cutoff",
+      "minimization_budget_policy": "continue the bounded pilot, retaining the actual stop criterion; no convergence inferred",
+      "ensemble_claim": "short preparation stages, not a verified thermodynamic ensemble"
+    },
+    "engine_plan": {
+      "status": "planned",
+      "simulation_performed": false,
+      "run_directory": "private_engine_run_not_published",
+      "input_sha256": "54fc485e4870e12c5399d3e1ceba756fda9c5e955d61cc3d6d7a02e85b58043f",
+      "timeout_seconds": 60.0,
+      "expected_artifacts": [
+        "log.lammps",
+        "prepared.data",
+        "final.dump",
+        "checkpoint.restart",
+        "checkpoint.dump"
+      ],
+      "required_thermo_columns": [
+        "Step",
+        "Temp",
+        "Press",
+        "Volume",
+        "Density",
+        "PotEng",
+        "TotEng",
+        "E_bond",
+        "E_angle",
+        "E_dihed",
+        "E_vdwl",
+        "E_coul",
+        "E_long",
+        "Lx",
+        "Ly",
+        "Lz"
+      ],
+      "material_validation": "not_performed",
+      "declared_units_style": "real",
+      "input_units_style": null,
+      "input_units_style_source": "dynamic_or_unsupported_recipe_control",
+      "units_style_confidence": "unresolved",
+      "recipe_run_units_styles": [],
+      "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+      "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+      "staged_binary_input_sha256": {},
+      "expected_engine_identity": null
+    },
+    "input_files": {
+      "input.lammps_sha256": "54fc485e4870e12c5399d3e1ceba756fda9c5e955d61cc3d6d7a02e85b58043f",
+      "system.data_sha256": "bd25325c83aea0147915a763ea310449fadad6a9d19a7302f8daf3eaa679d7fd"
+    },
+    "md_integration_steps_requested": 20,
+    "simulation_performed": true,
+    "equilibrium_status": "not_assessed",
+    "production_ready": false,
+    "density_prediction_validation": "not_performed",
+    "material_property_validation": "not_performed",
+    "failure_phase": "engine",
+    "failure_reason": "engine_run: Command '['/home/agent/.local/bin/lmp', '-in', 'input.lammps', '-log', 'log.lammps', '-screen', 'screen.lammps']' timed out after 60.0 seconds",
+    "engine_run": {
+      "status": "failed",
+      "simulation_performed": true,
+      "run_directory": "private_engine_run_not_published",
+      "input_sha256": "54fc485e4870e12c5399d3e1ceba756fda9c5e955d61cc3d6d7a02e85b58043f",
+      "timeout_seconds": 60.0,
+      "expected_artifacts": [
+        "log.lammps",
+        "prepared.data",
+        "final.dump",
+        "checkpoint.restart",
+        "checkpoint.dump"
+      ],
+      "required_thermo_columns": [
+        "Step",
+        "Temp",
+        "Press",
+        "Volume",
+        "Density",
+        "PotEng",
+        "TotEng",
+        "E_bond",
+        "E_angle",
+        "E_dihed",
+        "E_vdwl",
+        "E_coul",
+        "E_long",
+        "Lx",
+        "Ly",
+        "Lz"
+      ],
+      "material_validation": "not_performed",
+      "declared_units_style": "real",
+      "input_units_style": null,
+      "input_units_style_source": "dynamic_or_unsupported_recipe_control",
+      "units_style_confidence": "unresolved",
+      "recipe_run_units_styles": [],
+      "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+      "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+      "staged_binary_input_sha256": {},
+      "expected_engine_identity": null,
+      "evidence_level": "process_contract",
+      "executable": "lmp",
+      "started_utc": "2026-11-07T08:52:12.136572+00:00",
+      "staged_input_sha256": {
+        "system.data": "bd25325c83aea0147915a763ea310449fadad6a9d19a7302f8daf3eaa679d7fd"
+      },
+      "runtime_environment": {
+        "OMP_NUM_THREADS": "1",
+        "UCX_TLS": "self"
+      },
+      "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "engine_help_sha256": "7dbd4a0bfc427fbb62b485c812f858ca0d6b8af9a73b1624fd9b01c766176bfd",
+      "engine_help_first_line": "Incidental host diagnostic omitted; engine version and hashes retained",
+      "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "engine_identity": {
+        "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+        "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+        "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+        "native_runtime_sha256": {
+          "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+          "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+        },
+        "platform": {
+          "system": "Linux",
+          "machine": "x86_64",
+          "byteorder": "little",
+          "python_implementation": "CPython"
+        },
+        "runtime_environment": {
+          "OMP_NUM_THREADS": "1",
+          "UCX_TLS": "self",
+          "LD_LIBRARY_PATH": null,
+          "LAMMPS_PLUGIN_PATH": null
+        },
+        "process_layout": "direct_single_engine_process_no_MPI_launcher"
+      },
+      "command": [
+        "lmp",
+        "-in",
+        "input.lammps",
+        "-log",
+        "log.lammps",
+        "-screen",
+        "screen.lammps"
+      ],
+      "failure_phase": "engine_run",
+      "failure_reason": "Command '['/home/agent/.local/bin/lmp', '-in', 'input.lammps', '-log', 'log.lammps', '-screen', 'screen.lammps']' timed out after 60.0 seconds",
+      "finished_utc": "2026-11-07T08:53:12.384753+00:00",
+      "elapsed_seconds": 60.24783863599998
+    },
+    "public_summary_policy": {
+      "omitted_fields": [
+        {
+          "field": "record.input_script",
+          "canonical_sha256": "a091d60b4009840b564ae997401435969b9d3232a853b31767a70291952e8b73",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.staged_inputs",
+          "canonical_sha256": "189f9cf70d22c04e24f38af21eef01529048766c1ed46e060c62c88c96477ecf",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        }
+      ],
+      "scope": "Host paths and duplicate/large arrays omitted explicitly; scientific aggregate values, model, source, engine and raw artifact hashes retained"
+    }
+  },
+  "finished_utc": "2026-11-07T08:53:12.405885+00:00",
+  "measured_total_wall_seconds": 65.79459989499992,
+  "public_summary_policy": {
+    "omitted_fields": [],
+    "scope": "Host paths and duplicate/large arrays omitted explicitly; scientific aggregate values, model, source, engine and raw artifact hashes retained"
+  },
+  "failed_attempt_retention": {
+    "original_raw_report_sha256": "e5a2e44f7552b967b0918de637180f8660a66e884edc6342a3f4fd11ba5285cd",
+    "partial_preparation_log": {
+      "public_path": "failed_preparation.log",
+      "sha256": "048a285f6adad2c8f963f4be6c4d7f281ca04893046ec74680b547f2d2f55496",
+      "bytes": 4128
+    },
+    "reason": "Original200iterationCG request hit60secondbudget before anyMD; source/model/tolerances were retained. Any later recipe reduction is declared separately as resource calibration, not convergence.",
+    "preparation_input": {
+      "public_path": "failed_preparation.in",
+      "sha256": "54fc485e4870e12c5399d3e1ceba756fda9c5e955d61cc3d6d7a02e85b58043f",
+      "bytes": 2136
+    }
+  }
+}

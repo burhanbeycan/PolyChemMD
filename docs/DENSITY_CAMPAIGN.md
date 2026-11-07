@@ -20,12 +20,14 @@ a planning hypothesis, not an experimental reference or a fitted output. A null
 range leaves the target-capacity gate blocked. Actual phase assessment, suitable
 molecular relaxation and an external state-matched reference remain necessary.
 
-Initialization currently means `dilute_rigid_then_npt`: specify construction
-mass/volume density, minimum geometric contact distance, bounded packing
-attempts and independent conformer/packing/velocity seeds. The initial cubic
-box is computed from exact-SI Avogadro conversion. It is a requested geometry,
-not a successful pack, a melt, or proof that bounded NPT can compress it into the
-target phase. Actual conformer-extent/packing and runtime box/bond guards can fail.
+Legacy initialization uses `dilute_rigid_then_npt`. The compact declaration also
+allows `seeded_rigid_then_npt`, whose name makes no dilute-state assumption.
+Both require construction mass/volume density, minimum geometric contact
+distance, bounded packing attempts and independent conformer/packing/velocity
+seeds. The initial cubic box is computed from exact-SI Avogadro conversion. It is
+a requested geometry, not a successful pack, a melt, or proof that bounded NPT
+can prepare the target phase. Actual conformer-extent/packing and runtime
+box/bond guards can fail, particularly when requesting dense rigid placement.
 
 ## A state-capacity limitation exposed before simulation
 
@@ -48,14 +50,64 @@ when all three settings must be supported. Its declared candidate target range
 That range is an illustrative planning hypothesis; this document does not assert
 that it is the experimental range at the requested state.
 
-Even sixteen decanes (512 explicit atoms, the current default periodic-assignment
-capacity) only allow a strict bound of approximately 0.472543 g/cm^3 at 10
-angstrom, or 0.355028 g/cm^3 at 11 angstrom. Thus extending a dilute small-cell
-pilot cannot by itself establish a dense-liquid benchmark at the illustrated
-range. The next implementation must increase and verify supported cell capacity,
-or independently justify a different numerical model with sensitivity evidence.
-It must not silently reduce the cutoff or treat the short pilot as a liquid.
-The campaign planner keeps this incompatibility as an explicit outcome.
+Even sixteen decanes (512 explicit atoms, the preserved legacy/default
+periodic-assignment capacity) only allow a strict bound of approximately
+0.472543 g/cm^3 at 10 angstrom, or 0.355028 g/cm^3 at 11 angstrom. Thus extending
+a dilute small-cell pilot cannot by itself establish a dense-liquid benchmark
+at the illustrated range. A larger, separately verified representation is
+required. The compact declaration below increases capacity while retaining
+numerical-sensitivity requirements; it does not silently reduce the cutoff or
+treat short execution as a liquid. The old four-decane example and its
+incompatibility remain unchanged.
+
+## Explicit compact capacity and a larger candidate
+
+The top-level optional field selects the assignment contract:
+
+| `assignment_representation` | Total explicit atoms | Per-chain explicit atoms | Additional audit budget |
+| --- | --- | --- | --- |
+| Omitted, or `explicit_all_pairs_v1` | 512 | 512 | Legacy explicit global-pair representation |
+| `compact_sparse_pairs_v2` | 8192 | 512 | At most 2,000,000 summed intramolecular pairs |
+
+The legacy example needs no migration. Omitting the field preserves its exact
+v0.6 plan payload and canonical hash; a regression check compares it with the
+archived evidence. Unknown selectors are rejected. Compact plans explicitly
+report the selected capacity and schema 2 assignment interface. The actual
+compact assignment's `nonbonded_rules.representation` is
+`sparse_topological_exceptions`; the planner selector is a separate API label.
+It retains the same frozen parameter model and topology rules. It does not
+select a new potential or change 1–4 scaling, Ewald settings or cutoff.
+
+The intramolecular audit budget is
+`sum(n_m * (n_m - 1) / 2)` over molecules, where `n_m = 3*C_m + 2` for the
+supported n-alkanes. It limits per-molecule graph/geometry audit work and is
+not the number of global atom pairs. For example, sixteen 512-atom chains fit
+8192 total atoms but exceed the two-million intramolecular-pair budget and are
+rejected. Both global size and per-chain/audit bounds must pass.
+
+[The larger example](../examples/density_campaign_large.json) explicitly selects
+compact assignment and requests 72 C10H22 molecules, or **2304 atoms**. Its
+construction density input is 0.70 g/cm^3; the corresponding requested cubic
+box is approximately **28.96556 angstrom** per axis. It retains a 10 angstrom
+baseline cutoff and uses a 12 angstrom cutoff variant, with reciprocal bounds
+16 and 20 in the baseline and Ewald variant. The strict all-settings density
+upper bound is approximately **1.23058 g/cm^3**. Its illustrative target range
+0.65–0.80 g/cm^3 therefore passes this box/cutoff bound. The range remains a
+planning hypothesis, and 0.70 g/cm^3 is a construction input rather than a
+predicted or observed equilibrium density.
+
+The new file declares three separate cell recipes, each with 72 distinct
+conformer seeds and its own packing/velocity seeds. These are independently
+seeded **planned rigid-packing requests**, with zero independently prepared
+cells executed by the planner. A separately executed bounded tiled-cell audit
+is one constructed cell; tiling that cell or translating it does not realize
+these three independent preparations. No tiling evidence is silently counted
+as an independent replicate or as successful dense random packing.
+
+The compact plan remains `execution_supported: false`: there is no automatic
+campaign dispatcher, validated dense initialization, phase certificate, or
+finite-size production campaign. The geometric pass removes one size barrier;
+it does not close state qualification, sampling or external comparison.
 
 ## Cells, segments and numerical variants
 
@@ -79,12 +131,13 @@ with three numerical settings means three primary cell recipes and nine paired
 work requests, not nine independent samples. Restart segments and trajectory
 frames are correlated observations of their parent cell and are not new cells.
 
-The example requests 5000 NVT plus 5000 NPT preparation steps at 0.25 fs, then
+Both examples request 5000 NVT plus 5000 NPT preparation steps at 0.25 fs, then
 40000 production steps split into four 10000-step continuations. The requested
 production duration is 10 ps per cell and numerical setting, with 2.5 ps of
 preparation. These are declared durations, not an assertion that 10 ps suffices.
 The request contains 45 engine runs and 450000 total integration steps. None of
-this work is launched by the planner; the example is capacity-incompatible.
+this work is launched by the planner. The legacy example is capacity-incompatible;
+the compact example passes only the declared box/cutoff size bound.
 
 ## Resource accounting
 
@@ -110,8 +163,10 @@ Optional calibration fields are:
 }
 ```
 
-The numbers above illustrate the schema, not an actual calibration. The example
-file uses null calibration. The planner requires matching declared hardware,
+The numbers above illustrate the schema, not an actual calibration. Both example
+files use null calibration. Calibration atom count is checked against the
+selected representation's capacity and must match the actual planned cell
+(128 atoms in the legacy example or 2304 in the compact example). The planner requires matching declared hardware,
 atom count, cutoff and reciprocal bound, and a supplied executable hash. It
 cannot authenticate a user-supplied measurement. It returns only a labeled
 linear scheduling projection for baseline integration. Startup, checkpoint I/O

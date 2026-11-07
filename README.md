@@ -2,7 +2,7 @@
 
 Independent polymer chemistry simulation and property-analysis research project.
 
-**Release state: 0.6.0.dev0 — bounded native restart, density sampling diagnostics and resource-aware campaign plans; equilibrium polymer-property validation remains open.**
+**Release state: 0.7.0.dev0 — compact periodic cells, ordered molecular construction and larger-cell engine sensitivity audits; equilibrium polymer-property validation remains open.**
 
 The long-term scope is a general-purpose connection from polymer chemistry and
 microstructure to quantum-informed parameterization, molecular dynamics,
@@ -33,7 +33,9 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 | Sourced fixed-charge parameter assignment | Frozen GROMACS v2025.3 OPLS-AA CT/HC numerical subset with per-type source lines and hashes; empirical charges, no new QM charge fitting |
 | Independent energy/force reference | Original local analytic differentiation of harmonic, Fourier, LJ and Coulomb equations; isolated, unshifted finite-cutoff model |
 | LAMMPS energy/force verification | Generated full-atom input, run-zero single points, strict identity/parser checks and component/force comparison; no relaxation or property validation |
-| Periodic parameter assembly | Global/source atom and molecule identity, images, all intermolecular pairs and frozen per-molecule assignments are revalidated |
+| Periodic parameter assembly | Legacy exhaustive schema 1 and compact schema 2 preserve global/source identities, images and frozen parameters; compact storage uses unit-scale defaults and short-topology exceptions |
+| Larger periodic starting cells | Compact assignment supports at most 8192 atoms, with per-molecule/local-work limits; actual engine evidence uses 2304 atoms |
+| Ordered motif construction | Independent deterministic molecular tiling with periodic linked-bin contacts and rigid/source checks; constructed density and phase claims remain separate |
 | Periodic Ewald reference and engine parity | Explicit real/reciprocal/self/exclusion terms, analytic forces, minimum-image gates and declared finite-sum budgets; no automatic convergence claim |
 | Bounded periodic preparation | Reviewable minimization, NVT and NPT pilot with box/resource guards, native/canonical units and final-state checks; short execution never certifies equilibrium |
 | LAMMPS subprocess adapter | Bounded execution, exclusive run directory, output hashes and thermo checks; real reduced-unit LJ smoke executed |
@@ -170,9 +172,40 @@ explicit physical-unit thermo rows and predeclared duration/statistical gates.
 Passing those diagnostics does not establish phase or full chain relaxation.
 See [restart](docs/RESTART_PROTOCOL.md), [sampling](docs/DENSITY_SAMPLING.md),
 [campaign planning](docs/DENSITY_CAMPAIGN.md) and [actual restart evidence](evidence/restart_v06/README.md).
-The example plan exposes the mismatch between the current 512-atom limit,
+The earlier example plan retains the mismatch between the legacy 512-atom limit,
 10 angstrom cutoff and its declared candidate liquid-density range. It does not
 silently shorten the cutoff or report the dilute pilot as a liquid prediction.
+
+Construct and parameterize the bounded larger-cell example:
+
+```bash
+python scripts/verify_large_cell_v07.py --output-dir artifacts/large-v07
+polychemmd tile-cell evidence/large_cell_v07/common/source_geometry.json --recipe examples/tiled_decane.json --output artifacts/ordered-cell.json
+polychemmd parameterize-cell artifacts/ordered-cell.json --compact --output artifacts/compact-cell.json
+polychemmd periodic-singlepoint artifacts/compact-cell.json --run-dir artifacts/large-plan --plan --output artifacts/large-plan.json
+polychemmd density-plan examples/density_campaign_large.json --output artifacts/large-campaign-plan.json
+```
+
+The fixed motif example has 72 decane molecules, 2304 atoms and a
+26 by 30.6 by 30.6 angstrom box. Its approximately 0.69876 g/cm^3 density is a
+construction input/output identity, not a prediction. Repeated motifs form one
+ordered starting cell; neither a liquid nor a crystal is inferred. The 12
+angstrom cutoff fits within half every box axis. Linked bins verify geometric
+contacts without enumerating every global pair. Compact assignment stores only
+excluded/scaled pairs and explicit unit defaults; local molecular validation
+still has bounded quadratic work.
+
+`periodic-singlepoint` provides actual engine output without claiming independent
+reference parity for a large cell. `periodic-lammps` retains its independently
+verified small-cell role; the pure-Python Ewald reference remains capped at 512
+atoms. Both representations work with bounded preparation and native restart.
+The larger-cell auditor compares fixed-geometry cutoff and reciprocal-bound
+sensitivity before short preparation/continuation. It does not establish bulk
+convergence, phase identity or equilibrium density. See
+[compact assignment](docs/COMPACT_PERIODIC.md),
+[molecular tiling](docs/MOLECULAR_TILING.md),
+[engine boundary](docs/COMPACT_ENGINE.md) and
+[actual large-cell evidence](evidence/large_cell_v07/README.md).
 
 For the separately installed Linux/x86-64 engine smoke environment:
 
@@ -221,9 +254,10 @@ TASK-006B adds attributed parameter assignment and engine energy/force parity fo
 the restricted n-alkane graph. TASK-006C1 now adds periodic model assembly,
 independent Ewald/engine verification and a bounded preparation protocol.
 TASK-006 remains open until an appropriate state/preparation, production
-sampling, independent cells and external comparison are established. TASK-006C2A now supplies restart and sampling/planning foundations. The next
-bounded step is TASK-006C2B: scale the periodic representation and verify
-physically admissible liquid-size cells before the qualification campaign.
+sampling, independent cells and external comparison are established. TASK-006C2A supplies restart and sampling/planning foundations. TASK-006C2B
+adds a bounded compact representation and larger geometric cell verification.
+The next step is TASK-006C2C: qualify preparation history, numerical settings,
+independent cells and physical sampling for a declared state.
 
 ## Reproducibility and dependencies
 

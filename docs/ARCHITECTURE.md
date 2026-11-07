@@ -47,6 +47,16 @@ validates declared phase/state hypotheses, seeds, durations, sensitivities and
 resource/cell-capacity limits without dispatching a campaign. These foundations
 leave the complete TASK-006 density qualification open.
 
+`forcefields/periodic.py` additionally exposes compact schema 2: the default
+unit nonbonded scale and sparse graph-distance-1/2/3 exceptions replace global
+all-pair storage. Exact pair counts are algebraic; per-molecule typing/rigidity
+work remains bounded and explicit. Legacy schema 1 is retained unchanged.
+`builders/tiling.py` constructs ordered motif cells and checks periodic contacts
+with linked bins. It does not infer an equilibrated phase. The engine accepts
+both representations; the independent analytical reference remains deliberately
+small and explicitly budgeted. Larger-cell engine results and fixed-geometry
+numerical sensitivity are separate evidence from small-cell reference parity.
+
 The names below describe architectural responsibilities; they do not assert that all listed Python classes or modules already exist.
 
 ## Layers and ownership

@@ -11,9 +11,9 @@ These are repository task specifications, not claims that GitHub issues have alr
 | 003 | Implemented | Analytic energy checks for LAMMPS Fourier/OPLS conversions, not material parameter validation |
 | 004 | Implemented contract | Assigned-type coverage only; no chemical atom typing or production parameter set |
 | 005 | Implemented process adapter | Real reduced-unit LJ smoke, plus independent failure/parser tests |
-| 006 | Geometry, restricted parameters, TASK-006C1 plus TASK-006C2A restart/sampling/planning foundations implemented | No validated polymer-density result exists; sampling and external comparison remain open |
+| 006 | Geometry, restricted parameters, TASK-006C1 plus TASK-006C2A/B restart, sampling and compact larger-cell foundations implemented | No validated polymer-density result exists; sampling and external comparison remain open |
 | 007 | Planned | No representation advantage or chemical-family benchmark claimed |
-| 008 | Development evidence audit implemented for v0.2–v0.6 | Machine-readable geometry/parameter/periodic/engine checks; complete scientific benchmarks remain open |
+| 008 | Development evidence audit implemented for v0.2–v0.7 | Machine-readable geometry/parameter/periodic/engine checks; complete scientific benchmarks remain open |
 
 ## TASK-001 — Chemical contract and atom-lineage schema
 
@@ -135,7 +135,7 @@ and a state/resource-aware no-execution campaign planner. A diagnostic pass is
 not an equilibrium certificate. Actual short runs remain insufficiently sampled;
 no external density comparison or validated polymer density is reported.
 
-### Next bounded task — TASK-006C2B: admissible liquid-scale cells
+### TASK-006C2B — admissible larger periodic cells
 
 Remove the present periodic assignment's 512-atom/all-pair capacity bottleneck
 with a separately tested representation while retaining frozen parameter,
@@ -147,6 +147,26 @@ Do not shrink the cutoff just to fit. Demonstrate a larger bounded cell and
 numerical cutoff/long-range sensitivity before committing to a production
 campaign. Measure cost on available hardware; long sampling, finite-size checks,
 phase/chain relaxation and state-matched external evaluation remain later gates.
+
+**Implemented in v0.7 within the restricted model:** compact sparse pair rules
+with exact counts and strict frozen-source reconstruction; bounded ordered motif
+construction and periodic linked-bin contacts; engine export/preparation/restart
+support for larger cells; fixed-geometry numerical sensitivity evidence. The
+legacy model and serialized schema remain unchanged. The larger geometric cell
+removes the former capacity obstacle for the declared density range, but does
+not identify a liquid or certify sampling. Actual outcomes are in VALIDATION.md.
+
+### Next bounded task — TASK-006C2C: state and numerical preparation qualification
+
+Establish an appropriate preparation history for the declared material/state
+instead of treating the ordered repeated motif as a liquid or independent
+replicate. Retain minimizer stopping/force evidence, assess alternative starting
+structures and independent cells, and qualify cutoff/long-range settings with
+observable-specific evidence. Select and justify thermalization/discard and
+physical sampling windows under a measured finite compute budget. Continue to
+retain failed/inconclusive states. Phase/chain relaxation, finite-size sampling
+and state-matched external density comparison remain open until actual gates
+pass; a short dense geometric pilot cannot close them.
 
 ## TASK-007 — Chemically conditioned torsion descriptors
 
