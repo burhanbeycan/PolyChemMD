@@ -1,0 +1,2760 @@
+{
+  "schema_version": "1",
+  "evidence_kind": "executed_numerical_and_preparation_qualification_audit",
+  "status": "failed",
+  "started_utc": "2026-11-07T11:46:46.824530+00:00",
+  "software": {
+    "polychemmd": "0.8.0.dev0",
+    "python": "3.12.14"
+  },
+  "hardware": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "processor": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "logical_cpu_count": 9,
+    "engine_parallelism": "one direct engine process, one OpenMP thread; no GPU requested",
+    "timing_interpretation": "Measured on this executing host, not a benchmark of the project owner's computer"
+  },
+  "source_module_hashes": {
+    "src/polychemmd/__init__.py": {
+      "sha256": "19d8a9a4343fdb93bd8d878fa086e7cec48f6d70ab919ff50dc9caef06dfd568"
+    },
+    "src/polychemmd/geometry.py": {
+      "sha256": "83623358a5f29fd453625adec2416d053a6ed4d5768a896a1c738ad5d12df4e8"
+    },
+    "src/polychemmd/builders/tiling.py": {
+      "sha256": "f5574e5a7965b986df3922484810f476244edd5e75d3fc20ea78975e102bd7e4"
+    },
+    "src/polychemmd/forcefields/periodic.py": {
+      "sha256": "b48f754b190a90dae911f3772c9ee951583d664b43f34d7991d0cefda2e77194"
+    },
+    "src/polychemmd/engines/periodic_alkane.py": {
+      "sha256": "2c4d5ef17f8dc623361b96fedc9b9fef396b134b0e2b36eb94cbedfa58336bad"
+    },
+    "src/polychemmd/engines/periodic_thermo.py": {
+      "sha256": "f4b31f497446a3b1539d9d6139c6a977e0749ce034ce6283c8ed658e3a3d3bb6"
+    },
+    "src/polychemmd/engines/lammps.py": {
+      "sha256": "c9a456971bb51ff79cc4bad074ca16eff34a8e3339d04d3e4dc833d678a311a1"
+    },
+    "src/polychemmd/protocols/numerics.py": {
+      "sha256": "374176d9e0bb4a7abadc486a2f3a05422607f529254574492f914f0ddfd16cdc"
+    },
+    "src/polychemmd/protocols/alkane.py": {
+      "sha256": "5bd6cead63e2d9c76cc06e4b40758cada0f90d93d55b622da4d29892406478b0"
+    },
+    "src/polychemmd/protocols/restart.py": {
+      "sha256": "785eb3f6714b98823229e3a87d5e2fb46916494d05c2594e91ae564ef7e7c41e"
+    },
+    "src/polychemmd/analysis/structure.py": {
+      "sha256": "6e4dfe9d5d6e9e644b9269fa1dcbc0502f22c0cf9c75745c697a948690242777"
+    },
+    "src/polychemmd/analysis/readiness.py": {
+      "sha256": "0c4ce5bb0b4b323defd61f0bb9f44e6d2c7f188fce0ff83fc32e15dd655549d2"
+    },
+    "src/polychemmd/analysis/sampling.py": {
+      "sha256": "f107ae715846718bd18132911721202f323f87e9b003c9c1c0f0b42170b06eb9"
+    },
+    "scripts/verify_qualification_v08.py": {
+      "sha256": "1119dffe0b9981719407b2bdf9f3b43fa6abcd44e55021aa654b534f7feaf59e"
+    },
+    "scripts/verify_large_cell_v07.py": {
+      "sha256": "d6afa6b4f4528c8561f58b1ec6563fa5164af2c79abede89f106338f90dd0971"
+    }
+  },
+  "predeclared": {
+    "construction_recipe": {
+      "repeats": [
+        3,
+        7,
+        7
+      ],
+      "spacing_angstrom": [
+        13.0,
+        5.1,
+        5.1
+      ],
+      "rotation_matrix": null,
+      "min_distance_angstrom": 1.5,
+      "max_atoms": 8192,
+      "max_distance_checks": 5000000
+    },
+    "numerical_spec": {
+      "cutoffs_angstrom": [
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        17.0
+      ],
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16,
+      "refined_reciprocal_nmax": 20,
+      "min_consecutive_cutoff_pairs": 2,
+      "cutoff_energy_per_atom_limit_kj_mol": 0.02,
+      "cutoff_force_limit_kj_mol_angstrom": 0.05,
+      "cutoff_pressure_limit_bar": 20.0,
+      "reciprocal_energy_per_atom_limit_kj_mol": 1e-05,
+      "reciprocal_force_limit_kj_mol_angstrom": 0.0001,
+      "reciprocal_pressure_limit_bar": 0.01,
+      "unchanged_component_abs_tolerance_kj_mol": 1e-07,
+      "per_run_timeout_seconds": 60.0,
+      "total_wall_seconds": 120.0,
+      "max_engine_runs": 6
+    },
+    "preparation": {
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "minimize_max_iterations": 10,
+      "minimize_max_evaluations": 100,
+      "nvt_steps": 10,
+      "npt_steps": 10,
+      "velocity_seed": 49217,
+      "timeout_seconds": 60.0,
+      "cutoff_angstrom": 17.0,
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 20
+    },
+    "continuation_steps": 10,
+    "preparation_readiness_spec": {
+      "phase_target": "liquid_candidate",
+      "temperature_k": 300.0,
+      "pressure_bar": 1.0,
+      "timestep_fs": 0.25,
+      "require_minimizer_force_convergence": true,
+      "max_force_norm_kj_mol_angstrom": null,
+      "max_rms_force_kj_mol_angstrom": null,
+      "max_nematic_order": 0.2,
+      "sampling_spec": {
+        "timestep_fs": 0.25,
+        "discard_steps": 0,
+        "min_duration_ps": 100.0,
+        "block_size": 50,
+        "min_blocks": 16,
+        "max_autocorrelation_lag": 128,
+        "min_effective_samples": 50.0,
+        "min_block_inefficiency_ratio": 5.0,
+        "max_abs_block_lag_one": 0.2,
+        "max_coarsened_se_ratio": 1.25,
+        "max_density_relative_half_width": 0.02,
+        "max_density_relative_drift": 0.02,
+        "target_temperature_k": 300.0,
+        "temperature_mean_tolerance_k": 15.0,
+        "target_pressure_bar": 1.0,
+        "pressure_mean_tolerance_bar": 100.0
+      }
+    },
+    "maximum_engine_invocations": 8,
+    "per_engine_timeout_seconds": 60.0,
+    "total_wall_seconds": 240.0
+  },
+  "stages": [],
+  "engine_requests_started": 5,
+  "equilibrium_status": "not_assessed",
+  "production_ready": false,
+  "density_prediction_validation": "not_performed",
+  "external_comparison": "not_performed",
+  "scientific_limits": [
+    "One ordered repeated-motif cell, not an identified liquid, crystal or amorphous polymer",
+    "Refinements change a truncated Hamiltonian or finite Ewald approximation, not an exact-model error bound",
+    "Initial-geometry numerical diagnostics are not transferable to an evolved final state without a fresh audit",
+    "Molecules, refinement settings and trajectory fragments are not independent prepared cells",
+    "Short integration probes cannot certify equilibrium or bulk density"
+  ],
+  "public_record_policy": "Retain source geometry/recipe, one common system.data, every stage input/log/summary, only finest refined singlepoint force frame, final continuation checkpoint frame, and one full continued-chain static dataset. Duplicated initial/prepared per-chain rows, full assignment, other raw frames/readbacks and native binaries are hash-only and regenerable with this script.",
+  "source_geometry": {
+    "path": "evidence/large_cell_v07/common/source_geometry.json",
+    "sha256": "db0828daa593d80844c68df72d34157852c378f0285115940b86ae72f85c42e0",
+    "recipe_path": "examples/qualification_cell.json",
+    "recipe_sha256": "33d7bb94c05510e2e485b5fdf9a0a9b06d7da45b26e0232fa8ab709b2df4c8c1"
+  },
+  "construction_wall_seconds": 0.6451910679988941,
+  "system": {
+    "atoms": 4704,
+    "molecules": 147,
+    "formula_per_molecule": "C10H22",
+    "box_lengths_angstrom": [
+      39.0,
+      35.699999999999996,
+      35.699999999999996
+    ],
+    "construction_density_g_cm3": 0.6987592396767457,
+    "density_role": "requested geometric mass/volume, not a prediction",
+    "phase": "not_assigned",
+    "construction": "one ordered repeated molecular motif cell",
+    "independently_prepared_cells": 1,
+    "molecules_and_variants_are_independent_cells": false
+  },
+  "independent_motif_contact_reference": {
+    "minimum_periodic_intermolecular_distance_angstrom": 1.6099405152823842,
+    "checked_nonzero_lattice_offsets": 26,
+    "atom_pair_distance_evaluations": 26624,
+    "farther_offset_distance_lower_bound_angstrom": 6.063975729010847,
+    "method": "26 neighboring motif offsets plus coordinate-span lower bound for all farther offsets",
+    "construction_geometry_only": true
+  },
+  "assignment": {
+    "canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+    "canonical_json_bytes": 19107924,
+    "wall_seconds": 2.759135948999756,
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "schema_version": "2",
+    "special_pair_records": 25284,
+    "implicit_all_unordered_pair_count": 11061456,
+    "global_nonbonded_pairs_materialized": false,
+    "parameter_set_sha256": "412b0edbedbd065a3afcd19f8da4c03af41c548a472072ddfa837a936cd81fb1"
+  },
+  "initial_chain_structure": {
+    "schema_version": "1",
+    "kind": "chain_structure_snapshot",
+    "status": "computed",
+    "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+    "state_canonical_sha256": "ad2b9b0659d975daf6e00896af12123355963805112925f24185e301665fa83f",
+    "coordinate_source": "assigned_initial_geometry",
+    "step": 0,
+    "atom_count": 4704,
+    "molecule_count": 147,
+    "mean_mass_weighted_radius_of_gyration_angstrom": 3.0681359498882723,
+    "mean_backbone_radius_of_gyration_angstrom": 2.972163705916445,
+    "mean_end_to_end_distance_angstrom": 8.57446334972772,
+    "orientation_tensor": [
+      [
+        0.9827419021030679,
+        0.008687104294852241,
+        0.15973052031890705
+      ],
+      [
+        0.008687104294852241,
+        -0.49994910389938896,
+        0.0009358309002485494
+      ],
+      [
+        0.15973052031890705,
+        0.0009358309002485494,
+        -0.4827927982036787
+      ]
+    ],
+    "orientation_eigenvalues": [
+      1.0000000000000002,
+      -0.49999999999999994,
+      -0.5
+    ],
+    "nematic_order_parameter": 1.0,
+    "nematic_director": [
+      0.9942306580477416,
+      0.005825009333957526,
+      0.10710493856127365
+    ],
+    "orientation_status": "computed",
+    "orientation_eigensolver_rotations": 2,
+    "orientation_vector_definition": "unit vector between terminal backbone carbons, apolar under endpoint reversal",
+    "orientation_weighting": "equal weight per molecule; no atom-count or mass weighting of chain axes",
+    "dimension_weighting": "all-atom molar masses and carbon-only molar masses; equal-chain means",
+    "configuration_statistics_are_equilibrium_averages": false,
+    "independent_material_cell_count": 1,
+    "molecules_are_independent_material_cells": false,
+    "equilibrium_status": "not_assessed",
+    "phase_classification": "not_performed",
+    "production_ready": false,
+    "material_property_validation": "not_performed",
+    "uncertainty": "not_estimated_from_one_configuration",
+    "units": {
+      "length": "angstrom",
+      "gyration_tensor": "angstrom^2",
+      "nematic_order": "dimensionless"
+    },
+    "public_summary_policy": {
+      "omitted_fields": [
+        {
+          "field": "record.per_chain",
+          "canonical_sha256": "d88da472e42d07e1c0389d1693e661f15a20bda6569e5646ebd3b4dbf0cf18e9",
+          "row_count": 147,
+          "interpretation": "Repeated static chain rows omitted here; full continued structure has a separate public JSON and earlier rows can be regenerated"
+        }
+      ],
+      "scope": "Host paths and duplicate/large arrays omitted explicitly; scientific aggregate values, model, source, engine and raw artifact hashes retained"
+    }
+  },
+  "numerical_plan": {
+    "schema_version": "1",
+    "kind": "periodic_numerical_qualification",
+    "status": "planned",
+    "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+    "geometry_canonical_sha256": "dedbdb490acd67ee7eb278b3c2e6690f72001c88a2f54f53229f843afa751925",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "atom_count": 4704,
+    "spec": {
+      "cutoffs_angstrom": [
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        17.0
+      ],
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16,
+      "refined_reciprocal_nmax": 20,
+      "min_consecutive_cutoff_pairs": 2,
+      "cutoff_energy_per_atom_limit_kj_mol": 0.02,
+      "cutoff_force_limit_kj_mol_angstrom": 0.05,
+      "cutoff_pressure_limit_bar": 20.0,
+      "reciprocal_energy_per_atom_limit_kj_mol": 1e-05,
+      "reciprocal_force_limit_kj_mol_angstrom": 0.0001,
+      "reciprocal_pressure_limit_bar": 0.01,
+      "unchanged_component_abs_tolerance_kj_mol": 1e-07,
+      "per_run_timeout_seconds": 60.0,
+      "total_wall_seconds": 120.0,
+      "max_engine_runs": 6
+    },
+    "spec_canonical_sha256": "39113938c0c8ca762761ecd54d514ab44fc125b9ca750ff72c0fab7a841838d5",
+    "qualification_inputs_sha256": "3de35dcef110460ea4c4100aaef1cd1605a49c02c67f11e5c1e2d8fdd920ed23",
+    "scope": "one_fixed_source_geometry_not_thermal_state_or_bulk_convergence",
+    "run_directory": "private_engine_run_not_published",
+    "stages": [
+      {
+        "stage_id": "cutoff_00",
+        "settings": {
+          "cutoff_angstrom": 10.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "planned",
+        "input_files": {
+          "input.lammps_sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        }
+      },
+      {
+        "stage_id": "cutoff_01",
+        "settings": {
+          "cutoff_angstrom": 12.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "planned",
+        "input_files": {
+          "input.lammps_sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        }
+      },
+      {
+        "stage_id": "cutoff_02",
+        "settings": {
+          "cutoff_angstrom": 14.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "planned",
+        "input_files": {
+          "input.lammps_sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        }
+      },
+      {
+        "stage_id": "cutoff_03",
+        "settings": {
+          "cutoff_angstrom": 16.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "planned",
+        "input_files": {
+          "input.lammps_sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        }
+      },
+      {
+        "stage_id": "cutoff_04",
+        "settings": {
+          "cutoff_angstrom": 17.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "planned",
+        "input_files": {
+          "input.lammps_sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        }
+      },
+      {
+        "stage_id": "reciprocal_refinement",
+        "settings": {
+          "cutoff_angstrom": 17.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 20
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "planned",
+        "input_files": {
+          "input.lammps_sha256": "bb466dd50fdaecbcdb668a58bc824c3a6904cb9ef3b64ee280513ee8f48ebb08",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "bb466dd50fdaecbcdb668a58bc824c3a6904cb9ef3b64ee280513ee8f48ebb08",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        }
+      }
+    ],
+    "shared_input": {
+      "relative_path": "common/system.data",
+      "sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+    },
+    "expected_engine_runs": 6,
+    "engine_requests_started": 0,
+    "engine_execution_attempts_reported": 0,
+    "simulation_performed": false,
+    "numerical_status": "not_assessed",
+    "selected_settings": null,
+    "production_ready": false,
+    "equilibrium_status": "not_assessed",
+    "bulk_property_convergence": "not_established",
+    "density_prediction_validation": "not_performed",
+    "material_property_validation": "not_performed",
+    "public_summary_policy": {
+      "omitted_fields": [
+        {
+          "field": "record.stages[0].input_script",
+          "canonical_sha256": "ad23d812cd21640e13e5f076b7e374d0ed2479f4f461bbea1babfa072c412018",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[1].input_script",
+          "canonical_sha256": "601d002bb362360e4d460db05176de4b2ba904cc288b40825b9ed849d15050ce",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[2].input_script",
+          "canonical_sha256": "daacb85810d2d25af126c5ef06a627ad0740cd6fa02fe6f4bed7d6139b15093e",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[3].input_script",
+          "canonical_sha256": "5fac2c99089d7e6b5cb769f8d24d52f37777b5180b5b3f1b82534e3d953814fa",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[4].input_script",
+          "canonical_sha256": "32a7debb9c98ce01c4878b2dd7023a288e096e2b394700c5d5ba912f716ae75e",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[5].input_script",
+          "canonical_sha256": "5c53d312c18845d0640d3bec069aff61ea9a41ffefb12e71bd2e98e615b4684f",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.staged_inputs",
+          "canonical_sha256": "c77a783dd0a7e6395701ae988f2c8512de3eea740da68b7caa4230a51603418c",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        }
+      ],
+      "scope": "Host paths and duplicate/large arrays omitted explicitly; scientific aggregate values, model, source, engine and raw artifact hashes retained"
+    }
+  },
+  "failure_stage": "numerical_qualification",
+  "failure_type": "NumericalQualificationError",
+  "failure_reason": "engine_run: LAMMPS returned nonzero exit status 1",
+  "failed_phase_record": {
+    "schema_version": "1",
+    "kind": "periodic_numerical_qualification",
+    "status": "failed",
+    "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+    "geometry_canonical_sha256": "dedbdb490acd67ee7eb278b3c2e6690f72001c88a2f54f53229f843afa751925",
+    "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+    "atom_count": 4704,
+    "spec": {
+      "cutoffs_angstrom": [
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        17.0
+      ],
+      "ewald_alpha_per_angstrom": 0.3,
+      "reciprocal_nmax": 16,
+      "refined_reciprocal_nmax": 20,
+      "min_consecutive_cutoff_pairs": 2,
+      "cutoff_energy_per_atom_limit_kj_mol": 0.02,
+      "cutoff_force_limit_kj_mol_angstrom": 0.05,
+      "cutoff_pressure_limit_bar": 20.0,
+      "reciprocal_energy_per_atom_limit_kj_mol": 1e-05,
+      "reciprocal_force_limit_kj_mol_angstrom": 0.0001,
+      "reciprocal_pressure_limit_bar": 0.01,
+      "unchanged_component_abs_tolerance_kj_mol": 1e-07,
+      "per_run_timeout_seconds": 60.0,
+      "total_wall_seconds": 120.0,
+      "max_engine_runs": 6
+    },
+    "spec_canonical_sha256": "39113938c0c8ca762761ecd54d514ab44fc125b9ca750ff72c0fab7a841838d5",
+    "qualification_inputs_sha256": "3de35dcef110460ea4c4100aaef1cd1605a49c02c67f11e5c1e2d8fdd920ed23",
+    "scope": "one_fixed_source_geometry_not_thermal_state_or_bulk_convergence",
+    "run_directory": "private_engine_run_not_published",
+    "stages": [
+      {
+        "stage_id": "cutoff_00",
+        "settings": {
+          "cutoff_angstrom": 10.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "completed_static_thermo_singlepoint",
+        "input_files": {
+          "input.lammps_sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        },
+        "effective_timeout_seconds": 60.0,
+        "record": {
+          "schema_version": "1",
+          "kind": "periodic_alkane_static_thermo_singlepoint",
+          "status": "completed_static_thermo_singlepoint",
+          "simulation_performed": true,
+          "evidence_level": "engine_execution_and_static_state_audit",
+          "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+          "assignment_schema_version": "2",
+          "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+          "geometry_canonical_sha256": "dedbdb490acd67ee7eb278b3c2e6690f72001c88a2f54f53229f843afa751925",
+          "geometry_fingerprint_definition": {
+            "box": "complete assignment box record",
+            "ordered_atom_fields": [
+              "cell_atom_id",
+              "molecule_index",
+              "charge_e",
+              "coordinates_angstrom",
+              "wrapped_coordinates_angstrom",
+              "image_flags"
+            ],
+            "serialization": "UTF-8 JSON, sorted keys, compact separators, finite values"
+          },
+          "atom_count": 4704,
+          "molecule_count": 147,
+          "ewald_settings": {
+            "cutoff_angstrom": 10.0,
+            "alpha_per_angstrom": 0.3,
+            "reciprocal_nmax": 16,
+            "relative_engine_accuracy_request": 1e-08,
+            "surface_boundary": "tin_foil",
+            "realspace_coulomb_table": false,
+            "lj_tail_correction": false
+          },
+          "energy_units": "kJ/mol",
+          "force_units": "kJ/(mol angstrom)",
+          "pressure_units": "bar",
+          "volume_units": "angstrom^3",
+          "density_units": "g/cm^3",
+          "pressure_interpretation": "static_virial_not_equilibrium_average",
+          "pressure_compute": "compute polychemmd_virial all pressure NULL virial",
+          "pressure_tensor_convention": "symmetric 3x3 Cartesian matrix, positive-compression pressure; not stress",
+          "pressure_conversion": "1 atm = 1.01325 bar",
+          "initial_velocities": "zeroed_and_output_verified",
+          "md_integration_steps": 0,
+          "trajectory_production_performed": false,
+          "independent_reference_status": "not_performed",
+          "numerical_convergence_status": "not_established",
+          "native_parameter_readback_status": "not_performed_by_static_adapter",
+          "parameter_identity_basis": "validated frozen assignment and generated-input hashes; native coefficients/charges are a separate read-back audit",
+          "equilibrium_status": "not_assessed",
+          "production_ready": false,
+          "density_prediction_validation": "not_performed",
+          "material_property_validation": "not_performed",
+          "engine_plan": {
+            "status": "planned",
+            "simulation_performed": false,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null
+          },
+          "input_files": {
+            "input.lammps_sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+            "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+          },
+          "engine_run": {
+            "status": "completed",
+            "simulation_performed": true,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null,
+            "evidence_level": "engine_execution",
+            "executable": "lmp",
+            "started_utc": "2026-11-07T11:47:01.831585+00:00",
+            "staged_input_sha256": {
+              "system.data": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+            },
+            "runtime_environment": {
+              "OMP_NUM_THREADS": "1",
+              "UCX_TLS": "self"
+            },
+            "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+            "engine_help_sha256": "43bd55f6117e6a54e53e140e2c9867200d9f1785b0271bba7993e5c66dd71ada",
+            "engine_help_first_line": "Incidental host diagnostic omitted; engine version and hashes retained",
+            "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+            "engine_identity": {
+              "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+              "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+              "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+              "native_runtime_sha256": {
+                "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+                "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+              },
+              "platform": {
+                "system": "Linux",
+                "machine": "x86_64",
+                "byteorder": "little",
+                "python_implementation": "CPython"
+              },
+              "runtime_environment": {
+                "OMP_NUM_THREADS": "1",
+                "UCX_TLS": "self",
+                "LD_LIBRARY_PATH": null,
+                "LAMMPS_PLUGIN_PATH": null
+              },
+              "process_layout": "direct_single_engine_process_no_MPI_launcher"
+            },
+            "command": [
+              "lmp",
+              "-in",
+              "input.lammps",
+              "-log",
+              "log.lammps",
+              "-screen",
+              "screen.lammps"
+            ],
+            "returncode": 0,
+            "artifact_sha256": {
+              "log.lammps": "4cf4262a39ae7168a905a1d95712c01ff5c36e0a13b4e599274ffd7b70a61db1",
+              "forces.dump": "20189c221d2d72fb5182e0225efa4e3f7cd7389cfbe12f565937188f8ddcfde2",
+              "singlepoint.data": "5e48bc7e2201dd4d5ca23a2c1615f84c369c851394034c1f78e1f9b4cc0888fe"
+            },
+            "thermo_blocks": [
+              {
+                "columns": [
+                  "Step",
+                  "Temp",
+                  "KinEng",
+                  "Press",
+                  "Pxx",
+                  "Pyy",
+                  "Pzz",
+                  "Pxy",
+                  "Pxz",
+                  "Pyz",
+                  "Volume",
+                  "Density",
+                  "E_bond",
+                  "E_angle",
+                  "E_dihed",
+                  "E_vdwl",
+                  "E_coul",
+                  "E_long",
+                  "PotEng"
+                ],
+                "rows": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0,
+                    38995.62543778516,
+                    44493.499470635696,
+                    71169.55519839188,
+                    1323.8216443278973,
+                    35302.03522393393,
+                    -8965.568565646568,
+                    1755.9984962598085,
+                    49705.109999999986,
+                    0.6987591781799728,
+                    819.0614897214988,
+                    1052.0124576230107,
+                    1327.8260605904086,
+                    7051.239047253838,
+                    2447.9042345135385,
+                    -2112.9031305305393,
+                    10585.140159171755
+                  ]
+                ],
+                "loop_complete": true
+              }
+            ],
+            "warning_lines": [
+              "WARNING: No fixes with time integration, atoms won't move"
+            ],
+            "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+            "equilibration_validation": "not_performed",
+            "finished_utc": "2026-11-07T11:47:02.819337+00:00",
+            "elapsed_seconds": 0.9868821710006159
+          },
+          "energy_components_kj_mol": {
+            "bond": 3426.953272994751,
+            "angle": 4401.620122694677,
+            "dihedral": 5555.62423751027,
+            "lj": 29502.38417371006,
+            "coulomb_realspace": 10242.031317204646,
+            "coulomb_kspace": -8840.386698139777,
+            "total": 44288.22642597462
+          },
+          "pressure_bar": 39512.317474835814,
+          "pressure_tensor_bar": [
+            [
+              45083.03833862162,
+              35769.787190651055,
+              -9084.362349141385
+            ],
+            [
+              35769.787190651055,
+              72112.55180477057,
+              1779.265476335251
+            ],
+            [
+              -9084.362349141385,
+              1779.265476335251,
+              1341.3622811152418
+            ]
+          ],
+          "volume_angstrom3": 49705.109999999986,
+          "density_g_cm3": 0.6987592396767457,
+          "engine_density_g_cm3": 0.6987591781799728,
+          "temperature_k": 0.0,
+          "kinetic_energy_kj_mol": 0.0,
+          "atom_coordinate_molecule_charge_image_identity": "passed",
+          "energy_component_sum_abs_difference_kj_mol": 7.275957614183426e-12,
+          "pressure_trace_abs_difference_bar": 7.275957614183426e-12,
+          "independent_output_unit_check": {
+            "basis": "actual LAMMPS write_data header",
+            "header": "LAMMPS data file via write_data, version 22 Jul 2025, timestep = 0, units = real",
+            "confirmed_units_style": "real"
+          },
+          "density_conversion_audit": {
+            "canonical_basis": "exact SI Avogadro constant, 6.02214076e23 mol^-1",
+            "native_real_factor": 1.6605389210321897,
+            "expected_engine_density_g_cm3": 0.698759178179949,
+            "source": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/update.cpp#L175"
+          }
+        }
+      },
+      {
+        "stage_id": "cutoff_01",
+        "settings": {
+          "cutoff_angstrom": 12.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "completed_static_thermo_singlepoint",
+        "input_files": {
+          "input.lammps_sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        },
+        "effective_timeout_seconds": 60.0,
+        "record": {
+          "schema_version": "1",
+          "kind": "periodic_alkane_static_thermo_singlepoint",
+          "status": "completed_static_thermo_singlepoint",
+          "simulation_performed": true,
+          "evidence_level": "engine_execution_and_static_state_audit",
+          "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+          "assignment_schema_version": "2",
+          "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+          "geometry_canonical_sha256": "dedbdb490acd67ee7eb278b3c2e6690f72001c88a2f54f53229f843afa751925",
+          "geometry_fingerprint_definition": {
+            "box": "complete assignment box record",
+            "ordered_atom_fields": [
+              "cell_atom_id",
+              "molecule_index",
+              "charge_e",
+              "coordinates_angstrom",
+              "wrapped_coordinates_angstrom",
+              "image_flags"
+            ],
+            "serialization": "UTF-8 JSON, sorted keys, compact separators, finite values"
+          },
+          "atom_count": 4704,
+          "molecule_count": 147,
+          "ewald_settings": {
+            "cutoff_angstrom": 12.0,
+            "alpha_per_angstrom": 0.3,
+            "reciprocal_nmax": 16,
+            "relative_engine_accuracy_request": 1e-08,
+            "surface_boundary": "tin_foil",
+            "realspace_coulomb_table": false,
+            "lj_tail_correction": false
+          },
+          "energy_units": "kJ/mol",
+          "force_units": "kJ/(mol angstrom)",
+          "pressure_units": "bar",
+          "volume_units": "angstrom^3",
+          "density_units": "g/cm^3",
+          "pressure_interpretation": "static_virial_not_equilibrium_average",
+          "pressure_compute": "compute polychemmd_virial all pressure NULL virial",
+          "pressure_tensor_convention": "symmetric 3x3 Cartesian matrix, positive-compression pressure; not stress",
+          "pressure_conversion": "1 atm = 1.01325 bar",
+          "initial_velocities": "zeroed_and_output_verified",
+          "md_integration_steps": 0,
+          "trajectory_production_performed": false,
+          "independent_reference_status": "not_performed",
+          "numerical_convergence_status": "not_established",
+          "native_parameter_readback_status": "not_performed_by_static_adapter",
+          "parameter_identity_basis": "validated frozen assignment and generated-input hashes; native coefficients/charges are a separate read-back audit",
+          "equilibrium_status": "not_assessed",
+          "production_ready": false,
+          "density_prediction_validation": "not_performed",
+          "material_property_validation": "not_performed",
+          "engine_plan": {
+            "status": "planned",
+            "simulation_performed": false,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null
+          },
+          "input_files": {
+            "input.lammps_sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+            "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+          },
+          "engine_run": {
+            "status": "completed",
+            "simulation_performed": true,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null,
+            "evidence_level": "engine_execution",
+            "executable": "lmp",
+            "started_utc": "2026-11-07T11:47:03.765695+00:00",
+            "staged_input_sha256": {
+              "system.data": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+            },
+            "runtime_environment": {
+              "OMP_NUM_THREADS": "1",
+              "UCX_TLS": "self"
+            },
+            "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+            "engine_help_sha256": "e1ec33539e6feb91e391c9e84b38cfbc440f771dbe51aa2203715c5eebb525a5",
+            "engine_help_first_line": "Incidental host diagnostic omitted; engine version and hashes retained",
+            "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+            "engine_identity": {
+              "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+              "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+              "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+              "native_runtime_sha256": {
+                "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+                "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+              },
+              "platform": {
+                "system": "Linux",
+                "machine": "x86_64",
+                "byteorder": "little",
+                "python_implementation": "CPython"
+              },
+              "runtime_environment": {
+                "OMP_NUM_THREADS": "1",
+                "UCX_TLS": "self",
+                "LD_LIBRARY_PATH": null,
+                "LAMMPS_PLUGIN_PATH": null
+              },
+              "process_layout": "direct_single_engine_process_no_MPI_launcher"
+            },
+            "command": [
+              "lmp",
+              "-in",
+              "input.lammps",
+              "-log",
+              "log.lammps",
+              "-screen",
+              "screen.lammps"
+            ],
+            "returncode": 0,
+            "artifact_sha256": {
+              "log.lammps": "9613e4c5e1697bf08db79285c7ea1c0ba8af4eb8e49040cb6e0761967193e878",
+              "forces.dump": "5dfdea521939480f43b86b7b0f4bb43b669a3512d55770f204806010c1bf4b69",
+              "singlepoint.data": "49f35ea41007d56db04eb1fc12b99e8dd001d02ea407a8fec9cd7cba98f40d4e"
+            },
+            "thermo_blocks": [
+              {
+                "columns": [
+                  "Step",
+                  "Temp",
+                  "KinEng",
+                  "Press",
+                  "Pxx",
+                  "Pyy",
+                  "Pzz",
+                  "Pxy",
+                  "Pxz",
+                  "Pyz",
+                  "Volume",
+                  "Density",
+                  "E_bond",
+                  "E_angle",
+                  "E_dihed",
+                  "E_vdwl",
+                  "E_coul",
+                  "E_long",
+                  "PotEng"
+                ],
+                "rows": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0,
+                    38868.49340268775,
+                    44383.61944491162,
+                    71032.91155913087,
+                    1188.9492040207751,
+                    35303.710905860426,
+                    -8967.645891985429,
+                    1756.1114938916414,
+                    49705.109999999986,
+                    0.6987591781799726,
+                    819.0614897214989,
+                    1052.0124576230114,
+                    1327.826060590409,
+                    7005.055555092035,
+                    2447.9246917877313,
+                    -2112.9031305305393,
+                    10538.977124284145
+                  ]
+                ],
+                "loop_complete": true
+              }
+            ],
+            "warning_lines": [
+              "WARNING: No fixes with time integration, atoms won't move"
+            ],
+            "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+            "equilibration_validation": "not_performed",
+            "finished_utc": "2026-11-07T11:47:04.778701+00:00",
+            "elapsed_seconds": 1.0121806919996743
+          },
+          "energy_components_kj_mol": {
+            "bond": 3426.9532729947514,
+            "angle": 4401.62012269468,
+            "dihedral": 5555.624237510272,
+            "lj": 29309.152442505077,
+            "coulomb_realspace": 10242.116910439869,
+            "coulomb_kspace": -8840.386698139777,
+            "total": 44095.080288004865
+          },
+          "pressure_bar": 39383.50094027336,
+          "pressure_tensor_bar": [
+            [
+              44971.7024025567,
+              35771.485075363074,
+              -9086.467200054236
+            ],
+            [
+              35771.485075363074,
+              71974.09763728935,
+              1779.3799711857057
+            ],
+            [
+              -9086.467200054236,
+              1779.3799711857057,
+              1204.7027809740505
+            ]
+          ],
+          "volume_angstrom3": 49705.109999999986,
+          "density_g_cm3": 0.6987592396767457,
+          "engine_density_g_cm3": 0.6987591781799726,
+          "temperature_k": 0.0,
+          "kinetic_energy_kj_mol": 0.0,
+          "atom_coordinate_molecule_charge_image_identity": "passed",
+          "energy_component_sum_abs_difference_kj_mol": 7.275957614183426e-12,
+          "pressure_trace_abs_difference_bar": 7.275957614183426e-12,
+          "independent_output_unit_check": {
+            "basis": "actual LAMMPS write_data header",
+            "header": "LAMMPS data file via write_data, version 22 Jul 2025, timestep = 0, units = real",
+            "confirmed_units_style": "real"
+          },
+          "density_conversion_audit": {
+            "canonical_basis": "exact SI Avogadro constant, 6.02214076e23 mol^-1",
+            "native_real_factor": 1.6605389210321897,
+            "expected_engine_density_g_cm3": 0.698759178179949,
+            "source": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/update.cpp#L175"
+          }
+        }
+      },
+      {
+        "stage_id": "cutoff_02",
+        "settings": {
+          "cutoff_angstrom": 14.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "completed_static_thermo_singlepoint",
+        "input_files": {
+          "input.lammps_sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        },
+        "effective_timeout_seconds": 60.0,
+        "record": {
+          "schema_version": "1",
+          "kind": "periodic_alkane_static_thermo_singlepoint",
+          "status": "completed_static_thermo_singlepoint",
+          "simulation_performed": true,
+          "evidence_level": "engine_execution_and_static_state_audit",
+          "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+          "assignment_schema_version": "2",
+          "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+          "geometry_canonical_sha256": "dedbdb490acd67ee7eb278b3c2e6690f72001c88a2f54f53229f843afa751925",
+          "geometry_fingerprint_definition": {
+            "box": "complete assignment box record",
+            "ordered_atom_fields": [
+              "cell_atom_id",
+              "molecule_index",
+              "charge_e",
+              "coordinates_angstrom",
+              "wrapped_coordinates_angstrom",
+              "image_flags"
+            ],
+            "serialization": "UTF-8 JSON, sorted keys, compact separators, finite values"
+          },
+          "atom_count": 4704,
+          "molecule_count": 147,
+          "ewald_settings": {
+            "cutoff_angstrom": 14.0,
+            "alpha_per_angstrom": 0.3,
+            "reciprocal_nmax": 16,
+            "relative_engine_accuracy_request": 1e-08,
+            "surface_boundary": "tin_foil",
+            "realspace_coulomb_table": false,
+            "lj_tail_correction": false
+          },
+          "energy_units": "kJ/mol",
+          "force_units": "kJ/(mol angstrom)",
+          "pressure_units": "bar",
+          "volume_units": "angstrom^3",
+          "density_units": "g/cm^3",
+          "pressure_interpretation": "static_virial_not_equilibrium_average",
+          "pressure_compute": "compute polychemmd_virial all pressure NULL virial",
+          "pressure_tensor_convention": "symmetric 3x3 Cartesian matrix, positive-compression pressure; not stress",
+          "pressure_conversion": "1 atm = 1.01325 bar",
+          "initial_velocities": "zeroed_and_output_verified",
+          "md_integration_steps": 0,
+          "trajectory_production_performed": false,
+          "independent_reference_status": "not_performed",
+          "numerical_convergence_status": "not_established",
+          "native_parameter_readback_status": "not_performed_by_static_adapter",
+          "parameter_identity_basis": "validated frozen assignment and generated-input hashes; native coefficients/charges are a separate read-back audit",
+          "equilibrium_status": "not_assessed",
+          "production_ready": false,
+          "density_prediction_validation": "not_performed",
+          "material_property_validation": "not_performed",
+          "engine_plan": {
+            "status": "planned",
+            "simulation_performed": false,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null
+          },
+          "input_files": {
+            "input.lammps_sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+            "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+          },
+          "engine_run": {
+            "status": "completed",
+            "simulation_performed": true,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null,
+            "evidence_level": "engine_execution",
+            "executable": "lmp",
+            "started_utc": "2026-11-07T11:47:05.775320+00:00",
+            "staged_input_sha256": {
+              "system.data": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+            },
+            "runtime_environment": {
+              "OMP_NUM_THREADS": "1",
+              "UCX_TLS": "self"
+            },
+            "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+            "engine_help_sha256": "03f8683076fedb7f14e94094c50535b8d79ee3654c8d2b7e391b9c5a342f0623",
+            "engine_help_first_line": "Incidental host diagnostic omitted; engine version and hashes retained",
+            "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+            "engine_identity": {
+              "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+              "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+              "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+              "native_runtime_sha256": {
+                "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+                "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+              },
+              "platform": {
+                "system": "Linux",
+                "machine": "x86_64",
+                "byteorder": "little",
+                "python_implementation": "CPython"
+              },
+              "runtime_environment": {
+                "OMP_NUM_THREADS": "1",
+                "UCX_TLS": "self",
+                "LD_LIBRARY_PATH": null,
+                "LAMMPS_PLUGIN_PATH": null
+              },
+              "process_layout": "direct_single_engine_process_no_MPI_launcher"
+            },
+            "command": [
+              "lmp",
+              "-in",
+              "input.lammps",
+              "-log",
+              "log.lammps",
+              "-screen",
+              "screen.lammps"
+            ],
+            "returncode": 0,
+            "artifact_sha256": {
+              "log.lammps": "59c9dd4d22102f1bf81d52f7626d140251996724e9581c83e6c13dc68aab08ee",
+              "forces.dump": "b01918a8ee91786f109545008ccda143465feb31f000155da44dc55813091894",
+              "singlepoint.data": "16aa31f2464b1a1a7f3656ac009ff23c859f6f02fc9c6f5649883eb505c9bab6"
+            },
+            "thermo_blocks": [
+              {
+                "columns": [
+                  "Step",
+                  "Temp",
+                  "KinEng",
+                  "Press",
+                  "Pxx",
+                  "Pyy",
+                  "Pzz",
+                  "Pxy",
+                  "Pxz",
+                  "Pyz",
+                  "Volume",
+                  "Density",
+                  "E_bond",
+                  "E_angle",
+                  "E_dihed",
+                  "E_vdwl",
+                  "E_coul",
+                  "E_long",
+                  "PotEng"
+                ],
+                "rows": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0,
+                    38808.95518242453,
+                    44318.71942050885,
+                    70976.93330067341,
+                    1131.2128260913012,
+                    35302.762032719846,
+                    -8966.92270171971,
+                    1754.4185045770648,
+                    49705.109999999986,
+                    0.6987591781799678,
+                    819.0614897214997,
+                    1052.0124576230053,
+                    1327.8260605904084,
+                    6983.47146994077,
+                    2447.924524707761,
+                    -2112.9031305305393,
+                    10517.392872052904
+                  ]
+                ],
+                "loop_complete": true
+              }
+            ],
+            "warning_lines": [
+              "WARNING: No fixes with time integration, atoms won't move"
+            ],
+            "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+            "equilibration_validation": "not_performed",
+            "finished_utc": "2026-11-07T11:47:06.791434+00:00",
+            "elapsed_seconds": 1.0147940699989704
+          },
+          "energy_components_kj_mol": {
+            "bond": 3426.953272994755,
+            "angle": 4401.620122694654,
+            "dihedral": 5555.624237510268,
+            "lj": 29218.844630232183,
+            "coulomb_realspace": 10242.116211377273,
+            "coulomb_kspace": -8840.386698139777,
+            "total": 44004.77177666935
+          },
+          "pressure_bar": 39323.173838591654,
+          "pressure_tensor_bar": [
+            [
+              44905.9424528306,
+              35770.523629653384,
+              -9085.734427517496
+            ],
+            [
+              35770.523629653384,
+              71917.37766690733,
+              1777.664549762711
+            ],
+            [
+              -9085.734427517496,
+              1777.664549762711,
+              1146.201396037011
+            ]
+          ],
+          "volume_angstrom3": 49705.109999999986,
+          "density_g_cm3": 0.6987592396767457,
+          "engine_density_g_cm3": 0.6987591781799678,
+          "temperature_k": 0.0,
+          "kinetic_energy_kj_mol": 0.0,
+          "atom_coordinate_molecule_charge_image_identity": "passed",
+          "energy_component_sum_abs_difference_kj_mol": 0.0,
+          "pressure_trace_abs_difference_bar": 7.275957614183426e-12,
+          "independent_output_unit_check": {
+            "basis": "actual LAMMPS write_data header",
+            "header": "LAMMPS data file via write_data, version 22 Jul 2025, timestep = 0, units = real",
+            "confirmed_units_style": "real"
+          },
+          "density_conversion_audit": {
+            "canonical_basis": "exact SI Avogadro constant, 6.02214076e23 mol^-1",
+            "native_real_factor": 1.6605389210321897,
+            "expected_engine_density_g_cm3": 0.698759178179949,
+            "source": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/update.cpp#L175"
+          }
+        }
+      },
+      {
+        "stage_id": "cutoff_03",
+        "settings": {
+          "cutoff_angstrom": 16.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "completed_static_thermo_singlepoint",
+        "input_files": {
+          "input.lammps_sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        },
+        "effective_timeout_seconds": 60.0,
+        "record": {
+          "schema_version": "1",
+          "kind": "periodic_alkane_static_thermo_singlepoint",
+          "status": "completed_static_thermo_singlepoint",
+          "simulation_performed": true,
+          "evidence_level": "engine_execution_and_static_state_audit",
+          "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+          "assignment_schema_version": "2",
+          "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+          "geometry_canonical_sha256": "dedbdb490acd67ee7eb278b3c2e6690f72001c88a2f54f53229f843afa751925",
+          "geometry_fingerprint_definition": {
+            "box": "complete assignment box record",
+            "ordered_atom_fields": [
+              "cell_atom_id",
+              "molecule_index",
+              "charge_e",
+              "coordinates_angstrom",
+              "wrapped_coordinates_angstrom",
+              "image_flags"
+            ],
+            "serialization": "UTF-8 JSON, sorted keys, compact separators, finite values"
+          },
+          "atom_count": 4704,
+          "molecule_count": 147,
+          "ewald_settings": {
+            "cutoff_angstrom": 16.0,
+            "alpha_per_angstrom": 0.3,
+            "reciprocal_nmax": 16,
+            "relative_engine_accuracy_request": 1e-08,
+            "surface_boundary": "tin_foil",
+            "realspace_coulomb_table": false,
+            "lj_tail_correction": false
+          },
+          "energy_units": "kJ/mol",
+          "force_units": "kJ/(mol angstrom)",
+          "pressure_units": "bar",
+          "volume_units": "angstrom^3",
+          "density_units": "g/cm^3",
+          "pressure_interpretation": "static_virial_not_equilibrium_average",
+          "pressure_compute": "compute polychemmd_virial all pressure NULL virial",
+          "pressure_tensor_convention": "symmetric 3x3 Cartesian matrix, positive-compression pressure; not stress",
+          "pressure_conversion": "1 atm = 1.01325 bar",
+          "initial_velocities": "zeroed_and_output_verified",
+          "md_integration_steps": 0,
+          "trajectory_production_performed": false,
+          "independent_reference_status": "not_performed",
+          "numerical_convergence_status": "not_established",
+          "native_parameter_readback_status": "not_performed_by_static_adapter",
+          "parameter_identity_basis": "validated frozen assignment and generated-input hashes; native coefficients/charges are a separate read-back audit",
+          "equilibrium_status": "not_assessed",
+          "production_ready": false,
+          "density_prediction_validation": "not_performed",
+          "material_property_validation": "not_performed",
+          "engine_plan": {
+            "status": "planned",
+            "simulation_performed": false,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null
+          },
+          "input_files": {
+            "input.lammps_sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+            "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+          },
+          "engine_run": {
+            "status": "completed",
+            "simulation_performed": true,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null,
+            "evidence_level": "engine_execution",
+            "executable": "lmp",
+            "started_utc": "2026-11-07T11:47:07.840892+00:00",
+            "staged_input_sha256": {
+              "system.data": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+            },
+            "runtime_environment": {
+              "OMP_NUM_THREADS": "1",
+              "UCX_TLS": "self"
+            },
+            "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+            "engine_help_sha256": "a1e8da2f268f35679fded4ac7fa64e6ad8a4d211030520d75cb463e0384de1d0",
+            "engine_help_first_line": "Incidental host diagnostic omitted; engine version and hashes retained",
+            "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+            "engine_identity": {
+              "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+              "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+              "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+              "native_runtime_sha256": {
+                "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+                "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+              },
+              "platform": {
+                "system": "Linux",
+                "machine": "x86_64",
+                "byteorder": "little",
+                "python_implementation": "CPython"
+              },
+              "runtime_environment": {
+                "OMP_NUM_THREADS": "1",
+                "UCX_TLS": "self",
+                "LD_LIBRARY_PATH": null,
+                "LAMMPS_PLUGIN_PATH": null
+              },
+              "process_layout": "direct_single_engine_process_no_MPI_launcher"
+            },
+            "command": [
+              "lmp",
+              "-in",
+              "input.lammps",
+              "-log",
+              "log.lammps",
+              "-screen",
+              "screen.lammps"
+            ],
+            "returncode": 0,
+            "artifact_sha256": {
+              "log.lammps": "99237caa0eb75f8e726e806dec5a38c1f9e77873a217401ed991b7d0243ffc13",
+              "forces.dump": "19186dacdb4bee5e29ac6272a99c2ef5231ccdcbd0e69b8c2e2bc7aa4278baf7",
+              "singlepoint.data": "b6d83b308956d7bfa96bef69e8f36aa48aacb8a420f649b95070b38f60e5e590"
+            },
+            "thermo_blocks": [
+              {
+                "columns": [
+                  "Step",
+                  "Temp",
+                  "KinEng",
+                  "Press",
+                  "Pxx",
+                  "Pyy",
+                  "Pzz",
+                  "Pxy",
+                  "Pxz",
+                  "Pyz",
+                  "Volume",
+                  "Density",
+                  "E_bond",
+                  "E_angle",
+                  "E_dihed",
+                  "E_vdwl",
+                  "E_coul",
+                  "E_long",
+                  "PotEng"
+                ],
+                "rows": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0,
+                    38774.04879954004,
+                    44282.990903154256,
+                    70941.79849547107,
+                    1097.3569999947813,
+                    35303.06584326711,
+                    -8967.121379251494,
+                    1755.0456818430575,
+                    49705.109999999986,
+                    0.6987591781799735,
+                    819.0614897214995,
+                    1052.012457623009,
+                    1327.8260605904072,
+                    6970.8184010474815,
+                    2447.924522203296,
+                    -2112.9031305305393,
+                    10504.739800655154
+                  ]
+                ],
+                "loop_complete": true
+              }
+            ],
+            "warning_lines": [
+              "WARNING: No fixes with time integration, atoms won't move"
+            ],
+            "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+            "equilibration_validation": "not_performed",
+            "finished_utc": "2026-11-07T11:47:08.952190+00:00",
+            "elapsed_seconds": 1.1099914149999677
+          },
+          "energy_components_kj_mol": {
+            "bond": 3426.953272994754,
+            "angle": 4401.62012269467,
+            "dihedral": 5555.624237510264,
+            "lj": 29165.904189982663,
+            "coulomb_realspace": 10242.11620089859,
+            "coulomb_kspace": -8840.386698139777,
+            "total": 43951.831325941166
+          },
+          "pressure_bar": 39287.80494613395,
+          "pressure_tensor_bar": [
+            [
+              44869.74053262105,
+              35770.8314656904,
+              -9085.935737526575
+            ],
+            [
+              35770.8314656904,
+              71881.77732553607,
+              1778.300037127478
+            ],
+            [
+              -9085.935737526575,
+              1778.300037127478,
+              1111.896980244712
+            ]
+          ],
+          "volume_angstrom3": 49705.109999999986,
+          "density_g_cm3": 0.6987592396767457,
+          "engine_density_g_cm3": 0.6987591781799735,
+          "temperature_k": 0.0,
+          "kinetic_energy_kj_mol": 0.0,
+          "atom_coordinate_molecule_charge_image_identity": "passed",
+          "energy_component_sum_abs_difference_kj_mol": 0.0,
+          "pressure_trace_abs_difference_bar": 7.275957614183426e-12,
+          "independent_output_unit_check": {
+            "basis": "actual LAMMPS write_data header",
+            "header": "LAMMPS data file via write_data, version 22 Jul 2025, timestep = 0, units = real",
+            "confirmed_units_style": "real"
+          },
+          "density_conversion_audit": {
+            "canonical_basis": "exact SI Avogadro constant, 6.02214076e23 mol^-1",
+            "native_real_factor": 1.6605389210321897,
+            "expected_engine_density_g_cm3": 0.698759178179949,
+            "source": "https://github.com/lammps/lammps/blob/stable_22Jul2025_update4/src/update.cpp#L175"
+          }
+        }
+      },
+      {
+        "stage_id": "cutoff_04",
+        "settings": {
+          "cutoff_angstrom": 17.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 16
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "failed",
+        "input_files": {
+          "input.lammps_sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        },
+        "effective_timeout_seconds": 60.0,
+        "failure_reason": "engine_run: LAMMPS returned nonzero exit status 1",
+        "record": {
+          "schema_version": "1",
+          "kind": "periodic_alkane_static_thermo_singlepoint",
+          "status": "failed",
+          "simulation_performed": true,
+          "evidence_level": "engine_execution_and_static_state_audit",
+          "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+          "assignment_schema_version": "2",
+          "assignment_canonical_sha256": "b5db5a0864bef4cfeeb7ca9003b630ee88f49c559a38e59f7c1de68d85b1fe26",
+          "geometry_canonical_sha256": "dedbdb490acd67ee7eb278b3c2e6690f72001c88a2f54f53229f843afa751925",
+          "geometry_fingerprint_definition": {
+            "box": "complete assignment box record",
+            "ordered_atom_fields": [
+              "cell_atom_id",
+              "molecule_index",
+              "charge_e",
+              "coordinates_angstrom",
+              "wrapped_coordinates_angstrom",
+              "image_flags"
+            ],
+            "serialization": "UTF-8 JSON, sorted keys, compact separators, finite values"
+          },
+          "atom_count": 4704,
+          "molecule_count": 147,
+          "ewald_settings": {
+            "cutoff_angstrom": 17.0,
+            "alpha_per_angstrom": 0.3,
+            "reciprocal_nmax": 16,
+            "relative_engine_accuracy_request": 1e-08,
+            "surface_boundary": "tin_foil",
+            "realspace_coulomb_table": false,
+            "lj_tail_correction": false
+          },
+          "energy_units": "kJ/mol",
+          "force_units": "kJ/(mol angstrom)",
+          "pressure_units": "bar",
+          "volume_units": "angstrom^3",
+          "density_units": "g/cm^3",
+          "pressure_interpretation": "static_virial_not_equilibrium_average",
+          "pressure_compute": "compute polychemmd_virial all pressure NULL virial",
+          "pressure_tensor_convention": "symmetric 3x3 Cartesian matrix, positive-compression pressure; not stress",
+          "pressure_conversion": "1 atm = 1.01325 bar",
+          "initial_velocities": "will_be_zeroed_and_output_verified",
+          "md_integration_steps": 0,
+          "trajectory_production_performed": false,
+          "independent_reference_status": "not_performed",
+          "numerical_convergence_status": "not_established",
+          "native_parameter_readback_status": "not_performed_by_static_adapter",
+          "parameter_identity_basis": "validated frozen assignment and generated-input hashes; native coefficients/charges are a separate read-back audit",
+          "equilibrium_status": "not_assessed",
+          "production_ready": false,
+          "density_prediction_validation": "not_performed",
+          "material_property_validation": "not_performed",
+          "engine_plan": {
+            "status": "planned",
+            "simulation_performed": false,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null
+          },
+          "input_files": {
+            "input.lammps_sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+            "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+          },
+          "failure_phase": "engine",
+          "failure_reason": "engine_run: LAMMPS returned nonzero exit status 1",
+          "engine_run": {
+            "status": "failed",
+            "simulation_performed": true,
+            "run_directory": "private_engine_run_not_published",
+            "input_sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+            "timeout_seconds": 60.0,
+            "expected_artifacts": [
+              "log.lammps",
+              "forces.dump",
+              "singlepoint.data"
+            ],
+            "required_thermo_columns": [
+              "Step",
+              "Temp",
+              "KinEng",
+              "Press",
+              "Pxx",
+              "Pyy",
+              "Pzz",
+              "Pxy",
+              "Pxz",
+              "Pyz",
+              "Volume",
+              "Density",
+              "E_bond",
+              "E_angle",
+              "E_dihed",
+              "E_vdwl",
+              "E_coul",
+              "E_long",
+              "PotEng"
+            ],
+            "material_validation": "not_performed",
+            "declared_units_style": "real",
+            "input_units_style": "real",
+            "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+            "units_style_confidence": "recipe_literal_not_engine_verified",
+            "recipe_run_units_styles": [
+              "real"
+            ],
+            "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+            "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+            "staged_binary_input_sha256": {},
+            "expected_engine_identity": null,
+            "evidence_level": "process_contract",
+            "executable": "lmp",
+            "started_utc": "2026-11-07T11:47:10.203521+00:00",
+            "staged_input_sha256": {
+              "system.data": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+            },
+            "runtime_environment": {
+              "OMP_NUM_THREADS": "1",
+              "UCX_TLS": "self"
+            },
+            "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+            "engine_help_sha256": "e2fd64f36e05672ec6035081b0a6606e989b61db4c1edce93eede1c2e9fb4aa7",
+            "engine_help_first_line": "Incidental host diagnostic omitted; engine version and hashes retained",
+            "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+            "engine_identity": {
+              "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+              "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+              "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+              "native_runtime_sha256": {
+                "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+                "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+              },
+              "platform": {
+                "system": "Linux",
+                "machine": "x86_64",
+                "byteorder": "little",
+                "python_implementation": "CPython"
+              },
+              "runtime_environment": {
+                "OMP_NUM_THREADS": "1",
+                "UCX_TLS": "self",
+                "LD_LIBRARY_PATH": null,
+                "LAMMPS_PLUGIN_PATH": null
+              },
+              "process_layout": "direct_single_engine_process_no_MPI_launcher"
+            },
+            "command": [
+              "lmp",
+              "-in",
+              "input.lammps",
+              "-log",
+              "log.lammps",
+              "-screen",
+              "screen.lammps"
+            ],
+            "returncode": 1,
+            "failure_phase": "engine_run",
+            "failure_reason": "LAMMPS returned nonzero exit status 1",
+            "finished_utc": "2026-11-07T11:47:10.788647+00:00",
+            "elapsed_seconds": 0.5832174419992953
+          }
+        }
+      },
+      {
+        "stage_id": "reciprocal_refinement",
+        "settings": {
+          "cutoff_angstrom": 17.0,
+          "ewald_alpha_per_angstrom": 0.3,
+          "reciprocal_nmax": 20
+        },
+        "run_directory": "private_engine_run_not_published",
+        "status": "planned",
+        "input_files": {
+          "input.lammps_sha256": "bb466dd50fdaecbcdb668a58bc824c3a6904cb9ef3b64ee280513ee8f48ebb08",
+          "system.data_sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+        },
+        "engine_plan": {
+          "status": "planned",
+          "simulation_performed": false,
+          "run_directory": "private_engine_run_not_published",
+          "input_sha256": "bb466dd50fdaecbcdb668a58bc824c3a6904cb9ef3b64ee280513ee8f48ebb08",
+          "timeout_seconds": 60.0,
+          "expected_artifacts": [
+            "log.lammps",
+            "forces.dump",
+            "singlepoint.data"
+          ],
+          "required_thermo_columns": [
+            "Step",
+            "Temp",
+            "KinEng",
+            "Press",
+            "Pxx",
+            "Pyy",
+            "Pzz",
+            "Pxy",
+            "Pxz",
+            "Pyz",
+            "Volume",
+            "Density",
+            "E_bond",
+            "E_angle",
+            "E_dihed",
+            "E_vdwl",
+            "E_coul",
+            "E_long",
+            "PotEng"
+          ],
+          "material_validation": "not_performed",
+          "declared_units_style": "real",
+          "input_units_style": "real",
+          "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+          "units_style_confidence": "recipe_literal_not_engine_verified",
+          "recipe_run_units_styles": [
+            "real"
+          ],
+          "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+          "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+          "staged_binary_input_sha256": {},
+          "expected_engine_identity": null
+        }
+      }
+    ],
+    "shared_input": {
+      "relative_path": "common/system.data",
+      "sha256": "096ec6c006ed817af61b8215be46f26712c00fe227c96964e56c75ff9cb50789"
+    },
+    "expected_engine_runs": 6,
+    "engine_requests_started": 5,
+    "engine_execution_attempts_reported": 5,
+    "simulation_performed": true,
+    "numerical_status": "execution_failed",
+    "selected_settings": null,
+    "production_ready": false,
+    "equilibrium_status": "not_assessed",
+    "bulk_property_convergence": "not_established",
+    "density_prediction_validation": "not_performed",
+    "material_property_validation": "not_performed",
+    "started_monotonic_elapsed_seconds": 4.9660029290007515,
+    "failure_reason": "engine_run: LAMMPS returned nonzero exit status 1",
+    "partial_review": {
+      "schema_version": "1",
+      "kind": "periodic_numerical_record_review",
+      "numerical_status": "incomplete_records",
+      "scope": "one_fixed_source_geometry_not_thermal_state_or_bulk_convergence",
+      "spec": {
+        "cutoffs_angstrom": [
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          17.0
+        ],
+        "ewald_alpha_per_angstrom": 0.3,
+        "reciprocal_nmax": 16,
+        "refined_reciprocal_nmax": 20,
+        "min_consecutive_cutoff_pairs": 2,
+        "cutoff_energy_per_atom_limit_kj_mol": 0.02,
+        "cutoff_force_limit_kj_mol_angstrom": 0.05,
+        "cutoff_pressure_limit_bar": 20.0,
+        "reciprocal_energy_per_atom_limit_kj_mol": 1e-05,
+        "reciprocal_force_limit_kj_mol_angstrom": 0.0001,
+        "reciprocal_pressure_limit_bar": 0.01,
+        "unchanged_component_abs_tolerance_kj_mol": 1e-07,
+        "per_run_timeout_seconds": 60.0,
+        "total_wall_seconds": 120.0,
+        "max_engine_runs": 6
+      },
+      "n_expected_records": 6,
+      "n_supplied_records": 5,
+      "case_outcomes": [
+        {
+          "stage_id": "cutoff_00",
+          "status": "completed_static_thermo_singlepoint",
+          "failure_reason": null
+        },
+        {
+          "stage_id": "cutoff_01",
+          "status": "completed_static_thermo_singlepoint",
+          "failure_reason": null
+        },
+        {
+          "stage_id": "cutoff_02",
+          "status": "completed_static_thermo_singlepoint",
+          "failure_reason": null
+        },
+        {
+          "stage_id": "cutoff_03",
+          "status": "completed_static_thermo_singlepoint",
+          "failure_reason": null
+        },
+        {
+          "stage_id": "cutoff_04",
+          "status": "failed",
+          "failure_reason": "engine_run: LAMMPS returned nonzero exit status 1"
+        }
+      ],
+      "cutoff_comparisons": [],
+      "reciprocal_comparison": null,
+      "selected_settings": null,
+      "production_ready": false,
+      "equilibrium_status": "not_assessed",
+      "bulk_property_convergence": "not_established",
+      "density_prediction_validation": "not_performed"
+    },
+    "measured_total_wall_seconds": 14.883401352000874,
+    "public_summary_policy": {
+      "omitted_fields": [
+        {
+          "field": "record.stages[0].input_script",
+          "canonical_sha256": "ad23d812cd21640e13e5f076b7e374d0ed2479f4f461bbea1babfa072c412018",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[0].record.atom_ids",
+          "canonical_sha256": "c610afb17644aab5766d26680d9a53fd76c79512d2f51e7a3c07061ffb253ae1",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[0].record.forces_kj_mol_angstrom",
+          "canonical_sha256": "3298fd0ba00d0572f26defb78c48a71a05f948111fc8266d5c3ebc3ddcf57bff",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[1].input_script",
+          "canonical_sha256": "601d002bb362360e4d460db05176de4b2ba904cc288b40825b9ed849d15050ce",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[1].record.atom_ids",
+          "canonical_sha256": "c610afb17644aab5766d26680d9a53fd76c79512d2f51e7a3c07061ffb253ae1",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[1].record.forces_kj_mol_angstrom",
+          "canonical_sha256": "80e62702d9db5eccbcc6a6774ec0c100d43ac2abe326dd011cc4b7fb1b1dbb34",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[2].input_script",
+          "canonical_sha256": "daacb85810d2d25af126c5ef06a627ad0740cd6fa02fe6f4bed7d6139b15093e",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[2].record.atom_ids",
+          "canonical_sha256": "c610afb17644aab5766d26680d9a53fd76c79512d2f51e7a3c07061ffb253ae1",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[2].record.forces_kj_mol_angstrom",
+          "canonical_sha256": "91ee1b80c9c654021a69507c80b5c608c65e9f22af5f24d3a8fb8769f5f199dd",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[3].input_script",
+          "canonical_sha256": "5fac2c99089d7e6b5cb769f8d24d52f37777b5180b5b3f1b82534e3d953814fa",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[3].record.atom_ids",
+          "canonical_sha256": "c610afb17644aab5766d26680d9a53fd76c79512d2f51e7a3c07061ffb253ae1",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[3].record.forces_kj_mol_angstrom",
+          "canonical_sha256": "7d2834a8fac209ce9f04873376deef0d50855fb7a844ae55945faa8e63ae88f4",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[4].input_script",
+          "canonical_sha256": "32a7debb9c98ce01c4878b2dd7023a288e096e2b394700c5d5ba912f716ae75e",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[4].record.atom_ids",
+          "canonical_sha256": "c610afb17644aab5766d26680d9a53fd76c79512d2f51e7a3c07061ffb253ae1",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        },
+        {
+          "field": "record.stages[5].input_script",
+          "canonical_sha256": "5c53d312c18845d0640d3bec069aff61ea9a41ffefb12e71bd2e98e615b4684f",
+          "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+        }
+      ],
+      "scope": "Host paths and duplicate/large arrays omitted explicitly; scientific aggregate values, model, source, engine and raw artifact hashes retained"
+    }
+  },
+  "retained_failed_inputs": {
+    "numerical/cutoff_00/input.lammps": {
+      "sha256": "9967f54f22801647f8dc02a306cde67cb1400fdb8a84d22621d657c2d0d859ed",
+      "bytes": 982,
+      "public_path": "failed_inputs/numerical/cutoff_00/input.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_01/input.lammps": {
+      "sha256": "bf3fb0377166d8dad8cf7c2dcfc99f11ba445c495e713d8dccd2d6cfe30d471f",
+      "bytes": 982,
+      "public_path": "failed_inputs/numerical/cutoff_01/input.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_02/input.lammps": {
+      "sha256": "8869849ef377f9c3a15b078630284924aeb7f82e1dff63aa272f8641a362e58e",
+      "bytes": 982,
+      "public_path": "failed_inputs/numerical/cutoff_02/input.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_03/input.lammps": {
+      "sha256": "fda81dce7537f3350debbfcb34f59c35da4eb4cee2106881e475a6b4d8c97a12",
+      "bytes": 982,
+      "public_path": "failed_inputs/numerical/cutoff_03/input.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_04/input.lammps": {
+      "sha256": "0010e03bc3951f49617101431e9a4487bcdbf151c6a0a148c674be0c739db05f",
+      "bytes": 982,
+      "public_path": "failed_inputs/numerical/cutoff_04/input.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_00/log.lammps": {
+      "sha256": "4cf4262a39ae7168a905a1d95712c01ff5c36e0a13b4e599274ffd7b70a61db1",
+      "bytes": 5175,
+      "public_path": "failed_inputs/numerical/cutoff_00/log.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_01/log.lammps": {
+      "sha256": "9613e4c5e1697bf08db79285c7ea1c0ba8af4eb8e49040cb6e0761967193e878",
+      "bytes": 5176,
+      "public_path": "failed_inputs/numerical/cutoff_01/log.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_02/log.lammps": {
+      "sha256": "59c9dd4d22102f1bf81d52f7626d140251996724e9581c83e6c13dc68aab08ee",
+      "bytes": 5172,
+      "public_path": "failed_inputs/numerical/cutoff_02/log.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_03/log.lammps": {
+      "sha256": "99237caa0eb75f8e726e806dec5a38c1f9e77873a217401ed991b7d0243ffc13",
+      "bytes": 5175,
+      "public_path": "failed_inputs/numerical/cutoff_03/log.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    },
+    "numerical/cutoff_04/log.lammps": {
+      "sha256": "2b376b79fb389ae6a4de26eb41690dae909477e09b0e204139716eb292a57a38",
+      "bytes": 2828,
+      "public_path": "failed_inputs/numerical/cutoff_04/log.lammps",
+      "evidence": "partial_current_attempt_text_not_success_or_convergence"
+    }
+  },
+  "finished_utc": "2026-11-07T11:47:11.100398+00:00",
+  "measured_total_wall_seconds": 24.276107121999303,
+  "original_failed_report_sha256": "680c40716ad7a43d2cbae5ac1baa815341d017b49ce0f057da55cfdabab9a65a",
+  "retention_note": "Actual first attempt; four static points completed then the 17 angstrom point failed with LAMMPS neighbor-list overflow before preparation. Physical settings and review limits were not loosened."
+}

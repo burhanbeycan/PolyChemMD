@@ -1,6 +1,6 @@
 {
   "catalogue_schema_version": "0.1",
-  "scope": "Planned material-property families; no physical-property pipeline is implemented in this starter.",
+  "scope": "Planned material-property families with explicitly listed partial calculation kernels; validated bulk-property pipelines remain open.",
   "counting_rule": "Tensor components, uncertainty columns and algebraically derived outputs are not independent validated capabilities.",
   "families": [
     {
@@ -37,12 +37,21 @@
       "implemented": false,
       "outputs": [
         "Rg",
+        "end-to-end distance",
         "end-to-end distribution",
         "persistence length",
         "Kuhn length",
         "asphericity"
       ],
-      "acceptance_gate": "Unwrapped chemically ordered chains; contour and chain-length checks"
+      "acceptance_gate": "Unwrapped chemically ordered chains; contour and chain-length checks",
+      "implemented_static_kernels": [
+        "all-atom mass-weighted radius of gyration",
+        "carbon-backbone radius of gyration",
+        "terminal-carbon end-to-end distance",
+        "gyration tensors",
+        "apolar nematic orientation tensor and largest-eigenvalue order parameter"
+      ],
+      "kernel_evidence_boundary": "Single configurations of supported explicit n-alkanes; no equilibrium distributions, phase identification or validated bulk property."
     },
     {
       "id": "chemical_association",

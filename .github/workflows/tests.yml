@@ -48,3 +48,4 @@ jobs:
       - run: python scripts/verify_periodic_v05.py --output-dir artifacts/periodic-ci
       - run: python scripts/verify_restart_v06.py --output-dir artifacts/restart-ci
       - run: python scripts/verify_large_cell_v07.py --output-dir artifacts/large-cell-ci
+      - run: python scripts/verify_qualification_v08.py --output-dir artifacts/qualification-ci

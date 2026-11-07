@@ -57,6 +57,20 @@ both representations; the independent analytical reference remains deliberately
 small and explicitly budgeted. Larger-cell engine results and fixed-geometry
 numerical sensitivity are separate evidence from small-cell reference parity.
 
+`engines/periodic_thermo.py` separately exports static virial scalar/tensor
+pressure, energies and forces with zero-velocity/native-unit audits.
+Large periodic setups and native continuation share an explicit size-derived
+neighbor-storage policy; storage capacity does not change the physical cutoff.
+`protocols/numerics.py` prespecifies all fixed-geometry refinement points,
+source/engine identity, consecutive-finest comparison gates and aggregate
+resources before executing them. `analysis/structure.py` computes static chain
+dimensions and apolar order from chemically ordered, unwrapped backbones.
+`analysis/readiness.py` reviews full actual preparation records and recomputes
+structure/force/sampling consistency; it keeps initial-geometry numerical
+coverage distinct from the evolved MD state. Thermal forces are not minimizer
+residuals. These calculations extend configuration analysis without promoting
+any snapshot or numerical sweep into a validated material ensemble.
+
 The names below describe architectural responsibilities; they do not assert that all listed Python classes or modules already exist.
 
 ## Layers and ownership

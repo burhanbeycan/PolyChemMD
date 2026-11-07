@@ -100,6 +100,12 @@ def _geometry_from_record(data):
     return MolecularGeometry.from_mapping(data)
 
 
+def _payload(data):
+    if isinstance(data, dict) and "record_kind" in data and "payload" in data:
+        return data["payload"]
+    return data
+
+
 def _periodic_assignment_from_record(data, *, compact=False):
     from .forcefields import (AssignedPeriodicAlkaneCell, assign_periodic_alkanes,
                              CompactAssignedPeriodicAlkaneCell, assign_compact_periodic_alkanes)
@@ -173,6 +179,8 @@ def doctor():
         "polymer_md_protocol_status": "bounded_periodic_preparation_and_restart",
         "density_sampling_status": "diagnostics_only_no_equilibrium_certificate",
         "periodic_assignment_representations": {"legacy_exhaustive_v1": 512, "compact_sparse_pairs_v2": 8192},
+        "chain_structure_status": "static_supported_alkane_configuration_kernels",
+        "numerical_qualification_status": "fixed_geometry_diagnostics_only",
         "polymer_equilibrium_validation": "not_implemented",
         "qm_adapter_status": "planned",
     }
@@ -257,6 +265,33 @@ def main(argv=None):
     singlepoint.add_argument("--reciprocal-nmax", type=int, default=16)
     singlepoint.add_argument("--plan", action="store_true")
     singlepoint.add_argument("--output")
+    thermo = commands.add_parser("periodic-thermo", help="Plan/run a static periodic virial/pressure-tensor single point; no equilibrium estimate")
+    thermo.add_argument("input")
+    thermo.add_argument("--run-dir", required=True)
+    thermo.add_argument("--executable")
+    thermo.add_argument("--timeout", type=float, default=60.)
+    thermo.add_argument("--cutoff-angstrom", type=float, default=10.)
+    thermo.add_argument("--ewald-alpha", type=float, default=.30)
+    thermo.add_argument("--reciprocal-nmax", type=int, default=16)
+    thermo.add_argument("--plan", action="store_true")
+    thermo.add_argument("--output")
+    numerical = commands.add_parser("numerical-qualify", help="Review consecutive cutoff and reciprocal-bound refinements at one fixed geometry")
+    numerical.add_argument("input")
+    numerical.add_argument("--protocol", required=True)
+    numerical.add_argument("--run-dir", required=True)
+    numerical.add_argument("--executable")
+    numerical.add_argument("--plan", action="store_true")
+    numerical.add_argument("--output")
+    structure = commands.add_parser("chain-structure", help="Compute static supported-chain Rg, end-to-end distance and nematic orientation")
+    structure.add_argument("input")
+    structure.add_argument("--state", help="Actual final-state JSON or full preparation/continuation result")
+    structure.add_argument("--output")
+    readiness = commands.add_parser("preparation-review", help="Audit actual force, structure and sampling gates; never certify equilibrium")
+    readiness.add_argument("input")
+    readiness.add_argument("--record", required=True, help="Full actual preparation report, including final atom state")
+    readiness.add_argument("--protocol", required=True)
+    readiness.add_argument("--numerical-review")
+    readiness.add_argument("--output")
     preparation = commands.add_parser("periodic-prepare", help="Plan/run bounded minimization and NVT/NPT preparation; no equilibrium certification")
     preparation.add_argument("input")
     preparation.add_argument("--protocol", required=True, help="Explicit preparation-spec JSON")
@@ -512,6 +547,66 @@ def main(argv=None):
             payload["source_reference_reported_by_input"] = data["source_reference"]
             payload["protocol_input_sha256"] = hashlib.sha256(protocol_raw).hexdigest()
             _emit(envelope(payload, raw, "density_sampling_diagnostics"), args.output)
+        elif args.command in ("periodic-thermo", "numerical-qualify"):
+            _check_output_path(args.input, args.output)
+            if args.output is not None and Path(args.output).resolve().is_relative_to(Path(args.run_dir).resolve()):
+                raise ValueError("summary output must be outside the engine run directory to preserve its artifacts")
+            raw, data = _read(args.input)
+            assigned = _periodic_assignment_from_record(data)
+            if args.command == "periodic-thermo":
+                from .engines.periodic_thermo import (plan_periodic_alkane_thermo_singlepoint,
+                                                     run_periodic_alkane_thermo_singlepoint)
+                function = plan_periodic_alkane_thermo_singlepoint if args.plan else run_periodic_alkane_thermo_singlepoint
+                payload = function(assigned, run_directory=args.run_dir, executable=args.executable,
+                                   timeout_seconds=args.timeout, cutoff_angstrom=args.cutoff_angstrom,
+                                   ewald_alpha_per_angstrom=args.ewald_alpha, reciprocal_nmax=args.reciprocal_nmax)
+                kind = "periodic_static_thermo_plan" if args.plan else "periodic_static_thermo_singlepoint"
+            else:
+                from .protocols.numerics import (NumericalQualificationSpec, plan_numerical_qualification,
+                                                 run_numerical_qualification)
+                _check_output_path(args.protocol, args.output)
+                protocol_raw, protocol_data = _read(args.protocol)
+                function = plan_numerical_qualification if args.plan else run_numerical_qualification
+                payload = function(assigned, NumericalQualificationSpec.from_mapping(protocol_data),
+                                   run_directory=args.run_dir, executable=args.executable)
+                payload["protocol_input_sha256"] = hashlib.sha256(protocol_raw).hexdigest()
+                kind = "numerical_qualification_plan" if args.plan else "fixed_geometry_numerical_review"
+            _emit(envelope(payload, raw, kind), args.output)
+        elif args.command == "chain-structure":
+            from .analysis.structure import analyze_chain_structure
+            _check_output_path(args.input, args.output)
+            raw, data = _read(args.input)
+            state_raw = None
+            state = None
+            if args.state:
+                _check_output_path(args.state, args.output)
+                state_raw, state = _read(args.state)
+                state = _payload(state)
+                if isinstance(state, dict) and "final_state" in state:
+                    state = state["final_state"]
+            payload = analyze_chain_structure(_periodic_assignment_from_record(data), state)
+            if state_raw is not None:
+                payload["state_input_sha256"] = hashlib.sha256(state_raw).hexdigest()
+            _emit(envelope(payload, raw, "static_chain_structure"), args.output)
+        elif args.command == "preparation-review":
+            from .analysis.readiness import PreparationReadinessSpec, analyze_preparation_readiness
+            for source in (args.input, args.record, args.protocol, args.numerical_review):
+                if source:
+                    _check_output_path(source, args.output)
+            raw, data = _read(args.input)
+            record_raw, record = _read(args.record)
+            protocol_raw, protocol = _read(args.protocol)
+            numerical_raw = numerical_review = None
+            if args.numerical_review:
+                numerical_raw, numerical_review = _read(args.numerical_review)
+                numerical_review = _payload(numerical_review)
+            payload = analyze_preparation_readiness(_periodic_assignment_from_record(data), _payload(record),
+                        PreparationReadinessSpec.from_mapping(protocol), numerical_review=numerical_review)
+            payload["record_input_sha256"] = hashlib.sha256(record_raw).hexdigest()
+            payload["protocol_input_sha256"] = hashlib.sha256(protocol_raw).hexdigest()
+            if numerical_raw is not None:
+                payload["numerical_review_input_sha256"] = hashlib.sha256(numerical_raw).hexdigest()
+            _emit(envelope(payload, raw, "preparation_readiness_review"), args.output)
         elif args.command == "torsion-import":
             from .descriptors.conventions import import_lammps_fourier, import_lammps_opls
             _check_output_path(args.input, args.output)

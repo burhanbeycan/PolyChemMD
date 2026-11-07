@@ -11,9 +11,9 @@ These are repository task specifications, not claims that GitHub issues have alr
 | 003 | Implemented | Analytic energy checks for LAMMPS Fourier/OPLS conversions, not material parameter validation |
 | 004 | Implemented contract | Assigned-type coverage only; no chemical atom typing or production parameter set |
 | 005 | Implemented process adapter | Real reduced-unit LJ smoke, plus independent failure/parser tests |
-| 006 | Geometry, restricted parameters, TASK-006C1 plus TASK-006C2A/B restart, sampling and compact larger-cell foundations implemented | No validated polymer-density result exists; sampling and external comparison remain open |
+| 006 | Geometry, restricted parameters, TASK-006C1 plus TASK-006C2A/B/C1 restart, compact cells and qualification-analysis foundations implemented | No validated polymer-density result exists; sampling and external comparison remain open |
 | 007 | Planned | No representation advantage or chemical-family benchmark claimed |
-| 008 | Development evidence audit implemented for v0.2–v0.7 | Machine-readable geometry/parameter/periodic/engine checks; complete scientific benchmarks remain open |
+| 008 | Development evidence audit implemented for v0.2–v0.8 | Machine-readable geometry/parameter/periodic/engine checks; complete scientific benchmarks remain open |
 
 ## TASK-001 — Chemical contract and atom-lineage schema
 
@@ -156,7 +156,7 @@ legacy model and serialized schema remain unchanged. The larger geometric cell
 removes the former capacity obstacle for the declared density range, but does
 not identify a liquid or certify sampling. Actual outcomes are in VALIDATION.md.
 
-### Next bounded task — TASK-006C2C: state and numerical preparation qualification
+### TASK-006C2C — state and numerical preparation qualification (open)
 
 Establish an appropriate preparation history for the declared material/state
 instead of treating the ordered repeated motif as a liquid or independent
@@ -167,6 +167,30 @@ physical sampling windows under a measured finite compute budget. Continue to
 retain failed/inconclusive states. Phase/chain relaxation, finite-size sampling
 and state-matched external density comparison remain open until actual gates
 pass; a short dense geometric pilot cannot close them.
+
+### TASK-006C2C1 — numerical and preparation review layer
+
+Implemented in v0.8: explicit static virial scalar/tensor pressure, a bounded
+multi-point cutoff/reciprocal protocol with consecutive finest-refinement gates,
+static Rg/end-to-end/gyration/nematic calculations, and a full-record preparation
+readiness review. Source/geometry/engine identity and all numerical settings are
+prespecified; initial-state numerical coverage does not transfer through MD.
+Short ordered-cell execution evidence is distinct from state qualification.
+Actual outcomes and limitations are recorded in VALIDATION.md.
+
+### Next bounded task — TASK-006C2C2: preparation history and evolved-state coverage
+
+Resolve the retained pressure-sensitive cutoff result with declared numerical
+refinements and appropriate cell size before adopting a production model.
+Establish suitable, independently prepared starting structures and an affordable
+relaxation/thermalization protocol. Retain actual minimizer stopping evidence
+without requiring finite-temperature forces to vanish. Check whether imposed
+motif orientation persists; do not relabel perturbations of one parent cell as
+independent material replicates. Extend numerical sensitivity to actual evolved
+states or representative trajectory windows before adopting it for production.
+Prespecify physical duration/discard and observable sampling gates, measure
+resources, and retain failed/unqualified outcomes. Full phase/chain relaxation,
+finite-size and state-matched external density evaluation remain open.
 
 ## TASK-007 — Chemically conditioned torsion descriptors
 

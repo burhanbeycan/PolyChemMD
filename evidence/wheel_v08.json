@@ -1,0 +1,24 @@
+{
+  "evidence_kind": "executed_isolated_wheel_numerical_structure_and_readiness_check",
+  "release": "0.8.0.dev0",
+  "wheel": "polychemmd-0.8.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "828a809265f7426fb265a527c9eefbbf629bf7a61af3f0dfc9b139318c622998",
+  "build_command": "PIP_NO_INDEX=1 python -m pip wheel --no-deps --no-build-isolation --wheel-dir artifacts/wheels-v08 .",
+  "isolation": "new temporary cwd; python -S; packaged sources matched checkout; no optional packages imported",
+  "result": {
+    "version": "0.8.0.dev0",
+    "assigned_atoms": 4704,
+    "initial_nematic_order_parameter": 1.0,
+    "mean_radius_of_gyration_angstrom": 3.0681359498882723,
+    "mean_end_to_end_distance_angstrom": 8.57446334972772,
+    "numerical_plan_status": "planned",
+    "thermo_plan_status": "planned",
+    "actual_record_readiness_status": "requires_preparation",
+    "production_ready": false,
+    "run_directory_created": false,
+    "rdkit_imported": false,
+    "numpy_imported": false,
+    "lammps_imported": false
+  },
+  "limits": "Packaging and static analysis/planning of actual records; no extra engine run, phase, equilibrium or external material validation."
+}

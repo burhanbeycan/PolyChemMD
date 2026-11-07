@@ -9,10 +9,14 @@ from .alkane import (AlkaneParityError, build_alkane_input,
 from .periodic_alkane import (build_periodic_alkane_input, build_periodic_alkane_setup,
                              prepare_periodic_alkane_singlepoint, verify_periodic_alkane_singlepoint,
                              run_periodic_alkane_singlepoint, PeriodicSinglepointError)
+from .periodic_thermo import (PeriodicThermoError, plan_periodic_alkane_thermo_singlepoint,
+                             run_periodic_alkane_thermo_singlepoint)
 
 __all__ = ["LammpsError", "LammpsRunSpec", "LammpsRunResult", "discover_lammps",
            "parse_thermo_log", "plan_lammps", "run_lammps", "AlkaneParityError",
            "build_alkane_input", "prepare_alkane_singlepoint", "verify_alkane_singlepoint",
            "build_periodic_alkane_input", "build_periodic_alkane_setup",
            "prepare_periodic_alkane_singlepoint", "verify_periodic_alkane_singlepoint",
-           "run_periodic_alkane_singlepoint", "PeriodicSinglepointError"]
+           "run_periodic_alkane_singlepoint", "PeriodicSinglepointError",
+           "PeriodicThermoError", "plan_periodic_alkane_thermo_singlepoint",
+           "run_periodic_alkane_thermo_singlepoint"]

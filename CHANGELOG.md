@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.0.dev0 — 2026-11-07
+
+- Added bounded static virial scalar/tensor pressure evaluation with explicit
+  kinetic exclusion, native/canonical units and source/state audits.
+- Added bounded size-derived neighbor storage for larger cells and matching
+  native restart settings; physical cutoffs and legacy small-cell inputs remain unchanged.
+- Added predeclared consecutive cutoff and reciprocal numerical refinement,
+  exact single-geometry identity checks and aggregate resource accounting.
+- Added static supported-chain Rg, carbon endpoint distance, gyration/shape
+  tensors and apolar nematic order with dependency-free eigenvalue checks.
+- Added preparation-readiness analysis binding actual stages and source identity
+  to minimizer, optional force-health, orientation and sampling diagnostics.
+- Added qualification/structure/readiness CLI commands and a bounded 4704-atom
+  audit. Numerical diagnostics do not certify phase, equilibrium or bulk density.
+
 ## 0.7.0.dev0 — 2026-11-07
 
 - Added compact schema-2 periodic assignment with sparse special pairs, exact

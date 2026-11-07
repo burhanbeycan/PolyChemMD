@@ -1,0 +1,23 @@
+{
+  "cutoffs_angstrom": [
+    10.0,
+    12.0,
+    14.0,
+    16.0,
+    17.0
+  ],
+  "ewald_alpha_per_angstrom": 0.3,
+  "reciprocal_nmax": 16,
+  "refined_reciprocal_nmax": 20,
+  "min_consecutive_cutoff_pairs": 2,
+  "cutoff_energy_per_atom_limit_kj_mol": 0.02,
+  "cutoff_force_limit_kj_mol_angstrom": 0.05,
+  "cutoff_pressure_limit_bar": 20.0,
+  "reciprocal_energy_per_atom_limit_kj_mol": 1e-05,
+  "reciprocal_force_limit_kj_mol_angstrom": 0.0001,
+  "reciprocal_pressure_limit_bar": 0.01,
+  "unchanged_component_abs_tolerance_kj_mol": 1e-07,
+  "per_run_timeout_seconds": 60.0,
+  "total_wall_seconds": 180.0,
+  "max_engine_runs": 6
+}

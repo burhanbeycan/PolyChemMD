@@ -352,3 +352,90 @@ TASK-006C2C must qualify numerical cutoff and preparation history, then independ
 state/phase sampling under measured resources. The full polymer density milestone
 and external material validation remain open. Hosted checks are reported separately
 by GitHub Actions.
+
+
+## Numerical, chain-structure and readiness v0.8 — executed milestone
+
+Executed 7 November 2026, Linux, Python 3.12.14.
+
+- **522 tests passed, zero skipped**; [local report](evidence/tests_v08.json).
+  Under `python -S`, **476 passed and 46 intentionally skipped** with no RDKit,
+  NumPy or LAMMPS imported; [core-only report](evidence/core_only_v08.json).
+  New tests cover static virial pressure/tensor/units, consecutive numerical
+  refinement and resource gates, exact state/engine binding, gyration and apolar
+  order, complete preparation consistency and serialized-summary rejection.
+- An offline wheel matched packaged source bytes to the checkout and executed
+  from a separate temporary directory under `python -S`. It constructed and
+  assigned 4704 atoms, computed initial Rg/Re/S, generated static/numerical plans
+  without files or engines, and reviewed the actual full preparation/numerical
+  records as unqualified; [wheel report](evidence/wheel_v08.json).
+- The original small-cell assignment, setup/data and continuation input bytes
+  remain unchanged. Larger cells now declare neighbor storage
+  `one=max(2000,2N)`, `page=max(100000,10*one)`; the same policy is restored on
+  native continuation. For 4704 atoms this is 9408/100000. Cutoff, skin, rebuild
+  policy, force-field parameters and review limits are unchanged.
+- The first actual attempt retained four completed static points and failed at
+  17 angstrom because the native default neighbor capacity overflowed. Its
+  failed report, input/logs and original source hashes are preserved. No numeric
+  failure was relabeled successful. After the storage-only correction, the same
+  predeclared physical case was rerun with an explicit aggregate-budget guard.
+- The final actual audit completed **eight engine stages in 73.651719068 s**:
+  five cutoff points (10, 12, 14, 16, 17 angstrom), reciprocal refinement 16 to
+  20 at 17 angstrom, bounded preparation and native continuation. The constructed
+  cell contains **147 decanes / 4704 atoms**, box **39 x 35.7 x 35.7 angstrom**,
+  and mass/volume density 0.6987592397 g/cm^3. It remains one ordered starting
+  cell with unassigned phase. Per-request and aggregate budgets were declared
+  before execution; full inputs, identities and raw-output hashes are retained.
+
+The static virial comparisons use zero velocities, exclude kinetic pressure and
+check native/canonical units plus scalar pressure against one third of the
+pressure-tensor trace. They are not equilibrium pressure estimates.
+
+| Cutoff refinement (angstrom) | Absolute energy change (kJ/mol per atom) | Maximum pressure-tensor change (bar) | Development review |
+| --- | ---: | ---: | --- |
+| 10 to 12 | 0.0410599783 | 138.4541675 | requires_review |
+| 12 to 14 | 0.0191982380 | 65.7599497 | requires_review |
+| 14 to 16 | 0.0112543475 | 36.2019202 | requires_review |
+| 16 to 17 | 0.0039431259 | 12.7729214 | diagnostics_passed |
+
+The predeclared limits include 0.02 kJ/mol per atom and 20 bar, with two
+consecutive finest pairs required. Energy-only acceptance would miss the
+remaining pressure sensitivity. The actual numerical result is
+**requires_review**, and **selected_settings is null**. No threshold was widened
+or refinement omitted. The reciprocal comparison passed its finite-setting
+checks (energy/atom 7.39954e-11 kJ/mol, maximum force change 6.18456e-10
+kJ/(mol angstrom), tensor change 2.30985e-6 bar); this is not an infinite-sum or
+bulk-property error bound.
+
+The CG preparation stopped at its 10-iteration budget (18 evaluations), not
+force convergence. Ten NVT, ten NPT and ten continuation steps at 0.25 fs give
+**7.5 fs** of MD. Native NPT fix restoration, full topology/parameter/unit and
+position/velocity/image checks passed. The continuation window spans only
+**0.0025 ps** and is **insufficient_sampling**.
+
+Static chain analysis gives initial mean mass-weighted Rg **3.06813595 angstrom**,
+carbon-terminal Re **8.57446335 angstrom**, and nematic S **1.0**. The continued
+snapshot gives Rg **3.19186784 angstrom**, Re **9.05071726 angstrom** and
+S **0.9999406084**. These are single-configuration, equal-chain summaries with
+explicit weighting/axis definitions; 147 chain rows are not independent material
+samples or equilibrium observations. The full continued-chain JSON is public.
+
+Preparation readiness reports **requires_preparation**, retaining minimizer,
+orientation, sampling and starting-numerics failures. Thermal forces are reported
+without being required to vanish. Initial-state numerical evidence does not
+transfer through MD; final-state coverage remains unverified. Final instantaneous
+130.0126 K, 7219.1124 bar and density 0.6987032422 g/cm^3 are context, not
+thermodynamic estimates or validated predictions.
+
+[Public evidence](evidence/qualification_v08/README.md) contains fixed source/recipe,
+a shared input data file, stage inputs/logs, one finest static-force frame, a
+final velocity-bearing checkpoint frame and the full continued-chain structure
+file. Other large arrays and native binaries are hash-only with an explicit
+reproduction recipe. **15 runtime source hashes, 25 public artifact references
+and the continued-structure file hash** match the final source/artifacts.
+
+TASK-006C2C1's numerical/readiness and static-structure analysis layer is
+implemented. TASK-006C2C2 must resolve pressure-sensitive numerical settings,
+preparation history, independent cells and evolved-state/trajectory coverage.
+Phase, chain relaxation, finite-size sampling and external density validation
+remain open. Hosted checks are recorded separately by GitHub Actions.
