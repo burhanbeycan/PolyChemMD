@@ -1,0 +1,189 @@
+{
+  "schema_version": "1",
+  "kind": "periodic_alkane_engine_singlepoint",
+  "status": "completed_singlepoint",
+  "evidence_level": "engine_execution_and_state_audit",
+  "model_id": "OPLS_AA_GROMACS_2025_3_N_ALKANE_SUBSET",
+  "assignment_schema_version": "2",
+  "assignment_canonical_sha256": "489988ba88cd359c55bb841c9a0971f6a2d595b6863e9dca18a7c93f881d6aa9",
+  "input_files": {
+    "input.lammps_sha256": "ec8054f5b6b90203bc651bfa34fdfcada87466f0b82c634607c72d682ae8f477",
+    "system.data_sha256": "bd25325c83aea0147915a763ea310449fadad6a9d19a7302f8daf3eaa679d7fd"
+  },
+  "ewald_settings": {
+    "cutoff_angstrom": 12.0,
+    "alpha_per_angstrom": 0.3,
+    "reciprocal_nmax": 16,
+    "relative_engine_accuracy_request": 1e-08,
+    "surface_boundary": "tin_foil",
+    "realspace_coulomb_table": false,
+    "lj_tail_correction": false
+  },
+  "atom_count": 2304,
+  "molecule_count": 72,
+  "simulation_performed": true,
+  "independent_reference_status": "not_performed",
+  "native_parameter_readback_status": "not_performed_by_singlepoint_adapter",
+  "parameter_identity_basis": "validated frozen assignment and exact generated-input hashes; native coefficient/charge read-back is a separate audit",
+  "numerical_convergence_status": "not_established",
+  "md_integration_steps": 0,
+  "trajectory_production_performed": false,
+  "equilibrium_status": "not_assessed",
+  "bulk_production_model_validated": false,
+  "material_property_validation": "not_performed",
+  "energy_units": "kJ/mol",
+  "force_units": "kJ/(mol angstrom)",
+  "engine_run": {
+    "status": "completed",
+    "simulation_performed": true,
+    "run_directory": "private_engine_run_not_published",
+    "input_sha256": "ec8054f5b6b90203bc651bfa34fdfcada87466f0b82c634607c72d682ae8f477",
+    "timeout_seconds": 60.0,
+    "expected_artifacts": [
+      "log.lammps",
+      "forces.dump",
+      "singlepoint.data"
+    ],
+    "required_thermo_columns": [
+      "Step",
+      "Temp",
+      "E_bond",
+      "E_angle",
+      "E_dihed",
+      "E_vdwl",
+      "E_coul",
+      "E_long",
+      "PotEng"
+    ],
+    "material_validation": "not_performed",
+    "declared_units_style": "real",
+    "input_units_style": "real",
+    "input_units_style_source": "straight_line_recipe_with_clear_reset_handling",
+    "units_style_confidence": "recipe_literal_not_engine_verified",
+    "recipe_run_units_styles": [
+      "real"
+    ],
+    "thermo_unit_conversion": "not_performed; values are raw LAMMPS output",
+    "thermo_normalization": "not_inferred; inspect the trusted recipe and engine conventions",
+    "staged_binary_input_sha256": {},
+    "expected_engine_identity": null,
+    "evidence_level": "engine_execution",
+    "executable": "lmp",
+    "started_utc": "2026-11-07T08:54:55.081121+00:00",
+    "staged_input_sha256": {
+      "system.data": "bd25325c83aea0147915a763ea310449fadad6a9d19a7302f8daf3eaa679d7fd"
+    },
+    "runtime_environment": {
+      "OMP_NUM_THREADS": "1",
+      "UCX_TLS": "self"
+    },
+    "executable_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+    "engine_help_sha256": "fba47a3ac74f040fcee1c7d4aee9a14e58a5382f212337bb691a82a6cefc3476",
+    "engine_help_first_line": "Incidental host diagnostic omitted; engine version and hashes retained",
+    "engine_version_banner": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+    "engine_identity": {
+      "entrypoint_sha256": "3ea5f38dcae7597007873cac0be6414fe298aa086d46187cff54cf682ae4857c",
+      "help_configuration_sha256": "741045d5dbfc3869f4ff028f5123a7dce8c99902b09b0862679a64a6fdd1cb6c",
+      "help_configuration_basis": "LAMMPS banner onward; timestamped UCX ERROR/WARN host diagnostics excluded",
+      "native_runtime_sha256": {
+        "lammps/lmp": "e7f9f0675b63d0ec9014ce93f8ae90f3794df40c8c9ffac26bae06601f9e69af",
+        "lammps/liblammps.so": "561f7f126f3d059ac83d395a9a1f9bcb5e86fdb9bca05fd911295aa67dfed4da"
+      },
+      "platform": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "byteorder": "little",
+        "python_implementation": "CPython"
+      },
+      "runtime_environment": {
+        "OMP_NUM_THREADS": "1",
+        "UCX_TLS": "self",
+        "LD_LIBRARY_PATH": null,
+        "LAMMPS_PLUGIN_PATH": null
+      },
+      "process_layout": "direct_single_engine_process_no_MPI_launcher"
+    },
+    "command": [
+      "lmp",
+      "-in",
+      "input.lammps",
+      "-log",
+      "log.lammps",
+      "-screen",
+      "screen.lammps"
+    ],
+    "returncode": 0,
+    "artifact_sha256": {
+      "log.lammps": "f99987fc7f33a06babb0a0f7e7cd21bc3386d50ecaf97db7b037e0a4e70b8a84",
+      "forces.dump": "1447a3606d83928ce4d91618e3e7d3b75a03a7967c5886546129bbc97f28eea0",
+      "singlepoint.data": "5f118b0abdc839f03e08b078cfaa5faf2deecca71658a21d8dce494e6776aee9"
+    },
+    "thermo_blocks": [
+      {
+        "columns": [
+          "Step",
+          "Temp",
+          "E_bond",
+          "E_angle",
+          "E_dihed",
+          "E_vdwl",
+          "E_coul",
+          "E_long",
+          "PotEng"
+        ],
+        "rows": [
+          [
+            0.0,
+            0.0,
+            401.1729745574774,
+            515.2714078153473,
+            650.3637847789643,
+            3431.047618818351,
+            1198.9835225085865,
+            -1034.8913291987637,
+            5161.947979279963
+          ]
+        ],
+        "loop_complete": true
+      }
+    ],
+    "warning_lines": [
+      "WARNING: No fixes with time integration, atoms won't move"
+    ],
+    "completion_marker": "POLYCHEMMD_RUN_COMPLETE",
+    "equilibration_validation": "not_performed",
+    "finished_utc": "2026-11-07T08:54:56.134292+00:00",
+    "elapsed_seconds": 1.052602573999934
+  },
+  "energy_components_kj_mol": {
+    "bond": 1678.5077255484855,
+    "angle": 2155.895570299413,
+    "dihedral": 2721.1220755151867,
+    "lj": 14355.503237135981,
+    "coulomb_realspace": 5016.547058175926,
+    "coulomb_kspace": -4329.985321367628,
+    "total": 21597.590345307366
+  },
+  "atom_coordinate_molecule_image_identity": "passed",
+  "independent_output_unit_check": {
+    "basis": "actual LAMMPS write_data header",
+    "header": "LAMMPS data file via write_data, version 22 Jul 2025, timestep = 0, units = real",
+    "confirmed_units_style": "real"
+  },
+  "energy_component_sum_abs_difference_kj_mol": 0.0,
+  "public_summary_policy": {
+    "omitted_fields": [
+      {
+        "field": "record.atom_ids",
+        "canonical_sha256": "de611ede4462e3a352a7e86eb94022923f62b6f7ac2bbb6008dd5eea0774627c",
+        "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+      },
+      {
+        "field": "record.forces_kj_mol_angstrom",
+        "canonical_sha256": "90f99f7f991e00c14c63ef67d8b9a62623d9d74f9a1e0f24d74be60ebf037801",
+        "interpretation": "Large or duplicated field omitted; raw scientific artifacts have separate hashes"
+      }
+    ],
+    "scope": "Host paths and duplicate/large arrays omitted explicitly; scientific aggregate values, model, source, engine and raw artifact hashes retained"
+  }
+}

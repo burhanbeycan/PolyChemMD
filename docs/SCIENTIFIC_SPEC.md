@@ -43,6 +43,24 @@ in the declared replicate set. A campaign plan is not an execution result;
 projected timings are not measured whole-campaign costs. Cell capacity and
 minimum-image cutoff admissibility must be checked before targeting a bulk state.
 
+## Larger-cell representation and construction
+
+Compact nonbonded storage is a representation of the same potential: omitted
+pairs have unit scales, graph distances one/two are excluded, and distance three
+is scaled once by one half for both LJ and Coulomb. Strict serialized
+reconstruction must preserve all source/parameter/topology identities. Resource
+ceilings remain explicit; replacing global all-pair storage does not remove
+local molecular graph/rigidity costs or imply a faster MD solver.
+
+Ordered motif tiling supplies a geometric starting configuration, not phase
+identification or independent replicas. Density follows requested box volume.
+Geometric contact checks are distinct from force-field energy/relaxation checks.
+Fixed-geometry cutoff variation changes the truncated LJ Hamiltonian; reciprocal
+bound variation probes a numerical Ewald approximation. Record both effects
+separately. Passing development sensitivity thresholds is not proof of infinite
+sum convergence or bulk-property accuracy. Large engine execution without the
+small independent reference must explicitly retain that evidence boundary.
+
 ## Canonical torsion convention
 
 The analytical convention is

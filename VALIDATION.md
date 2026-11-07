@@ -284,3 +284,71 @@ state/sampling qualification and validated density milestone remain open.
 TASK-006C2B must establish larger admissible periodic cells with verified numerical
 scaling before a liquid-scale sampling campaign. Hosted checks are reported by
 GitHub Actions independently of these local records.
+
+
+## Compact larger-cell v0.7 — executed milestone
+
+Executed 7 November 2026, Linux, Python 3.12.14. Required pinned RDKit/LAMMPS/
+MPICH dependencies were installed in the fresh execution environment.
+
+- **434 tests passed, zero skipped**; [local report](evidence/tests_v07.json).
+  Under `python -S`, **388 passed and 46 intentionally skipped**, with no RDKit,
+  NumPy or LAMMPS imported; [core-only report](evidence/core_only_v07.json).
+  These are code/equation/contract checks, not additional material trajectories.
+- Offline wheel creation and isolated `python -S` execution succeeded. Packaged
+  source bytes matched the checkout. The wheel constructed/assigned the actual
+  2304-atom geometry, planned its engine/preparation and compact campaign without
+  creating run directories, and explicitly rejected the large independent
+  reference calculation; [wheel report](evidence/wheel_v07.json).
+- The original 128-atom legacy assignment canonical SHA256 and scientific
+  LAMMPS setup/data hashes remain unchanged. Every legacy pair scale matches
+  compact exceptions/defaults. Small-cell full finite Ewald energy components
+  and forces match exactly; this is representation equivalence, not convergence.
+- The independently checked ordered construction contains **72 C10H22 molecules,
+  2304 atoms**, box **26 x 30.6 x 30.6 angstrom** and mass/volume density
+  **0.6987592396767455 g/cm^3**. A separate motif-image reference establishes
+  nearest periodic intermolecular contact **1.609940515 angstrom**, above the
+  unchanged 1.5 angstrom geometric floor. The builder's generic linked-bin
+  output remains a lower-bound check, not a global-minimum estimator.
+- Compact assignment stores **12,384 special pairs** instead of enumerating
+  **2,653,056 global unordered pairs**. Counts are exact; local molecular
+  typing/rigidity work remains explicitly bounded. Supported capacity is at most
+  8192 atoms, 512 per molecule and 2,000,000 summed local pairs. Actual engine
+  evidence concerns 2304 atoms, not every system at those ceilings.
+- Five actual engine invocations completed in **19.433876717 s** on the recorded
+  single-rank CPU host: three same-geometry single points, bounded minimization
+  plus 10 NVT + 10 NPT steps, and 10 native continuation steps. Full restoration,
+  topology/parameter/unit/state audits passed. Total MD duration is **7.5 fs**;
+  minimizer iterations do not add MD time.
+- The first actual preparation attempt with CG200 reached its 60 s timeout
+  before MD. Its failed report, input and partial log are retained. A separate
+  resource-calibrated pilot was declared before its execution: CG10/eval100,
+  with the same physical settings, review limits and MD steps. It stopped at
+  max iterations (10 iterations, 18 evaluations), **not force convergence**.
+- Fixed-geometry cutoff 10 to 12 angstrom changed total energy by
+  **94.6021900313 kJ/mol**, or **0.0410599783 kJ/mol per atom**, exceeding the
+  predeclared development review limit 0.02. Force-component change was
+  0.00730841671 kJ/(mol angstrom). The recorded outcome is **requires_review**;
+  no tolerance was widened. This changes the truncated Hamiltonian and is not
+  an error estimate against an exact bulk model.
+- Reciprocal bound 16 to 20 gave zero reported component-energy change and
+  maximum force-component change **1.4210854715e-14 kJ/(mol angstrom)** for
+  this fixed geometry. Finite-setting diagnostics passed; infinite Ewald or
+  bulk-property convergence is not established.
+- The continuation window has two thermo frames spanning **0.0025 ps** and
+  correctly reports **insufficient_sampling**. Final instantaneous values
+  (127.6384 K, 7097.8161 bar, canonical density 0.6987018285 g/cm^3) are execution
+  output, not equilibrium averages or validated density predictions. The
+  ordered repeated motif remains one constructed cell with unassigned phase.
+
+[Public evidence](evidence/large_cell_v07/README.md) includes fixed construction
+inputs, one shared engine data file, input/logs, three static single-point force
+frames and a final velocity-bearing checkpoint frame. Other large outputs,
+full assignment and native binaries are hash-only, explicitly reproducible with
+the auditor. All ten source hashes and referenced public artifact hashes match.
+
+TASK-006C2B's bounded representation/cell/engine foundations are implemented.
+TASK-006C2C must qualify numerical cutoff and preparation history, then independent
+state/phase sampling under measured resources. The full polymer density milestone
+and external material validation remain open. Hosted checks are reported separately
+by GitHub Actions.

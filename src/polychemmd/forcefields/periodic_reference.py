@@ -6,7 +6,7 @@ that a selected finite Ewald parameterization has converged for a bulk material.
 
 from __future__ import annotations
 
-from itertools import product
+from itertools import combinations, product
 import math
 
 from .contracts import ParameterSet
@@ -17,6 +17,7 @@ from .reference import (
 
 
 _MAX_ATOMS = 512
+_MAX_PAIR_EVALUATIONS = _MAX_ATOMS*(_MAX_ATOMS-1)//2
 _MAX_NMAX = 24
 _MAX_RECIPROCAL_ATOM_EVALUATIONS = 20_000_000
 _SPHERE_SOURCE = (
@@ -48,6 +49,38 @@ def _minimum_image(displacement, box):
     if not all(math.isfinite(value) for value in result):
         raise ValueError("periodic displacement is numerically unrepresentable")
     return tuple(result)
+
+
+def _pair_budget(atom_count, maximum):
+    if type(maximum) is not int or not 1 <= maximum <= _MAX_PAIR_EVALUATIONS:
+        raise ValueError(f"max_pair_evaluations must be an integer in [1, {_MAX_PAIR_EVALUATIONS}]")
+    count = atom_count*(atom_count-1)//2
+    if count > maximum:
+        raise ValueError("independent periodic reference pair-evaluation budget exceeded")
+    return count
+
+
+def _numeric_pairs(data):
+    """Yield small-kernel numeric pair data, without changing the assignment.
+
+    Unscaled graph distance is immaterial to these equations. The compact
+    assignment's complete default applies to all pairs absent from its sparse
+    exception table; an intra/inter-molecule flag is retained for diagnostics.
+    No global pair array is materialized, even for this bounded reference.
+    """
+    if data["schema_version"] == "1":
+        yield from data["nonbonded_pairs"]
+        return
+    exceptions = {frozenset(pair["atom_ids"]): pair for pair in data["special_pairs"]}
+    for first, second in combinations(data["atoms"], 2):
+        atom_ids = [first["cell_atom_id"], second["cell_atom_id"]]
+        exception = exceptions.get(frozenset(atom_ids))
+        if exception is not None:
+            yield exception
+        else:
+            yield {"atom_ids": atom_ids,
+                "same_molecule": first["molecule_index"] == second["molecule_index"],
+                "lj_scale": 1.0, "coulomb_scale": 1.0}
 
 
 def _pair_terms(displacement, charge_product, epsilon, sigma, lj_scale,
@@ -185,6 +218,7 @@ def evaluate_periodic_alkanes(
     assigned, *, cutoff_angstrom=10.0, ewald_alpha_per_angstrom=.30,
     reciprocal_nmax=16, coordinates_angstrom=None,
     max_reciprocal_atom_evaluations=_MAX_RECIPROCAL_ATOM_EVALUATIONS,
+    max_pair_evaluations=_MAX_PAIR_EVALUATIONS,
 ):
     """Evaluate a neutral 3D periodic orthorhombic cell using finite Ewald sums.
 
@@ -192,13 +226,14 @@ def evaluate_periodic_alkanes(
     minimum images, while reciprocal electrostatics includes the declared cube
     of wavevectors. Tinfoil boundary conditions and zero net charge are required.
     """
-    from .periodic import AssignedPeriodicAlkaneCell
-    if not isinstance(assigned, AssignedPeriodicAlkaneCell):
-        raise ValueError("assigned must be an AssignedPeriodicAlkaneCell")
+    from .periodic import AssignedPeriodicAlkaneCell, CompactAssignedPeriodicAlkaneCell
+    if not isinstance(assigned, (AssignedPeriodicAlkaneCell, CompactAssignedPeriodicAlkaneCell)):
+        raise ValueError("assigned must be a validated periodic alkane assignment")
     data = assigned.to_dict()
     atoms = data["atoms"]
     if not 0 < len(atoms) <= _MAX_ATOMS:
         raise ValueError(f"periodic reference supports 1 to {_MAX_ATOMS} atoms")
+    pair_evaluations = _pair_budget(len(atoms), max_pair_evaluations)
     _reciprocal_budget(reciprocal_nmax, len(atoms), max_reciprocal_atom_evaluations)
     box_data = data["box"]
     if (box_data["periodic"] != [True, True, True]
@@ -251,7 +286,7 @@ def evaluate_periodic_alkanes(
                 for axis in range(3):
                     forces[i][axis] -= derivative[axis]
     pairs_inside = pairs_outside = special_pairs = intermolecular_inside = 0
-    for pair in data["nonbonded_pairs"]:
+    for pair in _numeric_pairs(data):
         first, second = (index[identity] for identity in pair["atom_ids"])
         raw = tuple(a-b for a, b in zip(points[first], points[second]))
         displacement = _minimum_image(raw, box)
@@ -302,6 +337,10 @@ def evaluate_periodic_alkanes(
     return {
         "schema_version": "1", "kind": "periodic_alkane_ewald_energy_force_reference",
         "model_id": data["model_id"], "atom_ids": ids,
+        "assignment_schema_version": data["schema_version"],
+        "pair_work": {"pair_evaluations": pair_evaluations,
+            "max_pair_evaluations": max_pair_evaluations,
+            "global_pair_array_materialized_by_kernel": False},
         "evaluated_coordinates_angstrom": [list(p) for p in points],
         "coordinates_override_used": coordinates_angstrom is not None,
         "energy_components_kj_mol": components, "forces_kj_mol_angstrom": forces,

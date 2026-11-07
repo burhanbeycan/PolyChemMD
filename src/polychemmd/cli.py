@@ -100,13 +100,19 @@ def _geometry_from_record(data):
     return MolecularGeometry.from_mapping(data)
 
 
-def _periodic_assignment_from_record(data):
-    from .forcefields import AssignedPeriodicAlkaneCell, assign_periodic_alkanes
+def _periodic_assignment_from_record(data, *, compact=False):
+    from .forcefields import (AssignedPeriodicAlkaneCell, assign_periodic_alkanes,
+                             CompactAssignedPeriodicAlkaneCell, assign_compact_periodic_alkanes)
     if isinstance(data, dict) and "record_kind" in data and "payload" in data:
         data = data["payload"]
+    if isinstance(data, dict) and data.get("kind") == "compact_assigned_periodic_opls_aa_n_alkane_cell":
+        return CompactAssignedPeriodicAlkaneCell(json.dumps(data, allow_nan=False))
     if isinstance(data, dict) and data.get("kind") == "assigned_periodic_opls_aa_n_alkane_cell":
+        if compact:
+            original = AssignedPeriodicAlkaneCell(json.dumps(data, allow_nan=False))
+            return assign_compact_periodic_alkanes(original.to_dict()["source_cell"])
         return AssignedPeriodicAlkaneCell(json.dumps(data, allow_nan=False))
-    return assign_periodic_alkanes(data)
+    return (assign_compact_periodic_alkanes if compact else assign_periodic_alkanes)(data)
 
 
 def _prepare_cell(data):
@@ -166,6 +172,7 @@ def doctor():
         "md_adapter_status": "implemented_process_adapter",
         "polymer_md_protocol_status": "bounded_periodic_preparation_and_restart",
         "density_sampling_status": "diagnostics_only_no_equilibrium_certificate",
+        "periodic_assignment_representations": {"legacy_exhaustive_v1": 512, "compact_sparse_pairs_v2": 8192},
         "polymer_equilibrium_validation": "not_implemented",
         "qm_adapter_status": "planned",
     }
@@ -197,6 +204,10 @@ def main(argv=None):
     pack = commands.add_parser("pack-cell", help="Prepare rigid molecules in an orthorhombic periodic cell; no equilibration")
     pack.add_argument("input")
     pack.add_argument("--output")
+    tiled = commands.add_parser("tile-cell", help="Construct an ordered molecular motif cell with periodic contact checks; phase unvalidated")
+    tiled.add_argument("input", help="Molecular geometry JSON or result envelope")
+    tiled.add_argument("--recipe", required=True, help="Explicit repeats, spacings, rotation and geometric budgets")
+    tiled.add_argument("--output")
     xyz = commands.add_parser("export-xyz", help="Export coordinates for viewing; topology and provenance remain in companion JSON")
     xyz.add_argument("input")
     xyz.add_argument("--wrapped", action="store_true", help="Use wrapped positions for packed cells")
@@ -218,6 +229,7 @@ def main(argv=None):
     parity.add_argument("--output")
     cell_assignment = commands.add_parser("parameterize-cell", help="Assemble supported n-alkane assignments with periodic atom/molecule/image identity")
     cell_assignment.add_argument("input")
+    cell_assignment.add_argument("--compact", action="store_true", help="Use sparse special pairs and an 8192-atom cell budget")
     cell_assignment.add_argument("--output")
     periodic_energy = commands.add_parser("periodic-energy", help="Evaluate the explicit neutral periodic Ewald verification model")
     periodic_energy.add_argument("input")
@@ -235,6 +247,16 @@ def main(argv=None):
     periodic_engine.add_argument("--reciprocal-nmax", type=int, default=16)
     periodic_engine.add_argument("--plan", action="store_true")
     periodic_engine.add_argument("--output")
+    singlepoint = commands.add_parser("periodic-singlepoint", help="Run an engine-only periodic single point; no independent parity claim")
+    singlepoint.add_argument("input")
+    singlepoint.add_argument("--run-dir", required=True)
+    singlepoint.add_argument("--executable")
+    singlepoint.add_argument("--timeout", type=float, default=60.)
+    singlepoint.add_argument("--cutoff-angstrom", type=float, default=10.)
+    singlepoint.add_argument("--ewald-alpha", type=float, default=.30)
+    singlepoint.add_argument("--reciprocal-nmax", type=int, default=16)
+    singlepoint.add_argument("--plan", action="store_true")
+    singlepoint.add_argument("--output")
     preparation = commands.add_parser("periodic-prepare", help="Plan/run bounded minimization and NVT/NPT preparation; no equilibrium certification")
     preparation.add_argument("input")
     preparation.add_argument("--protocol", required=True, help="Explicit preparation-spec JSON")
@@ -331,6 +353,19 @@ def main(argv=None):
             _check_output_path(args.input, args.output)
             raw, data = _read(args.input)
             _emit(envelope(_prepare_cell(data), raw, "periodic_cell_preparation"), args.output)
+        elif args.command == "tile-cell":
+            from .builders.tiling import tile_molecular_geometry
+            for source in (args.input, args.recipe):
+                _check_output_path(source, args.output)
+            raw, data = _read(args.input)
+            recipe_raw, recipe = _read(args.recipe)
+            expected = {"repeats", "spacing_angstrom", "rotation_matrix", "min_distance_angstrom",
+                        "max_atoms", "max_distance_checks"}
+            if not isinstance(recipe, dict) or set(recipe) != expected:
+                raise ValueError(f"tiling recipe requires exactly {sorted(expected)}")
+            payload = tile_molecular_geometry(_geometry_from_record(data), **recipe).to_dict()
+            payload["recipe_input_sha256"] = hashlib.sha256(recipe_raw).hexdigest()
+            _emit(envelope(payload, raw, "ordered_molecular_cell_construction"), args.output)
         elif args.command == "export-xyz":
             from .geometry import MolecularGeometry
             from .io.xyz import molecular_xyz, cell_xyz
@@ -379,9 +414,9 @@ def main(argv=None):
                                                        cutoff_angstrom=args.cutoff_angstrom)
                     kind = "alkane_engine_energy_force_parity"
                 _emit(envelope(payload, raw, kind), args.output)
-        elif args.command in ("parameterize-cell", "periodic-energy", "periodic-lammps", "periodic-prepare"):
+        elif args.command in ("parameterize-cell", "periodic-energy", "periodic-lammps", "periodic-singlepoint", "periodic-prepare"):
             _check_output_path(args.input, args.output)
-            if args.command in ("periodic-lammps", "periodic-prepare"):
+            if args.command in ("periodic-lammps", "periodic-singlepoint", "periodic-prepare"):
                 if args.output is not None and Path(args.output).resolve().is_relative_to(Path(args.run_dir).resolve()):
                     raise ValueError("summary output must be outside the engine run directory to preserve its artifacts")
             protocol_raw = protocol_data = None
@@ -389,7 +424,7 @@ def main(argv=None):
                 _check_output_path(args.protocol, args.output)
                 protocol_raw, protocol_data = _read(args.protocol)
             raw, data = _read(args.input)
-            assigned = _periodic_assignment_from_record(data)
+            assigned = _periodic_assignment_from_record(data, compact=getattr(args, "compact", False))
             if args.command == "parameterize-cell":
                 payload, kind = assigned.to_dict(), "periodic_alkane_parameter_assignment"
             elif args.command == "periodic-energy":
@@ -398,22 +433,29 @@ def main(argv=None):
                                                    ewald_alpha_per_angstrom=args.ewald_alpha,
                                                    reciprocal_nmax=args.reciprocal_nmax)
                 kind = "periodic_ewald_energy_force_evaluation"
-            elif args.command == "periodic-lammps":
+            elif args.command in ("periodic-lammps", "periodic-singlepoint"):
                 from .engines import (plan_lammps, prepare_periodic_alkane_singlepoint,
-                                      verify_periodic_alkane_singlepoint)
+                                      verify_periodic_alkane_singlepoint, run_periodic_alkane_singlepoint)
                 options = {"run_directory": args.run_dir, "executable": args.executable,
                            "timeout_seconds": args.timeout, "cutoff_angstrom": args.cutoff_angstrom,
                            "ewald_alpha_per_angstrom": args.ewald_alpha,
                            "reciprocal_nmax": args.reciprocal_nmax}
                 if args.plan:
-                    spec = prepare_periodic_alkane_singlepoint(assigned, **options)
+                    prepare_options = dict(options)
+                    if args.command == "periodic-singlepoint":
+                        prepare_options["native_readback"] = True
+                    spec = prepare_periodic_alkane_singlepoint(assigned, **prepare_options)
                     payload = {"engine_plan": plan_lammps(spec), "input_script": spec.input_script,
                                "staged_inputs": dict(spec.input_files), "md_integration_steps": 0,
                                "bulk_production_model_validated": False}
-                    kind = "periodic_ewald_singlepoint_plan"
+                    if args.command == "periodic-singlepoint":
+                        payload["independent_reference_status"] = "not_performed"
+                    kind = "periodic_ewald_engine_singlepoint_plan" if args.command == "periodic-singlepoint" else "periodic_ewald_singlepoint_plan"
                 else:
-                    payload = verify_periodic_alkane_singlepoint(assigned, **options)
-                    kind = "periodic_ewald_engine_parity"
+                    function = (run_periodic_alkane_singlepoint if args.command == "periodic-singlepoint"
+                                else verify_periodic_alkane_singlepoint)
+                    payload = function(assigned, **options)
+                    kind = "periodic_ewald_engine_singlepoint" if args.command == "periodic-singlepoint" else "periodic_ewald_engine_parity"
             else:
                 from .protocols.alkane import (PeriodicAlkaneProtocolSpec,
                                               plan_periodic_alkane_protocol, run_periodic_alkane_protocol)

@@ -6,6 +6,7 @@ caller-supplied validation flags are retained only as source metadata.
 """
 
 from dataclasses import InitVar, dataclass
+import hashlib
 from itertools import combinations
 import json
 import math
@@ -17,6 +18,16 @@ from .alkanes import MODEL_ID, assign_alkane
 
 _CELL_KIND = "orthorhombic_rigid_packed_cell"
 _ASSIGNED_KIND = "assigned_periodic_opls_aa_n_alkane_cell"
+_COMPACT_KIND = "compact_assigned_periodic_opls_aa_n_alkane_cell"
+_COMPACT_MAX_ATOMS = 8192
+_COMPACT_MAX_MOLECULE_ATOMS = 512
+_COMPACT_MAX_INTRAMOLECULAR_PAIRS = 2_000_000
+_COMPACT_RULES = {
+    "representation": "sparse_topological_exceptions",
+    "default": {"lj_scale": 1.0, "coulomb_scale": 1.0},
+    "excluded_bonded_distances": [1, 2],
+    "one_four": {"lj_scale": .5, "coulomb_scale": .5, "handling": "scaled_pair_once"},
+}
 _COORDINATE_TOLERANCE = 1e-8
 _MATRIX_TOLERANCE = 1e-10
 _ATOM_FIELDS = {"cell_atom_id", "atom_map", "source_atom_id", "source_atom_map",
@@ -110,7 +121,75 @@ class AssignedPeriodicAlkaneCell:
         return json.loads(self._payload_json)
 
 
-def _assignment_payload(cell_record, *, max_atoms):
+@dataclass(frozen=True)
+class CompactAssignedPeriodicAlkaneCell:
+    """Strict frozen assignment with implicit unit-scale nonbonded defaults.
+
+    Unlike schema 1, this representation never materializes global unordered
+    pairs. All supported chemistry, rigid source and parameter checks are still
+    performed. Local molecule assignment and rigidity work remain quadratic in
+    molecule size, with explicit per-molecule and aggregate work limits.
+    """
+
+    _payload_json: str
+    max_atoms: InitVar[int] = _COMPACT_MAX_ATOMS
+    max_atoms_per_molecule: InitVar[int] = _COMPACT_MAX_MOLECULE_ATOMS
+    max_intramolecular_pairs: InitVar[int] = _COMPACT_MAX_INTRAMOLECULAR_PAIRS
+
+    def __post_init__(self, max_atoms, max_atoms_per_molecule, max_intramolecular_pairs):
+        try:
+            data = _load_json(self._payload_json)
+            if not isinstance(data, dict) or "source_cell" not in data:
+                raise ValueError("the serialized compact assignment requires its source_cell")
+            expected = _assignment_payload(data["source_cell"], max_atoms=max_atoms,
+                compact=True, max_atoms_per_molecule=max_atoms_per_molecule,
+                max_intramolecular_pairs=max_intramolecular_pairs)
+            actual_json, expected_json = _canonical(data), _canonical(expected)
+        except (ValueError, TypeError, KeyError, OverflowError, RecursionError) as exc:
+            raise ValueError(f"invalid compact assigned periodic n-alkane cell: {exc}") from exc
+        if actual_json != expected_json:
+            raise ValueError("compact assignment differs from its validated frozen model/topology/source")
+        object.__setattr__(self, "_payload_json", expected_json)
+
+    @classmethod
+    def _from_validated(cls, payload):
+        instance = object.__new__(cls)
+        object.__setattr__(instance, "_payload_json", _canonical(payload))
+        return instance
+
+    def to_dict(self):
+        return json.loads(self._payload_json)
+
+
+def _compact_preflight(cell_record, max_atoms, max_atoms_per_molecule,
+                       max_intramolecular_pairs):
+    for value, name, ceiling in (
+        (max_atoms, "max_atoms", _COMPACT_MAX_ATOMS),
+        (max_atoms_per_molecule, "max_atoms_per_molecule", _COMPACT_MAX_MOLECULE_ATOMS),
+        (max_intramolecular_pairs, "max_intramolecular_pairs", _COMPACT_MAX_INTRAMOLECULAR_PAIRS),
+    ):
+        _integer(value, name, 1)
+        if value > ceiling:
+            raise ValueError(f"{name} cannot exceed this compact implementation's limit {ceiling}")
+    molecules = cell_record.get("molecules")
+    if not isinstance(molecules, list) or not molecules or len(molecules) > max_atoms:
+        raise ValueError("source molecule array is outside the compact work budget")
+    work, largest = 0, 0
+    for molecule in molecules:
+        if not isinstance(molecule, dict) or not isinstance(molecule.get("source_geometry"), dict):
+            raise ValueError("each source molecule requires its actual geometry")
+        atoms = molecule["source_geometry"].get("atoms")
+        if not isinstance(atoms, list) or not 1 <= len(atoms) <= max_atoms_per_molecule:
+            raise ValueError("source molecule exceeds max_atoms_per_molecule")
+        largest = max(largest, len(atoms))
+        work += len(atoms)*(len(atoms)-1)//2
+        if work > max_intramolecular_pairs:
+            raise ValueError("aggregate intramolecular pair-work budget exceeded")
+    return work, largest
+
+
+def _assignment_payload(cell_record, *, max_atoms, compact=False,
+                        max_atoms_per_molecule=None, max_intramolecular_pairs=None):
     _integer(max_atoms, "max_atoms", 1)
     if not isinstance(cell_record, dict):
         raise ValueError("cell_record must be a packed-cell mapping, not an envelope")
@@ -118,6 +197,9 @@ def _assignment_payload(cell_record, *, max_atoms):
         raise ValueError("the source cell requires a nonempty atom array")
     if len(cell_record["atoms"]) > max_atoms:
         raise ValueError("source cell atom count exceeds max_atoms")
+    if compact:
+        local_pair_work, largest_molecule = _compact_preflight(cell_record, max_atoms,
+            max_atoms_per_molecule, max_intramolecular_pairs)
     try:
         cell = json.loads(_canonical(cell_record))
     except (ValueError, TypeError, OverflowError, RecursionError) as exc:
@@ -194,6 +276,8 @@ def _assignment_payload(cell_record, *, max_atoms):
     parameter_set = source_snapshot = None
     assembled = {kind: [] for kind in ("bonds", "angles", "dihedrals", "impropers")}
     intramolecular_pairs = {}
+    compact_counts = {"intermolecular": 0, "excluded": 0, "scaled_14": 0,
+                      "unscaled_intramolecular": 0}
     for index, molecule in enumerate(molecules):
         if not isinstance(molecule, dict) or _integer(molecule.get("molecule_index"), "molecule index") != index:
             raise ValueError("source molecule records must have unique ordered indices")
@@ -251,13 +335,18 @@ def _assignment_payload(cell_record, *, max_atoms):
             if not math.isfinite(before) or before <= 0:
                 raise ValueError("source molecular positions are coincident or unrepresentable")
             _close(after, before, "actual intramolecular pair distance")
-        assigned = assign_alkane(geometry, max_atoms=max_atoms).to_dict()
+        assigned = assign_alkane(geometry,
+            max_atoms=max_atoms_per_molecule if compact else max_atoms).to_dict()
         if parameter_set is None:
             parameter_set, source_snapshot = assigned["parameter_set"], assigned["source_snapshot"]
         elif (_canonical(parameter_set) != _canonical(assigned["parameter_set"])
               or _canonical(source_snapshot) != _canonical(assigned["source_snapshot"])):
             raise ValueError("molecule parameter sources differ")
-        assignments.append({"molecule_index": index, "source_assignment": assigned})
+        if compact:
+            assignments.append({"molecule_index": index, "atom_count": len(geometry.atoms),
+                "source_assignment_sha256": hashlib.sha256(_canonical(assigned).encode()).hexdigest()})
+        else:
+            assignments.append({"molecule_index": index, "source_assignment": assigned})
         for row in assigned["atom_assignments"]:
             atom_types[current[row["atom_id"]]["cell_atom_id"]] = (row["type_id"], row["charge_e"])
         for kind, rows in assigned["interactions"].items():
@@ -271,6 +360,11 @@ def _assignment_payload(cell_record, *, max_atoms):
                 "maps": {name: next(atom["atom_map"] for atom in current.values() if atom["cell_atom_id"] == name)
                          for name in ids}, "order": bond.order, "aromatic": bond.aromatic, "stereo": bond.stereo}
         for pair in assigned["nonbonded_pairs"]:
+            if compact:
+                compact_counts["excluded" if pair["lj_scale"] == 0 else
+                    ("scaled_14" if pair["lj_scale"] == .5 else "unscaled_intramolecular")] += 1
+                if pair["topological_distance"] > 3:
+                    continue
             ids = [current[name]["cell_atom_id"] for name in pair["atom_ids"]]
             intramolecular_pairs[frozenset(ids)] = pair
 
@@ -301,18 +395,29 @@ def _assignment_payload(cell_record, *, max_atoms):
     output_atoms = [{**atom, "type_id": atom_types[atom["cell_atom_id"]][0],
                     "charge_e": atom_types[atom["cell_atom_id"]][1]} for atom in atoms]
     pairs, counts = [], {"intermolecular": 0, "excluded": 0, "scaled_14": 0, "unscaled_intramolecular": 0}
-    for first, second in combinations(output_atoms,2):
-        ids = [first["cell_atom_id"], second["cell_atom_id"]]
-        same = first["molecule_index"] == second["molecule_index"]
-        if same:
-            original = intramolecular_pairs[frozenset(ids)]
-            distance, lj_scale, q_scale = original["topological_distance"], original["lj_scale"], original["coulomb_scale"]
-            counts["excluded" if lj_scale == 0 else ("scaled_14" if lj_scale == .5 else "unscaled_intramolecular")] += 1
-        else:
-            distance, lj_scale, q_scale = None, 1., 1.
-            counts["intermolecular"] += 1
-        pairs.append({"atom_ids": ids, "same_molecule": same, "topological_distance": distance,
-                      "lj_scale": lj_scale, "coulomb_scale": q_scale})
+    if compact:
+        counts = compact_counts
+        counts["intermolecular"] = len(output_atoms)*(len(output_atoms)-1)//2-local_pair_work
+        order = {atom["cell_atom_id"]: index for index, atom in enumerate(output_atoms)}
+        for key, original in intramolecular_pairs.items():
+            ids = sorted(key, key=order.__getitem__)
+            pairs.append({"atom_ids": ids, "same_molecule": True,
+                          "topological_distance": original["topological_distance"],
+                          "lj_scale": original["lj_scale"], "coulomb_scale": original["coulomb_scale"]})
+        pairs.sort(key=lambda pair: tuple(order[identity] for identity in pair["atom_ids"]))
+    else:
+        for first, second in combinations(output_atoms,2):
+            ids = [first["cell_atom_id"], second["cell_atom_id"]]
+            same = first["molecule_index"] == second["molecule_index"]
+            if same:
+                original = intramolecular_pairs[frozenset(ids)]
+                distance, lj_scale, q_scale = original["topological_distance"], original["lj_scale"], original["coulomb_scale"]
+                counts["excluded" if lj_scale == 0 else ("scaled_14" if lj_scale == .5 else "unscaled_intramolecular")] += 1
+            else:
+                distance, lj_scale, q_scale = None, 1., 1.
+                counts["intermolecular"] += 1
+            pairs.append({"atom_ids": ids, "same_molecule": same, "topological_distance": distance,
+                          "lj_scale": lj_scale, "coulomb_scale": q_scale})
     charge = math.fsum(atom["charge_e"] for atom in output_atoms)
     mass = math.fsum(atom["mass_g_mol"] for atom in output_atoms)
     density = density_from_mass_volume([atom["mass_g_mol"] for atom in output_atoms], volume)
@@ -324,7 +429,7 @@ def _assignment_payload(cell_record, *, max_atoms):
         actual = _number(cell.get(name), name, True)
         if not math.isclose(actual, expected, rel_tol=1e-12, abs_tol=1e-12):
             raise ValueError(f"source {name} differs from the actual cell")
-    return {
+    payload = {
         "schema_version": "1", "kind": _ASSIGNED_KIND, "model_id": MODEL_ID,
         "source_cell": cell, "box": box, "parameter_set": parameter_set,
         "atoms": output_atoms, "interactions": assembled, "nonbonded_pairs": pairs,
@@ -348,6 +453,24 @@ def _assignment_payload(cell_record, *, max_atoms):
             "simulation_performed": False, "equilibrium_status": "not_assessed",
             "material_property_validation": "not_performed"},
     }
+    if compact:
+        payload.update(schema_version="2", kind=_COMPACT_KIND,
+                       special_pairs=payload.pop("nonbonded_pairs"),
+                       nonbonded_rules=json.loads(_canonical(_COMPACT_RULES)))
+        payload["validation"].pop("all_unordered_pairs_once")
+        payload["validation"].update(
+            implicit_pair_rule_coverage="all_unordered_pairs_via_unit_default_and_unique_exceptions",
+            explicit_global_all_pairs_materialized=False,
+            special_pair_count=len(pairs),
+            total_unordered_pair_count=len(output_atoms)*(len(output_atoms)-1)//2,
+            intramolecular_pair_work=local_pair_work,
+            largest_molecule_atom_count=largest_molecule,
+            implementation_limits={"max_atoms": _COMPACT_MAX_ATOMS,
+                "max_atoms_per_molecule": _COMPACT_MAX_MOLECULE_ATOMS,
+                "max_intramolecular_pairs": _COMPACT_MAX_INTRAMOLECULAR_PAIRS},
+            molecular_source_assignments="recomputed_and_hash_bound_not_duplicated",
+        )
+    return payload
 
 
 def assign_periodic_alkanes(cell_record: dict, *, max_atoms: int = 512) -> AssignedPeriodicAlkaneCell:
@@ -363,3 +486,22 @@ def assign_periodic_alkanes(cell_record: dict, *, max_atoms: int = 512) -> Assig
     except (KeyError, TypeError, OverflowError, RecursionError) as exc:
         raise ValueError(f"invalid periodic source cell: {exc}") from exc
     return AssignedPeriodicAlkaneCell._from_validated(payload)
+
+
+def assign_compact_periodic_alkanes(cell_record: dict, *, max_atoms: int = _COMPACT_MAX_ATOMS,
+        max_atoms_per_molecule: int = _COMPACT_MAX_MOLECULE_ATOMS,
+        max_intramolecular_pairs: int = _COMPACT_MAX_INTRAMOLECULAR_PAIRS) -> CompactAssignedPeriodicAlkaneCell:
+    """Assign the same frozen model using sparse short-topology pair exceptions.
+
+    All omitted unordered pairs have LJ and Coulomb scale one, including every
+    intermolecular pair. The limits bound global atoms, local quadratic work and
+    aggregate local assignment work before source copying or graph assignment.
+    The record is still a starting-cell assignment, not an equilibrium state.
+    """
+    try:
+        payload = _assignment_payload(cell_record, max_atoms=max_atoms, compact=True,
+            max_atoms_per_molecule=max_atoms_per_molecule,
+            max_intramolecular_pairs=max_intramolecular_pairs)
+    except (KeyError, TypeError, OverflowError, RecursionError) as exc:
+        raise ValueError(f"invalid compact periodic source cell: {exc}") from exc
+    return CompactAssignedPeriodicAlkaneCell._from_validated(payload)
