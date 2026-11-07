@@ -1,0 +1,28 @@
+# Periodic assigned OPLS-AA model with explicit finite Ewald settings.
+clear
+units real
+atom_style full
+boundary p p p
+bond_style harmonic
+angle_style harmonic
+dihedral_style opls
+pair_style lj/cut/coul/long 16
+pair_modify mix geometric shift no tail no table 0
+dielectric 1.0
+special_bonds lj/coul 0.0 0.0 0.5
+read_data system.data
+kspace_style ewald 1e-8
+kspace_modify gewald 0.29999999999999999 kmax/ewald 16 16 16
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check yes
+neigh_modify one 9408 page 100000
+# Static full virial: no kinetic contribution or integration.
+velocity all set 0.0 0.0 0.0
+compute polychemmd_virial all pressure NULL virial
+thermo 1
+thermo_style custom step temp ke press pxx pyy pzz pxy pxz pyz vol density ebond eangle edihed evdwl ecoul elong pe
+thermo_modify press polychemmd_virial norm no format float %.17g
+run 0
+write_dump all custom forces.dump id mol q x y z ix iy iz fx fy fz vx vy vz modify sort id format float %.17g
+write_data singlepoint.data
+print "POLYCHEMMD_RUN_COMPLETE"

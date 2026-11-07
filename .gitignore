@@ -16,3 +16,4 @@ trajectories/
 !evidence/restart_v06/*/*.dump
 *.restart
 !evidence/large_cell_v07/*/*.dump
+!evidence/qualification_v08/*/*.dump

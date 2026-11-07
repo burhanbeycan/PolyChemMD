@@ -186,3 +186,13 @@ denge yoğunluğu veya sıvı/kristal faz kanıtı değildir. `parameterize-cell
 yeni temsili seçer; `periodic-singlepoint` büyük hücrede motor çıktısı üretir ve
 bağımsız referans eşleşmesi iddia etmez. Sonraki görev TASK-006C2C: hazırlık
 geçmişi, sayısal ayarlar ve bağımsız hücre/örnekleme yeterliliğinin doğrulanması.
+
+## v0.8 geliştirme sınırı
+
+Sabit geometride virial basınç tensörü, ardışık kesim/karşılıklı-uzay kontrolleri,
+zincir Rg/uçtan uca uzaklık/nematik yönlenme ve hazırlık yeterlilik analizi eklendi.
+Bunlar başlangıç konfigürasyonu analizleridir; termodinamik faz veya denge
+özelliği doğrulaması değildir. Başlangıç yapısında geçen sayısal kontrol, MD ile
+değişen son yapıya aktarılmaz. Isıl kuvvetlerin sıfıra yaklaşması beklenmez;
+minimizasyonun durma ölçütü ayrı değerlendirilir. Sonraki TASK-006C2C2 hazırlık
+geçmişi, bağımsız hücreler ve evrilmiş yapıların örnekleme/sayısal kapsamıdır.

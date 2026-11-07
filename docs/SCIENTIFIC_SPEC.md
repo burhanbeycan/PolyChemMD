@@ -61,6 +61,31 @@ separately. Passing development sensitivity thresholds is not proof of infinite
 sum convergence or bulk-property accuracy. Large engine execution without the
 small independent reference must explicitly retain that evidence boundary.
 
+## Static structure, virial pressure and readiness
+
+A static pressure tensor uses the explicit configurational virial with kinetic
+terms excluded. Canonical pressure is bar; the LAMMPS real-unit boundary uses
+1 atm = 1.01325 bar. Its positive-compression convention and tensor trace must
+be explicit. A single zero-velocity configuration is not a finite-temperature
+pressure or density prediction.
+
+Radius of gyration must specify mass/all-atom versus backbone weighting. The
+end-to-end vector follows terminal backbone carbons; molecular image continuity
+is verified before using unwrapped coordinates. The apolar orientation tensor
+is Q=(3*mean(u*u^T)-I)/2 for normalized carbon-endpoint axes. Its largest
+eigenvalue and director are configuration statistics; degenerate directions
+remain undefined, and order alone does not identify a phase. Molecular copies
+or per-chain rows are not independent material cells.
+
+Numerical refinement must retain every predeclared point, compare identical
+geometry/assignment/engine identity and require the stated number of consecutive
+finest refinements. Development thresholds are not universal physical error
+bounds. An accepted starting-state sweep cannot cover a deformed later state.
+Preparation review separates actual minimizer convergence from finite thermal
+forces: finite-temperature equilibrium forces need not vanish. Optional force
+bounds are explicit gross-instability heuristics. Adequate sampling, phase,
+independent preparation, finite size and external validation remain separate.
+
 ## Canonical torsion convention
 
 The analytical convention is

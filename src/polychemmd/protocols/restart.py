@@ -156,7 +156,7 @@ def _validate_checkpoint(checkpoint,assignment):
 
 
 def _build(assigned,checkpoint,spec,*,run_directory,executable,binary=None):
-    from ..engines.periodic_alkane import _record
+    from ..engines.periodic_alkane import _record, _neighbor_capacity_commands
     if not isinstance(spec,PeriodicAlkaneContinuationSpec):
         raise ValueError("spec must be a PeriodicAlkaneContinuationSpec")
     assignment = _record(assigned)
@@ -173,6 +173,7 @@ def _build(assigned,checkpoint,spec,*,run_directory,executable,binary=None):
         f"kspace_modify gewald {protocol.ewald_alpha_per_angstrom:.17g} kmax/ewald {protocol.reciprocal_nmax} {protocol.reciprocal_nmax} {protocol.reciprocal_nmax}",
         "pair_modify mix geometric shift no tail no table 0","dielectric 1.0",
         "neighbor 2.0 bin","neigh_modify every 1 delay 0 check yes",
+        *_neighbor_capacity_commands(len(assignment["atoms"])),
         f"timestep {protocol.timestep_fs:.17g}",
         f"fix polychemmd_npt all npt temp {target} {target} 100.0 iso {pressure} {pressure} 1000.0",
         f'variable polychemmd_box_invalid equal "(lx<={2*cutoff:.17g})||(ly<={2*cutoff:.17g})||(lz<={2*cutoff:.17g})"',

@@ -28,6 +28,22 @@ _COMPONENTS = {"bond": "E_bond", "angle": "E_angle", "dihedral": "E_dihed",
                "coulomb_kspace": "E_long", "total": "PotEng"}
 
 
+def _neighbor_capacity_commands(atom_count):
+    """Bound storage for larger supported cells without changing pair physics.
+
+    The legacy/small-cell command stream remains exact. The explicit larger
+    capacities address a measured dense-cell neighbor-list overflow; they do
+    not promise capacity for every pathological geometry or periodic-image set.
+    """
+    if type(atom_count) is not int or not 1 <= atom_count <= 8192:
+        raise ValueError("neighbor capacity requires an integer atom count in [1, 8192]")
+    if atom_count <= 512:
+        return ()
+    one = max(2000, 2*atom_count)
+    page = max(100000, 10*one)
+    return (f"neigh_modify one {one} page {page}",)
+
+
 def _record(assigned):
     from ..forcefields.periodic import AssignedPeriodicAlkaneCell, CompactAssignedPeriodicAlkaneCell
     if not isinstance(assigned, (AssignedPeriodicAlkaneCell, CompactAssignedPeriodicAlkaneCell)):
@@ -146,7 +162,8 @@ def build_periodic_alkane_setup(assigned, *, cutoff_angstrom=10.0,
         "special_bonds lj/coul 0.0 0.0 0.5", "read_data system.data",
         "kspace_style ewald 1e-8",
         f"kspace_modify gewald {_format(alpha)} kmax/ewald {nmax} {nmax} {nmax}",
-        "neighbor 2.0 bin", "neigh_modify every 1 delay 0 check yes", "",
+        "neighbor 2.0 bin", "neigh_modify every 1 delay 0 check yes",
+        *_neighbor_capacity_commands(len(atoms)), "",
     ))
     return setup, data
 

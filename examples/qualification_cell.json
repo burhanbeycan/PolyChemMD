@@ -1,0 +1,8 @@
+{
+  "repeats": [3, 7, 7],
+  "spacing_angstrom": [13.0, 5.1, 5.1],
+  "rotation_matrix": null,
+  "min_distance_angstrom": 1.5,
+  "max_atoms": 8192,
+  "max_distance_checks": 5000000
+}

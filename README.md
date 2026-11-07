@@ -2,7 +2,7 @@
 
 Independent polymer chemistry simulation and property-analysis research project.
 
-**Release state: 0.7.0.dev0 — compact periodic cells, ordered molecular construction and larger-cell engine sensitivity audits; equilibrium polymer-property validation remains open.**
+**Release state: 0.8.0.dev0 — static virial/tensor evaluation, consecutive numerical refinement, chain dimensions/order and preparation-readiness review; equilibrium polymer-property validation remains open.**
 
 The long-term scope is a general-purpose connection from polymer chemistry and
 microstructure to quantum-informed parameterization, molecular dynamics,
@@ -34,16 +34,20 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 | Independent energy/force reference | Original local analytic differentiation of harmonic, Fourier, LJ and Coulomb equations; isolated, unshifted finite-cutoff model |
 | LAMMPS energy/force verification | Generated full-atom input, run-zero single points, strict identity/parser checks and component/force comparison; no relaxation or property validation |
 | Periodic parameter assembly | Legacy exhaustive schema 1 and compact schema 2 preserve global/source identities, images and frozen parameters; compact storage uses unit-scale defaults and short-topology exceptions |
-| Larger periodic starting cells | Compact assignment supports at most 8192 atoms, with per-molecule/local-work limits; actual engine evidence uses 2304 atoms |
+| Larger periodic starting cells | Compact assignment supports at most 8192 atoms, with per-molecule/local-work limits; actual qualification evidence uses a 4704-atom configuration |
 | Ordered motif construction | Independent deterministic molecular tiling with periodic linked-bin contacts and rigid/source checks; constructed density and phase claims remain separate |
 | Periodic Ewald reference and engine parity | Explicit real/reciprocal/self/exclusion terms, analytic forces, minimum-image gates and declared finite-sum budgets; no automatic convergence claim |
 | Bounded periodic preparation | Reviewable minimization, NVT and NPT pilot with box/resource guards, native/canonical units and final-state checks; short execution never certifies equilibrium |
 | LAMMPS subprocess adapter | Bounded execution, exclusive run directory, output hashes and thermo checks; real reduced-unit LJ smoke executed |
 | Native NPT checkpoint/continuation | Hash-bound restart with parameter/state/engine identity checks and retained thermostat/barostat state; restricted to the same supported engine build and platform |
+| Static virial thermodynamics | Actual run-zero pressure tensor, scalar configurational pressure, energies and canonical/native density checks; zero velocities, no equilibrium-pressure estimate |
+| Numerical refinement protocol | Predeclared consecutive finest-cutoff and reciprocal-bound comparisons of energy, forces and pressure tensor at exactly one geometry; no infinite-sum/bulk convergence claim |
+| Static chain structure | Mass-weighted/backbone Rg, terminal-carbon end-to-end distance, gyration/shape and nematic order; supported n-alkane configurations, no equilibrium ensemble |
+| Preparation readiness | Actual stage, units, state, force-policy, orientation and density-sampling checks; starting-state numerical review cannot certify an evolved MD state |
 | Density analysis | Physical-unit conversion, autocorrelation/block diagnostics and independent-cell summaries; diagnostics never certify equilibrium or external accuracy |
 | Density campaign planning | Declared state, seed identities, physical durations, numerical sensitivities and resource/cell-capacity gates; no automatic campaign execution |
 | Dependency inspection and CLI | Implemented; presence inspection does not execute or validate engines |
-| Property catalogue | 19 planned material-property families; the catalogue is not an executable property engine |
+| Property catalogue | 19 planned material-property families, with explicitly listed implemented static-chain kernels; complete ensemble/property protocols remain open |
 | Broader chemistry, production sampling and state-matched bulk benchmarks | Planned |
 | Validated polymer-property MD and QM protocols | Planned |
 | Experimental validation and publication benchmarks | Planned; no performance or material-property result is claimed |
@@ -207,6 +211,37 @@ convergence, phase identity or equilibrium density. See
 [engine boundary](docs/COMPACT_ENGINE.md) and
 [actual large-cell evidence](evidence/large_cell_v07/README.md).
 
+Review numerical settings and chain structure at one explicit configuration:
+
+```bash
+polychemmd tile-cell evidence/large_cell_v07/common/source_geometry.json --recipe examples/qualification_cell.json --output artifacts/qualification-cell.json
+polychemmd parameterize-cell artifacts/qualification-cell.json --compact --output artifacts/qualification-assigned.json
+polychemmd numerical-qualify artifacts/qualification-assigned.json --protocol examples/numerical_qualification.json --run-dir artifacts/numerical-plan --plan --output artifacts/numerical-plan.json
+polychemmd chain-structure artifacts/qualification-assigned.json --output artifacts/chain-structure.json
+OMP_NUM_THREADS=1 UCX_TLS=self python scripts/verify_qualification_v08.py --output-dir artifacts/qualification-v08
+```
+
+The qualification example constructs 147 decanes / 4704 atoms in a
+39 by 35.7 by 35.7 angstrom box. It compares cutoffs 10, 12, 14, 16 and 17
+angstrom and a reciprocal refinement 16 to 20, including static scalar/tensor
+pressure differences. Two consecutive finest-cutoff comparisons must satisfy
+the predeclared development thresholds. Static pressure excludes kinetic terms;
+it is not the pressure average of a thermal ensemble. A numerical pass applies
+only to the evaluated starting geometry and is not transferable through MD.
+
+`preparation-review` consumes the full locally retained preparation report
+(including final atom state), a declared review specification and optionally
+the full numerical review. It reports finite thermal forces without requiring
+them to vanish. The minimizer stopping criterion is a separate policy check.
+Ordered-chain orientation, missing numerical coverage of the evolved state and
+insufficient physical sampling remain visible even when engine execution passes.
+The short auditor never certifies equilibrium or enables production automatically.
+See [static thermodynamics](docs/PERIODIC_THERMO.md),
+[numerical qualification](docs/NUMERICAL_QUALIFICATION.md),
+[chain observables](docs/CHAIN_STRUCTURE.md),
+[preparation readiness](docs/PREPARATION_READINESS.md) and
+[actual evidence](evidence/qualification_v08/README.md).
+
 For the separately installed Linux/x86-64 engine smoke environment:
 
 ```bash
@@ -256,8 +291,9 @@ independent Ewald/engine verification and a bounded preparation protocol.
 TASK-006 remains open until an appropriate state/preparation, production
 sampling, independent cells and external comparison are established. TASK-006C2A supplies restart and sampling/planning foundations. TASK-006C2B
 adds a bounded compact representation and larger geometric cell verification.
-The next step is TASK-006C2C: qualify preparation history, numerical settings,
-independent cells and physical sampling for a declared state.
+TASK-006C2C1 adds a fixed-geometry numerical/readiness review layer and static
+chain observables. TASK-006C2C2 must establish suitable preparation histories,
+independent cells and physical sampling for the declared material/state.
 
 ## Reproducibility and dependencies
 
