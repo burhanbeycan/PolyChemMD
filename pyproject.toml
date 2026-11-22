@@ -17,11 +17,17 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
+studio = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "rdkit>=2025.9.3", "ase>=3.24,<4", "numpy>=1.26,<3", "scipy>=1.11,<2"]
+studio-packers = ["packmol==21.2.0", "molcrafts-molpack==0.4.0; python_version >= '3.12'"]
+studio-models = ["moltemplate==2.23.0"]
+studio-analysis = ["MDAnalysis>=2.8,<3"]
+
 chemistry = ["rdkit==2026.9.1"]
 md-smoke = ["lammps==2025.7.22.4.0", "mpich==5.0.2; sys_platform == 'linux' and platform_machine == 'x86_64'"]
 
 [project.scripts]
 polychemmd = "polychemmd.cli:main"
+polychemmd-studio = "polychemmd.studio.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -29,3 +35,5 @@ where = ["src"]
 [tool.setuptools.package-data]
 polychemmd = ["property_catalogue.json"]
 "polychemmd.forcefields" = ["alkane_parameters.json"]
+
+"polychemmd.studio" = ["web/*", "data/*", "md_assets/*", "md_assets/**/*"]

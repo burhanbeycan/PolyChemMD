@@ -1,0 +1,4 @@
+study,doi,sample,full_name,Mw_g_per_mol_low,Mw_g_per_mol_high,loading_wt_percent,TGA_source,published_binding_strength_rank_weakest_1,protocol,aqueous_feed_mass_ratio,uncertainty
+Di 2025,10.1039/D4SC04935G,PDDA,poly(diallyldimethylammonium chloride),400000,500000,12.3,article text and Figure S26,1,polymer added to MXene; stirred 5 min; centrifuged twice at 12000 rpm,5,no replicate uncertainty reported for percent
+Di 2025,10.1039/D4SC04935G,PAH,poly(allylamine hydrochloride),60000,60000,4.8,article text and Figure S26,2,polymer added to MXene; stirred 5 min; centrifuged twice at 12000 rpm,5,no replicate uncertainty reported for percent
+Di 2025,10.1039/D4SC04935G,PIL,poly(1-cyanomethyl-3-vinylimidazolium bromide),118500,118500,6.2,article text and Figure S26,3,MXene dispersion added to 40 mL of 3.5 mg/mL PIL; stirred 5 min; centrifuged twice at 12000 rpm,,no replicate uncertainty reported for percent

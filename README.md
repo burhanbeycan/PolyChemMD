@@ -13,6 +13,14 @@ Start with [the Turkish Codex guide](CODEX_START_HERE_TR.md), then read
 [AGENTS.md](AGENTS.md), [architecture](docs/ARCHITECTURE.md),
 [scientific contracts](docs/SCIENTIFIC_SPEC.md) and [bounded tasks](docs/TASKS.md).
 
+## MXene–polymer simulation studio
+
+Run the Turkish local GUI with `polychemmd studio serve` after installing `.[studio]`.
+The application adds an ASE/RDKit surface and polymer builder, audited packing,
+a durable job queue, source-pinned LAMMPS interface pilots, trajectory analysis and
+matched experimental comparisons. The optional RadonPy reference runs in a separate interpreter.
+See the [quick start, full-engine installation and research limits](docs/MXENE_STUDIO_TR.md).
+
 ## Current implementation and evidence boundaries
 
 | Capability | Status and boundary |
