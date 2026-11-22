@@ -1,0 +1,101 @@
+{
+  "scope": "Finite construction, topology, energy/force consistency and integration at one sparse aqueous test composition.",
+  "software": {
+    "python": "3.12.14",
+    "polychemmd": "0.8.0.dev0",
+    "rdkit": "2026.9.2",
+    "ase": "3.29.0",
+    "numpy": "2.5.5",
+    "scipy": "1.18.1",
+    "moltemplate": "2.23.0",
+    "molcrafts-molpack": "0.4.0",
+    "packmol": "21.2.0",
+    "lammps": "2025.7.22.4.0",
+    "MDAnalysis": "2.11.0"
+  },
+  "recipe": {
+    "polymer": "PVA",
+    "dp": 8,
+    "hydrolysis": 0.75,
+    "acetate_pattern": "dyads",
+    "acetate_dyads": 1,
+    "pattern": "correlated",
+    "oh_top": 0.5,
+    "oh_bottom": 0.5,
+    "surface_correlation_top": 0.22,
+    "surface_correlation_bottom": -0.1,
+    "geometry": "single",
+    "nx": 7,
+    "ny": 5,
+    "water_height_A": 22.0,
+    "chains": 1,
+    "water_count": 32,
+    "salt_M": 0.0,
+    "min_distance_A": 2.0,
+    "packing_engine": "slit",
+    "seed": 17,
+    "tacticity_seed": 101,
+    "sequence_seed": 109,
+    "surface_seed": 113,
+    "conformer_seed": 127
+  },
+  "polymer": {
+    "carbonyl_positions_1based": [
+      3,
+      4
+    ],
+    "adjacent_acetate_dyads": 1
+  },
+  "faces": {
+    "top": {
+      "oh_sites": 35,
+      "total_sites": 70,
+      "undirected_neighbor_bonds": 210,
+      "requested_correlation": 0.22,
+      "coordinate_based_correlation": 0.21904761904761905
+    },
+    "bottom": {
+      "oh_sites": 35,
+      "total_sites": 70,
+      "undirected_neighbor_bonds": 210,
+      "requested_correlation": -0.1,
+      "coordinate_based_correlation": -0.10476190476190476
+    }
+  },
+  "packing": {
+    "atoms": 727,
+    "water_molecules": 32,
+    "salt_pairs": 0,
+    "closest_mobile_pair_or_slab_contact_A": 2.029160482578487,
+    "coordinates_sha256": "764301060a6567eea9ae097883ca41750107d49bba7832664d4c97dc6aac19a4"
+  },
+  "topology": {
+    "file_sha256": "c9ccdd6b88a086b64cf57e5603e1bf6d644c09db41e16f39759c2cef6cc8d98f",
+    "charge_e": 7.271960811294775e-15,
+    "max_abs_component_charge_e": 7.771561172376096e-15,
+    "source_IFF_sha256": "ec194edb8b6a5d1923269a1dee4bdf2ba047964ad930a5d52a887baa112fa873",
+    "source_OPLS_table_sha256": "77387af74ff10844d89b1d69785b7d89d90a9a5ffe5c25492f9827b9f211225d",
+    "cutoff_A": 8.0,
+    "packed_to_engine_max_coordinate_error_A": 2.1570360116282877e-09
+  },
+  "native_energy_force": {
+    "static_potential_kcal_mol": -21495.1625813,
+    "polymer_oxygen_atom_id": 578,
+    "cartesian_component": "x",
+    "initial_mobile_max_force_kcal_mol_A": 51.33385637865657,
+    "delta_A": 0.001,
+    "engine_force_kcal_mol_A": 37.91704706,
+    "central_difference_kcal_mol_A": 37.91359999922861,
+    "abs_difference_kcal_mol_A": 0.0034470607713927848,
+    "acceptance_relative_tolerance": 0.01,
+    "acceptance_absolute_tolerance_kcal_mol_A": 0.06
+  },
+  "trajectory": {
+    "nve_steps": 4,
+    "timestep_fs": 0.25,
+    "frames": 5,
+    "water_count_recovered_from_density": 31.999999999999996,
+    "maximum_fixed_displacement_A": 0.0,
+    "maximum_mobile_displacement_A": 0.049888464560314746
+  }
+}

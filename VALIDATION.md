@@ -449,3 +449,7 @@ reference, the published paired PEI XRD contrast and three short IFF LAMMPS
 pilots with trajectory analysis. [Continuation evidence](evidence/studio/iff_engine_checks.json)
 compares independent, unsplit and restarted numerical runs. Optical stability,
 free swelling and equilibrium adsorption remain experimental targets.
+
+## Newly designed interfaces
+
+The independent [packed structure, energy/force and dynamics audit](docs/STUDIO_INTERFACE_ACCEPTANCE.md) checks a generated PVA/VAc surface from the ordinary Studio job queue. The [microstructure ledger](evidence/studio/interface_microstructures.json) records finite-chain counts and surface correlations at fixed composition. [Matched packer comparisons](docs/STUDIO_PACKING_BENCHMARK.md) report time, unsuccessful placements and available mobile force diagnostics. These are finite construction and engine tests. Molecular-weight moments in a designed distribution are input constraints; the individual sampled chain populations have their own measured moments. Adsorption and dispersion require independent physical observations.

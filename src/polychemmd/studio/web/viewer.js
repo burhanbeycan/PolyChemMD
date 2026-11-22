@@ -5,6 +5,8 @@ const palette = {slab:'#75b6a6',pol:'#f3bd7c',wat:'#65afc6',ion:'#c89cde'};
 const shade = {Ti:'#74ada2', C:'#a0b4ae', O:'#de9579', F:'#89cabb', H:'#c7d1c9', Na:'#c0a0db', Cl:'#8fa8de'};
 function moleculeColor(atom) {
   const role=String(atom.role || '').toLowerCase();
+  if (role==='slab' && atom.element==='O' && atom.layer?.endsWith('_OH'))return '#57c6b4';
+  if (role==='slab' && atom.element==='F' && atom.layer?.endsWith('_F'))return '#c78659';
   if (role.includes('poly')) return atom.element==='H' ? '#cbb79a' : palette.pol;
   if (role.includes('water') || role.includes('solvent')) return atom.element==='H' ? '#a4cdd1' : palette.wat;
   return shade[atom.element] || palette.slab;
@@ -38,16 +40,32 @@ export class StructureView {
   reset(){this.yaw=-.46;this.pitch=.40;this.zoom=1;this.schedule()}
   magnify(f){this.zoom=Math.max(.25,Math.min(7,this.zoom*f));this.schedule()}
   schedule(){if(this.pending)return;this.pending=true;requestAnimationFrame(()=>{this.pending=false;this.draw()})}
-  schematic(config){this.model=null;this.config=config;this.schedule()}
+  schematic(config){this.model=null;this.waterVisible=true;this.config=config;this.schedule()}
   setStructure(data){
     if(!Array.isArray(data?.atoms) || !data.atoms.length)throw Error('Koordinat kaydında atom bulunamadı.');
+    this.waterVisible=true;
     const atoms=data.atoms;
     if(!atoms.every(a=>[a.x,a.y,a.z].every(Number.isFinite)))throw Error('Yapı geçersiz atom koordinatı içeriyor.');
-    const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
-    for(const a of atoms)for(const [i,k] of ['x','y','z'].entries()){min[i]=Math.min(min[i],a[k]);max[i]=Math.max(max[i],a[k])}
-    this.model={atoms,bonds:data.bonds||[],center:min.map((n,i)=>(n+max[i])/2),span:max.map((n,i)=>Math.max(n-min[i],1))};
+    this.model={atoms,bonds:data.bonds||[]};
+    this.setWaterVisible(true);
     this.reset();
     return atoms.length;
+  }
+  setWaterVisible(visible){
+    this.waterVisible=visible;
+    if(!this.model)return;
+    const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+    for(const atom of this.model.atoms){
+      if(!visible && ['water','solvent'].includes(atom.role))continue;
+      for(const [i,key] of ['x','y','z'].entries()){
+        min[i]=Math.min(min[i],atom[key]);max[i]=Math.max(max[i],atom[key]);
+      }
+    }
+    if(Number.isFinite(min[0])){
+      this.model.center=min.map((n,i)=>(n+max[i])/2);
+      this.model.span=max.map((n,i)=>Math.max(n-min[i],1));
+    }
+    this.schedule();
   }
   draw(){
     const ctx=this.ctx;if(!ctx)return;
@@ -67,12 +85,14 @@ export class StructureView {
     if(this.model){
       const {atoms,bonds,center}=this.model;
       const poses=atoms.map(a=>project(point(a.x-center[0],a.y-center[1],a.z-center[2])));
+      const visible=i=>this.waterVisible||!['water','solvent'].includes(atoms[i].role);
       for(const b of bonds){
-        if(!Array.isArray(b) || !poses[b[0]] || !poses[b[1]])continue;
+        if(!Array.isArray(b) || !poses[b[0]] || !poses[b[1]] || !visible(b[0]) || !visible(b[1]))continue;
         line(poses[b[0]],poses[b[1]],'#87988e',.8);
       }
       const order=Array.from({length:atoms.length},(_,i)=>i).sort((a,b)=>poses[a][2]-poses[b][2]);
       for(const i of order){
+        if(!visible(i))continue;
         const a=atoms[i],p=poses[i],factor=a.element==='H'?.18:a.element==='Ti'?.43:.32;
         const rad=Math.max(.8,Math.min(9,scale*factor));
         ctx.fillStyle=moleculeColor(a);ctx.beginPath();ctx.arc(p[0],p[1],rad,0,2*Math.PI);ctx.fill();

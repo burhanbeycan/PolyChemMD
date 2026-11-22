@@ -11,6 +11,13 @@ optional RadonPy comparison runs in an isolated interpreter and emits its own
 engine provenance. The numerical library, core installation and existing CLI
 workflows do not depend on it. See [the Studio architecture](MXENE_STUDIO_TR.md).
 
+The Studio builder samples finite-chain and surface neighbourhood statistics in
+`microstructure.py`. The optional finite oligomer population in `ensemble.py`
+exports number weights and explicit chain recipes. `topology_build.py` and
+`polymer_opls.py` compile the exact packed model into an atom-mapped registered
+topology. `packing_benchmark.py` directly compares rigid placement algorithms
+on matched structures. The CLI and GUI use the same durable job dispatch.
+
 ## Implemented boundary
 
 The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, immutable geometry records, seeded RDKit ETKDGv3 coordinates, independent rigid cell packing, structure exports, Fourier-torsion analysis/conversion, sourced n-alkane assignments, isolated and periodic Ewald energy/force references, bounded LAMMPS verification/preparation and density diagnostics. It now assembles supported fully assigned periodic starting cells and executes finite minimization/NVT/NPT pilots. It does not establish equilibrated polymer states, production sampling, validated polymer-property MD/QM or experimental predictivity. Graph, geometry, parameter identity, numerical parity and process execution are separate from equilibrium/material validation.

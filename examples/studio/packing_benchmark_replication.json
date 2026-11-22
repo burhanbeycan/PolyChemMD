@@ -1,0 +1,6 @@
+{
+  "cases": ["confined"],
+  "engines": ["builtin", "slit", "molpack", "packmol"],
+  "seeds": [101, 211, 307],
+  "evaluate_forces": true
+}

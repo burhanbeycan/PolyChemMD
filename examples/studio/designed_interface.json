@@ -1,0 +1,31 @@
+{
+  "packing": {
+    "polymer": "PVA",
+    "dp": 8,
+    "hydrolysis": 0.75,
+    "acetate_pattern": "dyads",
+    "acetate_dyads": 1,
+    "geometry": "slit",
+    "nx": 7,
+    "ny": 5,
+    "gap_A": 24.0,
+    "oh_top": 0.5,
+    "oh_bottom": 0.5,
+    "pattern": "correlated",
+    "surface_correlation_top": 0.2,
+    "surface_correlation_bottom": 0.2,
+    "packing_engine": "slit",
+    "packing_seed": 31,
+    "sequence_seed": 11,
+    "surface_seed": 19,
+    "tacticity_seed": 13,
+    "conformer_seed": 23,
+    "water_count": 96,
+    "salt_M": 0
+  },
+  "cutoff_A": 8.0,
+  "steps": 4,
+  "minimize_steps": 20,
+  "velocity_seed": 37,
+  "temperature_k": 298.15
+}

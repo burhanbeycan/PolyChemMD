@@ -1,0 +1,151 @@
+{
+  "method": "Matched finite microstructure controls, \u00c5 coordinates. No dynamics sampled.",
+  "recipe": {
+    "polymer": "PVA",
+    "dp": 12,
+    "hydrolysis": 0.75,
+    "acetate_pattern": "dyads",
+    "acetate_dyads": 1,
+    "pattern": "correlated",
+    "oh_top": 0.5,
+    "oh_bottom": 0.5,
+    "surface_correlation_top": 0.25,
+    "surface_correlation_bottom": -0.3333333333333333,
+    "geometry": "slit",
+    "gap_A": 30,
+    "nx": 6,
+    "ny": 4,
+    "seed": 17,
+    "conformer_seed": 17
+  },
+  "ase_version": "3.29.0",
+  "rdkit_version": "2026.09.2",
+  "cases": [
+    {
+      "requested_acetate_dyads": 0,
+      "requested_top_face_correlation": -0.3333333333333333,
+      "per_sheet_top_face_correlation": [
+        -0.33333333333333337,
+        -0.33333333333333337
+      ],
+      "acetate_positions_1based": [
+        2,
+        5,
+        7
+      ],
+      "sequence_count_at_dyads": 120,
+      "top_face_OH_count_per_sheet": [
+        24,
+        24
+      ],
+      "atom_count": 872,
+      "molecular_formula": "C31H58O15",
+      "xyz_sha256": "a3ceb4e9c95ea1f3dfea1c6ff04ffdf5a60e6f2094fb31cc1881e90ea9de58c0"
+    },
+    {
+      "requested_acetate_dyads": 1,
+      "requested_top_face_correlation": -0.3333333333333333,
+      "per_sheet_top_face_correlation": [
+        -0.33333333333333337,
+        -0.33333333333333337
+      ],
+      "acetate_positions_1based": [
+        2,
+        3,
+        6
+      ],
+      "sequence_count_at_dyads": 90,
+      "top_face_OH_count_per_sheet": [
+        24,
+        24
+      ],
+      "atom_count": 872,
+      "molecular_formula": "C31H58O15",
+      "xyz_sha256": "ce5dc149d8cc07ddb26c5ed7320606849f2ea3eb2d9e014c5fb553a8c808666b"
+    },
+    {
+      "requested_acetate_dyads": 2,
+      "requested_top_face_correlation": -0.3333333333333333,
+      "per_sheet_top_face_correlation": [
+        -0.33333333333333337,
+        -0.33333333333333337
+      ],
+      "acetate_positions_1based": [
+        6,
+        7,
+        8
+      ],
+      "sequence_count_at_dyads": 10,
+      "top_face_OH_count_per_sheet": [
+        24,
+        24
+      ],
+      "atom_count": 872,
+      "molecular_formula": "C31H58O15",
+      "xyz_sha256": "e6d0501d718f44d4c383f1e037777f04de3bf69491dc89ecd68350c35c560cc5"
+    },
+    {
+      "requested_acetate_dyads": 0,
+      "requested_top_face_correlation": 0.25,
+      "per_sheet_top_face_correlation": [
+        0.25,
+        0.25
+      ],
+      "acetate_positions_1based": [
+        2,
+        5,
+        7
+      ],
+      "sequence_count_at_dyads": 120,
+      "top_face_OH_count_per_sheet": [
+        24,
+        24
+      ],
+      "atom_count": 872,
+      "molecular_formula": "C31H58O15",
+      "xyz_sha256": "270bb0ef29f1c53d01fd9ce781b1b69f289e1abdc232bb10cc75776b85b7a658"
+    },
+    {
+      "requested_acetate_dyads": 1,
+      "requested_top_face_correlation": 0.25,
+      "per_sheet_top_face_correlation": [
+        0.25,
+        0.25
+      ],
+      "acetate_positions_1based": [
+        2,
+        3,
+        6
+      ],
+      "sequence_count_at_dyads": 90,
+      "top_face_OH_count_per_sheet": [
+        24,
+        24
+      ],
+      "atom_count": 872,
+      "molecular_formula": "C31H58O15",
+      "xyz_sha256": "fca5edb7c3afd9c340e9d5e3839e114dd163f7ee535f9c905a057f0cbf244184"
+    },
+    {
+      "requested_acetate_dyads": 2,
+      "requested_top_face_correlation": 0.25,
+      "per_sheet_top_face_correlation": [
+        0.25,
+        0.25
+      ],
+      "acetate_positions_1based": [
+        6,
+        7,
+        8
+      ],
+      "sequence_count_at_dyads": 10,
+      "top_face_OH_count_per_sheet": [
+        24,
+        24
+      ],
+      "atom_count": 872,
+      "molecular_formula": "C31H58O15",
+      "xyz_sha256": "65334b9e655bad0d9f19f871d78b4ca51af2dbe06778a63f92892a003d9957a2"
+    }
+  ]
+}

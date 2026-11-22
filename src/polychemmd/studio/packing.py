@@ -19,6 +19,8 @@ import sysconfig
 AVOGADRO = 6.02214076e23
 WATER_MOLAR_MASS = 18.01528
 READ_TOL_A = 0.002
+ENGINE_BORDER_A = 0.15
+ENGINE_DISTANCE_BUFFER_A = 0.035
 
 
 def _number(c, key, default, minimum, maximum, integer=False):
@@ -119,7 +121,7 @@ def _external(name, out, specs, box, interval, tol, seed):
     # The native engines take a 3D PBC box. Padding z beyond two cells prevents
     # a fictitious z image, while x/y use the real periodic lengths.
     lines = [
-        f"tolerance {tol + 0.035:.7f}",
+        f"tolerance {tol + ENGINE_DISTANCE_BUFFER_A:.7f}",
         "filetype xyz",
         "output engine.xyz",
         f"pbc {box[0]:.9f} {box[1]:.9f} {2 * box[2] + 10:.9f}",
@@ -133,8 +135,8 @@ def _external(name, out, specs, box, interval, tol, seed):
             lines.append(" fixed 0 0 0 0 0 0")
         else:
             lines.append(
-                f" inside box 0.15 0.15 {interval[0] + 0.15:.9f} "
-                f"{box[0] - 0.15:.9f} {box[1] - 0.15:.9f} {interval[1] - 0.15:.9f}"
+                f" inside box {ENGINE_BORDER_A} {ENGINE_BORDER_A} {interval[0] + ENGINE_BORDER_A:.9f} "
+                f"{box[0] - ENGINE_BORDER_A:.9f} {box[1] - ENGINE_BORDER_A:.9f} {interval[1] - ENGINE_BORDER_A:.9f}"
             )
         lines.append("end structure")
     inp = work / "system.inp"
@@ -228,7 +230,64 @@ def _self_clear(points, box, tol):
     return True
 
 
-def _builtin(specs, box, bounds, tol, seed):
+def _check_rigid_fit(specs, box, bounds):
+    """Rotation-invariant necessary conditions for the unwrapped envelope used by all backends."""
+    import numpy as np
+    from scipy.spatial.distance import pdist
+
+    sides = np.array([box[0], box[1], bounds[1] - bounds[0]]) + 2 * READ_TOL_A
+    for species, atoms, _, _ in specs[1:]:
+        if len(atoms) < 2:
+            continue
+        points = _pos(atoms)
+        if np.max(pdist(points)) > np.linalg.norm(sides):
+            raise ValueError(
+                f"{species}: rigid template diameter exceeds accessible box diagonal"
+            )
+        # Along any axis spanning width w, the variance is <= w**2/4.
+        # The smallest eigenvalue lower-bounds the variance in *every* direction.
+        centered = points - points.mean(axis=0)
+        min_variance = max(
+            0.0, np.linalg.eigvalsh(centered.T @ centered / len(atoms))[0]
+        )
+        if 2 * math.sqrt(min_variance) > min(sides):
+            raise ValueError(
+                f"{species}: rigid template minimum width exceeds the narrowest box dimension"
+            )
+
+
+def _slit_pose(template, axes, rng, lo, hi, attempt):
+    """Find a feasible translation interval for a rigid orientation proposal in a slit."""
+    import numpy as np
+    from scipy.spatial.transform import Rotation
+
+    if attempt % 2:
+        rotated = Rotation.random(random_state=rng).apply(template)
+    else:
+        # Prefer an orientation with the largest-spread direction in the basal plane.
+        # Rotate around the layer normal and permit either face to point to the surface.
+        xy_angle = rng.uniform(-np.pi, np.pi)
+        tilted = template @ axes
+        if rng.integers(2):
+            tilted *= [1.0, -1.0, -1.0]
+        rotated = Rotation.from_rotvec([0, 0, xy_angle]).apply(tilted)
+    start = lo - rotated.min(axis=0)
+    stop = hi - rotated.max(axis=0)
+    if np.any(start > stop):
+        return None
+    return rotated + rng.uniform(start, stop)
+
+
+class _InsertionExhausted(RuntimeError):
+    def __init__(self, species, copy, count, attempts):
+        self.attempts = attempts
+        super().__init__(
+            f"Rigid insertion exhausted at {species} {copy}/{count}. "
+            "Use a larger accessible cell, a different packer or a lower initial density."
+        )
+
+
+def _builtin(specs, box, bounds, tol, seed, *, slit=False, matched_constraints=False):
     """Sequential rigid insertion with a randomized solvent grid followed by rejection.
 
     The grid is an initialization device. Close-to-packed or oversized recipes
@@ -238,12 +297,13 @@ def _builtin(specs, box, bounds, tol, seed):
     from scipy.spatial.transform import Rotation
 
     rng = np.random.default_rng(seed)
-    lo = np.array([0.001, 0.001, bounds[0] + 0.001])
-    hi = np.array([box[0] - 0.001, box[1] - 0.001, bounds[1] - 0.001])
+    border = ENGINE_BORDER_A if matched_constraints else 0.001
+    lo = np.array([border, border, bounds[0] + border])
+    hi = np.array([box[0] - border, box[1] - border, bounds[1] - border])
     points = [_pos(specs[0][1])]
     tree, shift, cell = _periodic_tree(points[0], box)
     pending = np.empty((0, 3))
-    target = tol + 0.0001
+    target = tol + (ENGINE_DISTANCE_BUFFER_A if matched_constraints else 0.0001)
 
     # Rebuild a balanced periodic tree in batches, check recent insertions directly.
     def acceptable(candidate):
@@ -259,9 +319,16 @@ def _builtin(specs, box, bounds, tol, seed):
         return True
 
     attempts = 0
+    polymer_proposals = 0
     for name, atoms, _, count in specs[1:]:
         template = _pos(atoms)
         template -= template.mean(axis=0)
+        axes = None
+        if slit and name == "polymer":
+            _, _, rows = np.linalg.svd(template, full_matrices=False)
+            # Columns map from the molecular frame to principal-axis coordinates.
+            axes = rows.T.copy() if rows.shape == (3, 3) else np.eye(3)
+            axes[:, -1] *= np.sign(np.linalg.det(axes))
         grid = iter(())
         if name == "water":
             # A staggered shape-agnostic candidate grid with randomly ordered
@@ -270,8 +337,19 @@ def _builtin(specs, box, bounds, tol, seed):
             sites = (np.indices(dims).reshape(3, -1).T + 0.5) * (hi - lo) / dims + lo
             grid = iter(sites[rng.permutation(len(sites))])
         for i in range(count):
-            for _ in range(3500):
+            for trial in range(3500):
                 attempts += 1
+                if name == "polymer":
+                    polymer_proposals += 1
+                if axes is not None:
+                    candidate = _slit_pose(template, axes, rng, lo, hi, trial)
+                    if (
+                        candidate is not None
+                        and acceptable(candidate)
+                        and _self_clear(candidate, box, target)
+                    ):
+                        break
+                    continue
                 centre = next(grid, None) if name == "water" else None
                 if centre is None:
                     centre = rng.uniform(lo, hi)
@@ -285,10 +363,7 @@ def _builtin(specs, box, bounds, tol, seed):
                     continue
                 break
             else:
-                raise RuntimeError(
-                    f"Rigid insertion exhausted at {name} {i + 1}/{count}. "
-                    "Use an external packer, a larger accessible cell or a lower initial density."
-                )
+                raise _InsertionExhausted(name, i + 1, count, attempts)
             points.append(candidate)
             pending = np.concatenate((pending, candidate))
             if len(pending) >= 60:
@@ -296,11 +371,68 @@ def _builtin(specs, box, bounds, tol, seed):
                 pending = np.empty((0, 3))
     return np.concatenate(points), {
         "package": "polychemmd.studio",
-        "method": "seeded rigid insertion v1",
+        "method": "envelope-conditioned rigid insertion v2"
+        if slit
+        else "seeded rigid insertion v1",
+        "polymer_orientation_proposals": polymer_proposals,
+        "orientation_policy": (
+            "Alternating in-plane principal-axis and isotropic proposals; feasible centers sampled uniformly."
+            if slit
+            else "Isotropic orientation proposals; center sampled in the box."
+        ),
         "placement_attempts": attempts,
         "numpy": np.__version__,
         "scipy": metadata.version("scipy"),
     }
+
+
+def _run_builtin(specs, box, bounds, tol, seed, *, slit, matched_constraints):
+    import numpy as np
+
+    # Retry confined packings from scratch after a dead end, including new water grid order.
+    # Stop at the first audited candidate, without ranking any candidate by contacts or energy.
+    limit = 3 if slit else 1
+    failures = []
+    efforts = 0
+    for number in range(limit):
+        placement_seed = (
+            seed
+            if not number
+            else int(np.random.SeedSequence([seed, number]).generate_state(1)[0])
+        )
+        try:
+            coords, info = _builtin(
+                specs,
+                box,
+                bounds,
+                tol,
+                placement_seed,
+                slit=slit,
+                matched_constraints=matched_constraints,
+            )
+        except _InsertionExhausted as exc:
+            efforts += exc.attempts
+            failures.append(
+                {
+                    "seed": placement_seed,
+                    "reason": str(exc),
+                    "placement_attempts": exc.attempts,
+                }
+            )
+            if number + 1 == limit:
+                if not slit:
+                    raise
+                raise RuntimeError(
+                    f"{limit} confined rigid starts exhausted; final attempt: {exc}"
+                ) from exc
+        else:
+            info.update(
+                rejected_starts=failures,
+                successful_placement_seed=placement_seed,
+                total_placement_attempts=efforts + info["placement_attempts"],
+            )
+            return coords, info
+    raise AssertionError("positive restart budget expected")
 
 
 def _audit(atoms, coords, groups, specs, box, bounds, tol):
@@ -324,12 +456,28 @@ def _audit(atoms, coords, groups, specs, box, bounds, tol):
     refs = {
         name: pdist(_pos(template)) for name, template, _, _ in specs if name != "slab"
     }
+    centered = {
+        name: _pos(template) - _pos(template).mean(axis=0)
+        for name, template, _, _ in specs
+        if name != "slab" and len(template) >= 4
+    }
     mol = np.empty(len(mobile), dtype=int)
     for idx, (name, start, n) in enumerate(groups[1:]):
         s = coords[start : start + n]
         # All intramolecular distances test template geometry and atom ordering.
         if not np.allclose(pdist(s), refs[name], rtol=0, atol=READ_TOL_A):
             raise ValueError(f"Packing changed the intra-molecular geometry of {name}")
+        if name in centered:
+            # Distances alone also accept a mirror image of a stereogenic template.
+            ref = centered[name]
+            observed = s - s.mean(axis=0)
+            left, _, right = np.linalg.svd(ref.T @ observed)
+            left[:, -1] *= np.sign(np.linalg.det(left @ right))
+            residual = np.linalg.norm(ref @ left @ right - observed, axis=1).max()
+            if residual > 2 * READ_TOL_A:
+                raise ValueError(
+                    f"Packing changed the handedness or rigid coordinates of {name}"
+                )
         if not _self_clear(s, box, tol - READ_TOL_A):
             raise ValueError(f"{name} overlaps its periodic image")
         mol[start - slab_size : start - slab_size + n] = idx
@@ -361,13 +509,14 @@ def _audit(atoms, coords, groups, specs, box, bounds, tol):
         "minimum_mobile_to_other_A": closest,
         "fixed_surface_invariant": True,
         "rigid_molecule_identity": True,
+        "proper_rigid_transforms": True,
         "mobile_self_image_check": True,
         "pbc": [True, True, False],
         "read_tolerance_A": READ_TOL_A,
     }
 
 
-def pack_system(config: dict, out: Path) -> dict:
+def pack_system(config: dict, out: Path, *, matched_constraints=False) -> dict:
     """Pack one job directory after geometry.build_geometry; return an audit manifest."""
     import numpy as np
 
@@ -400,9 +549,11 @@ def pack_system(config: dict, out: Path) -> dict:
     if not shape["templates"]["polymer"] and chains:
         raise ValueError("Positive chain count requires a polymer template")
     tol = _number(config, "min_distance_A", 1.8, 0.75, 4.0)
-    seed = _number(config, "seed", 42, 1, 2147483646, integer=True)
+    seed = _number(
+        config, "packing_seed", config.get("seed", 42), 1, 2147483646, integer=True
+    )
     name = config.get("packing_engine", "builtin")
-    if name not in ("builtin", "molpack", "packmol"):
+    if name not in ("builtin", "slit", "molpack", "packmol"):
         raise ValueError("Unknown packing engine")
     specs = _species(shape, chains, waters, pairs)
     natom = sum(len(template) * count for _, template, _, count in specs)
@@ -410,14 +561,23 @@ def pack_system(config: dict, out: Path) -> dict:
         raise ValueError(
             "Starting cell exceeds 50,000 atoms or 12,000 waters; reduce the cell"
         )
+    _check_rigid_fit(specs, box, bounds)
     atoms, bonds, groups = _template_order(specs)
     if len(specs) == 1:
         coords, provenance = (
             _pos(specs[0][1]),
             {"package": "none", "method": "fixed surface only"},
         )
-    elif name == "builtin":
-        coords, provenance = _builtin(specs, box, bounds, tol, seed)
+    elif name in ("builtin", "slit"):
+        coords, provenance = _run_builtin(
+            specs,
+            box,
+            bounds,
+            tol,
+            seed,
+            slit=name == "slit",
+            matched_constraints=matched_constraints,
+        )
     else:
         elements, coords, provenance = _external(
             name, out, specs, box, bounds, tol, seed
@@ -429,7 +589,9 @@ def pack_system(config: dict, out: Path) -> dict:
     audit = _audit(atoms, coords, groups, specs, box, bounds, tol)
     for a, (x, y, z) in zip(atoms, coords, strict=True):
         a.update(x=float(x), y=float(y), z=float(z))
+    source_sha = hashlib.sha256(source.read_bytes()).hexdigest()
     packed = {
+        "geometry_input_sha256": source_sha,
         "units": "angstrom",
         "box_A": box.tolist(),
         "pbc": [True, True, False],
@@ -479,7 +641,7 @@ def pack_system(config: dict, out: Path) -> dict:
         / (AVOGADRO * volume * 1e-24),
         "minimum_distance_target_A": tol,
         "audit": audit,
-        "geometry_input_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+        "geometry_input_sha256": source_sha,
         "packed_xyz_sha256": hashlib.sha256(
             (out / "packed.xyz").read_bytes()
         ).hexdigest(),

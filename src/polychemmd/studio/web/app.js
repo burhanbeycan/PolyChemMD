@@ -1,4 +1,5 @@
 import {StructureView} from './viewer.js';
+import {drawBenchmark, drawFaceMaps, drawStructureStats, integerList, microstructureFields, syncMicrostructure} from './design.js';
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 const svgNS='http://www.w3.org/2000/svg';
@@ -17,7 +18,7 @@ const element=(tag,text='',cls='')=>{const el=document.createElement(tag);if(tex
 const state={page:'builder',selected:null,jobs:[],jobSignature:'',records:[],atlasLoaded:false,service:false,viewJob:null,
              rules:null,polling:false,jobRequest:0};
 const viewer=new StructureView($('#scene'));
-const kindLabel={geometry:'Geometri',packing:'Paketleme',md:'Moleküler dinamik',radonpy:'RadonPy',experiment:'Deney analizi',trajectory:'Yörünge analizi'};
+const kindLabel={geometry:'Geometri',packing:'Paketleme',md:'Moleküler dinamik',radonpy:'RadonPy',experiment:'Deney analizi',trajectory:'Yörünge analizi',topology:'Topoloji üretimi',packing_benchmark:'Paketleme karşılaştırması',pva_ensemble:'PVA zincir dağılımı'};
 const statusLabel={queued:'Sırada',running:'Çalışıyor',succeeded:'Tamamlandı',failed:'Başarısız',partial_failed:'Kısmen başarısız',cancelled:'İptal edildi'};
 const f=$('#system-form'), field=name=>f.elements.namedItem(name);
 let noticeTimeout;
@@ -42,24 +43,33 @@ for(const btn of $$('[data-page],[data-go]'))btn.addEventListener('click',()=>go
 addEventListener('hashchange',()=>go(location.hash.slice(1),false));
 function systemConfig(){
   const n=k=>Number(field(k).value),v=k=>field(k).value;
-  const c={polymer:v('polymer'),geometry:v('geometry'),dp:n('dp'),chains:v('polymer')==='bare'?0:n('chains'),
+  const c={polymer:v('polymer'),geometry:v('geometry'),vacuum_padding_A:n('vacuum_padding_A'),dp:n('dp'),chains:v('polymer')==='bare'?0:n('chains'),
     seed:n('seed'),nx:n('nx'),ny:n('ny'),gap_A:n('width_A'),water_height_A:n('width_A'),oh_top:n('oh_top'),oh_bottom:n('oh_bottom'),
     pattern:v('pattern'),salt_M:n('salt_M'),water_density:n('water_density'),conformer_ff:v('conformer_ff'),packing_engine:v('packing_engine')};
   if(c.polymer==='PVA'){c.hydrolysis=n('hydrolysis');c.acetate_pattern=v('acetate_pattern')}
   if(c.polymer==='PCE'){c.side_dp=n('side_dp');c.graft_every=n('graft_every')}
+  microstructureFields(f,c);
   return c;
 }
 function syncBuilder(){
   const c=systemConfig(),bare=c.polymer==='bare';$('#project-name').textContent='Ti₃C₂Tₓ / '+(bare?'kontrol':c.polymer);
   $('#pva-config').hidden=c.polymer!=='PVA';$('#pce-config').hidden=c.polymer!=='PCE';$('#chain-fields').hidden=bare;
+  syncMicrostructure(f,c);
   field('dp').disabled=bare;field('chains').disabled=bare;
   $('#width-label').textContent=c.geometry==='slit'?'Galeri genişliği (Å)':'Su bölgesi (Å)';
   $('#match-name').textContent=c.geometry==='slit'?'Kuru / ıslak bazal tekrar mesafesi':'Yüzeye dik hidrasyon profili';
   $('#match-control').textContent=c.geometry==='slit'?'Aynı durumda polimersiz MXene':'Aynı sonlanmalara sahip çıplak yüzey';
   if(state.viewJob){state.viewJob=null;$('#view-source').textContent='Şematik yerleşim · Ölçeksiz';$('#view-detail').textContent='Şema'}
+  $('#site-maps').hidden=true;$('#face-maps').replaceChildren();$('#toggle-water').hidden=true;$('#water-legend').classList.remove('omitted');
   viewer.schematic(c);
 }
 f.addEventListener('input',syncBuilder);
+$('#toggle-water').onclick=e=>{
+  viewer.setWaterVisible(!viewer.waterVisible);
+  e.currentTarget.setAttribute('aria-pressed',String(viewer.waterVisible));
+  $('#water-legend').classList.toggle('omitted',!viewer.waterVisible);
+  e.currentTarget.title=viewer.waterVisible?'Suyu gizle':'Suyu göster';viewer.schedule();
+};
 $('#reset-view').onclick=()=>viewer.reset();
 $('#expand-view').onclick=async()=>{
   const card=$('#viewer-card');try{if(document.fullscreenElement)await document.exitFullscreen();else if(card.requestFullscreen)await card.requestFullscreen();else card.classList.toggle('expanded')}
@@ -76,7 +86,52 @@ async function submit(kind,config){
   const job=val.job||val;state.selected=job.id;state.jobSignature='';go('jobs');await loadJobs(true);
   notice(kindLabel[kind]+' işi kuyruğa alındı.');return job;
 }
-f.onsubmit=e=>{e.preventDefault();if(!f.reportValidity())return;const kind=e.submitter?.value||'geometry';safe(()=>submit(kind,systemConfig()),e.submitter)};
+f.onsubmit=e=>{
+  e.preventDefault();
+  if(!f.reportValidity())return;
+  const kind=e.submitter?.value||'geometry', config=systemConfig();
+  if(kind==='geometry')delete config.packing_seed;
+  safe(()=>submit(kind,config),e.submitter);
+};
+function applyDesign(values) {
+  for(const [key,value] of Object.entries(values))field(key).value=String(value);
+  if('acetate_dyad_fraction' in values)field('dyad_measure').value='fraction';
+  syncBuilder();
+}
+$('#designed-pva').onclick=()=>{
+  f.reset();
+  applyDesign({polymer:'PVA',geometry:'single',dp:12,hydrolysis:0.75,acetate_pattern:'dyads',acetate_dyads:1,
+    pattern:'correlated',surface_correlation_top:0,surface_correlation_bottom:0,salt_M:0,packing_engine:'slit',vacuum_padding_A:12});
+  field('acetate_pattern').closest('details').open=true;
+  notice('Tuzsuz DP12 / %75 hidroliz örneği hazır. Dizilim ve yüzey hedeflerini değiştirebilirsiniz.');
+};
+const ensemble=$('#ensemble-form');
+ensemble.onsubmit=e=>{
+  e.preventDefault();
+  const config=Object.fromEntries(Array.from(new FormData(ensemble),([key,value])=>[key,Number(value)]));
+  safe(()=>submit('pva_ensemble',config),e.submitter);
+};
+const benchmark=$('#benchmark-form');
+function benchmarkConfig(){
+  const pick=name=>Array.from(benchmark.querySelectorAll('[name='+name+']:checked'),node=>node.value);
+  return {cases:pick('case'),engines:pick('engine'),seeds:integerList(benchmark.elements.seeds.value),
+    evaluate_forces:benchmark.elements.evaluate_forces.checked};
+}
+function syncBenchmark(){
+  const c=benchmarkConfig();
+  const valid=c.seeds?.length && c.seeds.length<=8 && c.seeds.every(v=>Number.isSafeInteger(v) && v>=1 && v<=2147483646) &&
+    new Set(c.seeds).size===c.seeds.length;
+  const msg=!valid?'1–8 farklı pozitif tam sayı tohumunu virgülle ayırın.':
+    !c.cases.length || !c.engines.length?'En az bir koşul ve bir motor seçin.':'';
+  benchmark.elements.seeds.setCustomValidity(msg);
+  $('#benchmark-budget').textContent=msg || (c.cases.length*c.engines.length*c.seeds.length+' paketleme koşusu');
+}
+benchmark.oninput=syncBenchmark;
+benchmark.onsubmit=e=>{
+  e.preventDefault();syncBenchmark();
+  if(benchmark.reportValidity())safe(()=>submit('packing_benchmark',benchmarkConfig()),e.submitter);
+};
+syncBenchmark();
 const md=$('#md-form');
 function mdAvailability(){
   const profile=md.elements.md_profile.value, key=profile==='iff-water'?profile:profile+'-'+md.elements.md_sequence.value;
@@ -90,7 +145,7 @@ const radon=$('#radon-form');
 radon.onsubmit=e=>{e.preventDefault();const a=radon.elements;safe(()=>submit('radonpy',{polymer:a.polymer.value,dp:Number(a.dp.value),seed:Number(a.seed.value)}),e.submitter)};
 function toolBadge(ok,version){const txt=ok?(version||'Kurulu'):'Bulunamadı';return element('span',txt,'status-tag'+(ok?'':' warn'))}
 async function loadStatus(){
-  const shown={rdkit:'RDKit',ase:'ASE',molpack:'MolCrafts MolPack',packmol:'Packmol',lammps:'LAMMPS',mdanalysis:'MDAnalysis',radonpy:'RadonPy (bağımsız ortam)',builtin:'PolyChemMD'};
+  const shown={rdkit:'RDKit',ase:'ASE',slit:'PolyChemMD · dar galeri',moltemplate:'Moltemplate',molpack:'MolCrafts MolPack',packmol:'Packmol',lammps:'LAMMPS',mdanalysis:'MDAnalysis',radonpy:'RadonPy (bağımsız ortam)',builtin:'PolyChemMD'};
   const statusEl=$('#service');
   try{
     const data=await api('/api/status');state.service=true;state.iffProfiles=data.profiles;mdAvailability();statusEl.lastChild.textContent=' Yerel çalışma alanı';statusEl.classList.remove('offline');
@@ -135,11 +190,20 @@ async function openStructure(j){
     for(const [key,val] of Object.entries(j.config||{})){
       const input=field(key);if(input)input.value=String(val);
     }
+    if('acetate_dyad_fraction' in (j.config||{}))field('dyad_measure').value='fraction';
     field('geometry').value=j.config?.geometry||'single';
     field('width_A').value=String(field('geometry').value==='slit'?(j.config?.gap_A??22):(j.config?.water_height_A??22));
     syncBuilder();
   }
   const n=viewer.setStructure(data);state.viewJob=j.id;
+  const toggle=$('#toggle-water');
+  toggle.hidden=!data.atoms.some(a=>['solvent','water'].includes(a.role));
+  toggle.setAttribute('aria-pressed','true');toggle.title='Suyu gizle';$('#water-legend').classList.remove('omitted');
+  $('#site-maps').hidden=true;
+  if(j.kind==='geometry'||j.kind==='packing'){
+    const shape=j.kind==='geometry'?j.result:await api('/api/jobs/'+encodeURIComponent(j.id)+'/files/structure.json');
+    $('#site-maps').hidden=!drawFaceMaps($('#face-maps'),data.atoms,shape,formatNum);
+  }
   let source=kindLabel[j.kind]||j.kind;
   if(j.kind==='md' && data.label==='last sampled MD frame')source='Son MD karesi · adım '+data.step;
   if(j.kind==='md' && j.config?.profile==='registered')source='Paketlenmiş başlangıç yapısı';
@@ -158,7 +222,7 @@ function summaryLines(result){
     for(const r of result.rows||[])rows.push([r.batch+' · '+r.medium+' · '+r.polymer+' R₂₄',formatNum(r.R24)]);
     for(const [medium,m] of Object.entries(result.summary?.by_medium||{}))rows.push([medium+' · eşlenmiş PCE − PEO',formatNum(m.mean)]);
   }else{
-    const labels={n_frames:'Kare sayısı',mean_plane_separation_nm:'Ortalama düzlem aralığı (nm)',contact_cutoff_A:'Temas eşiği (Å)',mean_water_O_contact_fraction:'Temastaki su oksijeni kesri',mean_polymer_heavy_contact_fraction:'Temastaki polimer ağır atomu kesri',sampled_frames:'Örneklenen kare',atom_count:'Atom sayısı',atoms_count:'Atom sayısı',water_count:'Su molekülleri',ion_pairs:'NaCl çifti',salt_M_requested:'Hedef NaCl (mol/L)',salt_M_realized:'Gerçekleşen NaCl (mol/L)',nominal_polymer_mass_per_exposed_area_mg_m2:'Geometrik polimer yükü (mg/m²)',seed:'Tohum',accessible_volume_A3:'Geometrik sıvı hacmi (Å³)',center_spacing_A:'Başlangıç tabaka merkezleri arası (Å)',steps:'Adım',duration_ps:'Süre (ps)',final_mobile_temperature_K:'Son mobil grup sıcaklığı (K)',profile:'Profil',engine:'Motor',frames:'Kare',frame_count:'Kare',dp:'Polimerizasyon derecesi'};
+    const labels={n_frames:'Kare sayısı',mean_plane_separation_nm:'Ortalama düzlem aralığı (nm)',contact_cutoff_A:'Temas eşiği (Å)',mean_water_O_contact_fraction:'Temastaki su oksijeni kesri',mean_polymer_heavy_contact_fraction:'Temastaki polimer ağır atomu kesri',sampled_frames:'Örneklenen kare',atom_count:'Atom sayısı',atoms_count:'Atom sayısı',atoms:'Atom sayısı',polymer:'Polimer',water_count:'Su molekülleri',ion_pairs:'NaCl çifti',salt_M_requested:'Hedef NaCl (mol/L)',salt_M_realized:'Gerçekleşen NaCl (mol/L)',nominal_polymer_mass_per_exposed_area_mg_m2:'Geometrik polimer yükü (mg/m²)',seed:'Tohum',accessible_volume_A3:'Geometrik sıvı hacmi (Å³)',center_spacing_A:'Başlangıç tabaka merkezleri arası (Å)',steps:'Adım',duration_ps:'Süre (ps)',final_mobile_temperature_K:'Son mobil grup sıcaklığı (K)',profile:'Profil',engine:'Motor',frames:'Kare',frame_count:'Kare',dp:'Polimerizasyon derecesi',topology_id:'Topoloji kimliği',charge_e:'Toplam yük (e)',chain_count:'Zincir sayısı',minimize_iterations:'Minimizasyon iterasyonu',initial_mobile_fmax_kcal_mol_A:'İlk mobil Fmax (kcal mol⁻¹ Å⁻¹)',post_minimize_mobile_fmax_kcal_mol_A:'Minimizasyon sonrası Fmax (kcal mol⁻¹ Å⁻¹)',final_mobile_fmax_kcal_mol_A:'Son mobil Fmax (kcal mol⁻¹ Å⁻¹)',fitted_mn_g_mol:'Dağılım Mₙ (g/mol)',fitted_dispersity:'Dağılım Đ',sample_mn_g_mol:'Örneklenen Mₙ (g/mol)',sample_dispersity:'Örneklenen Đ'};
     for(const [key,name] of Object.entries(labels))if(result[key]!==null&&['number','string'].includes(typeof result[key]))rows.push([name,formatNum(result[key])]);
   }
   return rows;
@@ -172,9 +236,48 @@ function showDetail(j){
     for(const [label,value] of summaryLines(result).slice(0,12)){const row=element('div','','tool-row');row.append(element('span',label),element('strong',value));el.append(row)}
   }
   const fs=(j.files||[]).map(x=>typeof x==='string'?x:x.name).filter(Boolean);
+  if(result && j.status==='succeeded'){
+    const readout=element('div','','readout');el.append(readout);
+    if(j.kind==='geometry')drawStructureStats(readout,result,formatNum);
+    if(j.kind==='packing' && fs.includes('structure.json')){
+      api('/api/jobs/'+encodeURIComponent(j.id)+'/files/structure.json')
+        .then(shape=>drawStructureStats(readout,shape,formatNum))
+        .catch(error=>readout.append(element('p',error.message,'hint')));
+    }
+    if(j.kind==='packing_benchmark')drawBenchmark(readout,result,formatNum);
+    if(j.kind==='topology' && result.parameter_provenance){
+      drawStructureStats(readout,result.parameter_provenance,formatNum);
+      readout.append(details('Parametre kaynakları ve atom eşlemesi',{
+        MXene_DOI:result.parameter_provenance.native_doi,
+        IFF_SHA256:result.parameter_provenance.native_sha256, OPLS_SHA256:result.parameter_provenance.opls_sha256,
+        packed_SHA256:result.packed_sha256, topology_SHA256:result.topology_sha256,
+        terms:result.term_counts, cutoff_A:result.cutoff_A
+      }));
+    }
+    if(j.kind==='pva_ensemble' && result.members?.length){
+      const select=element('select'),label=element('label','Oluşturucuya aktarılacak zincir');
+      for(const [i,m] of result.members.entries())select.add(new Option((i+1)+'. zincir · DP'+m.dp+' · '+m.acetate_positions.length+' asetat',i));
+      label.append(select);
+      readout.append(label,action('Seçili zinciri kullan',()=>{
+        const m=result.members[Number(select.value)];
+        applyDesign({polymer:'PVA',dp:m.dp,hydrolysis:m.hydrolysis,acetate_pattern:'explicit',acetate_positions:m.acetate_positions,sequence_seed:m.sequence_seed});
+        field('acetate_pattern').closest('details').open=true;
+        go('builder');notice('Seçilen zincirin DP ve asetat konumları forma aktarıldı.');
+      }));
+    }
+  }
   if(fs.length){
     const buttons=element('p','','row-actions');
     if(fs.some(x=>['packed.json','structure.json'].includes(x)))buttons.append(action('3B yapıyı aç',()=>openStructure(j)));
+    if(j.kind==='packing' && j.status==='succeeded')buttons.append(action('Bu yapıdan topoloji üret',async()=>{
+      go('methods');await loadRegistered(undefined,j.id);$('#topology-form').scrollIntoView({behavior:'smooth',block:'center'});
+    }));
+    if(j.kind==='topology' && result?.topology_id)buttons.append(action('Bu topolojiyle dinamik çalıştır',async()=>{
+      go('methods');await loadRegistered(j.config.source_job);regTopology.value=result.topology_id;
+      if(!regTopology.value)throw Error('Üretilen topoloji kaynak paketlemeyle eşleştirilemedi.');
+      reg.elements.minimize_steps.value='25';reg.elements.steps.value='5';
+      reg.scrollIntoView({behavior:'smooth',block:'center'});
+    }));
     if(j.kind==='packing' && j.status==='succeeded')buttons.append(action('Parametreli MD',async()=>{
       go('methods');await loadRegistered(j.id);$('#registered-form').scrollIntoView({behavior:'smooth',block:'center'});
     }));
@@ -280,7 +383,42 @@ async function loadAtlas(){
 $('#record-search').oninput=drawAtlas;$('#record-method').onchange=drawAtlas;
 const reg=$('#registered-form'), regSource=reg.elements.source_job, regTopology=reg.elements.topology_id;
 let registrationRequest=0;
-async function loadRegistered(preselect){
+const generator=$('#topology-form'), generatedSource=generator.elements.source_job;
+let sourceRequest=0;
+async function topologyAvailability() {
+  const button=generator.querySelector('button'), help=$('#topology-help');
+  const id=generatedSource.value, request=++sourceRequest;
+  button.disabled=true;
+  if(!id) {
+    help.textContent=generatedSource.options.length<=1
+      ? 'Tamamlanmış bir paketleme gerekli. Sistem oluştur ekranındaki tuzsuz PVA örneğiyle başlayabilirsiniz.'
+      : 'Topoloji modeline uygunluğunu görmek için bir paketleme seçin.';
+    return;
+  }
+  help.textContent='Paketleme bileşimi kontrol ediliyor.';
+  try {
+    const job=await api('/api/jobs/'+encodeURIComponent(id));
+    if(request!==sourceRequest)return;
+    const polymer=job.config.polymer||'PEO', pairs=job.result.ion_pairs;
+    const reasons=[];
+    if(pairs>0)reasons.push(pairs+' NaCl çifti var. Bu su modeli için doğrulanmış NaCl parametreleri bulunmuyor.');
+    else if(job.result.salt_M_requested>0)reasons.push('Hedef tuz derişimi sıfırdan büyük. Bu model için 0 M seçerek yeniden paketleyin.');
+    if(!['PEO','PVA','bare','PEtOx'].includes(polymer))reasons.push(polymer+' için otomatik topoloji ataması desteklenmiyor.');
+    if(polymer==='PEtOx' && (job.config.dp??8)>1)reasons.push('PEtOx birimleri arasındaki torsiyon için kaynak parametre eksik.');
+    if(state.iffProfiles?.['iff-water']===false)reasons.push('IFF su/katı kaynağını kurulum kılavuzundaki komutla hazırlayın.');
+    button.disabled=reasons.length>0;
+    help.textContent=reasons.length?reasons.join(' '):
+      polymer+' · '+formatNum(job.result.atom_count)+' atom · '+formatNum(pairs)+' NaCl çifti. İki periyodik kenar da kesimin iki katını aşmalıdır.';
+  } catch(error) {
+    if(request===sourceRequest)help.textContent='Paketleme bilgisi okunamadı. '+error.message;
+  }
+}
+generatedSource.onchange=topologyAvailability;
+generator.onsubmit=e=>{
+  e.preventDefault();
+  if(generator.reportValidity())safe(()=>submit('topology',{source_job:generatedSource.value,cutoff_A:Number(generator.elements.cutoff_A.value)}),e.submitter);
+};
+async function loadRegistered(preselect,forBuilder){
   const current=preselect||regSource.value,request=++registrationRequest;
   try{
     const [jr,pr]=await Promise.all([api('/api/jobs'),api('/api/profiles')]);
@@ -288,9 +426,13 @@ async function loadRegistered(preselect){
     const jobs=(jr.jobs||jr).filter(j=>j.kind==='packing'&&j.status==='succeeded');
     regSource.replaceChildren(new Option('Paketleme seçin',''));
     for(const j of jobs){const label=String(j.id).slice(0,10)+' · '+(j.config?.polymer||new Date(j.created_at).toLocaleString('tr-TR'));regSource.add(new Option(label,j.id))}
+    const selected=forBuilder || generatedSource.value;
+    generatedSource.replaceChildren(...Array.from(regSource.options,option=>new Option(option.text,option.value)));
+    generatedSource.value=jobs.some(j=>j.id===selected)?selected:'';
+    topologyAvailability();
     regSource.value=jobs.some(j=>j.id===current)?current:'';
     state.profiles=Array.isArray(pr)?pr:(pr.profiles||[]);await fillTopologies();
-  }catch(e){if(request!==registrationRequest)return;reg.querySelector('button').disabled=true;$('#reg-help').textContent='Topoloji kayıtları yüklenemedi. '+e.message}
+  }catch(e){if(request!==registrationRequest)return;reg.querySelector('button').disabled=true;generator.querySelector('button').disabled=true;$('#topology-help').textContent=e.message;$('#reg-help').textContent='Topoloji kayıtları yüklenemedi. '+e.message}
 }
 let topoRequest=0;
 async function fillTopologies(){
@@ -304,12 +446,12 @@ async function fillTopologies(){
       const id=p.topology_id||p.id;
       if(id && hash && p.packed_sha256===hash)regTopology.add(new Option((p.label||p.name||p.profile_name||'Topoloji')+' · '+id.slice(0,12),id));
     }
-    if(regTopology.options.length===1){$('#reg-help').textContent='Bu packed.json için doğrulanmış topoloji yok. Parametreli girdiyi Studio CLI ile kaydedin.';return}
+    if(regTopology.options.length===1){$('#reg-help').textContent='Bu paketlemeye kayıtlı topoloji yok. Yukarıdaki topoloji üreticisini kullanabilir veya kendi parametreli girdinizi Studio CLI ile kaydedebilirsiniz.';return}
     regTopology.selectedIndex=1;reg.querySelector('button').disabled=false;$('#reg-help').textContent='Girdi kimliği eşleşti. Sıfır adım enerji ve kuvvet hesabı üretir.';
   }catch(e){if(request===topoRequest)$('#reg-help').textContent=e.message}
 }
 regSource.onchange=fillTopologies;
-reg.onsubmit=e=>{e.preventDefault();safe(()=>submit('md',{profile:'registered',source_job:regSource.value,topology_id:regTopology.value,steps:Number(reg.elements.steps.value),temperature_k:Number(reg.elements.temperature_k.value)}),e.submitter)};
+reg.onsubmit=e=>{e.preventDefault();safe(()=>submit('md',{profile:'registered',source_job:regSource.value,topology_id:regTopology.value,steps:Number(reg.elements.steps.value),temperature_k:Number(reg.elements.temperature_k.value),minimize_steps:Number(reg.elements.minimize_steps.value)}),e.submitter)};
 const planner=$('#plan-form');
 planner.elements.mode.onchange=()=>{$('#ollama-label').hidden=planner.elements.mode.value!=='ollama';planner.elements.model.required=!$('#ollama-label').hidden};
 planner.onsubmit=e=>{

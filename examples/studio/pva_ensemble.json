@@ -1,0 +1,10 @@
+{
+  "mn_g_mol": 600,
+  "dispersity": 1.12,
+  "hydrolysis": 0.75,
+  "acetate_dyad_fraction": 0.08,
+  "dp_min": 2,
+  "dp_max": 40,
+  "n_chains": 12,
+  "seed": 17
+}

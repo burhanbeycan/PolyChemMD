@@ -118,7 +118,7 @@ class RegisteredTopologyTests(unittest.TestCase):
             cfg = {"topology_id": model["id"]}
             results = [
                 run_registered(dict(cfg, steps=n), root / f"run{n}", root)
-                for n in (0, 10)
+                for n in (0, 23)
             ]
             lj = lambda r: 4 * 0.238 * ((3.405 / r) ** 12 - (3.405 / r) ** 6)
             reference = 4 * lj(4) + 2 * lj(math.sqrt(32))
@@ -133,7 +133,13 @@ class RegisteredTopologyTests(unittest.TestCase):
             )
             self.assertAlmostEqual(fx, fx_expected, places=8)
             self.assertAlmostEqual(results[1]["initial_kcal_mol"], reference, places=8)
-            self.assertEqual(results[1]["steps"], 10)
+            self.assertEqual(results[1]["steps"], 23)
+            final = json.loads((root / "run23" / "structure.json").read_text())
+            self.assertEqual(final["snapshot_step"], 23)
+            self.assertEqual([a["id"] for a in final["atoms"]], list(range(4)))
+            self.assertEqual(final["atoms"][0]["x"], COORDS[0][0])
+            self.assertNotEqual(final["atoms"][1]["x"], COORDS[1][0])
+            self.assertEqual(results[1]["packed_sha256"], model["packed_sha256"])
             self.assertTrue(math.isfinite(results[1]["final_kcal_mol"]))
 
     @unittest.skipUnless(
