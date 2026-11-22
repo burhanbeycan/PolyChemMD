@@ -72,7 +72,7 @@ def _entries(rows, n, name):
     return result
 
 
-def parse_data(text):
+def parse_data(text, *, cvff_impropers=False):
     rows = defaultdict(list)
     counts = {}
     bounds = {}
@@ -120,7 +120,10 @@ def parse_data(text):
             )
         if section == "Atoms" and len(t) == 10 and t[-3:] == ["0", "0", "0"]:
             t = t[:7]
-        if len(t) != SECTIONS[section]:
+        width = (
+            4 if section == "Improper Coeffs" and cvff_impropers else SECTIONS[section]
+        )
+        if len(t) != width:
             raise ValueError(
                 f"Unexpected row width in {section}. Class-II, hybrid styles and velocities require another adapter."
             )
@@ -149,7 +152,7 @@ def validate(packed, data, profile):
     )
     if set(profile) != set(supported):
         raise ValueError(f"Manifest keys must match: {supported}")
-    if profile["schema"] != "studio-full-slab-v1":
+    if profile["schema"] not in ("studio-full-slab-v1", "studio-fixed-iff-opls-v2"):
         raise ValueError("Unsupported topology manifest schema")
     water = any(a.get("role") == "water" for a in packed.get("atoms", []))
     if profile["water_constraints"] != ("flexible" if water else "no_water"):
@@ -179,7 +182,8 @@ def validate(packed, data, profile):
     n = len(atoms)
     if not 2 <= n <= 50_000:
         raise ValueError("Atom count outside the local pilot budget")
-    rows, counts, bounds = parse_data(data)
+    cvff = profile["schema"] == "studio-fixed-iff-opls-v2"
+    rows, counts, bounds = parse_data(data, cvff_impropers=cvff)
     if counts.get("atoms") != n:
         raise ValueError("Atom count differs from packed job")
     box = packed["box_A"]
@@ -278,6 +282,9 @@ def validate(packed, data, profile):
         for constants in coeff.values():
             if kind in ("bond", "angle", "improper") and _float(constants[0]) < 0:
                 raise ValueError("Negative harmonic force constant")
+            if kind == "improper" and cvff:
+                if constants[1] not in ("1", "-1") or _uint(constants[2], False) > 6:
+                    raise ValueError("Invalid cvff improper sign or multiplicity")
             if kind == "bond" and _float(constants[1]) <= 0:
                 raise ValueError("Nonpositive harmonic bond equilibrium length")
             if kind == "angle" and not 0 < _float(constants[1]) <= 180:

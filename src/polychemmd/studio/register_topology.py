@@ -141,7 +141,7 @@ def _ranges(ids):
     return " ".join(groups)
 
 
-def _script(profile, slab, steps, temp, seed, charged):
+def _script(profile, slab, steps, temp, seed, charged, minimize_steps=0):
     # Numeric model parameters have passed admission. No manifest field is a command.
     mix = profile["mixing"] if profile["mixing"] != "explicit" else "arithmetic"
     lines = [
@@ -152,7 +152,9 @@ def _script(profile, slab, steps, temp, seed, charged):
         "bond_style harmonic",
         "angle_style harmonic",
         "dihedral_style opls",
-        "improper_style harmonic",
+        "improper_style cvff"
+        if profile["schema"] == "studio-fixed-iff-opls-v2"
+        else "improper_style harmonic",
         f"special_bonds lj 0 0 {profile['lj14']} coul 0 0 {profile['coul14']}",
         f"pair_modify mix {mix}",
         "read_data typed.data",
@@ -162,9 +164,23 @@ def _script(profile, slab, steps, temp, seed, charged):
         "group mobile subtract all substrate",
         "neighbor 1.0 bin",
         "neigh_modify every 1 delay 0 check yes",
+        "variable force_magnitude atom sqrt(fx*fx+fy*fy+fz*fz)",
+        "compute fmax mobile reduce max v_force_magnitude",
         f"thermo {max(1, steps // 10)}",
-        "thermo_style custom step atoms pe ke etotal",
+        "thermo_style custom step atoms pe ke etotal c_fmax",
         "thermo_modify lost error flush yes format float %.12g",
+    ]
+    if minimize_steps:
+        # Keep the substrate and periodic cell fixed. The max force reports mobile atoms only.
+        lines += [
+            "fix immobilize substrate setforce 0.0 0.0 0.0",
+            "min_style cg",
+            "min_modify dmax 0.05",
+            f"minimize 0.0 0.0 {minimize_steps} {minimize_steps * 10}",
+            "unfix immobilize",
+            "reset_timestep 0",
+        ]
+    lines += [
         f"dump coords all custom {max(1, steps // 10)} trajectory.dump id type xs ys zs fx fy fz",
         "dump_modify coords sort id format float %.10g",
     ]
@@ -175,8 +191,61 @@ def _script(profile, slab, steps, temp, seed, charged):
                 "fix integrate mobile nve",
             ]
         )
-    lines.extend([f"run {steps}", 'print "POLYCHEMMD_RUN_COMPLETE"'])
+    lines.extend(
+        [
+            f"run {steps}",
+            "write_dump all custom final.dump id x y z modify sort id format float %.14g",
+            'print "POLYCHEMMD_RUN_COMPLETE"',
+        ]
+    )
     return "\n".join(lines) + "\n"
+
+
+def _final_structure(packed, dump, step):
+    """Join actual end-step positions by LAMMPS ID, independently of trajectory stride."""
+    lines = dump.read_text(encoding="ascii").splitlines()
+    n = len(packed["atoms"])
+    if (
+        len(lines) != n + 9
+        or lines[:5]
+        != [
+            "ITEM: TIMESTEP",
+            str(step),
+            "ITEM: NUMBER OF ATOMS",
+            str(n),
+            "ITEM: BOX BOUNDS pp pp ff",
+        ]
+        or lines[8] != "ITEM: ATOMS id x y z"
+    ):
+        raise ValueError("Incomplete or incompatible final-coordinate snapshot")
+    for line, length in zip(lines[5:8], packed["box_A"], strict=True):
+        lo, hi = map(float, line.split())
+        if not math.isclose(lo, 0.0, abs_tol=2e-5) or not math.isclose(
+            hi, length, abs_tol=2e-5
+        ):
+            raise ValueError("Final orthorhombic box differs from the admitted cell")
+    atoms = [None] * n
+    for line in lines[9:]:
+        atom_id, *coords = line.split()
+        i = int(atom_id) - 1
+        xyz = list(map(float, coords))
+        if (
+            not 0 <= i < n
+            or atoms[i] is not None
+            or len(xyz) != 3
+            or not all(map(math.isfinite, xyz))
+        ):
+            raise ValueError("Invalid or repeated atom in final LAMMPS snapshot")
+        if not -1e-8 <= xyz[2] <= packed["box_A"][2] + 1e-8:
+            raise ValueError(
+                "An atom crossed the nonperiodic z boundary; increase vacuum headspace or revise the pilot"
+            )
+        atoms[i] = packed["atoms"][i] | dict(zip("xyz", xyz, strict=True))
+    return packed | {
+        "atoms": atoms,
+        "snapshot_step": step,
+        "coordinate_source": "final LAMMPS write_dump",
+    }
 
 
 def _groups(packed):
@@ -232,6 +301,7 @@ def run_registered(config, out, source_dir):
         "profile",
         "md_profile",
         "temperature_k",
+        "minimize_steps",
         "seed",
         "steps",
     }
@@ -258,6 +328,7 @@ def run_registered(config, out, source_dir):
         raise ValueError("Registry content or selected source-job checksum mismatch")
     audited = validate(packed, data.decode("ascii"), p)
     steps = _int(config, "steps", 0, 200, 0)
+    minimize_steps = _int(config, "minimize_steps", 0, 100, 0)
     seed = _int(config, "seed", 1, 900_000_000, 17)
     temp = config.get("temperature_k", 298.15)
     if (
@@ -268,7 +339,13 @@ def run_registered(config, out, source_dir):
         raise ValueError("Initial mobile temperature must be within [1,1000] K")
     out.mkdir(parents=True, exist_ok=True)
     script = _script(
-        p, audited["slab_ids"], steps, temp, seed, audited["has_partial_charges"]
+        p,
+        audited["slab_ids"],
+        steps,
+        temp,
+        seed,
+        audited["has_partial_charges"],
+        minimize_steps,
     )
     result = run_lammps(
         LammpsRunSpec(
@@ -278,15 +355,21 @@ def run_registered(config, out, source_dir):
             timeout_seconds=120,
             input_files=(("typed.data", data.decode("ascii")),),
             units_style="real",
-            expected_artifacts=("log.lammps", "trajectory.dump"),
+            expected_artifacts=("log.lammps", "trajectory.dump", "final.dump"),
         )
     )
     record = result.to_dict()
     thermo = record["thermo_blocks"][-1]
     idx = thermo["columns"].index("PotEng")
+    force = thermo["columns"].index("c_fmax")
+    first = record["thermo_blocks"][0]["rows"][0]
     # Nonperiodic z and fixed basal layers are part of the recipe, including run 0.
+    end_dump = out / "engine" / "final.dump"
+    final = _final_structure(packed, end_dump, steps)
     embedded = {
         "profile": "registered",
+        "final_snapshot_sha256": _sha(end_dump.read_bytes()),
+        "final_snapshot_step": steps,
         "topology_id": key,
         "label": p["label"],
         "source_doi_or_reference": p["parameter_source"],
@@ -297,7 +380,15 @@ def run_registered(config, out, source_dir):
         "charge_e": audited["charge_e"],
         "steps": steps,
         "dt_fs": p["dt_fs"],
-        "initial_kcal_mol": thermo["rows"][0][idx],
+        "initial_kcal_mol": first[idx],
+        "minimize_steps_requested": minimize_steps,
+        "minimize_iterations": int(record["thermo_blocks"][0]["rows"][-1][0])
+        if minimize_steps
+        else 0,
+        "post_minimize_kcal_mol": thermo["rows"][0][idx],
+        "initial_mobile_fmax_kcal_mol_A": first[force],
+        "post_minimize_mobile_fmax_kcal_mol_A": thermo["rows"][0][force],
+        "final_mobile_fmax_kcal_mol_A": thermo["rows"][-1][force],
         "final_kcal_mol": thermo["rows"][-1][idx],
         "dump_force_unit": "kcal mol^-1 angstrom^-1",
         "ensemble": "fixed cell and fixed substrate; initialized mobile NVE pilot"
@@ -306,7 +397,7 @@ def run_registered(config, out, source_dir):
         "scope": "Source-matched topology and engine execution. Equilibrium properties and adsorption remain unvalidated.",
     }
     (out / "registered.json").write_bytes(_encode(embedded))
-    (out / "structure.json").write_bytes(packed_bytes)
+    (out / "structure.json").write_bytes(_encode(final))
     shutil.copyfile(out / "engine" / "log.lammps", out / "registered-lammps.log")
     shutil.copyfile(out / "engine" / "run_record.json", out / "registered-engine.json")
     native_dump = out / "engine" / "trajectory.dump"
@@ -339,6 +430,7 @@ def main():
     pilot.add_argument("--out", type=Path, required=True)
     pilot.add_argument("--steps", type=int, default=0)
     pilot.add_argument("--seed", type=int, default=17)
+    pilot.add_argument("--minimize-steps", type=int, default=0)
     pilot.add_argument("--temperature-k", type=float, default=298.15)
     a = cli.parse_args()
     if a.action == "add":
@@ -348,6 +440,7 @@ def main():
             dict(
                 topology_id=a.id,
                 steps=a.steps,
+                minimize_steps=a.minimize_steps,
                 seed=a.seed,
                 temperature_k=a.temperature_k,
             ),

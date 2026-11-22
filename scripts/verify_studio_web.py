@@ -108,8 +108,8 @@ def check(page, url, directory, with_md):
     assert not errors, errors
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+def main(workflow=check, description=__doc__):
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument("--chromium", help="Path to an installed Chromium executable")
     parser.add_argument("--with-md", action="store_true")
     args = parser.parse_args()
@@ -148,7 +148,7 @@ def main():
                     page = browser.new_page(
                         viewport={"width": 1480, "height": 950}, accept_downloads=True
                     )
-                    check(page, url, directory, args.with_md)
+                    workflow(page, url, directory, args.with_md)
                     browser.close()
             finally:
                 server.terminate()

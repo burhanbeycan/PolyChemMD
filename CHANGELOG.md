@@ -1,5 +1,11 @@
 # Changelog
 
+## Controlled MXene–polymer interface construction
+
+- Added prescribed PVA acetate dyads, per-face OH/F neighbour statistics and independent preparation seeds. A finite oligomer population can be fitted to two molecular-weight moments and sampled as explicit sequences.
+- Added fixed-slab, salt-free IFF/OPLS topology generation from the actual packed coordinates for qualified chemistries, with a local CLI and browser workflow.
+- Added a confinement-aware rigid placement method and a paired benchmark against the existing local method, MolPack and Packmol.
+
 ## Optional MXene–polymer Studio
 
 Adds a local Turkish 3D application for hydrated surfaces, polymer construction,

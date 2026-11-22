@@ -1,0 +1,18 @@
+{
+  "polymer": "PVA",
+  "dp": 12,
+  "hydrolysis": 0.75,
+  "acetate_pattern": "dyads",
+  "acetate_dyads": 1,
+  "pattern": "correlated",
+  "oh_top": 0.5,
+  "oh_bottom": 0.5,
+  "surface_correlation_top": 0.25,
+  "surface_correlation_bottom": -0.3333333333333333,
+  "geometry": "slit",
+  "gap_A": 30,
+  "nx": 6,
+  "ny": 4,
+  "seed": 17,
+  "conformer_seed": 17
+}

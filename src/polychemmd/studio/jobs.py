@@ -12,7 +12,17 @@ import threading
 import time
 import uuid
 
-KINDS = ("geometry", "packing", "md", "radonpy", "experiment", "trajectory")
+KINDS = (
+    "geometry",
+    "packing",
+    "md",
+    "radonpy",
+    "experiment",
+    "trajectory",
+    "topology",
+    "packing_benchmark",
+    "pva_ensemble",
+)
 LEASE_SECONDS = 120
 MAX_ATTEMPTS = 3
 

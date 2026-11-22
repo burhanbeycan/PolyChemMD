@@ -217,3 +217,5 @@ Test results must come from executed commands. A task checklist is not a test re
 ## Optional MXene–polymer Studio
 
 The application extends the project with a local GUI, reproducible engine tasks and matched experimental observations. Scope and executable acceptance checks are listed in [the Studio guide](MXENE_STUDIO_TR.md).
+
+Controlled PVA sequence / OH–F surface construction, finite oligomer population matching, packed-cell IFF/OPLS topology compilation and a confined packing benchmark are available in the [integrated guide](MXENE_STUDIO_TR.md). Independent structure and force checks are recorded in the [design acceptance report](STUDIO_INTERFACE_ACCEPTANCE.md).

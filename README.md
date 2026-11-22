@@ -19,6 +19,7 @@ Run the Turkish local GUI with `polychemmd studio serve` after installing `.[stu
 The application adds an ASE/RDKit surface and polymer builder, audited packing,
 a durable job queue, source-pinned LAMMPS interface pilots, trajectory analysis and
 matched experimental comparisons. The optional RadonPy reference runs in a separate interpreter.
+Design PVA acetate dyads and surface OH/F neighbour statistics, compile the actual packed PVA or PEG-diol structure to a source-attributed fixed-surface topology, and compare four packing methods on matched inputs. The integrated CLI example runs with `polychemmd studio interface-run examples/studio/designed_interface.json` after full installation.
 See the [quick start, full-engine installation and research limits](docs/MXENE_STUDIO_TR.md).
 
 ## Current implementation and evidence boundaries

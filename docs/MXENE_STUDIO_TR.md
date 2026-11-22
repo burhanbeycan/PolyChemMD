@@ -27,6 +27,28 @@ polychemmd studio doctor
 polychemmd studio serve
 ```
 
+## Kendi tasarladığınız yapıyla LAMMPS çalıştırma
+
+![Kullanıcının seçtiği asetat dizisiyle paketlenmiş PVA ve her iki yüzdeki OH/F site haritası](images/interface-design.png)
+
+Kaynakları önce tam kurulumla hazırlayın. Uygulamada **Sistem oluştur** ekranında PVA, polimerizasyon derecesi (DP), hidroliz derecesi ve asetat dizilişini tanımlayın. Asetatları sıra numarasıyla verebilir veya komşu asetat çiftlerinin sayısını isteyebilirsiniz. OH/F oranı sabitken her yüz için ayrı en yakın komşu korelasyonu seçilebilir. Sonuçta kaydedilen değer, sonlu kristalde gerçekten elde edilen korelasyondur.
+
+Paketlemede tuzsuz suyu seçin. Tek tabakanın üstündeki serbest sıvı yüzeyi için ek vakum boşluğu girilebilir. Bu boşluk eklenirken başlangıç su hacmi ve atanan su sayısı korunur. İki tabaka arasındaki dar bir boşluk için yerleşik **slit** motoru denenebilir. Tamamlanan paketleme işini topoloji üretiminde seçin. Program, o yapıdaki atomların kimliklerini ve konumlarını koruyarak LAMMPS dosyası, atom tipi tablosu ve kaynak parametre kaydı üretir. Üretilen topolojiyi seçip önce enerji ve kuvvetleri hesaplayabilir, ardından kısa dinamik başlatabilirsiniz. Bu rota sabit iki boyutlu yüzey, esnek su, nötr PVA/VAc veya PEG-diol ve polimersiz kontrol için sınandı. Tuzlu yapılar, hareketli MXene ve diğer polimerlerin parametreleri ayrı bir kapsam gerektirir. **PEtOx** için sabitlenen OPLS kaynağında zincirin NM–CT–CT–NM burulma terimi eksik.
+
+Aynı üç adımı aşağıdaki reçeteyle tek komutta çalıştırabilirsiniz. Her aşama ayrı bir iş olarak kaydedilir ve nihai kayıtta üç işin kimliği gösterilir. Reçetede DP8, iki komşu asetat, iki tabaka, 96 su, 20 minimizasyon iterasyonu üst sınırı ve dört dinamik adımı vardır. Düşük su sayısı ve kısa süre, örneğin hızlı motor denetimi içindir.
+
+```bash
+polychemmd studio interface-run examples/studio/designed_interface.json
+polychemmd studio run pva_ensemble examples/studio/pva_ensemble.json
+polychemmd studio run packing_benchmark examples/studio/packing_benchmark.json
+```
+
+**Mol kütlesi dağılımından model zincir seçimi.** PVA için SEC'den girilen sayı ortalamalı mol kütlesi ve dispersite ile kullanıcı tanımlı DP aralığında bir *sayı dağılımı* kurulabilir. Uygulama, her DP için gerçek H/metil uçlar ve sonlu sayıda asetatla atomistik oluşturucunun kullanacağı mol kütlesini hesaplar. Desteklenen DP değerlerine eşit başlangıç ağırlığı vererek dağılımın entropisini en büyükler. Kısıtlar toplam olasılığın bir, ortalama kütlenin girilen Mₙ ve ikinci momentin Đ·Mₙ² olmasıdır. Aynı iki momente sahip birçok dağılım vardır. Bu seçim tek bir olası modeldir. Girilen değerlerden sonlu DP aralığında dağılım kurulamıyorsa yazılım ulaşılabilir sınırları bildirir. SEC ile saha örneğinin birebir eşlenmesi için uç grupları, mutlak veya göreli kalibrasyon ve mol kütlesi birimi de önemlidir.
+
+`number-distribution.csv` tüm DP ağırlıklarını içerir. Örneklenen zincirler için gerçekleşen Mₙ, Đ, hidroliz ve asetat komşuluğu ayrıca raporlanır. Bir zinciri oluşturucuya taşıdığınızda tam asetat konumları kullanılır. Bir paketleme işi o seçili zincirin kopyalarını yerleştirir. Birden çok farklı dizinin aynı hücreye konması ayrı bir özelliktir.
+
+[Yüzey ve zincir tanımları](STUDIO_MICROSTRUCTURE.md) · [Topoloji üretimi](STUDIO_TOPOLOGY_BUILD.md) · [Paketleme karşılaştırması](STUDIO_PACKING_BENCHMARK.md) · [Bağımsız kuvvet ve yapı denetimleri](STUDIO_INTERFACE_ACCEPTANCE.md)
+
 ## Ekranda ilk çalışma
 
 1. **Sistem oluştur.** Ti₃C₂Tₓ için tek yüzey veya iki düzlem seçin. PEO, PVA, PVP, PEtOx, nötr doğrusal PEI, tanımlı model PCE veya polimersiz kontrol oluşturulabilir. PVA hidroliz derecesi ile kalan asetatların dizilişini, PCE için PEG yan zincir uzunluğu ile aşı periyodunu belirleyin. OH/F oranları iki yüzde ayrı seçilir. Başlangıçtaki galeri genişliği kullanıcı girdisidir.

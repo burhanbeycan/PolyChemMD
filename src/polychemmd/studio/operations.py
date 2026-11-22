@@ -28,6 +28,23 @@ DEFAULTS = dict(
     packing_engine="builtin",
 )
 
+DESIGN_FIELDS = set(DEFAULTS) | {
+    "side_dp",
+    "graft_every",
+    "water_count",
+    "min_distance_A",
+    "acetate_dyads",
+    "acetate_dyad_fraction",
+    "acetate_positions",
+    "surface_correlation_top",
+    "surface_correlation_bottom",
+    "surface_seed",
+    "sequence_seed",
+    "tacticity_seed",
+    "conformer_seed",
+    "vacuum_padding_A",
+}
+
 
 def versions():
     result = {"python": platform.python_version()}
@@ -36,6 +53,8 @@ def versions():
         "rdkit",
         "ase",
         "numpy",
+        "scipy",
+        "moltemplate",
         "molcrafts-molpack",
         "packmol",
         "lammps",
@@ -79,6 +98,13 @@ def status():
 
     tools["radonpy"] = radon_status()
     tools["builtin"] = {"available": True, "version": "1"}
+    tools["slit"] = {
+        "available": tools["rdkit"]["available"] and tools["ase"]["available"]
+    }
+    tools["moltemplate"] = {
+        "available": "moltemplate" in v,
+        "version": v.get("moltemplate"),
+    }
     from .iff_sources import status as iff_status
 
     return {
@@ -91,10 +117,20 @@ def status():
 
 def execute(kind, config, out, store):
     keys = {
-        "geometry": set(DEFAULTS)
-        | {"side_dp", "graft_every", "water_count", "min_distance_A"},
-        "packing": set(DEFAULTS)
-        | {"side_dp", "graft_every", "water_count", "min_distance_A"},
+        "geometry": DESIGN_FIELDS,
+        "packing": DESIGN_FIELDS | {"packing_seed"},
+        "topology": {"source_job", "cutoff_A"},
+        "packing_benchmark": {"cases", "engines", "seeds", "evaluate_forces"},
+        "pva_ensemble": {
+            "mn_g_mol",
+            "dispersity",
+            "hydrolysis",
+            "acetate_dyad_fraction",
+            "dp_min",
+            "dp_max",
+            "n_chains",
+            "seed",
+        },
         "radonpy": {"polymer", "dp", "seed"},
         "trajectory": {
             "source_job",
@@ -127,6 +163,21 @@ def execute(kind, config, out, store):
         from .packing import pack_system
 
         return pack_system(full, out)
+    if kind == "topology":
+        from .topology_build import run_topology
+
+        source = config.get("source_job")
+        if not isinstance(source, str) or store.get(source)["kind"] != "packing":
+            raise ValueError("Choose a completed packing job to generate its topology.")
+        return run_topology(config, out, source_dir=store.output_dir(source))
+    if kind == "packing_benchmark":
+        from .packing_benchmark import run_benchmark
+
+        return run_benchmark(config, out)
+    if kind == "pva_ensemble":
+        from .ensemble import run_ensemble
+
+        return run_ensemble(config, out)
     if kind == "md":
         if (
             config.get("profile") == "registered"

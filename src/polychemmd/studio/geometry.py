@@ -14,6 +14,13 @@ from pathlib import Path
 
 from ..builders.linear import build_linear
 from ..chemistry.contracts import RepeatUnitSpec
+from .microstructure import (
+    acetate_sequence,
+    correlated_sites,
+    stream_seeds,
+    surface_stats,
+    triangular_edges,
+)
 
 # Triangular in-plane spacing and approximate normal positions relative to
 # central Ti. The first length is |a|/18 of the native 18-cell interface.
@@ -87,7 +94,7 @@ def _select_sites(sites, n, size, mode, seed):
     return set(sorted(labels, key=squared_distance)[:n])
 
 
-def _sheet(nx, ny, fractions, mode, seed, sheet_index):
+def _sheet(nx, ny, fractions, mode, seed, sheet_index, targets):
     import ase
     import numpy as np
     from ase import Atoms
@@ -145,17 +152,17 @@ def _sheet(nx, ny, fractions, mode, seed, sheet_index):
         if layer == "middle_Ti":
             sites.append((x, y))
     # Each surface has one termination site for every primitive Ti3C2 unit.
+    edges = triangular_edges(sites, nx, ny, A)
     face_summary = {}
     for sign, face in ((1, "top"), (-1, "bottom")):
         fraction = fractions[face]
         n = _nearest_count(fraction * len(sites))
-        oh = _select_sites(
-            sites,
-            n,
-            (lx, ly),
-            mode,
-            seed + 65537 * sheet_index + (1 if sign == 1 else 2),
-        )
+        site_seed = seed + 65537 * sheet_index + (1 if sign == 1 else 2)
+        if mode == "correlated":
+            oh, stats = correlated_sites(len(sites), n, edges, targets[face], site_seed)
+        else:
+            oh = _select_sites(sites, n, (lx, ly), mode, site_seed)
+            stats = surface_stats(oh, edges, len(sites))
         oh_rng = random.Random(seed + 65537 * sheet_index + 1901 * sign)
         radial = math.sqrt(0.94**2 - (H_Z - O_Z) ** 2)
         for i, (x, y) in enumerate(sites):
@@ -177,6 +184,8 @@ def _sheet(nx, ny, fractions, mode, seed, sheet_index):
             n_OH=n,
             n_F=len(sites) - n,
             realized_OH=n / len(sites),
+            site_seed=site_seed,
+            neighbor_statistics=stats,
         )
     return atoms, face_summary, ase.__version__
 
@@ -187,7 +196,7 @@ def _polymer_template(config, out, center):
 
     from ..builders.conformers import _check_embedded_geometry
 
-    p, dp, seed = config["polymer"], config["dp"], config["seed"]
+    p, dp, seed = config["polymer"], config["dp"], config["seed_streams"]["conformer"]
     head = "methyl" if p in ("PEtOx", "PEI") else "H"
     tail = "methyl" if p in ("PVA", "PVP", "PCE") else "H"
     chain = build_linear(RepeatUnitSpec(p, REPEATS[p], 1, 2), dp, head, tail)
@@ -200,13 +209,7 @@ def _polymer_template(config, out, center):
         mol.ReplaceAtom(i, Chem.Atom("O"))
         lineages[i] = ("cap:head:OH:O", None)
     if p == "PVA":
-        nac = _nearest_count(dp * (1 - config["hydrolysis"]))
-        rng = random.Random(seed)
-        if config["acetate_pattern"] == "random":
-            residues = sorted(rng.sample(range(dp), nac))
-        elif nac:
-            first = rng.randrange(dp - nac + 1)
-            residues = list(range(first, first + nac))
+        residues, sequence_statistics = acetate_sequence(config)
         for i, r in enumerate(chain.lineage):
             if r.repeat_index in residues and r.source_atom_index == 3:
                 h = next(
@@ -260,7 +263,7 @@ def _polymer_template(config, out, center):
 
     # Source SMILES leave tacticity unspecified. Select one finite atactic
     # realization with a distinct seed stream and explicitly report its graph.
-    rng = random.Random(seed + 1777)
+    rng = random.Random(config["seed_streams"]["tacticity"])
     if p in ("PVA", "PVP", "PCE"):
         for i, cip in Chem.FindMolChiralCenters(
             mol, includeUnassigned=True, useLegacyImplementation=False
@@ -355,6 +358,8 @@ def _polymer_template(config, out, center):
         geometry_checks=checks,
         rdkit_version=rdBase.rdkitVersion,
     )
+    if p == "PVA":
+        info["sequence_statistics"] = sequence_statistics
     if p == "PCE":
         info.update(
             architecture="neutral acrylic acid / methoxy-PEG acrylate model comb",
@@ -388,8 +393,16 @@ def build_geometry(config: dict, out: Path) -> dict:
     c["polymer"] = _choice(c.get("polymer", "PEO"), "polymer", (*REPEATS, "bare"))
     c["hydrolysis"] = _real(c.get("hydrolysis", 1.0), "hydrolysis", 0, 1)
     c["acetate_pattern"] = _choice(
-        c.get("acetate_pattern", "random"), "acetate_pattern", ("random", "clustered")
+        c.get("acetate_pattern", "random"),
+        "acetate_pattern",
+        ("random", "clustered", "explicit", "dyads"),
     )
+    if c["acetate_pattern"] != "explicit" and "acetate_positions" in c:
+        raise ValueError("acetate_positions requires acetate_pattern=explicit")
+    if c["acetate_pattern"] != "dyads" and (
+        {"acetate_dyads", "acetate_dyad_fraction"} & c.keys()
+    ):
+        raise ValueError("acetate dyad targets require acetate_pattern=dyads")
     c["conformer_ff"] = _choice(
         c.get("conformer_ff", "MMFF94"), "conformer_ff", ("MMFF94", "UFF")
     )
@@ -419,16 +432,27 @@ def build_geometry(config: dict, out: Path) -> dict:
         face: _real(c.get("oh_" + face, 0.5), "oh_" + face, 0, 1)
         for face in ("top", "bottom")
     }
-    pattern = _choice(c.get("pattern", "random"), "pattern", ("random", "patch"))
+    pattern = _choice(
+        c.get("pattern", "random"), "pattern", ("random", "patch", "correlated")
+    )
+    targets = {}
+    for face in fractions:
+        key = "surface_correlation_" + face
+        if pattern == "correlated":
+            targets[face] = _real(c.get(key), key, -1, 1)
+        elif key in c:
+            raise ValueError(f"{key} requires pattern=correlated")
+    c["seed_streams"] = stream_seeds(c)
     slit_gap = _real(c.get("gap_A", 22), "gap_A", 2, 200)
     water_height = _real(c.get("water_height_A", 22), "water_height_A", 2, 200)
+    vacuum = _real(c.get("vacuum_padding_A", 0), "vacuum_padding_A", 0, 100)
     sheets = []
     centers = []
     summaries = []
     try:
         for i in range(2 if shape == "slit" else 1):
             atoms, summary, ase_version = _sheet(
-                nx, ny, fractions, pattern, c["seed"], i
+                nx, ny, fractions, pattern, c["seed_streams"]["surface"], i, targets
             )
             target_bottom = 2.0 if i == 0 else max(a["z"] for a in sheets) + slit_gap
             center = target_bottom - min(a["z"] for a in atoms)
@@ -453,7 +477,7 @@ def build_geometry(config: dict, out: Path) -> dict:
     box = [
         nx * A,
         ny * math.sqrt(3) * A,
-        hi if shape == "single" else max(a["z"] for a in sheets) + 2.0,
+        (hi if shape == "single" else max(a["z"] for a in sheets) + 2.0) + vacuum,
     ]
     try:
         chain, bonds, info = (
@@ -480,6 +504,7 @@ def build_geometry(config: dict, out: Path) -> dict:
         requested_chains=n_chains,
         sheet_centers_A=centers,
         accessible_z_A=[lo, hi],
+        vacuum_padding_A=vacuum,
         accessible_volume_A3=(hi - lo) * box[0] * box[1],
         volume_convention="geometric outer-nuclei gap; excludes substrate only",
         center_spacing_A=centers[1] - centers[0] if len(centers) == 2 else None,
@@ -491,6 +516,7 @@ def build_geometry(config: dict, out: Path) -> dict:
         site_pattern=pattern,
         topology_scope="polymer covalent bonds only; substrate is a geometry template",
         seed=c["seed"],
+        seed_streams=c["seed_streams"],
     )
     xyz = f"{len(all_atoms)}\nASE Ti3C2Tx and optional isolated oligomer preview | angstrom\n"
     xyz += "".join(

@@ -33,50 +33,114 @@
     <section class="page" id="page-builder">
       <div class="page-head"><h1>Sistem oluştur</h1><p>Ti₃C₂Tₓ arayüzünün geometrisini ve moleküler bileşimini tanımlayın.</p></div>
       <div class="builder-grid">
+        <div class="model-column">
         <article class="viewer" id="viewer-card">
           <div class="viewer-head">
             <div><h2>Yapı önizlemesi</h2><span id="view-source">Şematik yerleşim · Ölçeksiz</span></div>
             <div class="canvas-buttons">
+              <button type="button" id="toggle-water" aria-pressed="true" hidden>Su</button>
               <button type="button" id="reset-view" aria-label="Görünümü sıfırla" title="Görünümü sıfırla"><i data-icon="reset"></i></button>
               <button type="button" id="expand-view" aria-label="Görünümü büyüt" title="Görünümü büyüt"><i data-icon="expand"></i></button>
             </div>
           </div>
           <div class="canvas-wrap"><canvas id="scene" tabindex="0" aria-label="Etkileşimli üç boyutlu yapı. Ok tuşlarıyla döndürün, artı veya eksiyle yakınlaştırın."></canvas>
           <span class="canvas-hint">Sürükleyerek döndür · Kaydırarak yakınlaştır</span></div>
-          <div class="legend" id="legend"><span><i class="dot mx"></i>MXene</span><span><i class="dot pol"></i>Polimer</span><span><i class="dot wat"></i>Su</span><span id="view-detail">Şema</span></div>
+          <div class="legend" id="legend"><span><i class="dot mx"></i>MXene</span><span><i class="dot pol"></i>Polimer</span><span id="water-legend"><i class="dot wat"></i>Su</span><span id="view-detail">Şema</span></div>
         </article>
+        <article id="site-maps" class="panel site-maps" hidden>
+          <div class="sites-head"><h2>Sonlanma haritası</h2><span><i class="dot hydroxyl"></i> OH <i class="dot fluoride"></i> F</span></div>
+          <div id="face-maps"></div>
+        </article></div>
         <form class="panel settings" id="system-form">
-          <h2>Sistem ayarları</h2>
+          <div class="settings-title"><h2>Sistem ayarları</h2><button class="text-button" id="designed-pva" type="button">Tuzsuz PVA örneği</button></div>
           <label>Geometri<select name="geometry"><option value="slit">İki paralel tabaka</option><option value="single">Tek hidratlı yüzey</option></select></label>
           <label>Polimer<select name="polymer"><option>PEO</option><option>PVA</option><option>PVP</option><option>PEtOx</option><option value="PCE">PCE · nötr model</option><option value="PEI">PEI · nötr, doğrusal</option><option value="bare">Polimersiz kontrol</option></select></label>
-          <div class="input-pair" id="chain-fields"><label>Zincir uzunluğu (DP)<input type="number" name="dp" min="1" max="64" step="1" value="8" required></label><label>Zincir sayısı<input type="number" name="chains" min="0" max="24" step="1" value="1" required></label></div>
+          <div class="input-pair" id="chain-fields"><label>Zincir uzunluğu (DP)<input type="number" name="dp" min="1" max="80" step="1" value="8" required></label><label>Zincir sayısı<input type="number" name="chains" min="0" max="24" step="1" value="1" required></label></div>
           <div class="input-pair"><label>NaCl (mol/L)<input type="number" name="salt_M" min="0" max="3" step="any" value="0.15" required></label><label><span id="width-label">Galeri genişliği (Å)</span><input type="number" name="width_A" min="2" max="200" step="any" value="22" required></label></div>
           <details><summary>Yüzey ve zincir ayrıntıları</summary>
             <div class="detail-body">
               <div class="input-pair"><label>Süperhücre x<input type="number" name="nx" value="6" min="1" max="30" required></label><label>Süperhücre y<input type="number" name="ny" value="4" min="1" max="30" required></label></div>
               <div class="input-pair"><label>Üst OH kesri<input type="number" name="oh_top" step="any" min="0" max="1" value="0.5" required></label><label>Alt OH kesri<input type="number" name="oh_bottom" step="any" min="0" max="1" value="0.5" required></label></div>
+              <label>Üst sınırda ek boşluk (Å)<input type="number" name="vacuum_padding_A" min="0" max="100" value="0" step="any" required></label>
               <p class="hint">Kalan sonlanma konumlarına F atanır.</p>
-              <label>Sonlanma deseni<select name="pattern"><option value="random">Rastgele</option><option value="patch">Bölgesel kümelenme</option></select></label>
+              <label>Sonlanma deseni<select name="pattern"><option value="random">Rastgele</option><option value="patch">Bölgesel kümelenme</option><option value="correlated">Hedef OH komşuluk korelasyonu</option></select></label>
+              <div id="correlation-config" class="detail-body" hidden>
+                <div class="input-pair"><label>Üst yüz korelasyonu<input type="number" name="surface_correlation_top" min="-1" max="1" step="any" value="0"></label><label>Alt yüz korelasyonu<input type="number" name="surface_correlation_bottom" min="-1" max="1" step="any" value="0"></label></div>
+                <p class="hint">Hedef, komşu konumların OH işgali arasındaki korelasyondur. Gerçekleşen değer her yüz için sonuçta gösterilir.</p>
+              </div>
               <div id="pva-config" hidden><label>PVA hidroliz kesri<input type="number" name="hydrolysis" min="0" max="1" step="any" value="1"></label>
-              <label>Asetat dizilimi<select name="acetate_pattern"><option value="random">Rastgele</option><option value="clustered">Kümelenmiş</option></select></label></div>
+              <label>Asetat dizilimi<select name="acetate_pattern"><option value="random">Rastgele</option><option value="clustered">Kümelenmiş</option><option value="dyads">Komşu asetat çifti hedefi</option><option value="explicit">Asetat konumlarını gir</option></select></label>
+                <div id="dyad-config" class="detail-body" hidden>
+                  <label>Hedef biçimi<select name="dyad_measure"><option value="count">OAc–OAc çift sayısı</option><option value="fraction">OAc–OAc çift kesri</option></select></label>
+                  <label id="dyad-count-label">Komşu asetat çifti<input type="number" name="acetate_dyads" value="1" min="0" max="63" step="1"></label>
+                  <label id="dyad-fraction-label" hidden>Çift kesri (tüm komşu çiftler içinde)<input type="number" name="acetate_dyad_fraction" value="0.09" min="0" max="1" step="any"></label>
+                </div>
+                <label id="acetate-positions-label" hidden>Asetat konumları<input type="text" name="acetate_positions" placeholder="3, 6, 9" autocomplete="off"><span class="hint">İlk tekrar 1’dir. Konumları virgülle ayırın.</span></label>
+                <p class="hint" id="sequence-budget" aria-live="polite"></p>
+              </div>
               <div id="pce-config" hidden><div class="input-pair"><label>Yan zincir EO sayısı<input type="number" name="side_dp" value="2" min="1" max="12"></label><label>Aşı aralığı (tekrar)<input type="number" name="graft_every" value="4" min="1" max="48"></label></div><p class="hint">Nötr asit biçimi; ilk tekrar aşılıdır.</p></div>
               <label>Konformer kuvvet alanı<select name="conformer_ff"><option>MMFF94</option><option>UFF</option></select></label>
-              <label>Rastgele sayı tohumu<input type="number" name="seed" min="1" max="900000000" value="17" required></label>
+              <label>Ana rastgele sayı tohumu<input type="number" name="seed" min="1" max="900000000" value="17" required></label>
+              <details><summary>Bağımsız tohumlar</summary><div class="detail-body">
+                <p class="hint">Boş alanları oluşturucu ana tohumdan belirler.</p>
+                <div class="input-pair"><label>Dizilim<input type="number" name="sequence_seed" min="0" max="2147483647"></label><label>Yüzey<input type="number" name="surface_seed" min="0" max="2147483647"></label></div>
+                <div class="input-pair"><label>Taktisite<input type="number" name="tacticity_seed" min="0" max="2147483647"></label><label>Konformer<input type="number" name="conformer_seed" min="0" max="2147483647"></label></div>
+              </div></details>
             </div>
           </details>
           <details><summary>Paketleme ayarları</summary><div class="detail-body">
-            <label>Paketleme motoru<select name="packing_engine"><option value="builtin">PolyChemMD</option><option value="molpack">MolCrafts MolPack</option><option value="packmol">Packmol</option></select></label>
+            <label>Paketleme motoru<select name="packing_engine"><option value="builtin">PolyChemMD · standart</option><option value="slit">PolyChemMD · dar galeri</option><option value="molpack">MolCrafts MolPack</option><option value="packmol">Packmol</option></select></label>
             <label>Su yoğunluğu (g/mL)<input type="number" name="water_density" min="0" max="1.5" step="any" value="0.997" required></label>
-            <p class="hint">Su ve iyonlar, sistem paketlendiğinde eklenir.</p>
+            <label>Paketleme tohumu (isteğe bağlı)<input type="number" name="packing_seed" min="1" max="2147483646"></label><p class="hint">Su ve iyonlar, sistem paketlendiğinde eklenir.</p>
           </div></details>
           <div class="form-actions"><button class="primary" type="submit" value="geometry"><i data-icon="layers"></i>Geometriyi oluştur</button><button class="secondary" type="submit" value="packing">Sistemi paketle</button></div>
         </form>
       </div>
+      <details class="panel padded model-details">
+        <summary>Ölçülen Mₙ ve dispersiteden PVA zincirleri oluştur</summary>
+        <p class="muted">Bir polimer partisinin hedeflerini girin. Örneklenen zincirlerden birini ayrı bir arayüz hesabına aktarabilirsiniz.</p>
+        <form id="ensemble-form" class="campaign-form">
+          <label>Sayıca ortalama mol kütlesi (g/mol)<input type="number" name="mn_g_mol" step="any" min="1" value="600" required></label>
+          <label>Dispersite (Đ)<input type="number" name="dispersity" min="1" step="any" value="1.12" required></label>
+          <label>Hidroliz kesri<input type="number" name="hydrolysis" min="0" max="1" step="any" value="0.75" required></label>
+          <label>OAc–OAc çift kesri<input type="number" name="acetate_dyad_fraction" min="0" max="1" step="any" value="0.08" required></label>
+          <label>En kısa DP<input type="number" name="dp_min" value="2" min="2" max="79" required></label>
+          <label>En uzun DP<input type="number" name="dp_max" value="40" min="3" max="80" required></label>
+          <label>Örnek zincir sayısı<input type="number" name="n_chains" min="1" max="128" value="12" required></label>
+          <label>Örnekleme tohumu<input type="number" name="seed" min="1" value="17" required></label>
+          <button type="submit" class="secondary">Zincir dağılımını hesapla</button>
+        </form>
+      </details>
       <article class="panel match"><div><span class="label">ATLAS EŞLEŞTİRMESİ</span><h3 id="match-name">Kuru / ıslak bazal tekrar mesafesi</h3></div><div class="match-control"><span>Eşlenmiş kontrol</span><strong id="match-control">Aynı durumda polimersiz MXene</strong></div><button type="button" data-go="experiment" class="text-button">Deneyi incele <i data-icon="arrow"></i></button></article>
     </section>
     <section class="page" id="page-methods" hidden>
       <div class="page-head"><h1>Hesaplama yöntemleri</h1><p>Kurulu motorları ve girdi kimliği tanımlı hesaplama protokollerini inceleyin.</p></div>
-      <div class="two-grid">
+      <div class="two-grid design-grid">
+        <form class="panel padded form-flow" id="topology-form">
+          <h2>Paketlenmiş yapıdan topoloji üret</h2>
+          <p class="muted">Seçilen yapının atom kimlikleri ve koordinatları korunur. Sabit MXene tabakası için IFF, PVA/VAc ve PEO/PEG için OPLS kullanılır. Polimersiz su kontrolü de desteklenir. İlk çalıştırma için tuzsuz PVA örneğini paketleyebilirsiniz.</p>
+          <label>Kaynak paketleme<select name="source_job" required><option value="">Paketleme seçin</option></select></label>
+          <label>Kısa menzil kesimi (Å)<input type="number" name="cutoff_A" value="8" step="any" min="6" max="12" required></label>
+          <p class="hint" id="topology-help">İki periyodik kenar da kesim uzaklığının iki katını aşmalıdır. Tuz çifti içeren yapılar bu modelin kapsamı dışındadır.</p>
+          <button type="submit" class="primary" disabled>Topolojiyi üret</button>
+        </form>
+        <form class="panel padded form-flow" id="benchmark-form">
+          <h2>Paketleyicileri karşılaştır</h2>
+          <p class="muted">Aynı hücre, bileşim ve tohumlarla başarı oranını, süreyi ve en kısa temas uzaklığını karşılaştırın.</p>
+          <fieldset><legend>Koşullar</legend><div class="check-grid">
+            <label><input type="checkbox" name="case" value="aqueous" checked>Sulu arayüz</label><label><input type="checkbox" name="case" value="confined" checked>Dar galeri</label>
+          </div></fieldset>
+          <fieldset><legend>Paketleyiciler</legend><div class="check-grid">
+            <label><input type="checkbox" name="engine" value="builtin" checked>PolyChemMD · standart</label><label><input type="checkbox" name="engine" value="slit" checked>PolyChemMD · dar galeri</label>
+            <label><input type="checkbox" name="engine" value="molpack" checked>MolCrafts MolPack</label><label><input type="checkbox" name="engine" value="packmol" checked>Packmol</label>
+          </div></fieldset>
+          <label>Bağımsız tohumlar<input type="text" name="seeds" value="17, 31, 53" autocomplete="off" required></label>
+          <div class="check-grid"><label><input type="checkbox" name="evaluate_forces">Minimizasyon kuvvetlerini ölç</label></div>
+          <p class="hint" id="benchmark-budget" aria-live="polite"></p>
+          <button type="submit" class="secondary">Karşılaştırmayı başlat</button>
+        </form>
+      </div>
+      <div class="two-grid method-extra">
         <form class="panel padded form-flow" id="md-form"><div class="section-icon" data-icon="sliders"></div><h2>Hidratlı arayüz dinamiği</h2>
           <p class="muted">LAMMPS, seçilen hazır sistemin parametre ve topolojilerini kullanır. Bu reçeteler 298,15 K ve ilave tuz içermeyen bir sistem kullanır. PVA/VAc için DP12, %75 hidroliz uygulanır.</p>
           <label>Arayüz profili<select name="md_profile"><option value="iff-water">IFF · polimersiz MXene / su</option><option value="iff-opls">IFF / OPLS · PVA/VAc</option><option value="iff-charmm">IFF / CHARMM · PVA/VAc</option></select></label>
@@ -96,6 +160,7 @@
           <label>Tamamlanmış paketleme<select name="source_job" required><option value="">Paketleme seçin</option></select></label>
           <label>Eşleşen parametreli topoloji<select name="topology_id" required><option value="">Bir paketleme seçin</option></select></label>
           <div class="input-pair"><label>Adım sayısı<input name="steps" type="number" min="0" max="200" value="0" required></label><label>Sıcaklık (K)<input name="temperature_k" type="number" min="1" step="any" value="298.15" required></label></div>
+          <label>Minimizasyon adım sınırı<input name="minimize_steps" type="number" min="0" max="100" value="0" required></label>
           <p id="reg-help" class="hint">Sıfır adım, başlangıç enerjisi ve kuvvetlerini değerlendirir.</p><button type="submit" class="secondary" disabled>Parametreli MD işini sırala</button>
         </form>
         <form class="panel padded form-flow" id="plan-form">
