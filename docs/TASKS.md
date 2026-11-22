@@ -213,3 +213,7 @@ finite-size and state-matched external density evaluation remain open.
 - Remaining limitations and next bounded task.
 
 Test results must come from executed commands. A task checklist is not a test result.
+
+## Optional MXene–polymer Studio
+
+The application extends the project with a local GUI, reproducible engine tasks and matched experimental observations. Scope and executable acceptance checks are listed in [the Studio guide](MXENE_STUDIO_TR.md).

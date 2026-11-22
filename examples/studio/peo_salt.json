@@ -1,0 +1,5 @@
+{
+  "polymer": "PEO", "dp": 8, "seed": 17, "nx": 6, "ny": 4, "geometry": "single",
+  "water_height_A": 22, "oh_top": 0.5, "oh_bottom": 0.5, "chains": 1,
+  "salt_M": 0.15, "packing_engine": "builtin"
+}

@@ -1,5 +1,13 @@
 # Changelog
 
+## Optional MXene–polymer Studio
+
+Adds a local Turkish 3D application for hydrated surfaces, polymer construction,
+three packing engines, source-pinned MD, registered topologies, experimental
+contrasts and matched campaigns. The standalone core API remains available.
+Installation and evidence: [Studio guide](docs/MXENE_STUDIO_TR.md).
+
+
 ## 0.8.0.dev0 — 2026-11-07
 
 - Added bounded static virial scalar/tensor pressure evaluation with explicit

@@ -8,7 +8,9 @@ application examples must not narrow the whole platform to one material system.
 
 ## Independent implementation
 - Write project code and architecture independently. Do not copy, vendor, import,
-  or wrap RadonPy, SwiftPol, HTPolyNet, or another polymer workflow package.
+  or wrap RadonPy, SwiftPol, HTPolyNet, or another polymer workflow package in
+  the independent core. The optional Studio comparison explicitly requested by the
+  project owner runs RadonPy in a separate interpreter. Keep that bridge isolated.
 - Established scientific equations must be attributed. General libraries and
   external solvers (for example RDKit, NumPy, SciPy, LAMMPS, Psi4, PySCF, CP2K)
   may be dependencies, with their roles and versions documented.

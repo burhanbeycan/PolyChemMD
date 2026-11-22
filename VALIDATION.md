@@ -439,3 +439,13 @@ implemented. TASK-006C2C2 must resolve pressure-sensitive numerical settings,
 preparation history, independent cells and evolved-state/trajectory coverage.
 Phase, chain relaxation, finite-size sampling and external density validation
 remain open. Hosted checks are recorded separately by GitHub Actions.
+
+
+## MXene–polymer Studio
+
+[Queue replay](evidence/studio/interface_replay.json) contains the outputs of
+three real packing engines on one declared PEO interface, an isolated RadonPy
+reference, the published paired PEI XRD contrast and three short IFF LAMMPS
+pilots with trajectory analysis. [Continuation evidence](evidence/studio/iff_engine_checks.json)
+compares independent, unsplit and restarted numerical runs. Optical stability,
+free swelling and equilibrium adsorption remain experimental targets.

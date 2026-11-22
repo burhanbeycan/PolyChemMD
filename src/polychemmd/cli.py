@@ -187,9 +187,14 @@ def doctor():
 
 
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv[:1] == ["studio"]:
+        from .studio.__main__ import main as studio_main
+        return studio_main(argv[1:])
     parser = argparse.ArgumentParser(prog="polychemmd", description=__doc__)
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("studio", help="Open the optional MXene–polymer application (studio --help)")
     commands.add_parser("doctor", help="Report optional dependency presence; execute no simulations")
     commands.add_parser("catalogue", help="Show planned property families and evidence status")
     validate = commands.add_parser("validate", help="Validate a material metadata record (not molecular valence)")

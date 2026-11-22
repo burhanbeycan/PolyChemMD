@@ -1,0 +1,220 @@
+import "oplsaa2024.lt"
+Chain inherits OPLSAA {
+  write("Data Atoms") {
+    $atom:a1 $mol:. @atom:135 0.0 -9.8168940 -0.4441660 -1.6103610
+    $atom:a2 $mol:. @atom:158 0.0 -9.0317950 -0.7038810 -2.8880560
+    $atom:a3 $mol:. @atom:154 0.0 -8.9892180 -2.1086180 -3.1251400
+    $atom:a4 $mol:. @atom:136 0.0 -7.6117920 -0.1152940 -2.8709020
+    $atom:a5 $mol:. @atom:158 0.0 -6.7270650 -0.5898720 -1.7062490
+    $atom:a6 $mol:. @atom:154 0.0 -6.7664990 -2.0223370 -1.6540840
+    $atom:a7 $mol:. @atom:136 0.0 -5.2576280 -0.1562430 -1.8441250
+    $atom:a8 $mol:. @atom:491 0.0 -5.0467090 1.3624290 -1.8646360
+    $atom:a9 $mol:. @atom:467 0.0 -5.5780620 1.9051550 -0.6398220
+    $atom:a10 $mol:. @atom:465 0.0 -6.0025600 3.1979820 -0.6759260
+    $atom:a11 $mol:. @atom:466 0.0 -5.9903290 3.9212300 -1.6609040
+    $atom:a12 $mol:. @atom:135 0.0 -6.4924010 3.6118560 0.6774360
+    $atom:a13 $mol:. @atom:136 0.0 -3.5739340 1.7829500 -2.0613480
+    $atom:a14 $mol:. @atom:158 0.0 -2.5027380 1.2239110 -1.1077260
+    $atom:a15 $mol:. @atom:154 0.0 -2.2791790 -0.1609470 -1.3655230
+    $atom:a16 $mol:. @atom:136 0.0 -2.8022930 1.4228940 0.3796900
+    $atom:a17 $mol:. @atom:158 0.0 -1.7062420 0.8991650 1.3243560
+    $atom:a18 $mol:. @atom:154 0.0 -2.1717620 1.1137560 2.6566200
+    $atom:a19 $mol:. @atom:136 0.0 -0.3416230 1.5711610 1.0903250
+    $atom:a20 $mol:. @atom:491 0.0 0.7463410 1.4379920 2.1754270
+    $atom:a21 $mol:. @atom:467 0.0 0.2580210 1.8140550 3.4767360
+    $atom:a22 $mol:. @atom:465 0.0 0.1597790 3.1476790 3.7309320
+    $atom:a23 $mol:. @atom:466 0.0 0.4939830 4.0463440 2.9716090
+    $atom:a24 $mol:. @atom:135 0.0 -0.4185880 3.3633920 5.0956080
+    $atom:a25 $mol:. @atom:136 0.0 1.4404220 0.0647850 2.2773550
+    $atom:a26 $mol:. @atom:158 0.0 0.5707380 -1.1815370 2.5028540
+    $atom:a27 $mol:. @atom:154 0.0 -0.3629790 -0.9080870 3.5498960
+    $atom:a28 $mol:. @atom:136 0.0 1.3958920 -2.4221250 2.8927960
+    $atom:a29 $mol:. @atom:158 0.0 1.7868070 -3.3404910 1.7228060
+    $atom:a30 $mol:. @atom:154 0.0 2.4752240 -4.4742040 2.2534250
+    $atom:a31 $mol:. @atom:136 0.0 2.6284900 -2.7109370 0.6011490
+    $atom:a32 $mol:. @atom:491 0.0 4.0269580 -2.2341000 1.0275620
+    $atom:a33 $mol:. @atom:467 0.0 4.8771840 -3.3918430 1.1656180
+    $atom:a34 $mol:. @atom:465 0.0 5.8124450 -3.3484160 2.1498730
+    $atom:a35 $mol:. @atom:466 0.0 6.0600790 -2.3828520 2.8589060
+    $atom:a36 $mol:. @atom:135 0.0 6.5276860 -4.6618320 2.2300620
+    $atom:a37 $mol:. @atom:136 0.0 4.6850740 -1.2545100 0.0336010
+    $atom:a38 $mol:. @atom:158 0.0 4.8009740 -1.7697720 -1.4042420
+    $atom:a39 $mol:. @atom:154 0.0 3.5207440 -1.7197840 -2.0357160
+    $atom:a40 $mol:. @atom:136 0.0 5.8291830 -1.0022170 -2.2614770
+    $atom:a41 $mol:. @atom:158 0.0 5.5804500 0.4997570 -2.5185960
+    $atom:a42 $mol:. @atom:154 0.0 4.1687990 0.7273280 -2.6427670
+    $atom:a43 $mol:. @atom:136 0.0 6.1442680 1.4461170 -1.4434280
+    $atom:a44 $mol:. @atom:158 0.0 7.5509250 1.9879460 -1.7282590
+    $atom:a45 $mol:. @atom:154 0.0 7.5141950 2.7335860 -2.9430130
+    $atom:a46 $mol:. @atom:135 0.0 8.6304160 0.9221500 -1.8286820
+    $atom:a47 $mol:. @atom:140 0.0 -10.8460210 -0.8030000 -1.7226930
+    $atom:a48 $mol:. @atom:140 0.0 -9.3955880 -0.9896330 -0.7596530
+    $atom:a49 $mol:. @atom:140 0.0 -9.8464850 0.6229410 -1.3708630
+    $atom:a50 $mol:. @atom:140 0.0 -9.5776790 -0.2606790 -3.7284910
+    $atom:a51 $mol:. @atom:155 0.0 -8.2408380 -2.4530690 -2.5902070
+    $atom:a52 $mol:. @atom:140 0.0 -7.1247310 -0.4036190 -3.8116430
+    $atom:a53 $mol:. @atom:140 0.0 -7.6874940 0.9774910 -2.8569870
+    $atom:a54 $mol:. @atom:140 0.0 -7.1338550 -0.2219660 -0.7579850
+    $atom:a55 $mol:. @atom:155 0.0 -6.1874660 -2.3003200 -0.9201490
+    $atom:a56 $mol:. @atom:140 0.0 -4.7223610 -0.5946260 -0.9936150
+    $atom:a57 $mol:. @atom:140 0.0 -4.8242870 -0.6100730 -2.7443420
+    $atom:a58 $mol:. @atom:469 0.0 -5.6109220 1.7706970 -2.7120540
+    $atom:a59 $mol:. @atom:282 0.0 -6.8251290 4.6530370 0.6396960
+    $atom:a60 $mol:. @atom:282 0.0 -7.3380850 2.9856720 0.9725080
+    $atom:a61 $mol:. @atom:282 0.0 -5.6809630 3.5316520 1.4052230
+    $atom:a62 $mol:. @atom:140 0.0 -3.2904590 1.5053930 -3.0851870
+    $atom:a63 $mol:. @atom:140 0.0 -3.5188750 2.8771210 -2.0025640
+    $atom:a64 $mol:. @atom:140 0.0 -1.5660240 1.7379820 -1.3517310
+    $atom:a65 $mol:. @atom:155 0.0 -1.9657210 -0.2441240 -2.2841770
+    $atom:a66 $mol:. @atom:140 0.0 -3.7209620 0.8902040 0.6525710
+    $atom:a67 $mol:. @atom:140 0.0 -2.9914480 2.4837070 0.5875530
+    $atom:a68 $mol:. @atom:140 0.0 -1.6318590 -0.1805120 1.1811580
+    $atom:a69 $mol:. @atom:155 0.0 -1.5093710 0.6904540 3.2465560
+    $atom:a70 $mol:. @atom:140 0.0 0.0767820 1.2303180 0.1359100
+    $atom:a71 $mol:. @atom:140 0.0 -0.5356280 2.6457500 0.9736650
+    $atom:a72 $mol:. @atom:469 0.0 1.5532260 2.1349950 1.9062040
+    $atom:a73 $mol:. @atom:282 0.0 -0.5021900 4.4367790 5.2882580
+    $atom:a74 $mol:. @atom:282 0.0 -1.4168950 2.9218650 5.1491030
+    $atom:a75 $mol:. @atom:282 0.0 0.2381640 2.9235000 5.8502210
+    $atom:a76 $mol:. @atom:140 0.0 2.1460790 0.1367540 3.1164380
+    $atom:a77 $mol:. @atom:140 0.0 2.0394250 -0.0729250 1.3736870
+    $atom:a78 $mol:. @atom:140 0.0 -0.0042540 -1.4046520 1.6005460
+    $atom:a79 $mol:. @atom:155 0.0 -0.9259270 -1.6953190 3.6632010
+    $atom:a80 $mol:. @atom:140 0.0 0.8172370 -3.0311730 3.6019120
+    $atom:a81 $mol:. @atom:140 0.0 2.2843170 -2.1367430 3.4695870
+    $atom:a82 $mol:. @atom:140 0.0 0.8658100 -3.7226090 1.2645800
+    $atom:a83 $mol:. @atom:155 0.0 1.8643800 -4.9480730 2.8434220
+    $atom:a84 $mol:. @atom:140 0.0 2.7521740 -3.4801450 -0.1729030
+    $atom:a85 $mol:. @atom:140 0.0 2.0599380 -1.8901220 0.1537810
+    $atom:a86 $mol:. @atom:469 0.0 3.9430090 -1.7154260 1.9890500
+    $atom:a87 $mol:. @atom:282 0.0 7.0714140 -4.8446040 1.2999510
+    $atom:a88 $mol:. @atom:282 0.0 5.8100770 -5.4638840 2.4209640
+    $atom:a89 $mol:. @atom:282 0.0 7.2437310 -4.6347770 3.0563940
+    $atom:a90 $mol:. @atom:140 0.0 5.6935680 -1.0407850 0.4063010
+    $atom:a91 $mol:. @atom:140 0.0 4.1116360 -0.3202750 0.0449890
+    $atom:a92 $mol:. @atom:140 0.0 5.1044620 -2.8226710 -1.3918540
+    $atom:a93 $mol:. @atom:155 0.0 3.4148060 -0.7939460 -2.3499350
+    $atom:a94 $mol:. @atom:140 0.0 5.8139030 -1.4835840 -3.2497580
+    $atom:a95 $mol:. @atom:140 0.0 6.8340090 -1.1643230 -1.8596990
+    $atom:a96 $mol:. @atom:140 0.0 6.0163180 0.7489760 -3.4931500
+    $atom:a97 $mol:. @atom:155 0.0 4.0737280 1.6340160 -2.9940430
+    $atom:a98 $mol:. @atom:140 0.0 6.1411070 0.9695470 -0.4598900
+    $atom:a99 $mol:. @atom:140 0.0 5.4728500 2.3113820 -1.3584150
+    $atom:a100 $mol:. @atom:140 0.0 7.8154050 2.6865200 -0.9256810
+    $atom:a101 $mol:. @atom:155 0.0 8.3892970 3.1440250 -3.0616710
+    $atom:a102 $mol:. @atom:140 0.0 8.4966940 0.2977000 -2.7178110
+    $atom:a103 $mol:. @atom:140 0.0 9.6143870 1.3926180 -1.9345350
+    $atom:a104 $mol:. @atom:140 0.0 8.6487950 0.2870070 -0.9382390
+  }
+  write("Data Bond List") {
+    $bond:b1 $atom:a1 $atom:a2
+    $bond:b2 $atom:a2 $atom:a3
+    $bond:b3 $atom:a2 $atom:a4
+    $bond:b4 $atom:a4 $atom:a5
+    $bond:b5 $atom:a5 $atom:a6
+    $bond:b6 $atom:a5 $atom:a7
+    $bond:b7 $atom:a7 $atom:a8
+    $bond:b8 $atom:a8 $atom:a9
+    $bond:b9 $atom:a9 $atom:a10
+    $bond:b10 $atom:a10 $atom:a11
+    $bond:b11 $atom:a10 $atom:a12
+    $bond:b12 $atom:a8 $atom:a13
+    $bond:b13 $atom:a13 $atom:a14
+    $bond:b14 $atom:a14 $atom:a15
+    $bond:b15 $atom:a14 $atom:a16
+    $bond:b16 $atom:a16 $atom:a17
+    $bond:b17 $atom:a17 $atom:a18
+    $bond:b18 $atom:a17 $atom:a19
+    $bond:b19 $atom:a19 $atom:a20
+    $bond:b20 $atom:a20 $atom:a21
+    $bond:b21 $atom:a21 $atom:a22
+    $bond:b22 $atom:a22 $atom:a23
+    $bond:b23 $atom:a22 $atom:a24
+    $bond:b24 $atom:a20 $atom:a25
+    $bond:b25 $atom:a25 $atom:a26
+    $bond:b26 $atom:a26 $atom:a27
+    $bond:b27 $atom:a26 $atom:a28
+    $bond:b28 $atom:a28 $atom:a29
+    $bond:b29 $atom:a29 $atom:a30
+    $bond:b30 $atom:a29 $atom:a31
+    $bond:b31 $atom:a31 $atom:a32
+    $bond:b32 $atom:a32 $atom:a33
+    $bond:b33 $atom:a33 $atom:a34
+    $bond:b34 $atom:a34 $atom:a35
+    $bond:b35 $atom:a34 $atom:a36
+    $bond:b36 $atom:a32 $atom:a37
+    $bond:b37 $atom:a37 $atom:a38
+    $bond:b38 $atom:a38 $atom:a39
+    $bond:b39 $atom:a38 $atom:a40
+    $bond:b40 $atom:a40 $atom:a41
+    $bond:b41 $atom:a41 $atom:a42
+    $bond:b42 $atom:a41 $atom:a43
+    $bond:b43 $atom:a43 $atom:a44
+    $bond:b44 $atom:a44 $atom:a45
+    $bond:b45 $atom:a44 $atom:a46
+    $bond:b46 $atom:a1 $atom:a47
+    $bond:b47 $atom:a1 $atom:a48
+    $bond:b48 $atom:a1 $atom:a49
+    $bond:b49 $atom:a2 $atom:a50
+    $bond:b50 $atom:a3 $atom:a51
+    $bond:b51 $atom:a4 $atom:a52
+    $bond:b52 $atom:a4 $atom:a53
+    $bond:b53 $atom:a5 $atom:a54
+    $bond:b54 $atom:a6 $atom:a55
+    $bond:b55 $atom:a7 $atom:a56
+    $bond:b56 $atom:a7 $atom:a57
+    $bond:b57 $atom:a8 $atom:a58
+    $bond:b58 $atom:a12 $atom:a59
+    $bond:b59 $atom:a12 $atom:a60
+    $bond:b60 $atom:a12 $atom:a61
+    $bond:b61 $atom:a13 $atom:a62
+    $bond:b62 $atom:a13 $atom:a63
+    $bond:b63 $atom:a14 $atom:a64
+    $bond:b64 $atom:a15 $atom:a65
+    $bond:b65 $atom:a16 $atom:a66
+    $bond:b66 $atom:a16 $atom:a67
+    $bond:b67 $atom:a17 $atom:a68
+    $bond:b68 $atom:a18 $atom:a69
+    $bond:b69 $atom:a19 $atom:a70
+    $bond:b70 $atom:a19 $atom:a71
+    $bond:b71 $atom:a20 $atom:a72
+    $bond:b72 $atom:a24 $atom:a73
+    $bond:b73 $atom:a24 $atom:a74
+    $bond:b74 $atom:a24 $atom:a75
+    $bond:b75 $atom:a25 $atom:a76
+    $bond:b76 $atom:a25 $atom:a77
+    $bond:b77 $atom:a26 $atom:a78
+    $bond:b78 $atom:a27 $atom:a79
+    $bond:b79 $atom:a28 $atom:a80
+    $bond:b80 $atom:a28 $atom:a81
+    $bond:b81 $atom:a29 $atom:a82
+    $bond:b82 $atom:a30 $atom:a83
+    $bond:b83 $atom:a31 $atom:a84
+    $bond:b84 $atom:a31 $atom:a85
+    $bond:b85 $atom:a32 $atom:a86
+    $bond:b86 $atom:a36 $atom:a87
+    $bond:b87 $atom:a36 $atom:a88
+    $bond:b88 $atom:a36 $atom:a89
+    $bond:b89 $atom:a37 $atom:a90
+    $bond:b90 $atom:a37 $atom:a91
+    $bond:b91 $atom:a38 $atom:a92
+    $bond:b92 $atom:a39 $atom:a93
+    $bond:b93 $atom:a40 $atom:a94
+    $bond:b94 $atom:a40 $atom:a95
+    $bond:b95 $atom:a41 $atom:a96
+    $bond:b96 $atom:a42 $atom:a97
+    $bond:b97 $atom:a43 $atom:a98
+    $bond:b98 $atom:a43 $atom:a99
+    $bond:b99 $atom:a44 $atom:a100
+    $bond:b100 $atom:a45 $atom:a101
+    $bond:b101 $atom:a46 $atom:a102
+    $bond:b102 $atom:a46 $atom:a103
+    $bond:b103 $atom:a46 $atom:a104
+  }
+}
+chain = new Chain
+write_once("Data Boundary") {
+ -25 25 xlo xhi
+ -25 25 ylo yhi
+ -25 25 zlo zhi
+}

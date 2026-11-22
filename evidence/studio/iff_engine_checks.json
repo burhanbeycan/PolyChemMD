@@ -1,0 +1,95 @@
+{
+  "scope": "Finite commissioning on Linux CPU, LAMMPS real units. The comparison uses printed fractional coordinates (9 significant digits) with triclinic minimum images and thermo printed to 12 significant digits. OPLS and MATCH have different sequences in these commissioning fixtures. Each restart is compared to its own same-profile unsplit trajectory.",
+  "runs": [
+    {
+      "profile": "iff-water",
+      "sequence": null,
+      "seed": 15991,
+      "engine": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "analysis_engine": "MDAnalysis 2.11.0",
+      "atom_count": 15516,
+      "water_count": 3456,
+      "source_sha256": "ec194edb8b6a5d1923269a1dee4bdf2ba047964ad930a5d52a887baa112fa873",
+      "input_script_sha256": "194b318fb0febfa3c5b72f6098bc7fc753920e8b10b91e5541471268d8e78fa8",
+      "end_step": 20,
+      "continuous_steps": 20,
+      "split_steps": [
+        10,
+        10
+      ],
+      "timestep_fs": 0.5,
+      "duration_ps": 0.01,
+      "observation_frames_continuous": 11,
+      "continuous_final_mobile_temperature_K": 204.671618769,
+      "mean_water_O_within_3p5A_per_external_surface_site": {
+        "F": 1.1547049,
+        "OH": 1.439691
+      },
+      "maximum_final_coordinate_difference_A_printed": 2.587641916462417e-07,
+      "absolute_final_temperature_difference_K": 0.0,
+      "absolute_final_box_potential_energy_difference_kcal_per_mol": 0.0,
+      "source_doi": "10.1021/acsnano.5c20046",
+      "trajectory_sha256": "d93c86f6f645543db677442a031332fa05003b62f882813bd227f99588a5897f"
+    },
+    {
+      "profile": "iff-opls",
+      "sequence": "dispersed",
+      "seed": 15991,
+      "engine": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "analysis_engine": "MDAnalysis 2.11.0",
+      "atom_count": 15410,
+      "water_count": 3386,
+      "source_sha256": "62f4e41d8b2a8b1069c7cff4e5dc828cf833212d1e89e0e9bbfa4dde18a13873",
+      "input_script_sha256": "58b9ef6afedd93e84559022c49a43b952ffed231b30a51d98c8aa64e79b9bcb5",
+      "end_step": 20,
+      "continuous_steps": 20,
+      "split_steps": [
+        10,
+        10
+      ],
+      "timestep_fs": 0.5,
+      "duration_ps": 0.01,
+      "observation_frames_continuous": 11,
+      "continuous_final_mobile_temperature_K": 205.900225073,
+      "mean_water_O_within_3p5A_per_external_surface_site": {
+        "F": 1.1182881,
+        "OH": 1.3980986
+      },
+      "maximum_final_coordinate_difference_A_printed": 2.37959859726794e-07,
+      "absolute_final_temperature_difference_K": 0.0,
+      "absolute_final_box_potential_energy_difference_kcal_per_mol": 0.0,
+      "source_doi": "10.1021/acsnano.5c20046",
+      "trajectory_sha256": "cba02734611b69d6a07e58213cbfcb8bbb956693dbe68056b36b1c2652546576"
+    },
+    {
+      "profile": "iff-charmm",
+      "sequence": "clustered",
+      "seed": 15991,
+      "engine": "Large-scale Atomic/Molecular Massively Parallel Simulator - 22 Jul 2025 - Update 4",
+      "analysis_engine": "MDAnalysis 2.11.0",
+      "atom_count": 15410,
+      "water_count": 3386,
+      "source_sha256": "9649fbfdc72d05064e6e8ce70efc88a573823e028a44180b6cbcf9b7a76666da",
+      "input_script_sha256": "cd3925990897a8fac6337106d0ee48d66d29928002d930a182b75bdb52990064",
+      "end_step": 20,
+      "continuous_steps": 20,
+      "split_steps": [
+        10,
+        10
+      ],
+      "timestep_fs": 0.5,
+      "duration_ps": 0.01,
+      "observation_frames_continuous": 11,
+      "continuous_final_mobile_temperature_K": 207.17562375,
+      "mean_water_O_within_3p5A_per_external_surface_site": {
+        "F": 1.1624136,
+        "OH": 1.399287
+      },
+      "maximum_final_coordinate_difference_A_printed": 2.70072078016827e-07,
+      "absolute_final_temperature_difference_K": 0.0,
+      "absolute_final_box_potential_energy_difference_kcal_per_mol": 1.00000761449337e-06,
+      "source_doi": "10.1021/acsnano.5c20046",
+      "trajectory_sha256": "3e6c506416fd3dc1ee02554257af81205af84c26a1c26c7b3220ae906c7e9637"
+    }
+  ]
+}

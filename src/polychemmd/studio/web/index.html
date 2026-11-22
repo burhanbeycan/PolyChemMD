@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#152d33">
+  <title>MXene–Polimer Atlası · PolyChemMD</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">İçeriğe geç</a>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark" data-icon="layers"></span>MXene–Polimer Atlası</div>
+  <span class="product">PolyChemMD</span>
+  <span class="service" id="service" role="status"><i></i> Bağlanıyor</span>
+</header>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="project"><small>PROJE</small><span><i data-icon="folder"></i><strong id="project-name">Ti₃C₂Tₓ / PEO</strong></span></div>
+    <nav aria-label="İş akışı">
+      <small>İŞ AKIŞI</small>
+      <button data-page="builder" aria-current="page"><i data-icon="layers"></i>Sistem oluştur</button>
+      <button data-page="methods"><i data-icon="sliders"></i>Hesaplama yöntemleri</button>
+      <button data-page="jobs"><i data-icon="queue"></i>Hesaplama kuyruğu <b id="queue-count" hidden></b></button>
+      <button data-page="experiment"><i data-icon="flask"></i>Deneyle karşılaştır</button>
+      <button data-page="atlas"><i data-icon="book"></i>Atlas kayıtları</button>
+    </nav>
+    <div class="side-footer"><i data-icon="terminal"></i><span>Yerel simülasyon stüdyosu</span></div>
+  </aside>
+  <main id="main">
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="page" id="page-builder">
+      <div class="page-head"><h1>Sistem oluştur</h1><p>Ti₃C₂Tₓ arayüzünün geometrisini ve moleküler bileşimini tanımlayın.</p></div>
+      <div class="builder-grid">
+        <article class="viewer" id="viewer-card">
+          <div class="viewer-head">
+            <div><h2>Yapı önizlemesi</h2><span id="view-source">Şematik yerleşim · Ölçeksiz</span></div>
+            <div class="canvas-buttons">
+              <button type="button" id="reset-view" aria-label="Görünümü sıfırla" title="Görünümü sıfırla"><i data-icon="reset"></i></button>
+              <button type="button" id="expand-view" aria-label="Görünümü büyüt" title="Görünümü büyüt"><i data-icon="expand"></i></button>
+            </div>
+          </div>
+          <div class="canvas-wrap"><canvas id="scene" tabindex="0" aria-label="Etkileşimli üç boyutlu yapı. Ok tuşlarıyla döndürün, artı veya eksiyle yakınlaştırın."></canvas>
+          <span class="canvas-hint">Sürükleyerek döndür · Kaydırarak yakınlaştır</span></div>
+          <div class="legend" id="legend"><span><i class="dot mx"></i>MXene</span><span><i class="dot pol"></i>Polimer</span><span><i class="dot wat"></i>Su</span><span id="view-detail">Şema</span></div>
+        </article>
+        <form class="panel settings" id="system-form">
+          <h2>Sistem ayarları</h2>
+          <label>Geometri<select name="geometry"><option value="slit">İki paralel tabaka</option><option value="single">Tek hidratlı yüzey</option></select></label>
+          <label>Polimer<select name="polymer"><option>PEO</option><option>PVA</option><option>PVP</option><option>PEtOx</option><option value="PCE">PCE · nötr model</option><option value="PEI">PEI · nötr, doğrusal</option><option value="bare">Polimersiz kontrol</option></select></label>
+          <div class="input-pair" id="chain-fields"><label>Zincir uzunluğu (DP)<input type="number" name="dp" min="1" max="64" step="1" value="8" required></label><label>Zincir sayısı<input type="number" name="chains" min="0" max="24" step="1" value="1" required></label></div>
+          <div class="input-pair"><label>NaCl (mol/L)<input type="number" name="salt_M" min="0" max="3" step="any" value="0.15" required></label><label><span id="width-label">Galeri genişliği (Å)</span><input type="number" name="width_A" min="2" max="200" step="any" value="22" required></label></div>
+          <details><summary>Yüzey ve zincir ayrıntıları</summary>
+            <div class="detail-body">
+              <div class="input-pair"><label>Süperhücre x<input type="number" name="nx" value="6" min="1" max="30" required></label><label>Süperhücre y<input type="number" name="ny" value="4" min="1" max="30" required></label></div>
+              <div class="input-pair"><label>Üst OH kesri<input type="number" name="oh_top" step="any" min="0" max="1" value="0.5" required></label><label>Alt OH kesri<input type="number" name="oh_bottom" step="any" min="0" max="1" value="0.5" required></label></div>
+              <p class="hint">Kalan sonlanma konumlarına F atanır.</p>
+              <label>Sonlanma deseni<select name="pattern"><option value="random">Rastgele</option><option value="patch">Bölgesel kümelenme</option></select></label>
+              <div id="pva-config" hidden><label>PVA hidroliz kesri<input type="number" name="hydrolysis" min="0" max="1" step="any" value="1"></label>
+              <label>Asetat dizilimi<select name="acetate_pattern"><option value="random">Rastgele</option><option value="clustered">Kümelenmiş</option></select></label></div>
+              <div id="pce-config" hidden><div class="input-pair"><label>Yan zincir EO sayısı<input type="number" name="side_dp" value="2" min="1" max="12"></label><label>Aşı aralığı (tekrar)<input type="number" name="graft_every" value="4" min="1" max="48"></label></div><p class="hint">Nötr asit biçimi; ilk tekrar aşılıdır.</p></div>
+              <label>Konformer kuvvet alanı<select name="conformer_ff"><option>MMFF94</option><option>UFF</option></select></label>
+              <label>Rastgele sayı tohumu<input type="number" name="seed" min="1" max="900000000" value="17" required></label>
+            </div>
+          </details>
+          <details><summary>Paketleme ayarları</summary><div class="detail-body">
+            <label>Paketleme motoru<select name="packing_engine"><option value="builtin">PolyChemMD</option><option value="molpack">MolCrafts MolPack</option><option value="packmol">Packmol</option></select></label>
+            <label>Su yoğunluğu (g/mL)<input type="number" name="water_density" min="0" max="1.5" step="any" value="0.997" required></label>
+            <p class="hint">Su ve iyonlar, sistem paketlendiğinde eklenir.</p>
+          </div></details>
+          <div class="form-actions"><button class="primary" type="submit" value="geometry"><i data-icon="layers"></i>Geometriyi oluştur</button><button class="secondary" type="submit" value="packing">Sistemi paketle</button></div>
+        </form>
+      </div>
+      <article class="panel match"><div><span class="label">ATLAS EŞLEŞTİRMESİ</span><h3 id="match-name">Kuru / ıslak bazal tekrar mesafesi</h3></div><div class="match-control"><span>Eşlenmiş kontrol</span><strong id="match-control">Aynı durumda polimersiz MXene</strong></div><button type="button" data-go="experiment" class="text-button">Deneyi incele <i data-icon="arrow"></i></button></article>
+    </section>
+    <section class="page" id="page-methods" hidden>
+      <div class="page-head"><h1>Hesaplama yöntemleri</h1><p>Kurulu motorları ve girdi kimliği tanımlı hesaplama protokollerini inceleyin.</p></div>
+      <div class="two-grid">
+        <form class="panel padded form-flow" id="md-form"><div class="section-icon" data-icon="sliders"></div><h2>Hidratlı arayüz dinamiği</h2>
+          <p class="muted">LAMMPS, seçilen hazır sistemin parametre ve topolojilerini kullanır. Bu reçeteler 298,15 K ve ilave tuz içermeyen bir sistem kullanır. PVA/VAc için DP12, %75 hidroliz uygulanır.</p>
+          <label>Arayüz profili<select name="md_profile"><option value="iff-water">IFF · polimersiz MXene / su</option><option value="iff-opls">IFF / OPLS · PVA/VAc</option><option value="iff-charmm">IFF / CHARMM · PVA/VAc</option></select></label>
+          <p id="md-availability" class="hint"></p>
+          <label id="md-seq-label" hidden>DP12 asetat dizilimi<select name="md_sequence"><option value="clustered">Kümelenmiş</option><option value="dispersed">Dağılmış</option></select></label>
+          <div class="input-pair"><label>Zaman adımı sayısı<input name="md_steps" type="number" min="1" max="2000" value="20" required></label><label>Tohum<input name="seed" type="number" min="1" max="900000000" value="17" required></label></div>
+          <button class="primary" type="submit"><i data-icon="play"></i>MD işini sırala</button>
+        </form>
+        <div class="panel padded"><h2>Motor durumu</h2><div id="tools"><p class="muted">Motor bilgileri bekleniyor.</p></div>
+          <form class="form-flow divided" id="radon-form"><h3>RadonPy polimer referansı</h3><label>Polimer<select name="polymer"><option>PEO</option><option>PVA</option><option>PVP</option><option>PEtOx</option></select></label><div class="input-pair"><label>Zincir uzunluğu (DP)<input name="dp" type="number" min="1" max="64" value="8" required></label><label>Tohum<input name="seed" type="number" min="1" max="900000000" value="17" required></label></div><button class="secondary" type="submit">RadonPy referansını çalıştır</button></form>
+        </div>
+      </div>
+      <div class="two-grid method-extra">
+        <form class="panel padded form-flow" id="registered-form">
+          <h2>Paketlenmiş sisteme MD uygula</h2>
+          <p class="muted">Topoloji, seçilen işin packed.json dosyasının SHA-256 kimliğiyle eşlenir.</p>
+          <label>Tamamlanmış paketleme<select name="source_job" required><option value="">Paketleme seçin</option></select></label>
+          <label>Eşleşen parametreli topoloji<select name="topology_id" required><option value="">Bir paketleme seçin</option></select></label>
+          <div class="input-pair"><label>Adım sayısı<input name="steps" type="number" min="0" max="200" value="0" required></label><label>Sıcaklık (K)<input name="temperature_k" type="number" min="1" step="any" value="298.15" required></label></div>
+          <p id="reg-help" class="hint">Sıfır adım, başlangıç enerjisi ve kuvvetlerini değerlendirir.</p><button type="submit" class="secondary" disabled>Parametreli MD işini sırala</button>
+        </form>
+        <form class="panel padded form-flow" id="plan-form">
+          <h2>Eşlenmiş karşılaştırma öner</h2><p class="muted">Tek bir tasarım değişkeniyle ayrılan iki reçeteyi kuyruklamadan önce inceleyin.</p>
+          <label>Araştırma hedefi<select name="objective"><option value="termination">Yüzey sonlanma deseni</option><option value="hydrolysis">PVA asetat dizilimi</option><option value="model">Arayüz kuvvet alanı</option></select></label>
+          <label>Öneri yöntemi<select name="mode"><option value="rules">Yerel kurallar</option><option value="ollama">Yerel Ollama modeli</option></select></label>
+          <label id="ollama-label" hidden>Kurulu model etiketi<input name="model" placeholder="qwen2.5:3b" maxlength="100"></label>
+          <button class="secondary" type="submit">Öneriyi getir</button><div id="plan-result"></div>
+        </form>
+      </div>
+      <article class="panel padded method-extra">
+        <h2>Eşlenmiş hesaplama serisi</h2>
+        <p class="muted campaign-intro">Her tohum için iki koşul aynı seri içinde çalışır. Karşılaştırılabilir çiftler tamamlandıkça yöntem ve çift farklarını izleyin.</p>
+        <form id="campaign-form" class="campaign-form">
+          <label>Karşılaştırma<select name="objective"><option value="termination">Yüzey sonlanma deseni</option><option value="hydrolysis">PVA asetat dizilimi</option><option value="model">Arayüz kuvvet alanı</option></select></label>
+          <label>Bağımsız başlangıç<input type="number" name="replicates" value="2" min="1" max="12" required></label>
+          <label>İlk tohum<input type="number" name="base_seed" value="17" min="1" max="899999980" required></label>
+          <label id="campaign-step" hidden>Adım sayısı<input type="number" name="md_steps" value="20" min="1" max="2000"></label>
+          <label>Deney kaydı <span class="sr-only">(isteğe bağlı)</span><select name="experiment_id"><option value="">Bağlantı yok</option></select></label>
+          <button type="submit" class="primary">Seriyi kuyruğa al</button>
+        </form>
+        <div id="campaign-result" aria-live="polite"></div>
+      </article>
+    </section>
+    <section class="page" id="page-jobs" hidden>
+      <div class="page-head head-row"><div><h1>Hesaplama kuyruğu</h1><p>Durumu, girdileri ve üretilen dosyaları iş kaydından izleyin.</p></div><button class="secondary" id="refresh-jobs"><i data-icon="reset"></i>Yenile</button></div>
+      <div class="jobs-grid"><div class="panel padded"><h2>İşler</h2><div id="job-list"></div></div><div class="panel padded" id="job-detail"><p class="muted">Ayrıntıları görmek için bir iş seçin.</p></div></div>
+    </section>
+    <section class="page" id="page-experiment" hidden>
+      <div class="page-head"><h1>Deneyle karşılaştır</h1><p>Birincil ölçümleri parti bazında eşleyin ya da yayımlanmış PEI karşılaştırmasını yeniden hesaplayın.</p></div>
+      <form class="panel padded form-flow" id="experiment-form">
+        <label class="narrow">Ölçüm<select name="assay"><option value="xrd">XRD · kuru / ıslak bazal tekrar</option><option value="optical">UV–vis · 24 saatlik optik tutunum</option></select></label>
+        <p id="assay-hint" class="muted"></p><div id="assay-grid" class="table-scroll"></div>
+        <div class="row-actions"><button id="add-row" class="secondary" type="button">Satır ekle</button><button type="submit" class="primary">Ölçümleri hesapla</button></div>
+      </form>
+      <article class="panel padded published"><div><span class="label">YAYIMLANMIŞ DENEY</span><h3>Xing ve ark. · PEI kaplı Ti₃C₂Tₓ</h3><p class="muted">Çıplak ve kaplı membranların kuru ve ıslak bazal tekrar mesafeleri.</p></div><button class="secondary" id="reference-run">Kaynak veriyi hesapla</button></article>
+    </section>
+    <section class="page" id="page-atlas" hidden>
+      <div class="page-head"><h1>Atlas kayıtları</h1><p>Yayımlanmış ölçümleri polimer, yöntem ve deney koşuluyla birlikte inceleyin.</p></div>
+      <div class="panel padded"><div class="filters"><label>Kaynaklarda ara<input type="search" id="record-search" placeholder="Polimer, koşul, DOI…"></label><label>Yöntem<select id="record-method"><option value="">Tüm yöntemler</option></select></label></div>
+        <div class="table-scroll" id="record-table"></div><p id="record-count" class="hint"></p>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

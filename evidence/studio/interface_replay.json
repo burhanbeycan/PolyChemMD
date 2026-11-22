@@ -1,0 +1,239 @@
+{
+  "software": {
+    "python": "3.12.14",
+    "polychemmd": "0.8.0.dev0",
+    "rdkit": "2026.9.1",
+    "ase": "3.29.0",
+    "numpy": "2.3.5",
+    "molcrafts-molpack": "0.4.0",
+    "packmol": "21.2.0",
+    "lammps": "2025.7.22.4.0",
+    "MDAnalysis": "2.11.0"
+  },
+  "scope": "Short engineering and matched-readout checks. No equilibrium or experimental prediction inferred.",
+  "jobs": [
+    {
+      "kind": "packing",
+      "config": {
+        "polymer": "PEO",
+        "dp": 8,
+        "packing_engine": "builtin",
+        "seed": 17
+      },
+      "output": {
+        "engine": "builtin",
+        "atom_count": 1294,
+        "water_count": 283,
+        "ion_pairs": 1,
+        "salt_M_requested": 0.15,
+        "salt_M_realized": 0.19524070722525233,
+        "audit": {
+          "fixed_surface_invariant": true,
+          "minimum_mobile_to_other_A": 1.8006386305953537,
+          "mobile_self_image_check": true,
+          "pbc": [
+            true,
+            true,
+            false
+          ],
+          "read_tolerance_A": 0.002,
+          "rigid_molecule_identity": true
+        }
+      }
+    },
+    {
+      "kind": "packing",
+      "config": {
+        "polymer": "PEO",
+        "dp": 8,
+        "packing_engine": "molpack",
+        "seed": 17
+      },
+      "output": {
+        "engine": "molpack",
+        "atom_count": 1294,
+        "water_count": 283,
+        "ion_pairs": 1,
+        "salt_M_requested": 0.15,
+        "salt_M_realized": 0.19524070722525233,
+        "audit": {
+          "fixed_surface_invariant": true,
+          "minimum_mobile_to_other_A": 2.0151891017857433,
+          "mobile_self_image_check": true,
+          "pbc": [
+            true,
+            true,
+            false
+          ],
+          "read_tolerance_A": 0.002,
+          "rigid_molecule_identity": true
+        }
+      }
+    },
+    {
+      "kind": "packing",
+      "config": {
+        "polymer": "PEO",
+        "dp": 8,
+        "packing_engine": "packmol",
+        "seed": 17
+      },
+      "output": {
+        "engine": "packmol",
+        "atom_count": 1294,
+        "water_count": 283,
+        "ion_pairs": 1,
+        "salt_M_requested": 0.15,
+        "salt_M_realized": 0.19524070722525233,
+        "audit": {
+          "fixed_surface_invariant": true,
+          "minimum_mobile_to_other_A": 2.0021872983120432,
+          "mobile_self_image_check": true,
+          "pbc": [
+            true,
+            true,
+            false
+          ],
+          "read_tolerance_A": 0.002,
+          "rigid_molecule_identity": true
+        }
+      }
+    },
+    {
+      "kind": "radonpy",
+      "config": {
+        "polymer": "PEO",
+        "dp": 8,
+        "seed": 17
+      },
+      "output": {
+        "engine": "RadonPy",
+        "n_atoms": 64,
+        "heavy_atoms": 26,
+        "formula": "C18H38O8",
+        "software": {
+          "citation": "10.1038/s41524-022-00906-4",
+          "engine": "RadonPy",
+          "psi4_detected": false,
+          "python": "3.12.14",
+          "rdkit": "2026.09.1",
+          "version": "0.2.11",
+          "workflow": "Linear oligomer, seeded ETKDG and MMFF94 optimization, GAFF2 typing audit"
+        },
+        "gaff2_typed": 64,
+        "charge_model": "no numerical partial charges assigned"
+      }
+    },
+    {
+      "kind": "experiment",
+      "config": {
+        "assay": "xrd",
+        "reference": "xing-pei"
+      },
+      "output": {
+        "evidence": "published secondary analysis",
+        "summary": {
+          "comparison": "(coated − bare) wet minus (coated − bare) dry",
+          "mean": -0.1719999999999997,
+          "n_pairs": 1,
+          "sample_sd": null,
+          "unit": "nm"
+        },
+        "source_doi": "10.1002/eom2.12300"
+      }
+    },
+    {
+      "kind": "md",
+      "config": {
+        "md_profile": "iff-water",
+        "md_sequence": "clustered",
+        "md_steps": 20,
+        "seed": 15991
+      },
+      "output": {
+        "profile": "iff-water",
+        "last_sampled_step": 20,
+        "sampled_frames": 11,
+        "atom_count": 15516,
+        "water_contacts": {
+          "F": 1.1547049,
+          "OH": 1.439691
+        },
+        "MDAnalysis_version": "2.11.0"
+      }
+    },
+    {
+      "kind": "trajectory",
+      "config": {},
+      "output": {
+        "n_frames": 11,
+        "mean_water_O_contact_fraction": 0.09064604377104377,
+        "mean_plane_separation_nm": 0.9558614083152929,
+        "plane_restraint": "fixed",
+        "contact_cutoff_A": 3.5
+      }
+    },
+    {
+      "kind": "md",
+      "config": {
+        "md_profile": "iff-opls",
+        "md_sequence": "clustered",
+        "md_steps": 20,
+        "seed": 15991
+      },
+      "output": {
+        "profile": "iff-opls",
+        "last_sampled_step": 20,
+        "sampled_frames": 11,
+        "atom_count": 15410,
+        "water_contacts": {
+          "F": 1.1233386,
+          "OH": 1.3841355
+        },
+        "MDAnalysis_version": "2.11.0"
+      }
+    },
+    {
+      "kind": "trajectory",
+      "config": {},
+      "output": {
+        "n_frames": 11,
+        "mean_water_O_contact_fraction": 0.09077484830585834,
+        "mean_plane_separation_nm": 0.9558614083152929,
+        "plane_restraint": "fixed",
+        "contact_cutoff_A": 3.5
+      }
+    },
+    {
+      "kind": "md",
+      "config": {
+        "md_profile": "iff-charmm",
+        "md_sequence": "clustered",
+        "md_steps": 20,
+        "seed": 15991
+      },
+      "output": {
+        "profile": "iff-charmm",
+        "last_sampled_step": 20,
+        "sampled_frames": 11,
+        "atom_count": 15410,
+        "water_contacts": {
+          "F": 1.1624136,
+          "OH": 1.399287
+        },
+        "MDAnalysis_version": "2.11.0"
+      }
+    },
+    {
+      "kind": "trajectory",
+      "config": {},
+      "output": {
+        "n_frames": 11,
+        "mean_water_O_contact_fraction": 0.08929817967030017,
+        "mean_plane_separation_nm": 0.9558614083152929,
+        "plane_restraint": "fixed",
+        "contact_cutoff_A": 3.5
+      }
+    }
+  ]
+}

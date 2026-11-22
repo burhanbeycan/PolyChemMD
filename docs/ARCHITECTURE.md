@@ -4,6 +4,13 @@ Status: independent development core, 7 November 2026.
 
 PolyChemMD is intended to become a general polymer chemistry and molecular-simulation library. Its domain objects, construction algorithms, orchestration, descriptors and analysis code are developed independently. RadonPy is a comparison target and literature source, not a runtime dependency. General numerical, cheminformatics and simulation software can be external dependencies with explicit versions and attribution.
 
+### Optional application boundary
+
+`polychemmd.studio` is an application layered beside the independent core. Its
+optional RadonPy comparison runs in an isolated interpreter and emits its own
+engine provenance. The numerical library, core installation and existing CLI
+workflows do not depend on it. See [the Studio architecture](MXENE_STUDIO_TR.md).
+
 ## Implemented boundary
 
 The core contains input-record validation, mapped repeat-unit contracts, supported linear molecular-graph assembly, immutable geometry records, seeded RDKit ETKDGv3 coordinates, independent rigid cell packing, structure exports, Fourier-torsion analysis/conversion, sourced n-alkane assignments, isolated and periodic Ewald energy/force references, bounded LAMMPS verification/preparation and density diagnostics. It now assembles supported fully assigned periodic starting cells and executes finite minimization/NVT/NPT pilots. It does not establish equilibrated polymer states, production sampling, validated polymer-property MD/QM or experimental predictivity. Graph, geometry, parameter identity, numerical parity and process execution are separate from equilibrium/material validation.
